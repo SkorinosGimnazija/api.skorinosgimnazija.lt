@@ -14,6 +14,6 @@ RUN dotnet publish -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-ENV ASPNETCORE_URLS http://*:$PORT
+ENV ASPNETCORE_URLS http://+:$PORT
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "API.dll"]
