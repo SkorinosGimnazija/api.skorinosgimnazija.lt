@@ -12,9 +12,10 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish -c Release -o /app/publish
 
-ENV ASPNETCORE_URLS http://*:$PORT
+#ENV ASPNETCORE_URLS http://*:$PORT
 
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "API.dll"]
+#ENTRYPOINT ["dotnet", "API.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet API.dll
