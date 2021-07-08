@@ -1,5 +1,6 @@
 ﻿namespace API
 {
+    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -29,6 +30,9 @@
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
+
+
+            app.UseHsts();  
 
             app.UseRouting();
 
@@ -65,10 +69,7 @@
                         options.User.RequireUniqueEmail = true;
                         options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
                     });
-            services.Configure<CookiePolicyOptions>(options =>
-                {
-                    options.Secure = CookieSecurePolicy.Always;
-                });
+            services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
             services.ConfigureApplicationCookie(
                 options =>
                     {
@@ -77,6 +78,7 @@
                         options.LoginPath = "/auth/login";
                         options.LogoutPath = "/auth/logout";
                         //  options.AccessDeniedPath = "";
+
                     });
 
             services.AddAuthentication()
