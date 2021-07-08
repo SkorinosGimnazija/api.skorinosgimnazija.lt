@@ -1,6 +1,7 @@
 ﻿namespace API
 {
     using System;
+using System.Net;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
     using Persistence;
     using Utils;
 
@@ -26,13 +26,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseForwardedHeaders();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
             //else
             //{
@@ -42,6 +38,8 @@ using Microsoft.AspNetCore.HttpOverrides;
             //            return next();
             //        });
             //}
+
+            app.UseForwardedHeaders();
 
             app.UseRouting();
 
@@ -58,8 +56,11 @@ using Microsoft.AspNetCore.HttpOverrides;
         {
             services.AddControllers();
             services.Configure<ForwardedHeadersOptions>(
-                options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" }); });
+                options =>
+                    {
+                        options.ForwardLimit = 2;
+                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                    });
             services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
             services.AddCors(
                 options =>
