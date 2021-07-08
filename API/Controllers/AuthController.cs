@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers
 {
+    using System;
     using System.Linq;
     using System.Security.Claims;
     using System.Text.Json;
@@ -32,6 +33,11 @@
         [HttpGet("user")]
         public ActionResult<UserDto> GetUser()
         {
+            foreach (var requestHeader in Request.Headers)
+            {
+                Console.WriteLine(requestHeader.Key + ": " + requestHeader.Value);
+            }
+
             return Ok(
                 new UserDto
                 {
@@ -45,7 +51,7 @@
         [HttpGet("login")]
         public IActionResult Login(string? returnUrl = null)
         {
-            var redirectUrl = Url.Action(nameof(LoginResponse), null, new { ReturnUrl = returnUrl }, Request.Scheme);
+            var redirectUrl = Url.Action(nameof(LoginResponse),  new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
             return Challenge(properties, "Google");
