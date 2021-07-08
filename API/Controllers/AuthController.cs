@@ -36,6 +36,7 @@
             Console.WriteLine(Request.Scheme);
             Console.WriteLine(Request.Scheme);
             Console.WriteLine(Request.Scheme);
+            Console.WriteLine(Request.Host.Host);
 
 
             return Ok(

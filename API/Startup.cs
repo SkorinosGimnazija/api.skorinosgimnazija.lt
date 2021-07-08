@@ -60,6 +60,7 @@ using Microsoft.AspNetCore.HttpOverrides;
                     {
                         options.KnownProxies.Add(IPAddress.Parse("10.77.152.178"));
                         options.KnownProxies.Add(IPAddress.Parse("::ffff:0a4d:98b2"));
+                        options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("::ffff:0a4d:98b2"), 104));
 
                         options.ForwardLimit = 2;
                         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
