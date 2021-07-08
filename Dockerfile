@@ -15,4 +15,4 @@ RUN dotnet publish -c Release -o /app/publish --no-restore
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet API.dll
+CMD ASPNETCORE_URLS=https://*:$PORT dotnet API.dll
