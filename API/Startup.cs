@@ -26,14 +26,22 @@ using Microsoft.AspNetCore.HttpOverrides;
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
-          
-            app.UseForwardedHeaders();
+            //else
+            //{
+            //    app.Use((context, next) =>
+            //        {
+            //            context.Request.Scheme = "https";
+            //            return next();
+            //        });
+            //}
 
             app.UseRouting();
 
