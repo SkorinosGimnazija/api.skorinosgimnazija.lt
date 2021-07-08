@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Application;
 
 namespace API.Controllers
 {
+using Microsoft.AspNetCore.Identity;
 
-    [ApiController]
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+[ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
@@ -19,12 +22,14 @@ namespace API.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
         }
 
+
+        [Authorize(Roles = "Admin")]
+        //[Authorize]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

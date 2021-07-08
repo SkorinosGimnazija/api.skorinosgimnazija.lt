@@ -1,0 +1,13 @@
+﻿[*.cs]
+
+# RCS1021: Convert lambda expression body to expression-body.
+dotnet_diagnostic.RCS1021.severity = none
+
+# RCS1090: Add call to 'ConfigureAwait' (or vice versa).
+dotnet_diagnostic.RCS1090.severity = none
+
+# CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = none
+
+# RCS1036: Remove redundant empty line.
+dotnet_diagnostic.RCS1036.severity = none
