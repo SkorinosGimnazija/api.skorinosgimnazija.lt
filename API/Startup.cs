@@ -1,9 +1,11 @@
 ﻿namespace API
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -30,9 +32,8 @@
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
-
-
-            app.UseHsts();  
+          
+            app.UseForwardedHeaders();
 
             app.UseRouting();
 
@@ -48,6 +49,8 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.Configure<ForwardedHeadersOptions>(
+                options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" }); });
             services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
             services.AddCors(
@@ -78,7 +81,18 @@
                         options.LoginPath = "/auth/login";
                         options.LogoutPath = "/auth/logout";
                         //  options.AccessDeniedPath = "";
+                         
+                        options.Events.OnRedirectToAccessDenied = x =>
+                            {
+                                x.Response.StatusCode = StatusCodes.Status403Forbidden;
+                                return Task.CompletedTask;
+                            };
 
+                        options.Events.OnRedirectToLogin = x =>
+                            {
+                                x.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                                return Task.CompletedTask;
+                            };
                     });
 
             services.AddAuthentication()
