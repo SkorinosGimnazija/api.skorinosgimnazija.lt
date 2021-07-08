@@ -45,7 +45,7 @@
         [HttpGet("login")]
         public IActionResult Login(string? returnUrl = null)
         {
-            var redirectUrl = Url.Action(nameof(LoginResponse), new { ReturnUrl = returnUrl });
+            var redirectUrl = Url.Action(nameof(LoginResponse), null, new { ReturnUrl = returnUrl }, Request.Scheme);
             var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
             return Challenge(properties, "Google");

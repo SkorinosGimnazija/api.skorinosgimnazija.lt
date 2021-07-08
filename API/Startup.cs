@@ -34,6 +34,7 @@
 
             app.UseCors();
 
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -64,11 +65,14 @@
                         options.User.RequireUniqueEmail = true;
                         options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
                     });
+            services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.Secure = CookieSecurePolicy.Always;
+                });
             services.ConfigureApplicationCookie(
                 options =>
                     {
                         options.Cookie.Name = "auth";
-                        //   options.Cookie.Domain = _config.GetCookieDomain();
 
                         options.LoginPath = "/auth/login";
                         options.LogoutPath = "/auth/logout";
@@ -81,7 +85,6 @@
                         {
                             options.ClientId = _config.GetGoogleClientId();
                             options.ClientSecret = _config.GetGoogleClientSecret();
-                            options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
                         });
         }
     }

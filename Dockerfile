@@ -10,7 +10,7 @@ COPY ["Application/Application.csproj", "Application/"]
 COPY ["API/API.csproj", "API/"]
 RUN dotnet restore
 COPY . .
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
