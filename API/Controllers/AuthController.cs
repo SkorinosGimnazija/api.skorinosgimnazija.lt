@@ -33,10 +33,10 @@
         [HttpGet("user")]
         public ActionResult<UserDto> GetUser()
         {
-            foreach (var requestHeader in Request.Headers)
-            {
-                Console.WriteLine(requestHeader.Key + ": " + requestHeader.Value);
-            }
+            Console.WriteLine(Request.Scheme);
+            Console.WriteLine(Request.Scheme);
+            Console.WriteLine(Request.Scheme);
+
 
             return Ok(
                 new UserDto
