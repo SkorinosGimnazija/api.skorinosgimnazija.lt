@@ -58,11 +58,8 @@ using Microsoft.AspNetCore.HttpOverrides;
             services.Configure<ForwardedHeadersOptions>(
                 options =>
                     {
-                        options.KnownProxies.Add(IPAddress.Parse("10.77.152.178"));
-                        options.KnownProxies.Add(IPAddress.Parse("::ffff:0a4d:98b2"));
-                        options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("::ffff:0a4d:98b2"), 104));
-
-                        options.ForwardLimit = 2;
+                        options.KnownProxies.Clear();
+                        options.KnownNetworks.Clear();
                         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                     });
             services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
