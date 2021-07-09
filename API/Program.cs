@@ -17,7 +17,10 @@ namespace API
     {
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+            return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
         }
 
         public static async Task Main(string[] args)

@@ -1,12 +1,12 @@
 ﻿namespace API
 {
     using System;
-using System.Net;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
+    using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -30,20 +30,12 @@ using Microsoft.AspNetCore.HttpOverrides;
             {
                 app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.Use((context, next) =>
-            //        {
-            //            context.Request.Scheme = "https";
-            //            return next();
-            //        });
-            //}
 
             app.UseForwardedHeaders();
 
-            app.UseRouting();
-
             app.UseCors();
+
+            app.UseRouting();
 
             app.UseCookiePolicy();
             app.UseAuthentication();
@@ -55,6 +47,7 @@ using Microsoft.AspNetCore.HttpOverrides;
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.Configure<ForwardedHeadersOptions>(
                 options =>
                     {
@@ -62,7 +55,9 @@ using Microsoft.AspNetCore.HttpOverrides;
                         options.KnownNetworks.Clear();
                         options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
                     });
+
             services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
+
             services.AddCors(
                 options =>
                     {
@@ -75,23 +70,28 @@ using Microsoft.AspNetCore.HttpOverrides;
                                     x.WithOrigins(_config.GetCorsOrigins());
                                 });
                     });
+
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DataContext>();
+
             services.Configure<IdentityOptions>(
                 options =>
                     {
                         options.User.RequireUniqueEmail = true;
                         options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
                     });
-            services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
+
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                    {
+                        options.Secure = CookieSecurePolicy.Always;
+                    });
+
             services.ConfigureApplicationCookie(
                 options =>
                     {
-                        options.Cookie.Name = "auth";
-
                         options.LoginPath = "/auth/login";
                         options.LogoutPath = "/auth/logout";
-                        //  options.AccessDeniedPath = "";
-                         
+
                         options.Events.OnRedirectToAccessDenied = x =>
                             {
                                 x.Response.StatusCode = StatusCodes.Status403Forbidden;

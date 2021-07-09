@@ -12,11 +12,6 @@
             _configuration = configuration;
         }
 
-        public string GetCookieDomain()
-        {
-            return _configuration["COOKIE_DOMAIN"];
-        }
-
         public string[] GetCorsOrigins()
         {
             return _configuration["CORS_ORIGINS"].Split(';');

@@ -1,9 +1,7 @@
 ﻿namespace API.Controllers
 {
-    using System;
     using System.Linq;
     using System.Security.Claims;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using DTOs;
     using Microsoft.AspNetCore.Identity;
@@ -33,18 +31,10 @@
         [HttpGet("user")]
         public ActionResult<UserDto> GetUser()
         {
-            Console.WriteLine(Request.Scheme);
-            Console.WriteLine(Request.Scheme);
-            Console.WriteLine(Request.Scheme);
-            Console.WriteLine(Request.Host.Host);
-
-
             return Ok(
                 new UserDto
                 {
-                    IsAuthenticated = User.Identity?.IsAuthenticated == true,
                     UserName = User.FindFirstValue(ClaimTypes.Name),
-                    Email = User.FindFirstValue(ClaimTypes.Email),
                     Roles = User.FindAll(ClaimTypes.Role).Select(x => x.Value)
                 });
         }
@@ -52,7 +42,7 @@
         [HttpGet("login")]
         public IActionResult Login(string? returnUrl = null)
         {
-            var redirectUrl = Url.Action(nameof(LoginResponse),  new { ReturnUrl = returnUrl });
+            var redirectUrl = Url.Action(nameof(LoginResponse), new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
             return Challenge(properties, "Google");
@@ -61,19 +51,18 @@
         [HttpGet("login-response")]
         public async Task<IActionResult> LoginResponse(string? returnUrl = null)
         {
-            //returnUrl ??= Url.Content("~/");
-
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 return RedirectToAction(nameof(Login));
             }
 
+            returnUrl ??= Url.Content("~/");
+
             var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (loginResult.Succeeded)
             {
-                return Ok("logged");
-                //  return Redirect(returnUrl);
+                return Redirect(returnUrl);
             }
 
             var user = new IdentityUser
@@ -97,7 +86,9 @@
             }
 
             await _signInManager.SignInAsync(user, false);
-            return Ok("created");
+            _logger.LogInformation($"User created // {user}");
+
+            return Redirect(returnUrl);
         }
 
         [HttpGet("logout")]
