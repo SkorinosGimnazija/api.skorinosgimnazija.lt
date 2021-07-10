@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers
 {
+    using System;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -31,6 +32,11 @@
         [HttpGet("user")]
         public ActionResult<UserDto> GetUser()
         {
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return NoContent();
+            }
+
             return Ok(
                 new UserDto
                 {
@@ -57,7 +63,7 @@
                 return RedirectToAction(nameof(Login));
             }
 
-            returnUrl ??= Url.Content("~/");
+            returnUrl = returnUrl != null ? Uri.UnescapeDataString(returnUrl) : Url.Content("~/");
 
             var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (loginResult.Succeeded)
@@ -91,7 +97,7 @@
             return Redirect(returnUrl);
         }
 
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
