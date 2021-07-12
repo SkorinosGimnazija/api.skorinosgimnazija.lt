@@ -46,11 +46,25 @@
 
                     await using var stream = System.IO.File.Create(dirPath + "/" + Path.GetRandomFileName() + ext);
                     await formFile.CopyToAsync(stream);
-
-                    System.IO.File.Delete(dirPath + "/" + Path.GetRandomFileName() + ext);
                 }
             }
 
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> TestDel()
+        { 
+            var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToString("yyyy.MM.dd"));
+            var files = Directory.GetFiles(dirPath);
+
+            foreach (var file in files)
+            {
+                Console.WriteLine(file);
+                System.IO.File.Delete(file);
+            }
+            
             return Ok();
         }
     }
