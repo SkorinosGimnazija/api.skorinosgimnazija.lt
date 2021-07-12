@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 
+RUN adduser -u 32769 -m -U dokku
+USER dokku
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["*.sln", "./"]

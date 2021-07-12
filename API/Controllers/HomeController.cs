@@ -34,7 +34,7 @@
             {
                 if (formFile.Length > 0)
                 {
-                    var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToShortDateString());
+                    var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToString("yyyy.MM.dd"));
                     var ext = Path.GetExtension(formFile.FileName);
 
                     Console.WriteLine(dirPath);
