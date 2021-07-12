@@ -46,6 +46,8 @@
 
                     await using var stream = System.IO.File.Create(dirPath + "/" + Path.GetRandomFileName() + ext);
                     await formFile.CopyToAsync(stream);
+
+                    System.IO.File.Delete(dirPath + "/" + Path.GetRandomFileName() + ext);
                 }
             }
 
