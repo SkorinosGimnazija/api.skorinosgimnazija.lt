@@ -4,7 +4,9 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using Domain;
     using DTOs;
+    using Microsoft.AspNetCore.Authentication.Google;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -15,14 +17,11 @@
     {
         private readonly ILogger<AuthController> _logger;
 
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AuthController(
-            ILogger<AuthController> logger,
-            SignInManager<IdentityUser> signinMgr,
-            UserManager<IdentityUser> userMgr)
+        public AuthController(ILogger<AuthController> logger, SignInManager<AppUser> signinMgr, UserManager<AppUser> userMgr)
         {
             _logger = logger;
             _signInManager = signinMgr;
@@ -32,7 +31,7 @@
         [HttpGet("user")]
         public ActionResult<UserDto> GetUser()
         {
-            if (User.Identity?.IsAuthenticated != true)
+            if (!_signInManager.IsSignedIn(User))
             {
                 return NoContent();
             }
@@ -45,36 +44,36 @@
                 });
         }
 
-        [HttpGet("login")]
-        public IActionResult Login(string? returnUrl = null)
+        [HttpGet("google-login")]
+        public IActionResult GoogleLogin(string returnUrl)
         {
-            var redirectUrl = Url.Action(nameof(LoginResponse), new { ReturnUrl = returnUrl });
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            var redirectUrl = Url.Action(nameof(LoginResponse), new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+                GoogleDefaults.AuthenticationScheme,
+                redirectUrl);
 
-            return Challenge(properties, "Google");
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
         [HttpGet("login-response")]
-        public async Task<IActionResult> LoginResponse(string? returnUrl = null)
+        public async Task<IActionResult> LoginResponse(string returnUrl)
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(GoogleLogin), new { returnUrl });
             }
-
-            returnUrl = returnUrl != null ? Uri.UnescapeDataString(returnUrl) : Url.Content("~/");
 
             var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (loginResult.Succeeded)
             {
-                return Redirect(returnUrl);
+                return Redirect(Uri.UnescapeDataString(returnUrl));
             }
 
-            var user = new IdentityUser
+            var user = new AppUser
             {
-                Email = info.Principal.FindFirst(ClaimTypes.Email)!.Value,
-                UserName = info.Principal.FindFirst(ClaimTypes.Name)!.Value,
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                UserName = info.Principal.FindFirstValue(ClaimTypes.Name),
             };
 
             var result = await _userManager.CreateAsync(user);
@@ -87,14 +86,13 @@
             result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                _logger.LogError($"User login failed // {user}");
+                _logger.LogError($"User login info failed // {user}");
                 return BadRequest(result.Errors);
             }
 
             await _signInManager.SignInAsync(user, false);
-            _logger.LogInformation($"User created // {user}");
 
-            return Redirect(returnUrl);
+            return Redirect(Uri.UnescapeDataString(returnUrl));
         }
 
         [HttpPost("logout")]

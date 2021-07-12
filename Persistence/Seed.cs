@@ -1,42 +1,43 @@
 ﻿namespace Persistence
 {
+    using System.Threading.Tasks;
+    using Domain;
+    using Microsoft.AspNetCore.Identity;
 
-using System.Threading.Tasks;
-using Domain;
-using Microsoft.AspNetCore.Identity;
-
-public static class Seed
-{
-    private const string AdminEmail = "admin@skorinosgimnazija.lt";
-
-    public static async Task CreateAdmin(UserManager<IdentityUser> userManager)
+    public static class Seed
     {
-        var admin = await userManager.FindByEmailAsync(AdminEmail);
-        if (admin == null)
-        {
-            return;
-        }
+        private const string AdminEmail = "admin@skorinosgimnazija.lt";
 
-        if (await userManager.IsInRoleAsync(admin, Roles.Admin))
+        public static async Task CreateAdmin(UserManager<AppUser> userManager)
         {
-            return;
-        }
-
-        await userManager.AddToRoleAsync(admin, Roles.Admin);
-    }
-
-    public static async Task CreateRoles(RoleManager<IdentityRole> roleManager)
-    {
-        foreach (var role in Roles.GetAllRoles())
-        {
-            if (await roleManager.RoleExistsAsync(role))
+            var admin = await userManager.FindByEmailAsync(AdminEmail);
+            if (admin == null)
             {
-                continue;
+                return;
             }
 
-            await roleManager.CreateAsync(new IdentityRole(role));
+            foreach (var role in Roles.GetAllRoles())
+            {
+                if (await userManager.IsInRoleAsync(admin, role))
+                {
+                    continue;
+                }
+
+                await userManager.AddToRoleAsync(admin, role);
+            }
+        }
+
+        public static async Task CreateRoles(RoleManager<AppRole> roleManager)
+        {
+            foreach (var role in Roles.GetAllRoles())
+            {
+                if (await roleManager.RoleExistsAsync(role))
+                {
+                    continue;
+                }
+
+                await roleManager.CreateAsync(new AppRole(role));
+            }
         }
     }
-}
-
 }

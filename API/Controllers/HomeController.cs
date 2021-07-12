@@ -1,15 +1,55 @@
 ﻿namespace API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
 
-    [Route("")]
     [ApiController]
+    [Route("")]
     public class HomeController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public HomeController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return Ok("👌");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Test(List<IFormFile> images)
+        {
+            foreach (var formFile in images)
+            {
+                if (formFile.Length > 0)
+                {
+                    var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToShortDateString());
+                    var ext = Path.GetExtension(formFile.FileName);
+
+                    Console.WriteLine(dirPath);
+
+                    if (!Directory.Exists(dirPath))
+                    {
+                        Directory.CreateDirectory(dirPath);
+                    }
+
+                    await using var stream = System.IO.File.Create(dirPath + "/" + Path.GetRandomFileName() + ext);
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+
+            return Ok();
         }
     }
 }

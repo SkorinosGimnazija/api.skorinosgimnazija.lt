@@ -1,8 +1,9 @@
 ﻿namespace API
 {
-    using System;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Application.Core;
+    using Domain;
+    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -71,7 +72,10 @@
                                 });
                     });
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<DataContext>();
+            services.AddMediatR(typeof(MappingProfiles).Assembly);
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+            services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<DataContext>();
 
             services.Configure<IdentityOptions>(
                 options =>
@@ -80,15 +84,13 @@
                         options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
                     });
 
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                    {
-                        options.Secure = CookieSecurePolicy.Always;
-                    });
+            services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
 
             services.ConfigureApplicationCookie(
                 options =>
                     {
+                        options.Cookie.Name = "auth";
+
                         options.LoginPath = "/auth/login";
                         options.LogoutPath = "/auth/logout";
 
