@@ -4,6 +4,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Posts;
+    using Application.Posts.Dtos;
     using Domain;
     using Domain.CMS;
     using Microsoft.AspNetCore.Authorization;
@@ -38,10 +39,10 @@
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<List<Post>>> GetPosts(int page, CancellationToken ct)
+        [HttpGet("{language}/{pageNr:int:min(1)}")]
+        public async Task<ActionResult<List<PostDto>>> GetPosts(string language, int pageNr, CancellationToken ct)
         {
-            return await Mediator.Send(new List.Query(page), ct);
+            return await Mediator.Send(new PublicList.Query(language, pageNr), ct);
         }
     }
 }

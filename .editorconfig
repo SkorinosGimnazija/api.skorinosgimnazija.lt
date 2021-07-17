@@ -11,3 +11,9 @@ dotnet_diagnostic.CS8618.severity = none
 
 # RCS1036: Remove redundant empty line.
 dotnet_diagnostic.RCS1036.severity = none
+
+# RCS1102: Make class static.
+dotnet_diagnostic.RCS1102.severity = none
+
+# RCS1037: Remove trailing white-space.
+dotnet_diagnostic.RCS1037.severity = none

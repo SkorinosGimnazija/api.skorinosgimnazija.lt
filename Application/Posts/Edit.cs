@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Domain.CMS;
+using FluentValidation;
     using MediatR;
     using Persistence;
 
@@ -19,6 +20,14 @@
             {
                 _context = context;
                 _mapper = mapper;
+            }
+
+            public class CommandValidator :AbstractValidator<Command>
+            {
+                public CommandValidator()
+                {
+                    RuleFor(x => x.Post).SetValidator(new PostValidator());
+                }
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)

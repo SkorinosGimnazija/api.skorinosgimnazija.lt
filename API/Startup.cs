@@ -1,8 +1,14 @@
 ﻿namespace API
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Application.Core;
+    using Application.Interfaces;
+    using Application.Posts;
     using Domain;
+    using FluentValidation.AspNetCore;
+    using Infrastructure.Auth;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -47,6 +53,7 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddControllers();
 
             services.Configure<ForwardedHeadersOptions>(
@@ -58,6 +65,13 @@
                     });
 
             services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
+
+            services.AddFluentValidation(
+                options =>
+                    {
+                        options.RegisterValidatorsFromAssemblyContaining<Create>();
+                        options.DisableDataAnnotationsValidation = true;
+                    });
 
             services.AddCors(
                 options =>
@@ -72,8 +86,8 @@
                                 });
                     });
 
-            services.AddMediatR(typeof(MappingProfiles).Assembly);
-            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddMediatR(typeof(PostProfiles).Assembly);
+            services.AddAutoMapper(typeof(PostProfiles).Assembly);
 
             services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<DataContext>();
 
@@ -91,7 +105,7 @@
                     {
                         options.Cookie.Name = "auth";
 
-                        options.LoginPath = "/auth/login";
+                        options.LoginPath = "/auth/google-login";
                         options.LogoutPath = "/auth/logout";
 
                         options.Events.OnRedirectToAccessDenied = x =>

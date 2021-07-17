@@ -3,6 +3,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Domain.CMS;
+    using FluentValidation;
+    using FluentValidation.Validators;
     using MediatR;
     using Persistence;
 
@@ -15,6 +17,14 @@
             public Handler(DataContext context)
             {
                 _context = context;
+            }
+
+            public class CommandValidator :AbstractValidator<Command>
+            {
+                public CommandValidator()
+                {
+                    RuleFor(x => x.Post).SetValidator(new PostValidator());
+                }
             }
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)

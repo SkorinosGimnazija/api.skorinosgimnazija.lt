@@ -16,6 +16,14 @@
                 _context = context;
             }
 
+            //public class CommandValidator :AbstractValidator<Command>
+            //{
+            //    public CommandValidator()
+            //    {
+            //        RuleFor(x => x.Id).NotEmpty();
+            //    }
+            //}
+
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
                 var post = await _context.Posts.FindAsync(new object[] { request.Id }, cancellationToken);
