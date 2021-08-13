@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Domain.Auth
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -10,8 +10,8 @@
 
         public const string Teacher = "Teacher";
 
-        public const string BullyInfo = "Bully";
-
+        public const string BullyManager = "Bully";
+         
         public const string Mod = "Mod";
 
         public static IEnumerable<string> GetAllRoles()

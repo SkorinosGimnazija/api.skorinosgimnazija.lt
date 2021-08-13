@@ -2,14 +2,16 @@
 {
     using System.Threading.Tasks;
     using Domain;
+    using Domain.Auth;
+    using Domain.CMS;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
     public static class Seed
     {
-        private const string AdminEmail = "admin@skorinosgimnazija.lt";
-
         public static async Task CreateAdmin(UserManager<AppUser> userManager)
         {
+            const string AdminEmail = "admin@skorinosgimnazija.lt";
             var admin = await userManager.FindByEmailAsync(AdminEmail);
             if (admin == null)
             {
@@ -39,5 +41,6 @@
                 await roleManager.CreateAsync(new AppRole(role));
             }
         }
+
     }
 }

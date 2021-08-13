@@ -3,6 +3,7 @@ namespace API
     using System;
     using System.Threading.Tasks;
     using Domain;
+    using Domain.Auth;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,8 @@ namespace API
     {
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
         }
 
         public static async Task Main(string[] args)

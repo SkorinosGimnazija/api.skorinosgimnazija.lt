@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Domain;
+    using Domain.Auth;
     using DTOs;
     using Microsoft.AspNetCore.Authentication.Google;
     using Microsoft.AspNetCore.Identity;

@@ -2,14 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-    using Utils;
 
     [ApiController]
     [Route("")]
@@ -27,7 +25,7 @@
         {
             return Ok("👌");
         }
-
+        
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Test(List<IFormFile> images)
@@ -51,10 +49,10 @@
             return Ok();
         }
 
-       [Authorize]
-       [HttpDelete]
+        [Authorize]
+        [HttpDelete]
         public async Task<IActionResult> TestDel()
-        { 
+        {
             var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToString("yyyy.MM.dd"));
             var files = Directory.GetFiles(dirPath);
 
@@ -63,7 +61,7 @@
                 Console.WriteLine(file);
                 System.IO.File.Delete(file);
             }
-            
+
             return Ok();
         }
     }

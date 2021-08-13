@@ -6,9 +6,10 @@
 
     public record PostDto
     {
-        public List<string>? Files { get; set; }
+        public int Id { get; init; } 
+        public List<string> Files { get; set; }
 
-        public List<string>? Images { get; set; }
+        public List<string> Images { get; set; }
 
         public string IntroText { get; set; }
         

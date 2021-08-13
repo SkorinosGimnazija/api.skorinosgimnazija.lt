@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace Domain.CMS
 {
-  public  class Category
+  public  class Domain
     {
         public int Id { get; init; }
-        public int LanguageId { get; init; }
-        
+
         public string Name { get; set; }
 
         public string Slug { get; set; }
-        
-        public Language Language{ get; set; }
-
-
-        public bool ShowOnHomePage { get; set; }
     }
 }

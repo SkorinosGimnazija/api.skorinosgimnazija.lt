@@ -4,9 +4,11 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Application.Core;
+    using Application.Core.MappingProfiles;
     using Application.Interfaces;
     using Application.Posts;
     using Domain;
+    using Domain.Auth;
     using FluentValidation.AspNetCore;
     using Infrastructure.Auth;
     using MediatR;
@@ -69,7 +71,7 @@
             services.AddFluentValidation(
                 options =>
                     {
-                        options.RegisterValidatorsFromAssemblyContaining<Create>();
+                        options.RegisterValidatorsFromAssemblyContaining<PostCreate>();
                         options.DisableDataAnnotationsValidation = true;
                     });
 

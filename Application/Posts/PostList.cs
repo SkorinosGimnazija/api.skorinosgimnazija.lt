@@ -12,8 +12,9 @@
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class PublicList
+    public class PostList
     {
+        public record Query(string Domain, string Language, int PageNr) : IRequest<List<PostDto>>;
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
@@ -29,24 +30,21 @@
             public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 const int PostsPerPage = 5;
-
-                var lang = request.Language.ToLowerInvariant();
-                var pageNr = request.PageNr - 1;
-                var postsToSkip = pageNr * PostsPerPage;
-
+                var (domain, language, pageNr) = request;
+                var postsToSkip = Math.Max(pageNr - 1, 0) * PostsPerPage;
+                 
                 return await _context.Posts
-                           .Where(
-                               x => x.IsPublished && x.PublishDate <= DateTime.Now && x.Category.ShowOnHomePage
-                                    && x.Category.Language.Slug == lang)
-                           .OrderBy(x => x.IsFeatured)
-                           .ThenBy(x => x.PublishDate)
-                           .Skip(postsToSkip)
-                            .Take(PostsPerPage)
-                           .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                           .ToListAsync(cancellationToken);
+                    .Where(
+                        x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.Now
+                             && x.Category.Language.Slug == language && x.Domain.Slug == domain)
+                    .OrderBy(x => x.IsFeatured)
+                    .ThenBy(x => x.PublishDate)
+                    .Skip(postsToSkip)
+                    .Take(PostsPerPage)
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
             }
         }
 
-        public record Query(string Language, int PageNr) : IRequest<List<PostDto>>;
     }
 }

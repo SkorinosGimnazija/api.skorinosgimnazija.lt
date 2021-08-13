@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Domain.Auth
 {
     using Microsoft.AspNetCore.Identity;
 
