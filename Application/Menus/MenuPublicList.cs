@@ -11,7 +11,7 @@
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class PublicList
+    public class MenuPublicList
     {
         public class Handler : IRequestHandler<Query, List<MenuDto>>
         {
@@ -30,7 +30,7 @@
                 var (domain, language) = request;
                  
                 return await _context.Menus
-                    .Where(x => x.Category.Language.Slug == language && x.Domain.Slug == domain)
+                    .Where(x => x.Category.Language.Slug == language && x.Domain.Slug == domain && x.IsPublished)
                     .OrderBy(x => x.Order)
                     .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);

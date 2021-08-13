@@ -1,6 +1,5 @@
 ﻿namespace Persistence
 {
-    using Domain;
     using Domain.Auth;
     using Domain.CMS;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -37,7 +36,7 @@
         {
             builder.Entity<Menu>().HasOne(x => x.Category).WithMany();
             builder.Entity<Menu>().HasOne(x => x.Domain).WithMany();
-            builder.Entity<Menu>().HasOne(x => x.ParentMenu).WithMany().OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Menu>().HasOne(x => x.ParentMenu).WithMany().OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Menu>().HasIndex(x => new { x.Slug, x.CategoryId, x.DomainId }).IsUnique();
         }
 
