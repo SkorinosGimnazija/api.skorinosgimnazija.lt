@@ -12,7 +12,7 @@ using Application.Posts.Dtos;
             CreateMap<Menu, Menu>();
             CreateMap<MenuCreateDto, Menu>();
             CreateMap<MenuEditDto, Menu>();
-            CreateMap<Menu, MenuDto>()
+            CreateMap<Menu, PublicMenuDto>()
                 .ForMember(x => x.ParentMenuId,
                     x => x.MapFrom(m => m.ParentMenu == null ? (int?) null : m.ParentMenu.Id));
         }

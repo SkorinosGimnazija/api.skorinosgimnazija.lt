@@ -6,14 +6,15 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
+    using Domain.CMS;
     using Dtos;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class MenuPublicList
+    public class MenuList
     {
-        public class Handler : IRequestHandler<Query, List<MenuDto>>
+        public class Handler : IRequestHandler<Query, List<Menu>>
         {
             private readonly DataContext _context;
 
@@ -25,18 +26,15 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Menu>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var (domain, language) = request;
-                 
                 return await _context.Menus
-                    .Where(x => x.Category.Language.Slug == language && x.Domain.Slug == domain && x.IsPublished)
                     .OrderBy(x => x.Order)
-                    .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<Menu>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }
 
-        public record Query(string Domain, string Language) : IRequest<List<MenuDto>>;
+        public record Query() : IRequest<List<Menu>>;
     }
 }

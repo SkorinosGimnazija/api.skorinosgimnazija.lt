@@ -15,9 +15,9 @@
 
     public class PostCreate
     {
-        public record Command(PostCreateDto Post) : IRequest<ActionResult<Post>>;
+        public record Command(PostCreateDto Post) : IRequest<ActionResult<PostDetailsDto>>;
 
-        public class Handler : IRequestHandler<Command, ActionResult<Post>>
+        public class Handler : IRequestHandler<Command, ActionResult<PostDetailsDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -28,14 +28,15 @@
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<Post>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<ActionResult<PostDetailsDto>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var post = _mapper.Map(request.Post, new Post());
 
                 _context.Posts.Add(post);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkObjectResult(post) { StatusCode = StatusCodes.Status201Created };
+                return new OkObjectResult(_mapper.Map(post, new PostDetailsDto()))
+                    { StatusCode = StatusCodes.Status201Created };
             }
 
             public class CommandValidator : AbstractValidator<Command>

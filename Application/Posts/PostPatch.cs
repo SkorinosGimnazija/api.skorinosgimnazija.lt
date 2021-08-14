@@ -1,23 +1,25 @@
 ﻿namespace Application.Posts
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Domain.CMS;
     using Dtos;
+    using FluentValidation;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
+    using Validation;
 
-    public class PostDetails
+    public class PostPatch
     {
-        public record Query(int Id) : IRequest<ActionResult<PostDetailsDto>>;
-        public class Handler : IRequestHandler<Query, ActionResult<PostDetailsDto>>
+        public record Command(int Id, PostPatchDto Post) : IRequest<IActionResult>;
+
+        public class Handler : IRequestHandler<Command, IActionResult>
         {
             private readonly DataContext _context;
+
             private readonly IMapper _mapper;
 
             public Handler(DataContext context, IMapper mapper)
@@ -26,19 +28,19 @@
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<PostDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.ProjectTo<PostDetailsDto>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
+                var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                 if (post == null)
                 {
                     return new NotFoundResult();
                 }
 
-                return post;
+                _mapper.Map(request.Post, post);
+                await _context.SaveChangesAsync(cancellationToken);
+
+                return new OkResult();
             }
         }
-
     }
 }

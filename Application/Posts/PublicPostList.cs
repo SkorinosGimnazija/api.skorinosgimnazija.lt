@@ -7,16 +7,15 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
     using Dtos;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class PostList
+    public class PublicPostList
     {
-        public record Query(int PageNr) : IRequest<List<PostDto>>;
-        public class Handler : IRequestHandler<Query, List<PostDto>>
+        public record Query(string Domain, string Language, int PageNr) : IRequest<List<PublicPostDto>>;
+        public class Handler : IRequestHandler<Query, List<PublicPostDto>>
         {
             private readonly DataContext _context;
 
@@ -28,18 +27,21 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<PublicPostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                const int PostsPerPage = 10;
-                var page = Math.Max(request.PageNr - 1, 0);
-                var postsToSkip = page * PostsPerPage;
-                   
-                return await _context.Posts 
-                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                const int PostsPerPage = 5;
+                var (domain, language, pageNr) = request;
+                var postsToSkip = Math.Max(pageNr - 1, 0) * PostsPerPage;
+                 
+                return await _context.Posts
+                    .Where(
+                        x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.Now
+                             && x.Category.Language.Slug == language && x.Domain.Slug == domain)
                     .OrderByDescending(x => x.IsFeatured)
                     .ThenByDescending(x => x.PublishDate)
                     .Skip(postsToSkip)
                     .Take(PostsPerPage)
+                    .ProjectTo<PublicPostDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }

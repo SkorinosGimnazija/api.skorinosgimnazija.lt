@@ -12,10 +12,10 @@
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class PostAdminDetails
+    public class PublicPostDetails
     {
-        public record Query(int Id) : IRequest<ActionResult<Post>>;
-        public class Handler : IRequestHandler<Query, ActionResult<Post>>
+        public record Query(int Id) : IRequest<ActionResult<PublicPostDetailsDto>>;
+        public class Handler : IRequestHandler<Query, ActionResult<PublicPostDetailsDto>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,16 +26,16 @@
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<Post>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ActionResult<PublicPostDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.ProjectTo<Post>(_mapper.ConfigurationProvider)
+                var post = await _context.Posts.ProjectTo<PublicPostDetailsDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (post == null)
                 {
                     return new NotFoundResult();
                 }
-
+                 
                 return post;
             }
         }

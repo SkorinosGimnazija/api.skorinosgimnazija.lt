@@ -17,15 +17,15 @@
     {
         [AllowAnonymous]
         [HttpGet("{domain}/{language}")]
-        public async Task<ActionResult<List<MenuDto>>> GetMenus(string domain, string language, CancellationToken ct)
+        public async Task<ActionResult<List<PublicMenuDto>>> GetMenus(string domain, string language, CancellationToken ct)
         {
-            return await Mediator.Send(new MenuPublicList.Query(domain, language), ct);
+            return await Mediator.Send(new PublicMenuList.Query(domain, language), ct);
         }
   
         [HttpGet("admin")]
         public async Task<ActionResult<List<Menu>>> GetAdminMenus(CancellationToken ct)
         {
-            return await Mediator.Send(new MenuAdminList.Query(), ct);
+            return await Mediator.Send(new MenuList.Query(), ct);
         }
 
         [HttpGet("admin/{id:int}")]

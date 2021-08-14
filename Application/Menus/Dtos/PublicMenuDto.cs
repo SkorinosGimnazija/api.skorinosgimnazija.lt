@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using Domain.CMS;
 
-    public record MenuDto
+    public record PublicMenuDto
     {
         public int Id { get; init; }
         public string Name { get; init; }
