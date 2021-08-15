@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -10,7 +11,7 @@
     using Microsoft.Extensions.Configuration;
 
     [ApiController]
-    [Route("")]
+    [Route("/")]
     public class HomeController : ControllerBase
     {
         private readonly IConfiguration _config;
@@ -25,13 +26,20 @@
         {
             return Ok("👌");
         }
-        
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Test(List<IFormFile> images)
+
+        public class It
         {
+            public List<IFormFile> Images { get; set; }
+        }
+
+       // [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Test([FromForm] It it)
+        {
+            var images  = it.Images;
             foreach (var formFile in images)
             {
+                Console.WriteLine(formFile.Name);
                 var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToString("yyyy.MM.dd"));
                 var ext = Path.GetExtension(formFile.FileName);
 

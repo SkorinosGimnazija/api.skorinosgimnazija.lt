@@ -6,7 +6,7 @@
 
     public record PublicPostDto
     {
-        public int Id { get; init; } 
+        public int Id { get; set; } 
         public List<string> Files { get; set; }
 
         public List<string> Images { get; set; }

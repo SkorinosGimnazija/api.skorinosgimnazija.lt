@@ -7,7 +7,7 @@
 
     public class Post
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         public bool IsFeatured { get; set; }
 

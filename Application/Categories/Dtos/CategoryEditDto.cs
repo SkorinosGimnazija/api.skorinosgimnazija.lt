@@ -1,17 +1,22 @@
-﻿using System;
+﻿using Domain.CMS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.CMS
+namespace Application.Categories.Dtos
 {
-  public  class Domain
+    public record CategoryEditDto
     {
         public int Id { get; set; }
+        public int LanguageId { get; set; }
 
         public string Name { get; set; }
 
         public string Slug { get; set; }
+
+
+        public bool ShowOnHomePage { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Domain.CMS
 {
     public class Language
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
         
         public string Name { get; set; }
 

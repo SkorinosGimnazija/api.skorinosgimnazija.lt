@@ -4,8 +4,8 @@
 
     public record UserDto
     {
-        public IEnumerable<string> Roles { get; init; }
+        public IEnumerable<string> Roles { get; set; }
 
-        public string? UserName { get; init; }
+        public string? UserName { get; set; }
     }
 }

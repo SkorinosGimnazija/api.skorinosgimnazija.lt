@@ -2,7 +2,7 @@
 {
     public class Menu
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         public int Order { get; set; }
 

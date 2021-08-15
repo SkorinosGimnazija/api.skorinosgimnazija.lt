@@ -13,6 +13,7 @@
 
     public class PublicMenuList
     {
+        public record Query(string Domain, string Language) : IRequest<List<PublicMenuDto>>;
         public class Handler : IRequestHandler<Query, List<PublicMenuDto>>
         {
             private readonly DataContext _context;
@@ -37,6 +38,5 @@
             }
         }
 
-        public record Query(string Domain, string Language) : IRequest<List<PublicMenuDto>>;
     }
 }

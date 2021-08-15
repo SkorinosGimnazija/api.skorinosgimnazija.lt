@@ -12,10 +12,11 @@
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
-    public class MenuList
+    public class CategoryList
     {
-        public record Query() : IRequest<List<Menu>>;
-        public class Handler : IRequestHandler<Query, List<Menu>>
+        public record Query() : IRequest<List<Category>>;
+
+        public class Handler : IRequestHandler<Query, List<Category>>
         {
             private readonly DataContext _context;
 
@@ -27,11 +28,10 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<Menu>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<Category>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Menus
-                    .OrderBy(x => x.Order)
-                    .ProjectTo<Menu>(_mapper.ConfigurationProvider)
+                return await _context.Categories
+                    .ProjectTo<Category>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }

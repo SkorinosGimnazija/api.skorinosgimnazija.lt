@@ -9,8 +9,8 @@ namespace Application.Posts.Dtos
 
     public record PostPatchDto
     {
-        public bool? IsFeatured { get; set; }
-        public bool? IsPublished { get; set; }
+        public bool? IsFeatured { get; set; } = null;
+        public bool? IsPublished { get; set; } = null;
 
     }
 }

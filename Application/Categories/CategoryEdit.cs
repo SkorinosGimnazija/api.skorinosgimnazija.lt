@@ -1,21 +1,26 @@
 ﻿namespace Application.Posts
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Application.Menus.Dtos;
     using AutoMapper;
+    using Categories.Dtos;
+    using Categories.Validation;
     using Domain.CMS;
+    using Domains.Dtos;
+    using Domains.Validation;
     using Dtos;
     using FluentValidation;
     using MediatR;
+    using Menus.Validation;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
     using Validation;
 
-    public class PostPatch
+    public class CategoryEdit
     {
-        public record Command(int Id, PostPatchDto Post) : IRequest<IActionResult>;
+        public record Command(CategoryEditDto Category) : IRequest<IActionResult>;
 
         public class Handler : IRequestHandler<Command, IActionResult>
         {
@@ -31,16 +36,24 @@
 
             public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-                if (post == null)
+                var entity = await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id, cancellationToken);
+                if (entity == null)
                 {
                     return new NotFoundResult();
                 }
 
-                _mapper.Map(request.Post, post);
+                _mapper.Map(request.Category, entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
                 return new OkResult();
+            }
+
+            public class CommandValidator : AbstractValidator<Command>
+            {
+                public CommandValidator()
+                {
+                    RuleFor(x => x.Category).SetValidator(new CategoryEditValidator());
+                }
             }
         }
     }

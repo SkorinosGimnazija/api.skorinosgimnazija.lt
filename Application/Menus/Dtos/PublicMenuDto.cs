@@ -6,14 +6,14 @@
 
     public record PublicMenuDto
     {
-        public int Id { get; init; }
-        public string Name { get; init; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
-        public string? Slug { get; init; }
+        public string? Slug { get; set; }
 
-        public string? Url { get; init; }
+        public string? Url { get; set; }
 
 
-        public int? ParentMenuId { get; init;}
+        public int? ParentMenuId { get; set;}
     }
 }

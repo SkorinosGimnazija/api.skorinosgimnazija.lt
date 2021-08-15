@@ -11,7 +11,7 @@ namespace Application.Posts.Dtos
     using Domain.CMS;
     public record PostDetailsDto
     {
-        public int Id { get; init; }
+        public int Id { get; set; }
 
         public int CategoryId { get; set; }
         public int DomainId { get; set; }
