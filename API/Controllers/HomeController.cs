@@ -1,9 +1,7 @@
 ﻿namespace API.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -31,8 +29,9 @@
         {
             public List<IFormFile> Images { get; set; }
         }
+      
 
-       // [Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Test([FromForm] It it)
         {
@@ -63,7 +62,7 @@
         {
             var dirPath = Path.Combine(_config["FILE_UPLOAD_PATH"], DateTime.Now.ToString("yyyy.MM.dd"));
             var files = Directory.GetFiles(dirPath);
-
+            
             foreach (var file in files)
             {
                 Console.WriteLine(file);

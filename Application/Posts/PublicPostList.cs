@@ -1,10 +1,7 @@
 ﻿namespace Application.Posts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
+    using Application.Extensions;
+    using Application.Features;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Dtos;
@@ -14,8 +11,8 @@
 
     public class PublicPostList
     {
-        public record Query(string Domain, string Language, int PageNr) : IRequest<List<PublicPostDto>>;
-        public class Handler : IRequestHandler<Query, List<PublicPostDto>>
+        public record Query(string Language, PaginationDto Pagination) : IRequest<List<PostDto>>;
+        public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
 
@@ -27,21 +24,17 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<PublicPostDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                const int PostsPerPage = 5;
-                var (domain, language, pageNr) = request;
-                var postsToSkip = Math.Max(pageNr - 1, 0) * PostsPerPage;
-                 
                 return await _context.Posts
+                    .AsNoTracking()
                     .Where(
                         x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.Now
-                             && x.Category.Language.Slug == language && x.Domain.Slug == domain)
+                             && x.Category.Language.Slug == request.Language)
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                     .OrderByDescending(x => x.IsFeatured)
                     .ThenByDescending(x => x.PublishDate)
-                    .Skip(postsToSkip)
-                    .Take(PostsPerPage)
-                    .ProjectTo<PublicPostDto>(_mapper.ConfigurationProvider)
+                    .Paginate(request.Pagination)
                     .ToListAsync(cancellationToken);
             }
         }

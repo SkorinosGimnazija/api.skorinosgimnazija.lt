@@ -14,7 +14,6 @@ namespace Application.Menus.Validation
         public MenuCreateValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.DomainId).NotEmpty();
             RuleFor(x => x.CategoryId).NotEmpty();
         }
     }

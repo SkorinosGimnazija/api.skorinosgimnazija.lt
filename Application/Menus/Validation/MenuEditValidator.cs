@@ -15,7 +15,6 @@ using Application.Menus.Dtos;
         public MenuEditValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
-            RuleFor(x => x.DomainId).NotEmpty();
             RuleFor(x => x.CategoryId).NotEmpty();
         }
     }

@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+using Application.Categories.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Domain.CMS;
@@ -14,9 +15,9 @@
 
     public class CategoryList
     {
-        public record Query() : IRequest<List<Category>>;
+        public record Query() : IRequest<List<CategoryDto>>;
 
-        public class Handler : IRequestHandler<Query, List<Category>>
+        public class Handler : IRequestHandler<Query, List<CategoryDto>>
         {
             private readonly DataContext _context;
 
@@ -28,10 +29,11 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<Category>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Categories
-                    .ProjectTo<Category>(_mapper.ConfigurationProvider)
+                    .AsNoTracking()
+                    .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }

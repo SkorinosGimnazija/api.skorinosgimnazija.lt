@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Posts.Dtos
 {
-
     public record PostPatchDto
     {
-        public bool? IsFeatured { get; set; } = null;
-        public bool? IsPublished { get; set; } = null;
-
+        public bool? IsFeatured { get; init; }
+        public bool? IsPublished { get; init; }
     }
 }

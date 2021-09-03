@@ -9,8 +9,8 @@
 
     public class CategoryDelete
     {
-        public record Command(int Id) : IRequest<IActionResult>;
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public record Command(int Id) : IRequest<bool>;
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -19,18 +19,18 @@
                 _context = context;
             }
 
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
                 if (entity == null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
 
                 _context.Categories.Remove(entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
         }
 

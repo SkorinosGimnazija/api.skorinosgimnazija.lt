@@ -13,8 +13,8 @@
 
     public class PublicMenuList
     {
-        public record Query(string Domain, string Language) : IRequest<List<PublicMenuDto>>;
-        public class Handler : IRequestHandler<Query, List<PublicMenuDto>>
+        public record Query(string Language) : IRequest<List<MenuDto>>;
+        public class Handler : IRequestHandler<Query, List<MenuDto>>
         {
             private readonly DataContext _context;
 
@@ -26,14 +26,13 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<PublicMenuDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var (domain, language) = request;
-                 
                 return await _context.Menus
-                    .Where(x => x.Category.Language.Slug == language && x.Domain.Slug == domain && x.IsPublished)
+                    .AsNoTracking()
+                    .Where(x => x.IsPublished && x.Category.Language.Slug == request.Language )
                     .OrderBy(x => x.Order)
-                    .ProjectTo<PublicMenuDto>(_mapper.ConfigurationProvider)
+                    .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }

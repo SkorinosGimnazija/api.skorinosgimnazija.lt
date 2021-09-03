@@ -9,7 +9,7 @@ using Application.Categories.Dtos;
     {
         public CategoryProfiles()
         {
-            CreateMap<Category, Category>();
+            CreateMap<Category, CategoryDto>();
             CreateMap<CategoryCreateDto, Category>();
             CreateMap<CategoryEditDto, Category>();
         }

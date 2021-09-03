@@ -7,12 +7,11 @@
     using Categories.Dtos;
     using Categories.Validation;
     using Domain.CMS;
-    using Domains.Dtos;
-    using Domains.Validation;
     using Dtos;
     using FluentValidation;
     using MediatR;
     using Menus.Validation;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
@@ -20,9 +19,9 @@
 
     public class CategoryEdit
     {
-        public record Command(CategoryEditDto Category) : IRequest<IActionResult>;
+        public record Command(CategoryEditDto Category) : IRequest<bool>;
 
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -34,18 +33,18 @@
                 _mapper = mapper;
             }
 
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id, cancellationToken);
-                if (entity == null)
+                if (entity is null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
 
                 _mapper.Map(request.Category, entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
 
             public class CommandValidator : AbstractValidator<Command>

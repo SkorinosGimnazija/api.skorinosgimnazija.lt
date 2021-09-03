@@ -9,13 +9,13 @@ namespace Application.Categories.Dtos
 {
     public record CategoryCreateDto
     {
-        public int LanguageId { get; set; }
+        public int LanguageId { get; init; }
 
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public string Slug { get; set; }
+        public string Slug { get; init; }
 
 
-        public bool ShowOnHomePage { get; set; }
+        public bool ShowOnHomePage { get; init; }
     }
 }

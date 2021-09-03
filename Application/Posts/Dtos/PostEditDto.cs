@@ -8,27 +8,26 @@ namespace Application.Posts.Dtos
 {
    public record PostEditDto
     {
-        public int Id { get; set; }
-        public bool IsFeatured { get; set; }
+        public int Id { get; init; }
+        public bool IsFeatured { get; init; }
 
-        public List<string> Files { get; set; } = new();
+        public List<string> Files { get; init; } = new();
 
-        public List<string> Images { get; set; } = new();
+        public List<string> Images { get; init; } = new();
 
-        public DateTime PublishDate { get; set; } = DateTime.Now;
+        public DateTime PublishDate { get; init; } = DateTime.Now;
 
-        public string? IntroText { get; set; }
+        public string? IntroText { get; init; }
 
-        public bool IsPublished { get; set; }
+        public bool IsPublished { get; init; }
 
-        public int DomainId { get; set; }
 
-        public int CategoryId { get; set; }
+        public int CategoryId { get; init; }
 
-        public string Slug { get; set; }
+        public string Slug { get; init; }
 
-        public string? Text { get; set; }
+        public string? Text { get; init; }
 
-        public string Title { get; set; }
+        public string Title { get; init; }
     } 
 }

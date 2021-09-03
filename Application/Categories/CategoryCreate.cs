@@ -5,7 +5,6 @@ using FluentValidation;
 
 namespace Application.Domains
 {
-    using Application.Domains.Validation;
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -18,14 +17,12 @@ namespace Application.Domains
     using System.Threading.Tasks;
     using Categories.Dtos;
     using Categories.Validation;
-    using Dtos;
-    using Domain = Domain.CMS.Domain;
 
     public class CategoryCreate
     {
-        public record Command(CategoryCreateDto Category) : IRequest<ActionResult<Category>>;
+        public record Command(CategoryCreateDto Category) : IRequest<CategoryDto>;
 
-        public class Handler : IRequestHandler<Command, ActionResult<Category>>
+        public class Handler : IRequestHandler<Command, CategoryDto>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -36,14 +33,14 @@ namespace Application.Domains
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<Category>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CategoryDto> Handle(Command request, CancellationToken cancellationToken)
             {
                 var entity = _mapper.Map(request.Category, new Category());
 
                 _context.Categories.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkObjectResult(entity) { StatusCode = StatusCodes.Status201Created };
+                return _mapper.Map(entity, new CategoryDto());
             }
 
             public class CommandValidator : AbstractValidator<Command>

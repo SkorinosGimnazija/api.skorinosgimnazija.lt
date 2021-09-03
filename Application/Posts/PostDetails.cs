@@ -14,8 +14,8 @@
 
     public class PostDetails
     {
-        public record Query(int Id) : IRequest<ActionResult<PostDetailsDto>>;
-        public class Handler : IRequestHandler<Query, ActionResult<PostDetailsDto>>
+        public record Query(int Id) : IRequest<PostDetailsDto>;
+        public class Handler : IRequestHandler<Query, PostDetailsDto>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,17 +26,12 @@
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<PostDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<PostDetailsDto> Handle(Query request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.ProjectTo<PostDetailsDto>(_mapper.ConfigurationProvider)
+                return await _context.Posts
+                    .AsNoTracking()
+                    .ProjectTo<PostDetailsDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-
-                if (post == null)
-                {
-                    return new NotFoundResult();
-                }
-
-                return post;
             }
         }
 

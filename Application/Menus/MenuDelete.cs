@@ -9,8 +9,8 @@
 
     public class MenuDelete
     {
-        public record Command(int Id) : IRequest<IActionResult>;
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public record Command(int Id) : IRequest<bool>;
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -19,18 +19,18 @@
                 _context = context;
             }
 
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                var menu = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-                if (menu == null)
+                var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+                if (entity == null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
 
-                _context.Menus.Remove(menu);
+                _context.Menus.Remove(entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
         }
 

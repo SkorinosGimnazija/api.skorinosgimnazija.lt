@@ -4,7 +4,9 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Posts.Dtos;
+    using Application.Extensions;
+    using Application.Features;
+    using Application.Posts.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Domain.CMS;
@@ -14,7 +16,7 @@ using Application.Posts.Dtos;
 
     public class PostSearchList
     {
-        public record Query(string SearchText) : IRequest<List<PostDto>>;
+        public record Query(string SearchText, PaginationDto Pagination) : IRequest<List<PostDto>>;
 
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
@@ -31,9 +33,12 @@ using Application.Posts.Dtos;
             public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Posts
-                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .AsNoTracking()
                     .Where(x => EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
                                 EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(x=> x.PublishDate)
+                    .Paginate(request.Pagination)
                     .ToListAsync(cancellationToken);
             }
         }

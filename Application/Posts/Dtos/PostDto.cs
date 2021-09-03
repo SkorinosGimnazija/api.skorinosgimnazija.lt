@@ -5,23 +5,23 @@ namespace Application.Posts.Dtos
 {
     using System;
     using System.Collections.Generic;
+    using Application.Categories.Dtos;
     using Domain.CMS;
 
     public record PostDto
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
-        public bool IsFeatured { get; set; }
+        public bool IsFeatured { get; init; }
 
-        public bool IsPublished { get; set; }
+        public bool IsPublished { get; init; }
 
-        public Domain Domain { get; set; }
-        public Category Category { get; set; }
+        public CategoryDto Category { get; init; }
 
-        public DateTime PublishDate { get; set; }
+        public DateTime PublishDate { get; init; }
 
-        public string Slug { get; set; }
+        public string Slug { get; init; }
 
-        public string Title { get; set; }
+        public string Title { get; init; }
     }
 }

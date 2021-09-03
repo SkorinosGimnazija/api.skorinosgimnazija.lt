@@ -1,7 +1,5 @@
 ﻿namespace Application.Posts
 {
-    using System.Threading;
-    using System.Threading.Tasks;
 using Application.Menus.Dtos;
     using AutoMapper;
     using Domain.CMS;
@@ -16,9 +14,9 @@ using Application.Menus.Dtos;
 
     public class MenuEdit
     {
-        public record Command(MenuEditDto Menu) : IRequest<IActionResult>;
+        public record Command(MenuEditDto Menu) : IRequest<bool>;
 
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -30,18 +28,18 @@ using Application.Menus.Dtos;
                 _mapper = mapper;
             }
 
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                var menu = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Menu.Id, cancellationToken);
-                if (menu == null)
+                var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Menu.Id, cancellationToken);
+                if (entity is null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
 
-                _mapper.Map(request.Menu, menu);
+                _mapper.Map(request.Menu, entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
 
             public class CommandValidator : AbstractValidator<Command>

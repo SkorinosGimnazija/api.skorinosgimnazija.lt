@@ -9,10 +9,10 @@ using Application.Posts.Dtos;
     {
         public MenuProfiles()
         {
-            CreateMap<Menu, Menu>();
             CreateMap<MenuCreateDto, Menu>();
             CreateMap<MenuEditDto, Menu>();
-            CreateMap<Menu, PublicMenuDto>()
+
+            CreateMap<Menu, MenuDto>()
                 .ForMember(x => x.ParentMenuId,
                     x => x.MapFrom(m => m.ParentMenu == null ? (int?) null : m.ParentMenu.Id));
         }

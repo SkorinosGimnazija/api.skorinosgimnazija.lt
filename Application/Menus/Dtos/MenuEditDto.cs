@@ -8,14 +8,13 @@ namespace Application.Menus.Dtos
 {
     public record MenuEditDto
     {
-        public int Id { get; set; }
-        public int Order { get; set; }
-        public string Name { get; set; }
-        public string? Slug { get; set; }
-        public bool IsPublished { get; set; }
-        public int DomainId { get; set; }
-        public int CategoryId { get; set; }
-        public string? Url { get; set; }
-        public int? ParentMenuId { get; set; }
+        public int Id { get; init; }
+        public int Order { get; init; }
+        public string Name { get; init; }
+        public string? Slug { get; init; }
+        public bool IsPublished { get; init; }
+        public int CategoryId { get; init; }
+        public string? Url { get; init; }
+        public int? ParentMenuId { get; init; }
     }
 }

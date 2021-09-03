@@ -1,15 +1,15 @@
-﻿using Domain.CMS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Categories.Dtos
+﻿namespace Application.Categories.Dtos
 {
-    public record CategoryEditDto
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    public record CategoryDto
     {
         public int Id { get; init; }
+
         public int LanguageId { get; init; }
 
         public string Name { get; init; }

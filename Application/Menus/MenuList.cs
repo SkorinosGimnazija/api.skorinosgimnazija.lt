@@ -14,8 +14,8 @@
 
     public class MenuList
     {
-        public record Query() : IRequest<List<Menu>>;
-        public class Handler : IRequestHandler<Query, List<Menu>>
+        public record Query() : IRequest<List<MenuDto>>;
+        public class Handler : IRequestHandler<Query, List<MenuDto>>
         {
             private readonly DataContext _context;
 
@@ -27,11 +27,12 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<Menu>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Menus
+                    .AsNoTracking() 
                     .OrderBy(x => x.Order)
-                    .ProjectTo<Menu>(_mapper.ConfigurationProvider)
+                    .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }

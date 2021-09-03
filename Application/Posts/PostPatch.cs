@@ -15,9 +15,9 @@
 
     public class PostPatch
     {
-        public record Command(int Id, PostPatchDto Post) : IRequest<IActionResult>;
+        public record Command(int Id, PostPatchDto Post) : IRequest<bool>;
 
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -29,18 +29,18 @@
                 _mapper = mapper;
             }
 
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-                if (post == null)
+                var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+                if (entity is null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
 
-                _mapper.Map(request.Post, post);
+                _mapper.Map(request.Post, entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
         }
     }

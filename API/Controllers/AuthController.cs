@@ -12,7 +12,7 @@
     using Microsoft.Extensions.Logging;
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("auth")]
     public class AuthController : ControllerBase
     {
         private readonly ILogger<AuthController> _logger;
@@ -44,10 +44,10 @@
                 });
         }
 
-        [HttpGet("google-login")]
-        public IActionResult GoogleLogin(string returnUrl)
+        [HttpGet("login-google")]
+        public IActionResult LoginGoogle(string returnUrl)
         {
-            var redirectUrl = Url.Action(nameof(LoginResponse), new { returnUrl });
+            var redirectUrl = Url.Action(nameof(LoginCallback), new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(
                 GoogleDefaults.AuthenticationScheme,
                 redirectUrl);
@@ -55,13 +55,13 @@
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        [HttpGet("login-response")]
-        public async Task<IActionResult> LoginResponse(string returnUrl)
+        [HttpGet("login-callback")]
+        public async Task<IActionResult> LoginCallback(string returnUrl)
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(GoogleLogin), new { returnUrl });
+                return RedirectToAction(nameof(LoginGoogle), new { returnUrl });
             }
 
             var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
@@ -99,7 +99,7 @@
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Ok();
+            return NoContent();
         }
     }
 }

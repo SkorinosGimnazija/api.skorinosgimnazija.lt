@@ -1,7 +1,5 @@
 ﻿namespace Application.Posts
 {
-    using System.Threading;
-    using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -9,8 +7,8 @@
 
     public class PostDelete
     {
-        public record Command(int Id) : IRequest<IActionResult>;
-        public class Handler : IRequestHandler<Command, IActionResult>
+        public record Command(int Id) : IRequest<bool>;
+        public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
 
@@ -19,18 +17,18 @@
                 _context = context;
             }
               
-            public async Task<IActionResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts.FirstOrDefaultAsync(x=> x.Id == request.Id, cancellationToken);
-                if (post == null)
+                var entity = await _context.Posts.FirstOrDefaultAsync(x=> x.Id == request.Id, cancellationToken);
+                if (entity is null)
                 {
-                    return new NotFoundResult();
+                    return false;
                 }
             
-                _context.Posts.Remove(post);
+                _context.Posts.Remove(entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new OkResult();
+                return true;
             }
         }
 

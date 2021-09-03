@@ -18,10 +18,8 @@
         public string? IntroText { get; set; }
 
         public bool IsPublished { get; set; }
-        public int DomainId { get; set; }
         public int CategoryId { get; set; }
 
-        public Domain Domain { get; set; }
         public Category Category { get; set; }
 
         public DateTime PublishDate { get; set; }

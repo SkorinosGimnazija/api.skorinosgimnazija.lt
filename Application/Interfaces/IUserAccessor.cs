@@ -8,6 +8,8 @@ namespace Application.Interfaces
 {
     public interface IUserAccessor
     {
-        string? GetUserName();
+        bool IsAdmin();
+        bool HasRole(string role);
+        bool IsOwner(int ownerId);
     }
 }

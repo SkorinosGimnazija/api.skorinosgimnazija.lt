@@ -3,7 +3,8 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Menus.Validation;
+    using Application.Menus.Dtos;
+    using Application.Menus.Validation;
     using AutoMapper;
     using Domain.CMS;
     using Dtos;
@@ -16,9 +17,9 @@ using Application.Menus.Validation;
 
     public class MenuCreate
     {
-        public record Command(MenuCreateDto Menu) : IRequest<ActionResult<Menu>>;
+        public record Command(MenuCreateDto Menu) : IRequest<MenuDto>;
 
-        public class Handler : IRequestHandler<Command, ActionResult<Menu>>
+        public class Handler : IRequestHandler<Command, MenuDto>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -29,14 +30,14 @@ using Application.Menus.Validation;
                 _mapper = mapper;
             }
 
-            public async Task<ActionResult<Menu>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<MenuDto> Handle(Command request, CancellationToken cancellationToken)
             {
-                var menu = _mapper.Map(request.Menu, new Menu());
+                var entity = _mapper.Map(request.Menu, new Menu());
 
-                _context.Menus.Add(menu);
+                _context.Menus.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);
-
-                return new OkObjectResult(menu) { StatusCode = StatusCodes.Status201Created };
+                 
+                return _mapper.Map(entity, new MenuDto());
             }
 
             public class CommandValidator : AbstractValidator<Command>

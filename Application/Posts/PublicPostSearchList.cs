@@ -5,7 +5,9 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using AutoMapper;
+    using Application.Extensions;
+    using Application.Features;
+using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Dtos;
     using MediatR;
@@ -14,9 +16,9 @@
 
     public class PublicPostSearchList
     {
-        public record Query(string Domain, string Language, string SearchText) : IRequest<List<PublicPostDto>>;
+        public record Query(string Language, string SearchText, PaginationDto Pagination) : IRequest<List<PostDto>>;
 
-        public class Handler : IRequestHandler<Query, List<PublicPostDto>>
+        public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
 
@@ -28,16 +30,17 @@
                 _mapper = mapper;
             }
 
-            public async Task<List<PublicPostDto>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var (domain, language, searchText) = request;
-
                 return await _context.Posts
-                    .Where(x => x.IsPublished && x.PublishDate <= DateTime.Now && x.Domain.Slug == domain &&
-                                x.Category.Language.Slug == language &&
-                                EF.Functions.ToTsVector("lithuanian", x.Title).Matches(searchText) ||
-                                EF.Functions.ILike(x.Title, $"%{searchText}%"))
-                    .ProjectTo<PublicPostDto>(_mapper.ConfigurationProvider)
+                    .AsNoTracking()
+                    .Where(x => x.IsPublished && x.PublishDate <= DateTime.Now && 
+                                x.Category.Language.Slug == request.Language &&
+                                EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
+                                EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .OrderByDescending(x => x.PublishDate)
+                    .Paginate(request.Pagination)
                     .ToListAsync(cancellationToken);
             }
         }
