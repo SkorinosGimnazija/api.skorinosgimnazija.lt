@@ -38,7 +38,7 @@ namespace API.Controllers.Private
         }
 
         [HttpPost]
-        public async Task<ActionResult<PostDetailsDto>> CreatePost(PostCreateDto post, CancellationToken ct)
+        public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm]PostCreateDto post, CancellationToken ct)
         { 
             var entity = await Mediator.Send(new PostCreate.Command(post), ct);
 

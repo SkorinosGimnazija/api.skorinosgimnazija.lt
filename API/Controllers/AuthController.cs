@@ -61,7 +61,7 @@
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(LoginGoogle), new { returnUrl });
+                return BadRequest();
             }
 
             var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
