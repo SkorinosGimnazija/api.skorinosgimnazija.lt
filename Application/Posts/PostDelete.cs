@@ -1,5 +1,8 @@
 ﻿namespace Application.Posts
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Application.Interfaces;
     using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -11,10 +14,12 @@
         public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
+            private readonly ISearchClient _search;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, ISearchClient search)
             {
                 _context = context;
+                _search = search;
             }
               
             public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
@@ -27,6 +32,7 @@
             
                 _context.Posts.Remove(entity);
                 await _context.SaveChangesAsync(cancellationToken);
+                await _search.RemovePost(entity.Id);
 
                 return true;
             }

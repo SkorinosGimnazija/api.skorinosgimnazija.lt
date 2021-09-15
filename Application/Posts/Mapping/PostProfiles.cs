@@ -11,8 +11,10 @@
         {
             CreateMap<Post, PostDto>();
             CreateMap<Post, PostDetailsDto>();
-            CreateMap<PostCreateDto, Post>();
+            CreateMap<PostCreateDto, Post>().ForMember(x=> x.Images, x=> x.Ignore());
             CreateMap<PostEditDto, Post>();
+
+            CreateMap<Post, PostSearchDto>().ForMember(x=> x.ObjectID, x=> x.MapFrom(p=> p.Id.ToString()));
 
             CreateMap<PostPatchDto, Post>()
                 .ForMember(x => x.IsFeatured, x => x.Condition(p => p.IsFeatured != null))

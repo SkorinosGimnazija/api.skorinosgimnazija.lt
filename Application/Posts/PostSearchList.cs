@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Application.Extensions;
     using Application.Features;
+    using Application.Interfaces;
     using Application.Posts.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
@@ -21,17 +22,20 @@
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
-
+            private readonly ISearchClient _search;
             private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context, ISearchClient search, IMapper mapper)
             {
                 _context = context;
+               _search = search;
                 _mapper = mapper;
             }
 
             public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
+                await _search.Search(request.SearchText);
+
                 return await _context.Posts
                     .AsNoTracking()
                     .Where(x => EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||

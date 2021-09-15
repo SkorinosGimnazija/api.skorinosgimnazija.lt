@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Microsoft.AspNetCore.Http;
 
     public record PostCreateDto
     {
@@ -9,7 +10,7 @@
 
         public List<string> Files { get; init; } = new();
 
-        public List<string> Images { get; init; } = new();
+        public List<IFormFile> Images { get; init; } = new();
 
         public DateTime PublishDate { get; init; } = DateTime.Now;
 

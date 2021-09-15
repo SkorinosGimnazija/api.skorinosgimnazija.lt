@@ -14,8 +14,8 @@ using Application.Categories.Dtos;
 
     public class CategoryDetails
     {
-        public record Query(int Id) : IRequest<CategoryDto>;
-        public class Handler : IRequestHandler<Query, CategoryDto>
+        public record Query(int Id) : IRequest<CategoryDto?>;
+        public class Handler : IRequestHandler<Query, CategoryDto?>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ using Application.Categories.Dtos;
                 _mapper = mapper;
             }
 
-            public async Task<CategoryDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<CategoryDto?> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Categories
                     .AsNoTracking()

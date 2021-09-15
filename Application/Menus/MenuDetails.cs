@@ -14,8 +14,8 @@ using Application.Menus.Dtos;
         
     public class MenuDetails
     {
-        public record Query(int Id) : IRequest<MenuDto>;
-        public class Handler : IRequestHandler<Query, MenuDto>
+        public record Query(int Id) : IRequest<MenuDto?>;
+        public class Handler : IRequestHandler<Query, MenuDto?>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ using Application.Menus.Dtos;
                 _mapper = mapper;
             }
 
-            public async Task<MenuDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<MenuDto?> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Menus
                     .AsNoTracking()

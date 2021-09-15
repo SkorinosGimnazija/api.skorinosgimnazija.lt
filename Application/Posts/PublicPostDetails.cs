@@ -1,6 +1,7 @@
 ﻿namespace Application.Posts
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
@@ -14,8 +15,8 @@
 
     public class PublicPostDetails
     {
-        public record Query(int Id) : IRequest<PostDetailsDto>;
-        public class Handler : IRequestHandler<Query, PostDetailsDto>
+        public record Query(int Id) : IRequest<PostDetailsDto?>;
+        public class Handler : IRequestHandler<Query, PostDetailsDto?>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -26,7 +27,7 @@
                 _mapper = mapper;
             }
 
-            public async Task<PostDetailsDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<PostDetailsDto?> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Posts
                     .AsNoTracking()
