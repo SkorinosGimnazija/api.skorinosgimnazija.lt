@@ -1,13 +1,11 @@
 ﻿namespace API
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Domain;
     using Domain.Auth;
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -19,7 +17,11 @@
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(options => options.Limits.MaxRequestBodySize = null);
+                });
         }
 
         public static async Task Main(string[] args)
@@ -27,7 +29,7 @@
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
-
+        
             try
             {
                 var context = services.GetRequiredService<DataContext>();

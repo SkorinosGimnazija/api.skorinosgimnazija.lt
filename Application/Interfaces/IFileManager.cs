@@ -12,8 +12,12 @@ namespace Application.Interfaces
     {
         Task<List<string>> SaveImagesAsync(int id, IEnumerable<IFormFile> files);
 
+
+
         Task DeleteFilesAsync(int postId, List<string> files);
 
         Task DeleteAllFilesAsync(int postId);
+
+        Task<List<string>> SaveFilesAsync(int postId, List<IFormFile> files);
     }
 }

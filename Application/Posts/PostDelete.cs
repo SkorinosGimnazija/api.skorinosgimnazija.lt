@@ -15,11 +15,13 @@
         {
             private readonly DataContext _context;
             private readonly ISearchClient _search;
+            private readonly IFileManager _fileManager;
 
-            public Handler(DataContext context, ISearchClient search)
+            public Handler(DataContext context, ISearchClient search, IFileManager fileManager)
             {
                 _context = context;
                 _search = search;
+                _fileManager = fileManager;
             }
               
             public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
@@ -29,10 +31,11 @@
                 {
                     return false;
                 }
-            
+
                 _context.Posts.Remove(entity);
-                await _context.SaveChangesAsync(cancellationToken);
                 await _search.RemovePost(entity.Id);
+                await _fileManager.DeleteAllFilesAsync(entity.Id);
+                await _context.SaveChangesAsync(cancellationToken);
 
                 return true;
             }

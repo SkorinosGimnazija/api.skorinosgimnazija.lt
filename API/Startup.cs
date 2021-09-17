@@ -6,6 +6,7 @@ using API.Filters;
     using Application.Core;
 using Application.Interfaces;
 using Application.Posts;
+using Application.Utils;
 using Domain;
 using Domain.Auth;
 using Extensions;
@@ -61,7 +62,14 @@ using MediatR;
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<PublicUrls>(options =>
+            {
+                options.ApiUrl = _config.GetApiUrl();
+                options.StaticUrl = _config.GetStaticUrl();
+                options.WebUrl = _config.GetWebUrl();
+            });
             services.Configure<CloudinarySettings>(options => { options.Url = _config.GetCloudinaryUrl(); });
+            services.Configure<FileManagerSettings>(options => { options.UploadPath = _config.GetFileUploadPath(); });
             services.Configure<AlgoliaSettings>(options => { options.ApiKey = _config.GetAlgoliaApiKey(); options.AppId = _config.GetAlgoliaAppId(); });
 
             services.AddScoped<IUserAccessor, UserAccessor>();

@@ -12,20 +12,24 @@ using Application.Features;
 using Application.Posts2;
 using Application.Categories.Dtos;
 using Domain.CMS;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers.Private
 {
     [Route("posts")]
-    [Authorize(Roles = Roles.Admin )]
+    //[Authorize(Roles = Roles.Admin )]
     public class PostsController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet(Name = "GetPosts")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<PostDto>> GetPosts([FromQuery]PaginationDto pagination, CancellationToken ct)
         {
             return await Mediator.Send(new PostList.Query(pagination), ct);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetPostById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PostDetailsDto>> GetPost(int id, CancellationToken ct)
         {
             var entity = await Mediator.Send(new PostDetails.Query(id), ct);
@@ -37,7 +41,9 @@ namespace API.Controllers.Private
             return entity;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreatePost")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm]PostCreateDto post, CancellationToken ct)
         { 
             var entity = await Mediator.Send(new PostCreate.Command(post), ct);
@@ -45,7 +51,10 @@ namespace API.Controllers.Private
             return CreatedAtAction(nameof(GetPost), new { entity.Id }, entity);
         }
     
-        [HttpPut]
+        [HttpPut(Name = "EditPost")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditPost(PostEditDto post, CancellationToken ct)
 {
             var result = await Mediator.Send(new PostEdit.Command(post), ct);
@@ -57,7 +66,10 @@ namespace API.Controllers.Private
             return Ok();
         }
 
-        [HttpPatch("{id:int}")]
+        [HttpPatch("{id:int}", Name = "PatchPost")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PatchPost(int id,PostPatchDto post, CancellationToken ct)
         {
             var result = await Mediator.Send(new PostPatch.Command(id, post), ct);
@@ -69,7 +81,9 @@ namespace API.Controllers.Private
             return Ok();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name = "DeletePost")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeletePost(int id, CancellationToken ct)
         {
             var result = await Mediator.Send(new PostDelete.Command(id), ct);
@@ -81,14 +95,17 @@ namespace API.Controllers.Private
             return NoContent();
         }
       
-        [HttpGet("search/{text:minlength(3)}")]
+        [HttpGet("search/{text:minlength(3)}",Name = "SearchPost")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<PostDto>> SearchPosts(string text, [FromQuery]PaginationDto pagination, CancellationToken ct)
         {
             return await Mediator.Send(new PostSearchList.Query(text, pagination), ct);
         }
 
         [AllowAnonymous]
-        [HttpGet("public/{id:int}")]
+        [HttpGet("public/{id:int}", Name = "GetPublicPostById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PostDetailsDto>> GetPublicPost(int id, CancellationToken ct)
         {
             var entity = await Mediator.Send(new PublicPostDetails.Query(id), ct);
@@ -101,14 +118,16 @@ namespace API.Controllers.Private
         }
 
         [AllowAnonymous]
-        [HttpGet("public/{language}")]
+        [HttpGet("public/{language}", Name = "GetPublicPostsByLanguage")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<PostDto>> GetPublicPosts(string language, [FromQuery] PaginationDto pagination, CancellationToken ct)
         {
             return await Mediator.Send(new PublicPostList.Query(language, pagination), ct);
         }
 
         [AllowAnonymous]
-        [HttpGet("public/{language}/search/{text:minlength(3)}")]
+        [HttpGet("public/{language}/search/{text:minlength(3)}", Name = "SearchPublicPostsByLanguageAndText")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<PostDto>> SearchPublicPosts(string language, string text, [FromQuery] PaginationDto pagination, CancellationToken ct)
         {
             return await Mediator.Send(new PublicPostSearchList.Query(language, text, pagination), ct);

@@ -8,7 +8,7 @@
     {
         public bool IsFeatured { get; init; }
 
-        public List<string> Files { get; init; } = new();
+        public List<IFormFile> Files { get; init; } = new();
 
         public List<IFormFile> Images { get; init; } = new();
 

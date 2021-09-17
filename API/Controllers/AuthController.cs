@@ -5,8 +5,9 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Domain.Auth;
-    using DTOs;
+    using Dtos;
     using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -28,7 +29,10 @@
             _userManager = userMgr;
         }
 
-        [HttpGet("user")]
+
+        [HttpGet("user", Name = "GetUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public ActionResult<UserDto> GetUser()
         {
             if (!_signInManager.IsSignedIn(User))
@@ -45,17 +49,19 @@
         }
 
         [HttpGet("login-google")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult LoginGoogle(string returnUrl)
         {
             var redirectUrl = Url.Action(nameof(LoginCallback), new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(
                 GoogleDefaults.AuthenticationScheme,
                 redirectUrl);
-
+           
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
         [HttpGet("login-callback")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> LoginCallback(string returnUrl)
         {
             var info = await _signInManager.GetExternalLoginInfoAsync();
@@ -95,7 +101,8 @@
             return Redirect(Uri.UnescapeDataString(returnUrl));
         }
 
-        [HttpPost("logout")]
+        [HttpPost("logout", Name = "Logout")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -11,8 +11,11 @@
         {
             CreateMap<Post, PostDto>();
             CreateMap<Post, PostDetailsDto>();
-            CreateMap<PostCreateDto, Post>().ForMember(x=> x.Images, x=> x.Ignore());
             CreateMap<PostEditDto, Post>();
+
+            CreateMap<PostCreateDto, Post>()
+                .ForMember(x => x.Images, x => x.Ignore())
+                .ForMember(x => x.Files, x => x.Ignore());
 
             CreateMap<Post, PostSearchDto>().ForMember(x=> x.ObjectID, x=> x.MapFrom(p=> p.Id.ToString()));
 

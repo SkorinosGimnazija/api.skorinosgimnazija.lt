@@ -1,4 +1,4 @@
-﻿namespace API.DTOs
+﻿namespace API.Dtos
 {
     using System.Collections.Generic;
 

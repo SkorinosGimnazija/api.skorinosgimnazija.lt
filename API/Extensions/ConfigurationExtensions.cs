@@ -49,6 +49,23 @@
         public static string GetWebHookUrl(this IConfiguration config)
         {
             return config["TEAMS_WEB_HOOK_URL"];
+        }   
+        public static string GetFileUploadPath(this IConfiguration config)
+        {
+            return config["FILE_UPLOAD_PATH"];
+        }
+
+        public static string GetApiUrl(this IConfiguration config)
+        {
+            return config["API_URL"];
+        }
+        public static string GetStaticUrl(this IConfiguration config)
+        {
+            return config["STATIC_URL"];
+        } 
+        public static string GetWebUrl(this IConfiguration config)
+        {
+            return config["WEB_URL"];
         }
     }
 }

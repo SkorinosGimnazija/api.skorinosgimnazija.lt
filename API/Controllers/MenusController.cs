@@ -11,19 +11,23 @@ using Application.Domains;
     using Domain.Auth;
     using Domain.CMS;
     using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("menus")]
     [Authorize(Roles = Roles.Admin)]
     public class MenusController : BaseApiController
     {
-        [HttpGet]
+        [HttpGet(Name = "GetMenus")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<MenuDto>> GetMenus(CancellationToken ct)
         {
             return await Mediator.Send(new MenuList.Query(), ct);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetMenuById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<MenuDto>> GetMenu(int id, CancellationToken ct)
         {
             var entity = await Mediator.Send(new MenuDetails.Query(id), ct);
@@ -35,7 +39,9 @@ using Application.Domains;
             return entity;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateMenu")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<MenuDto>> CreateMenu(MenuCreateDto menu, CancellationToken ct)
         {
             var entity = await Mediator.Send(new MenuCreate.Command(menu), ct);
@@ -43,7 +49,10 @@ using Application.Domains;
             return CreatedAtAction(nameof(GetMenu), new { entity.Id }, entity);
         }
 
-        [HttpPut]
+        [HttpPut(Name = "EditMenu")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditMenu(MenuEditDto menu, CancellationToken ct)
         {
             var result = await Mediator.Send(new MenuEdit.Command(menu), ct);
@@ -55,7 +64,9 @@ using Application.Domains;
             return Ok();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name = "DeleteMenu")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteMenu(int id, CancellationToken ct)
         {
             var result = await Mediator.Send(new MenuDelete.Command(id), ct);
@@ -68,7 +79,8 @@ using Application.Domains;
         }
 
         [AllowAnonymous]
-        [HttpGet("public/{language}")]
+        [HttpGet("public/{language}", Name = "GetPublicMenusByLanguage")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<List<MenuDto>> GetMenus(string language, CancellationToken ct)
         {
             return await Mediator.Send(new PublicMenuList.Query(language), ct);

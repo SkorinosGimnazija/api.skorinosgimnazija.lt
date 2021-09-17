@@ -10,10 +10,13 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Interfaces;
+using Domain.CMS;
     using ImageOptimization;
+using Infrastructure.Photos;
     using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Options;
 
     public sealed class FileManager : IFileManager,  IDisposable
     {
@@ -21,10 +24,10 @@ using Microsoft.AspNetCore.Mvc;
         private readonly string _baseUploadPath;
         private readonly HttpClient _httpClient = new();
 
-        public FileManager(IConfiguration config, IImageOptimizer imageOptimizer)
+        public FileManager(IOptions<FileManagerSettings> options, IImageOptimizer imageOptimizer)
         {
+            _baseUploadPath = options.Value.UploadPath;
             _imageOptimizer = imageOptimizer;
-            _baseUploadPath = config["FILE_UPLOAD_PATH"];
         }
 
         public void Dispose()
@@ -39,16 +42,34 @@ using Microsoft.AspNetCore.Mvc;
             var directory = Directory.CreateDirectory(Path.Combine(_baseUploadPath, postId.ToString()));
             var savedImages = new ConcurrentBag<string>();
 
-            await Parallel.ForEachAsync(files, new ParallelOptions { MaxDegreeOfParallelism = 10 }, async (file, ct) =>
+            await Parallel.ForEachAsync(files, new ParallelOptions { MaxDegreeOfParallelism = 10 }, async (file, _) =>
             {
                 var optimizedImage = await _imageOptimizer.OptimizeAsync(file);
                 var savedImage = await DownloadFileAsync(optimizedImage.Url, directory.FullName);
                 await _imageOptimizer.DeleteAsync(optimizedImage.Id);
                 
-                savedImages.Add(savedImage);
+                savedImages.Add($"{directory.Name}/{savedImage}");
             });
             
             return savedImages.ToList();
+        }
+
+        public async Task<List<string>> SaveFilesAsync(int postId, List<IFormFile> files)
+        {
+            var directory = Directory.CreateDirectory(Path.Combine(_baseUploadPath, postId.ToString()));
+            var savedFiles = new List<string>();
+
+            foreach (var file in files)
+            {
+                var filePath = Path.Combine(directory.FullName, file.FileName);
+
+                await using var stream = File.Create(filePath);
+                await file.CopyToAsync(stream);
+
+                savedFiles.Add($"{directory.Name}/{file.FileName}");
+            }
+
+            return savedFiles;
         }
 
         private async Task<string> DownloadFileAsync(Uri url, string directoryPath)
@@ -88,5 +109,7 @@ using Microsoft.AspNetCore.Mvc;
                 }
             });
         }
+
+      
     }
 }

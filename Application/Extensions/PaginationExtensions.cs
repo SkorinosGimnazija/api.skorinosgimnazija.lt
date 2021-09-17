@@ -7,7 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-  public static  class PaginationExtensions
+  internal static  class PaginationExtensions
     {
         public static IQueryable<T> Paginate<T>(this IOrderedQueryable<T> query,PaginationDto pagination)
         {

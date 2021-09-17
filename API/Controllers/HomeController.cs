@@ -15,6 +15,7 @@ using System.Threading.Tasks;
     public class HomeController : ControllerBase
     {
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Index()
         {
             return Ok("👌");
