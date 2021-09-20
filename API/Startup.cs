@@ -1,33 +1,27 @@
 ﻿namespace API
 {
-using System;
     using System.Threading.Tasks;
-using API.Filters;
-    using Application.Core;
-using Application.Interfaces;
-using Application.Posts;
-using Application.Utils;
-using Domain;
-using Domain.Auth;
-using Extensions;
-using FluentValidation.AspNetCore;
-using Infrastructure.Auth;
-using Infrastructure.FileManager;
-using Infrastructure.ImageOptimization;
-using Infrastructure.Photos;
-using Infrastructure.Search;
-using MediatR;
+    using Application.Interfaces;
+    using Application.Posts;
+    using Application.Utils;
+    using Domain.Auth;
+    using Extensions;
+    using Filters;
+    using FluentValidation.AspNetCore;
+    using Infrastructure.Auth;
+    using Infrastructure.FileManager;
+    using Infrastructure.ImageOptimization;
+    using Infrastructure.Search;
+    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.HttpOverrides;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Persistence;
-    using Utils;
 
     public class Startup
     {
@@ -56,7 +50,7 @@ using MediatR;
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
@@ -70,7 +64,11 @@ using MediatR;
             });
             services.Configure<CloudinarySettings>(options => { options.Url = _config.GetCloudinaryUrl(); });
             services.Configure<FileManagerSettings>(options => { options.UploadPath = _config.GetFileUploadPath(); });
-            services.Configure<AlgoliaSettings>(options => { options.ApiKey = _config.GetAlgoliaApiKey(); options.AppId = _config.GetAlgoliaAppId(); });
+            services.Configure<AlgoliaSettings>(options =>
+            {
+                options.ApiKey = _config.GetAlgoliaApiKey();
+                options.AppId = _config.GetAlgoliaAppId();
+            });
 
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
@@ -87,10 +85,14 @@ using MediatR;
                 {
                     options.KnownProxies.Clear();
                     options.KnownNetworks.Clear();
-                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                    options.ForwardedHostHeaderName = "Host";
+                    options.ForwardedHeaders = ForwardedHeaders.All;
                 });
 
-            services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseNpgsql(_config.GetDatabaseConnectionString());
+            });
 
             services.AddCors(
                 options =>
@@ -109,7 +111,7 @@ using MediatR;
             services.AddFluentValidation(
                 options =>
                 {
-                     options.RegisterValidatorsFromAssemblyContaining<PostCreate>();
+                    options.RegisterValidatorsFromAssemblyContaining<PostCreate>();
                     options.DisableDataAnnotationsValidation = true;
                 });
 
@@ -148,10 +150,7 @@ using MediatR;
                         options.ClientSecret = _config.GetGoogleClientSecret();
                     });
 
-            services.AddControllers(options =>
-            {
-                options.Filters.Add<ExceptionLoggingFilter>();
-            });
+            services.AddControllers(options => { options.Filters.Add<ExceptionLoggingFilter>(); });
         }
     }
 }

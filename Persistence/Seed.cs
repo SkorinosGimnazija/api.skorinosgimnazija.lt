@@ -1,11 +1,8 @@
 ﻿namespace Persistence
 {
     using System.Threading.Tasks;
-    using Domain;
     using Domain.Auth;
-    using Domain.CMS;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
 
     public static class Seed
     {
@@ -18,7 +15,7 @@
                 return;
             }
 
-            foreach (var role in Roles.GetAllRoles())
+            foreach (var role in AuthRole.GetAllRoles())
             {
                 if (await userManager.IsInRoleAsync(admin, role))
                 {
@@ -31,16 +28,15 @@
 
         public static async Task CreateRoles(RoleManager<AppRole> roleManager)
         {
-            foreach (var role in Roles.GetAllRoles())
+            foreach (var role in AuthRole.GetAllRoles())
             {
                 if (await roleManager.RoleExistsAsync(role))
                 {
                     continue;
                 }
 
-                await roleManager.CreateAsync(new AppRole(role));
+                await roleManager.CreateAsync(new(role));
             }
         }
-
     }
 }

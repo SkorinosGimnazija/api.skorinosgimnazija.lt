@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
     using Dtos;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
@@ -15,6 +14,7 @@
     public class MenuList
     {
         public record Query() : IRequest<List<MenuDto>>;
+
         public class Handler : IRequestHandler<Query, List<MenuDto>>
         {
             private readonly DataContext _context;
@@ -30,12 +30,11 @@
             public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 return await _context.Menus
-                    .AsNoTracking() 
+                    .AsNoTracking()
                     .OrderBy(x => x.Order)
                     .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }
-
     }
 }

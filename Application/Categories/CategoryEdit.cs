@@ -1,18 +1,11 @@
-﻿namespace Application.Posts
+﻿namespace Application.Categories
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Menus.Dtos;
     using AutoMapper;
-    using Categories.Dtos;
-    using Categories.Validation;
-    using Domain.CMS;
     using Dtos;
     using FluentValidation;
     using MediatR;
-    using Menus.Validation;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
     using Validation;
@@ -35,7 +28,8 @@
 
             public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id, cancellationToken);
+                var entity =
+                    await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id, cancellationToken);
                 if (entity is null)
                 {
                     return false;

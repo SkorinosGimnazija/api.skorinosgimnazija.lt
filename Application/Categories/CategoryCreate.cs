@@ -1,22 +1,14 @@
-﻿using Application.Menus.Validation;
-using AutoMapper;
-using Domain.CMS;
-using FluentValidation;
-
-namespace Application.Domains
+﻿namespace Application.Categories
 {
-    using MediatR;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Persistence;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Categories.Dtos;
-    using Categories.Validation;
+    using AutoMapper;
+    using Domain.CMS;
+    using Dtos;
+    using FluentValidation;
+    using MediatR;
+    using Persistence;
+    using Validation;
 
     public class CategoryCreate
     {

@@ -1,8 +1,8 @@
 <Project>
 
-    <PropertyGroup>
-        <Nullable>enable</Nullable>
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    </PropertyGroup>
-	
+	</PropertyGroup>
+
 </Project>

@@ -1,9 +1,8 @@
-﻿namespace Application.Core.MappingProfiles
+﻿namespace Application.Posts.Mapping
 {
-    using System;
     using AutoMapper;
     using Domain.CMS;
-    using Posts.Dtos;
+    using Dtos;
 
     public class PostProfiles : Profile
     {
@@ -17,7 +16,7 @@
                 .ForMember(x => x.Images, x => x.Ignore())
                 .ForMember(x => x.Files, x => x.Ignore());
 
-            CreateMap<Post, PostSearchDto>().ForMember(x=> x.ObjectID, x=> x.MapFrom(p=> p.Id.ToString()));
+            CreateMap<Post, PostSearchDto>().ForMember(x => x.ObjectID, x => x.MapFrom(p => p.Id.ToString()));
 
             CreateMap<PostPatchDto, Post>()
                 .ForMember(x => x.IsFeatured, x => x.Condition(p => p.IsFeatured != null))

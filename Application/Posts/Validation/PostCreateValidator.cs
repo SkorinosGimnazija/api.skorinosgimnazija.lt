@@ -3,7 +3,7 @@
     using Dtos;
     using FluentValidation;
 
-    public  class PostCreateValidator : AbstractValidator<PostCreateDto>
+    public class PostCreateValidator : AbstractValidator<PostCreateDto>
     {
         public PostCreateValidator()
         {

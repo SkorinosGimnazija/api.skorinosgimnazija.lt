@@ -1,9 +1,8 @@
-﻿namespace Application.Core.MappingProfiles
+﻿namespace Application.Menus.Mapping
 {
-using Application.Posts.Dtos;
     using AutoMapper;
     using Domain.CMS;
-    using Menus.Dtos;
+    using Dtos;
 
     internal class MenuProfiles : Profile
     {

@@ -1,20 +1,18 @@
 ﻿namespace Application.Posts
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
     using Dtos;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
     public class PostDetails
     {
         public record Query(int Id) : IRequest<PostDetailsDto?>;
+
         public class Handler : IRequestHandler<Query, PostDetailsDto?>
         {
             private readonly DataContext _context;
@@ -34,6 +32,5 @@
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
             }
         }
-
     }
 }

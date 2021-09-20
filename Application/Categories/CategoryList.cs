@@ -1,13 +1,10 @@
-﻿namespace Application.Menus
+﻿namespace Application.Categories
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Categories.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
     using Dtos;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
@@ -37,6 +34,5 @@ using Application.Categories.Dtos;
                     .ToListAsync(cancellationToken);
             }
         }
-
     }
 }

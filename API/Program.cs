@@ -5,7 +5,6 @@
     using Domain.Auth;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -29,7 +28,7 @@ using Microsoft.AspNetCore.Mvc;
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
-        
+
             try
             {
                 var context = services.GetRequiredService<DataContext>();

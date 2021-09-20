@@ -1,21 +1,20 @@
 ﻿namespace API.Controllers
 {
     using System.Collections.Generic;
+    using System.Net.Mime;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Domains;
     using Application.Menus;
     using Application.Menus.Dtos;
-    using Application.Posts;
-    using Application.Posts2;
+    using Base;
     using Domain.Auth;
-    using Domain.CMS;
     using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("menus")]
-    [Authorize(Roles = Roles.Admin)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Authorize(Roles = AuthRole.Admin)]
     public class MenusController : BaseApiController
     {
         [HttpGet(Name = "GetMenus")]

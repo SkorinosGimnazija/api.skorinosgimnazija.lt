@@ -5,11 +5,11 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Extensions;
-    using Application.Features;
+    using Application.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Dtos;
+    using Extensions;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
@@ -17,6 +17,7 @@
     public class PublicPostList
     {
         public record Query(string Language, PaginationDto Pagination) : IRequest<List<PostDto>>;
+
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
@@ -43,6 +44,5 @@
                     .ToListAsync(cancellationToken);
             }
         }
-
     }
 }

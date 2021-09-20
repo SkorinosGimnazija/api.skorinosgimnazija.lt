@@ -1,20 +1,18 @@
-﻿namespace Application.Posts2
+﻿namespace Application.Categories
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Categories.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
+    using Dtos;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
     public class CategoryDetails
     {
         public record Query(int Id) : IRequest<CategoryDto?>;
+
         public class Handler : IRequestHandler<Query, CategoryDto?>
         {
             private readonly DataContext _context;
@@ -34,6 +32,5 @@ using Application.Categories.Dtos;
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
             }
         }
-
     }
 }

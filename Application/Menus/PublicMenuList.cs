@@ -14,6 +14,7 @@
     public class PublicMenuList
     {
         public record Query(string Language) : IRequest<List<MenuDto>>;
+
         public class Handler : IRequestHandler<Query, List<MenuDto>>
         {
             private readonly DataContext _context;
@@ -30,12 +31,11 @@
             {
                 return await _context.Menus
                     .AsNoTracking()
-                    .Where(x => x.IsPublished && x.Category.Language.Slug == request.Language )
+                    .Where(x => x.IsPublished && x.Category.Language.Slug == request.Language)
                     .OrderBy(x => x.Order)
                     .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
             }
         }
-
     }
 }

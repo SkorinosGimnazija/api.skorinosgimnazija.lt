@@ -3,10 +3,10 @@
     using Dtos;
     using FluentValidation;
 
-    public  class PostEditValidator : AbstractValidator<PostEditDto>
+    public class PostEditValidator : AbstractValidator<PostEditDto>
     {
         public PostEditValidator()
-        { 
+        {
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Slug).NotEmpty();
             RuleFor(x => x.CategoryId).NotEmpty();

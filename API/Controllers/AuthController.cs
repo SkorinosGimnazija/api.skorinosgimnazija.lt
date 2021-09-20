@@ -2,18 +2,20 @@
 {
     using System;
     using System.Linq;
+    using System.Net.Mime;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using Domain.Auth;
     using Dtos;
     using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
     [ApiController]
     [Route("auth")]
+    [Produces(MediaTypeNames.Application.Json)]
     public class AuthController : ControllerBase
     {
         private readonly ILogger<AuthController> _logger;
@@ -22,13 +24,13 @@ using Microsoft.AspNetCore.Http;
 
         private readonly UserManager<AppUser> _userManager;
 
-        public AuthController(ILogger<AuthController> logger, SignInManager<AppUser> signinMgr, UserManager<AppUser> userMgr)
+        public AuthController(ILogger<AuthController> logger, SignInManager<AppUser> signinMgr,
+            UserManager<AppUser> userMgr)
         {
             _logger = logger;
             _signInManager = signinMgr;
             _userManager = userMgr;
         }
-
 
         [HttpGet("user", Name = "GetUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,7 +58,7 @@ using Microsoft.AspNetCore.Http;
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(
                 GoogleDefaults.AuthenticationScheme,
                 redirectUrl);
-           
+
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
@@ -70,7 +72,8 @@ using Microsoft.AspNetCore.Http;
                 return BadRequest();
             }
 
-            var loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            var loginResult =
+                await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
             if (loginResult.Succeeded)
             {
                 return Redirect(Uri.UnescapeDataString(returnUrl));
@@ -79,7 +82,7 @@ using Microsoft.AspNetCore.Http;
             var user = new AppUser
             {
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email),
-                UserName = info.Principal.FindFirstValue(ClaimTypes.Name),
+                UserName = info.Principal.FindFirstValue(ClaimTypes.Name)
             };
 
             var result = await _userManager.CreateAsync(user);

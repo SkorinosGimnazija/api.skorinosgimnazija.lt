@@ -1,22 +1,26 @@
 ﻿namespace Application.Categories.Dtos
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.ComponentModel.DataAnnotations;
+    using Languages.Dtos;
 
     public record CategoryDto
     {
+        [Required]
         public int Id { get; init; }
 
+        [Required]
         public int LanguageId { get; init; }
 
+        [Required]
         public string Name { get; init; }
 
+        [Required]
         public string Slug { get; init; }
 
+        [Required]
+        public LanguageDto Language { get; init; }
 
+        [Required]
         public bool ShowOnHomePage { get; init; }
     }
 }

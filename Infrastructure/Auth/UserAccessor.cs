@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Auth
+﻿namespace Infrastructure.Auth
 {
     using System.Security.Claims;
     using Application.Interfaces;
     using Domain.Auth;
     using Microsoft.AspNetCore.Http;
-     
-    public  class UserAccessor : IUserAccessor
+
+    public class UserAccessor : IUserAccessor
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ClaimsPrincipal? _user;
@@ -34,7 +28,7 @@ namespace Infrastructure.Auth
 
         public bool IsAdmin()
         {
-            return HasRole(Roles.Admin);
+            return HasRole(AuthRole.Admin);
         }
 
         public bool HasRole(string role)

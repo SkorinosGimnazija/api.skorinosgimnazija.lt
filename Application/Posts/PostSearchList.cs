@@ -4,13 +4,12 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Extensions;
-    using Application.Features;
-    using Application.Interfaces;
-    using Application.Posts.Dtos;
+    using Application.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
+    using Dtos;
+    using Extensions;
+    using Interfaces;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
@@ -22,13 +21,13 @@
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
-            private readonly ISearchClient _search;
             private readonly IMapper _mapper;
+            private readonly ISearchClient _search;
 
             public Handler(DataContext context, ISearchClient search, IMapper mapper)
             {
                 _context = context;
-               _search = search;
+                _search = search;
                 _mapper = mapper;
             }
 
@@ -41,7 +40,7 @@
                     .Where(x => EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
                                 EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                    .OrderByDescending(x=> x.PublishDate)
+                    .OrderByDescending(x => x.PublishDate)
                     .Paginate(request.Pagination)
                     .ToListAsync(cancellationToken);
             }

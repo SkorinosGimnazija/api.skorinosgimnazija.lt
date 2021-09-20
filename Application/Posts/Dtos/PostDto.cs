@@ -1,27 +1,30 @@
-﻿
-
-
-namespace Application.Posts.Dtos
+﻿namespace Application.Posts.Dtos
 {
     using System;
-    using System.Collections.Generic;
-    using Application.Categories.Dtos;
-    using Domain.CMS;
+    using System.ComponentModel.DataAnnotations;
+    using Categories.Dtos;
 
     public record PostDto
     {
+        [Required]
         public int Id { get; init; }
 
+        [Required]
         public bool IsFeatured { get; init; }
 
+        [Required]
         public bool IsPublished { get; init; }
 
+        [Required]
         public CategoryDto Category { get; init; }
 
+        [Required]
         public DateTime PublishDate { get; init; }
 
+        [Required]
         public string Slug { get; init; }
 
+        [Required]
         public string Title { get; init; }
     }
 }

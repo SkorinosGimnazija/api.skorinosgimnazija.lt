@@ -1,22 +1,16 @@
-﻿namespace Application.Categories.Dtos
+﻿namespace Application.Languages.Dtos
 {
     using System.ComponentModel.DataAnnotations;
 
-    public record CategoryEditDto
+    public record LanguageDto
     {
         [Required]
         public int Id { get; init; }
-
-        [Required]
-        public int LanguageId { get; init; }
 
         [Required]
         public string Name { get; init; }
 
         [Required]
         public string Slug { get; init; }
-
-        [Required]
-        public bool ShowOnHomePage { get; init; }
     }
 }

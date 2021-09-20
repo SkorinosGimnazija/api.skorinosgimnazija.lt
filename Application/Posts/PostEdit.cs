@@ -2,26 +2,24 @@
 {
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Interfaces;
     using AutoMapper;
-    using Domain.CMS;
     using Dtos;
     using FluentValidation;
+    using Interfaces;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
     using Validation;
 
     public class PostEdit
     {
-        public record Command( PostEditDto Post) : IRequest<bool>;
+        public record Command(PostEditDto Post) : IRequest<bool>;
 
         public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
-            private readonly ISearchClient _search;
             private readonly IMapper _mapper;
+            private readonly ISearchClient _search;
 
             public Handler(DataContext context, ISearchClient search, IMapper mapper)
             {

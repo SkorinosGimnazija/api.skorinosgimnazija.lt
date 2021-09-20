@@ -1,15 +1,11 @@
-﻿namespace Application.Posts
+﻿namespace Application.Menus
 {
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Menus.Dtos;
     using AutoMapper;
-    using Domain.CMS;
     using Dtos;
     using FluentValidation;
     using MediatR;
-    using Menus.Validation;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
     using Validation;

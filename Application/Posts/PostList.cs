@@ -1,24 +1,22 @@
 ﻿namespace Application.Posts
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Extensions;
-    using Application.Features;
+    using Application.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
     using Dtos;
+    using Extensions;
     using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
     public class PostList
     {
         public record Query(PaginationDto Pagination) : IRequest<List<PostDto>>;
+
         public class Handler : IRequestHandler<Query, List<PostDto>>
         {
             private readonly DataContext _context;
@@ -33,15 +31,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
             public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Posts 
+                return await _context.Posts
                     .AsNoTracking()
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                    .OrderByDescending(x => x.IsFeatured)
-                    .ThenByDescending(x => x.PublishDate)
+                    .OrderByDescending(x => x.PublishDate)
                     .Paginate(request.Pagination)
                     .ToListAsync(cancellationToken);
             }
         }
-
     }
 }

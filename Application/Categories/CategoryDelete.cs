@@ -1,15 +1,15 @@
-﻿namespace Application.Posts
+﻿namespace Application.Categories
 {
     using System.Threading;
     using System.Threading.Tasks;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
 
     public class CategoryDelete
     {
         public record Command(int Id) : IRequest<bool>;
+
         public class Handler : IRequestHandler<Command, bool>
         {
             private readonly DataContext _context;
@@ -33,6 +33,5 @@
                 return true;
             }
         }
-
     }
 }

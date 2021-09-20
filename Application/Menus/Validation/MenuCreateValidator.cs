@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Menus.Validation
+﻿namespace Application.Menus.Validation
 {
-    using Domain.CMS;
+    using Dtos;
     using FluentValidation;
 
     public class MenuCreateValidator : AbstractValidator<MenuCreateDto>

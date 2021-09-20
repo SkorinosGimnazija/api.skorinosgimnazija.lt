@@ -5,11 +5,11 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Extensions;
-    using Application.Features;
-using AutoMapper;
+    using Application.Dtos;
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using Dtos;
+    using Extensions;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
@@ -34,7 +34,7 @@ using AutoMapper;
             {
                 return await _context.Posts
                     .AsNoTracking()
-                    .Where(x => x.IsPublished && x.PublishDate <= DateTime.Now && 
+                    .Where(x => x.IsPublished && x.PublishDate <= DateTime.Now &&
                                 x.Category.Language.Slug == request.Language &&
                                 EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
                                 EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))

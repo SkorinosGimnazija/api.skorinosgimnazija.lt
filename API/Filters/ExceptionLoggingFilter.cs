@@ -2,6 +2,7 @@
 {
     using System;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -39,7 +40,7 @@
                     };
 
                     var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8,
-                        "application/json");
+                        MediaTypeNames.Application.Json);
 
                     using var client = new HttpClient();
                     await client.PostAsync(_config.GetWebHookUrl(), content);

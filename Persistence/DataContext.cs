@@ -52,6 +52,5 @@
         {
             builder.Entity<Language>().HasIndex(x => x.Slug).IsUnique();
         }
-
     }
 }

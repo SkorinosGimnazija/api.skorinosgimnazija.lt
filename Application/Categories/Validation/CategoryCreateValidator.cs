@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Categories.Validation
+﻿namespace Application.Categories.Validation
 {
     using Dtos;
     using FluentValidation;
 
-    public   class CategoryCreateValidator : AbstractValidator<CategoryCreateDto>
+    public class CategoryCreateValidator : AbstractValidator<CategoryCreateDto>
     {
         public CategoryCreateValidator()
         {

@@ -2,8 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics.CodeAnalysis;
 
     public class Post
     {
@@ -11,13 +9,14 @@
 
         public bool IsFeatured { get; set; }
 
-        public List<string>? Files { get; set; } 
-           
+        public List<string>? Files { get; set; }
+
         public List<string>? Images { get; set; }
 
         public string? IntroText { get; set; }
 
         public bool IsPublished { get; set; }
+
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }

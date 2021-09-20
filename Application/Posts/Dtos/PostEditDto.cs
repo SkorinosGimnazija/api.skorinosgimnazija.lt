@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Posts.Dtos
+﻿namespace Application.Posts.Dtos
 {
-   public record PostEditDto
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    public record PostEditDto
     {
+        [Required]
         public int Id { get; init; }
+
+        [Required]
         public bool IsFeatured { get; init; }
 
         public List<string> Files { get; init; } = new();
@@ -19,15 +20,18 @@ namespace Application.Posts.Dtos
 
         public string? IntroText { get; init; }
 
+        [Required]
         public bool IsPublished { get; init; }
 
-
+        [Required]
         public int CategoryId { get; init; }
 
+        [Required]
         public string Slug { get; init; }
 
         public string? Text { get; init; }
 
+        [Required]
         public string Title { get; init; }
-    } 
+    }
 }

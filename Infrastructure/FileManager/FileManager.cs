@@ -3,26 +3,20 @@
     using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
-    using System.Threading;
     using System.Threading.Tasks;
     using Application.Interfaces;
-using Domain.CMS;
     using ImageOptimization;
-using Infrastructure.Photos;
     using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Options;
 
-    public sealed class FileManager : IFileManager,  IDisposable
+    public sealed class FileManager : IFileManager, IDisposable
     {
-        private readonly IImageOptimizer _imageOptimizer;
         private readonly string _baseUploadPath;
         private readonly HttpClient _httpClient = new();
+        private readonly IImageOptimizer _imageOptimizer;
 
         public FileManager(IOptions<FileManagerSettings> options, IImageOptimizer imageOptimizer)
         {
@@ -35,9 +29,7 @@ using Microsoft.AspNetCore.Mvc;
             _httpClient.Dispose();
         }
 
-      
-
-        public async Task<List<string>> SaveImagesAsync(int postId, IEnumerable<IFormFile> files)
+        public async Task<List<string>> SaveImagesAsync(int postId, IFormFileCollection files)
         {
             var directory = Directory.CreateDirectory(Path.Combine(_baseUploadPath, postId.ToString()));
             var savedImages = new ConcurrentBag<string>();
@@ -47,14 +39,14 @@ using Microsoft.AspNetCore.Mvc;
                 var optimizedImage = await _imageOptimizer.OptimizeAsync(file);
                 var savedImage = await DownloadFileAsync(optimizedImage.Url, directory.FullName);
                 await _imageOptimizer.DeleteAsync(optimizedImage.Id);
-                
+
                 savedImages.Add($"{directory.Name}/{savedImage}");
             });
-            
+
             return savedImages.ToList();
         }
 
-        public async Task<List<string>> SaveFilesAsync(int postId, List<IFormFile> files)
+        public async Task<List<string>> SaveFilesAsync(int postId, IFormFileCollection files)
         {
             var directory = Directory.CreateDirectory(Path.Combine(_baseUploadPath, postId.ToString()));
             var savedFiles = new List<string>();
@@ -70,18 +62,6 @@ using Microsoft.AspNetCore.Mvc;
             }
 
             return savedFiles;
-        }
-
-        private async Task<string> DownloadFileAsync(Uri url, string directoryPath)
-        {
-            var uriWithoutQuery = url.GetLeftPart(UriPartial.Path);
-            var fileName = Path.GetFileName(uriWithoutQuery);
-            var filePath = Path.Combine(directoryPath, fileName);
-
-            var bytes = await _httpClient.GetByteArrayAsync(url);
-            await File.WriteAllBytesAsync(filePath, bytes);
-
-            return fileName;
         }
 
         public Task DeleteFilesAsync(int postId, List<string> files)
@@ -110,6 +90,16 @@ using Microsoft.AspNetCore.Mvc;
             });
         }
 
-      
+        private async Task<string> DownloadFileAsync(Uri url, string directoryPath)
+        {
+            var uriWithoutQuery = url.GetLeftPart(UriPartial.Path);
+            var fileName = Path.GetFileName(uriWithoutQuery);
+            var filePath = Path.Combine(directoryPath, fileName);
+
+            var bytes = await _httpClient.GetByteArrayAsync(url);
+            await File.WriteAllBytesAsync(filePath, bytes);
+
+            return fileName;
+        }
     }
 }

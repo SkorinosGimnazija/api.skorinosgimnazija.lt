@@ -1,15 +1,8 @@
-﻿namespace Infrastructure.Photos
+﻿namespace Infrastructure.ImageOptimization
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using System.Threading.Tasks;
-    using Application.Interfaces;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
-using Infrastructure.ImageOptimization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Options;
 
@@ -29,7 +22,7 @@ using Infrastructure.ImageOptimization;
                 .Crop("fill")
                 .Effect("improve")
                 //.Effect("viesus_correct")
-               // .FetchFormat("avif");
+                // .FetchFormat("avif");
                 .FetchFormat("jpg");
         }
 
@@ -42,14 +35,14 @@ using Infrastructure.ImageOptimization;
                 Transformation = _defaultTransformation,
                 File = new(image.FileName, stream)
             };
-         
+
             var result = await _cloudinary.UploadAsync(uploadParams);
 
             if (result.Error != null)
             {
                 throw new(result.Error.Message);
             }
- 
+
             return new(result.PublicId, result.SecureUrl);
         }
 

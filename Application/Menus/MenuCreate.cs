@@ -1,17 +1,12 @@
-﻿namespace Application.Posts
+﻿namespace Application.Menus
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Application.Menus.Dtos;
-    using Application.Menus.Validation;
     using AutoMapper;
     using Domain.CMS;
     using Dtos;
     using FluentValidation;
     using MediatR;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Persistence;
     using Validation;
 
@@ -36,7 +31,7 @@
 
                 _context.Menus.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);
-                 
+
                 return _mapper.Map(entity, new MenuDto());
             }
 

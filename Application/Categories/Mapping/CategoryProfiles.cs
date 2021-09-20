@@ -1,9 +1,8 @@
-﻿namespace Application.Core.MappingProfiles
+﻿namespace Application.Categories.Mapping
 {
-using Application.Categories.Dtos;
     using AutoMapper;
     using Domain.CMS;
-    using Menus.Dtos;
+    using Dtos;
 
     internal class CategoryProfiles : Profile
     {

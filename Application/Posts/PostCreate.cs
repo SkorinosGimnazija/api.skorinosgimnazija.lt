@@ -1,25 +1,19 @@
 ﻿namespace Application.Posts
 {
-
-    using System;
-    using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Extensions;
-    using Application.Interfaces;
-    using Application.Posts.Dtos;
-    using Application.Posts.Validation;
     using AutoMapper;
     using Domain.CMS;
+    using Dtos;
+    using Extensions;
     using FluentValidation;
+    using Interfaces;
     using MediatR;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+    using Microsoft.Extensions.Options;
     using Persistence;
     using Utils;
+    using Validation;
 
     public class PostCreate
     {
@@ -28,12 +22,13 @@ using Microsoft.Extensions.Options;
         public class Handler : IRequestHandler<Command, PostDetailsDto>
         {
             private readonly DataContext _context;
-            private readonly ISearchClient _searchClient;
             private readonly IFileManager _fileManager;
             private readonly IMapper _mapper;
+            private readonly ISearchClient _searchClient;
             private readonly string _staticWebUrl;
 
-            public Handler(DataContext context, ISearchClient searchClient, IFileManager fileManager, IMapper mapper, IOptions<PublicUrls> options)
+            public Handler(DataContext context, ISearchClient searchClient, IFileManager fileManager, IMapper mapper,
+                IOptions<PublicUrls> options)
             {
                 _context = context;
                 _searchClient = searchClient;
@@ -48,7 +43,7 @@ using Microsoft.Extensions.Options;
 
                 _context.Posts.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);
-               
+
                 if (request.Post.Images.Any())
                 {
                     entity.Images = await _fileManager.SaveImagesAsync(entity.Id, request.Post.Images);

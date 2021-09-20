@@ -1,20 +1,18 @@
-﻿namespace Application.Posts2
+﻿namespace Application.Menus
 {
-    using System;
     using System.Threading;
     using System.Threading.Tasks;
-using Application.Menus.Dtos;
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
-    using Domain.CMS;
+    using Dtos;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
-        
+
     public class MenuDetails
     {
         public record Query(int Id) : IRequest<MenuDto?>;
+
         public class Handler : IRequestHandler<Query, MenuDto?>
         {
             private readonly DataContext _context;
@@ -34,6 +32,5 @@ using Application.Menus.Dtos;
                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
             }
         }
-
     }
 }

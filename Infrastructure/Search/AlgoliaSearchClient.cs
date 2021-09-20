@@ -1,7 +1,6 @@
 ﻿namespace Infrastructure.Search
 {
     using System.Collections.Generic;
-    using System.Threading;
     using System.Threading.Tasks;
     using Algolia.Search.Clients;
     using Application.Posts.Dtos;
