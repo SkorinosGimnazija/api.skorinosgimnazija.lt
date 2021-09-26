@@ -29,26 +29,28 @@
 
         public override async Task OnExceptionAsync(ExceptionContext context)
         {
-            if (_env.IsProduction())
+            if (!_env.IsProduction() || context.Exception is OperationCanceledException)
             {
-                try
-                {
-                    var message = new ExceptionMessage
-                    {
-                        Title = context.Exception.GetType().Name,
-                        Text = $"<p>{context.Exception}</p>"
-                    };
+                return;
+            }
 
-                    var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8,
-                        MediaTypeNames.Application.Json);
-
-                    using var client = new HttpClient();
-                    await client.PostAsync(_config.GetWebHookUrl(), content);
-                }
-                catch (Exception e)
+            try
+            {
+                var message = new ExceptionMessage
                 {
-                    _logger.LogError(e, "Exception logging failed");
-                }
+                    Title = context.Exception.GetType().Name,
+                    Text = $"<p>{context.Exception}</p>"
+                };
+
+                var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8,
+                    MediaTypeNames.Application.Json);
+
+                using var client = new HttpClient();
+                await client.PostAsync(_config.GetWebHookUrl(), content);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Exception logging failed");
             }
         }
     }

@@ -20,7 +20,7 @@
 
         [Required]
         public DateTime PublishDate { get; init; }
-
+        public DateTime? ModifiedDate { get; init; }
         [Required]
         public string Slug { get; init; }
 

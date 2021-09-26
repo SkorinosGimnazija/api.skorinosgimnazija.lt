@@ -4,11 +4,9 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using Dtos;
-    using FluentValidation;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
-    using Validation;
 
     public class MenuEdit
     {
@@ -40,13 +38,7 @@
                 return true;
             }
 
-            public class CommandValidator : AbstractValidator<Command>
-            {
-                public CommandValidator()
-                {
-                    RuleFor(x => x.Menu).SetValidator(new MenuEditValidator());
-                }
-            }
+           
         }
     }
 }

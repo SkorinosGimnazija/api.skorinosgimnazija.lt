@@ -13,7 +13,6 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Route("categories")]
-    [Produces(MediaTypeNames.Application.Json)]
     [Authorize(Roles = AuthRole.Admin)]
     public class CategoriesController : BaseApiController
     {

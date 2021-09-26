@@ -13,7 +13,6 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Route("menus")]
-    [Produces(MediaTypeNames.Application.Json)]
     [Authorize(Roles = AuthRole.Admin)]
     public class MenusController : BaseApiController
     {

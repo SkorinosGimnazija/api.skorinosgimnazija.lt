@@ -7,12 +7,12 @@
     using Domain.Auth;
     using Extensions;
     using Filters;
-    using FluentValidation.AspNetCore;
     using Infrastructure.Auth;
     using Infrastructure.FileManager;
     using Infrastructure.ImageOptimization;
     using Infrastructure.Search;
     using MediatR;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -34,6 +34,12 @@
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.Use(async (context, next) =>
+            //{
+            //    await Task.Delay(1000);
+            //    await next.Invoke();
+            //});
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -51,7 +57,15 @@
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints =>
+            {
+                var controllers = endpoints.MapControllers();
+
+                if (env.IsDevelopment())
+                {
+                    controllers.WithMetadata(new AllowAnonymousAttribute());
+                }
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -107,13 +121,6 @@
 
             services.AddMediatR(typeof(PostCreate).Assembly);
             services.AddAutoMapper(typeof(PostCreate).Assembly);
-
-            services.AddFluentValidation(
-                options =>
-                {
-                    options.RegisterValidatorsFromAssemblyContaining<PostCreate>();
-                    options.DisableDataAnnotationsValidation = true;
-                });
 
             services.AddIdentity<AppUser, AppRole>(options =>
                 {

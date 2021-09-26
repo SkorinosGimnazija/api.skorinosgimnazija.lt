@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Net.Mime;
     using System.Threading;
@@ -14,7 +15,6 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Route("posts")]
-    [Produces(MediaTypeNames.Application.Json)]
     [Authorize(Roles = AuthRole.Admin)]
     public class PostsController : BaseApiController
     {
@@ -54,7 +54,7 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EditPost([FromForm] PostEditDto post, CancellationToken ct)
-        {
+        { 
             var result = await Mediator.Send(new PostEdit.Command(post), ct);
             if (!result)
             {

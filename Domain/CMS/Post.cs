@@ -22,6 +22,7 @@
         public Category Category { get; set; }
 
         public DateTime PublishDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         public string Slug { get; set; }
 

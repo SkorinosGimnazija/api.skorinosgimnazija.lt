@@ -8,12 +8,15 @@
     {
         [Required]
         public bool IsFeatured { get; init; }
+         
+        public IFormFileCollection? NewFiles { get; init; }
+         
+        public IFormFileCollection? NewImages { get; init; }
 
-        public IFormFileCollection Files { get; init; }
+        [Required]
+        public DateTime PublishDate { get; init; } 
 
-        public IFormFileCollection Images { get; init; }
-
-        public DateTime PublishDate { get; init; } = DateTime.Now;
+        public DateTime? ModifiedDate { get; init; }
 
         public string? IntroText { get; init; }
 
@@ -21,6 +24,7 @@
         public bool IsPublished { get; init; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int CategoryId { get; init; }
 
         [Required]

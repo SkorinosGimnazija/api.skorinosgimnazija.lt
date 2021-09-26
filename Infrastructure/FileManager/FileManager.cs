@@ -64,15 +64,13 @@
             return savedFiles;
         }
 
-        public Task DeleteFilesAsync(int postId, List<string> files)
+        public Task DeleteFilesAsync(List<string> files)
         {
             return Task.Run(() =>
             {
-                var folderPath = Path.Combine(_baseUploadPath, postId.ToString());
-
                 foreach (var file in files)
                 {
-                    File.Delete(Path.Combine(folderPath, file));
+                    File.Delete(Path.Combine(_baseUploadPath, file));
                 }
             });
         }

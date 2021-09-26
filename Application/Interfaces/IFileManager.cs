@@ -8,7 +8,7 @@
     {
         Task<List<string>> SaveImagesAsync(int id, IFormFileCollection files);
 
-        Task DeleteFilesAsync(int postId, List<string> files);
+        Task DeleteFilesAsync( List<string> files);
 
         Task DeleteAllFilesAsync(int postId);
 

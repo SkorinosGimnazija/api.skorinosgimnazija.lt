@@ -13,8 +13,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
-    [ApiController]
     [Route("auth")]
+    [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     public class AuthController : ControllerBase
     {

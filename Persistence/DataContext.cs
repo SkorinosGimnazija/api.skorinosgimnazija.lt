@@ -39,7 +39,6 @@
         private static void CreatePostModel(ModelBuilder builder)
         {
             builder.Entity<Post>().HasOne(x => x.Category).WithMany();
-            builder.Entity<Post>().HasIndex(x => x.Title).IsTsVectorExpressionIndex("lithuanian");
         }
 
         private static void CreateCategoryModel(ModelBuilder builder)

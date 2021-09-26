@@ -10,7 +10,10 @@
         {
             CreateMap<Post, PostDto>();
             CreateMap<Post, PostDetailsDto>();
-            CreateMap<PostEditDto, Post>();
+
+            CreateMap<PostEditDto, Post>()
+                .ForMember(x => x.Images, x => x.Ignore())
+                .ForMember(x => x.Files, x => x.Ignore());
 
             CreateMap<PostCreateDto, Post>()
                 .ForMember(x => x.Images, x => x.Ignore())

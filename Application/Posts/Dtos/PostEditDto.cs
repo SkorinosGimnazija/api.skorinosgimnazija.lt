@@ -1,5 +1,6 @@
 ﻿namespace Application.Posts.Dtos
 {
+using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -12,12 +13,17 @@
         [Required]
         public bool IsFeatured { get; init; }
 
-        public List<string> Files { get; init; } = new();
+        public IEnumerable<string>? Files { get; init; }
 
-        public List<string> Images { get; init; } = new();
+        public IEnumerable<string>? Images { get; init; }
 
-        public DateTime PublishDate { get; init; } = DateTime.Now;
+        public IFormFileCollection? NewFiles { get; init; }
 
+        public IFormFileCollection? NewImages { get; init; }
+
+        [Required]
+        public DateTime PublishDate { get; init; }
+        public DateTime? ModifiedDate { get; init; }
         public string? IntroText { get; init; }
 
         [Required]

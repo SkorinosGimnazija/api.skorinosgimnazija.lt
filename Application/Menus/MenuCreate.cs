@@ -5,10 +5,8 @@
     using AutoMapper;
     using Domain.CMS;
     using Dtos;
-    using FluentValidation;
     using MediatR;
     using Persistence;
-    using Validation;
 
     public class MenuCreate
     {
@@ -35,13 +33,7 @@
                 return _mapper.Map(entity, new MenuDto());
             }
 
-            public class CommandValidator : AbstractValidator<Command>
-            {
-                public CommandValidator()
-                {
-                    RuleFor(x => x.Menu).SetValidator(new MenuCreateValidator());
-                }
-            }
+          
         }
     }
 }

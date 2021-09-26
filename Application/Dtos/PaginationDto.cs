@@ -1,22 +1,13 @@
 ﻿namespace Application.Dtos
 {
-    using System;
+    using System.ComponentModel.DataAnnotations;
 
     public record PaginationDto
     {
-        private readonly int _items = 20;
-        private readonly int _page = 0;
+        [Range(1, 20)]
+        public int Items { get; init; } = 10;
 
-        public int Items
-        {
-            get { return _items; }
-            init { _items = Math.Clamp(value, 1, _items); }
-        }
-
-        public int Page
-        {
-            get { return _page; }
-            init { _page = Math.Max(value - 1, 0); }
-        }
+        [Range(0, int.MaxValue / 20)]
+        public int Page { get; init; } = 0;
     }
 }

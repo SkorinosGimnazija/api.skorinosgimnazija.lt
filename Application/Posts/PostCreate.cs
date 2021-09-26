@@ -7,13 +7,11 @@
     using Domain.CMS;
     using Dtos;
     using Extensions;
-    using FluentValidation;
     using Interfaces;
     using MediatR;
     using Microsoft.Extensions.Options;
     using Persistence;
     using Utils;
-    using Validation;
 
     public class PostCreate
     {
@@ -44,19 +42,19 @@
                 _context.Posts.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                if (request.Post.Images.Any())
+                if (request.Post.NewImages is not null)
                 {
-                    entity.Images = await _fileManager.SaveImagesAsync(entity.Id, request.Post.Images);
+                    entity.Images = await _fileManager.SaveImagesAsync(entity.Id, request.Post.NewImages);
                 }
 
-                if (request.Post.Files.Any())
+                if (request.Post.NewFiles is not null)
                 {
-                    entity.Files = await _fileManager.SaveFilesAsync(entity.Id, request.Post.Files);
+                    entity.Files = await _fileManager.SaveFilesAsync(entity.Id, request.Post.NewFiles);
 
                     if (entity.IntroText is not null)
                     {
                         entity.IntroText = entity.IntroText.GenerateFileLinks(entity.Id, _staticWebUrl);
-                    }
+                    } 
 
                     if (entity.Text is not null)
                     {
@@ -64,23 +62,13 @@
                     }
                 }
 
-                if (entity.Files is not null || entity.Images is not null)
-                {
-                    await _context.SaveChangesAsync(cancellationToken);
-                }
+                await _context.SaveChangesAsync(cancellationToken);
 
                 await _searchClient.SavePost(_mapper.Map(entity, new PostSearchDto()));
 
                 return _mapper.Map(entity, new PostDetailsDto());
             }
-
-            public class CommandValidator : AbstractValidator<Command>
-            {
-                public CommandValidator()
-                {
-                    RuleFor(x => x.Post).SetValidator(new PostCreateValidator());
-                }
-            }
+            
         }
     }
 }

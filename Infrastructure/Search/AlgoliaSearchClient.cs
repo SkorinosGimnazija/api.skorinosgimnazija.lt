@@ -41,7 +41,6 @@
 
         public async Task UpdatePost(PostSearchDto post)
         {
-            await RemovePost(int.Parse(post.ObjectID));
             await SavePost(post);
         }
     }

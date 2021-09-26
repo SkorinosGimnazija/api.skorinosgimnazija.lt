@@ -37,8 +37,7 @@
 
                 return await _context.Posts
                     .AsNoTracking()
-                    .Where(x => EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
-                                EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
+                    .Where(x =>  EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                     .OrderByDescending(x => x.PublishDate)
                     .Paginate(request.Pagination)

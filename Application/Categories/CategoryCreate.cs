@@ -5,10 +5,8 @@
     using AutoMapper;
     using Domain.CMS;
     using Dtos;
-    using FluentValidation;
     using MediatR;
     using Persistence;
-    using Validation;
 
     public class CategoryCreate
     {
@@ -35,13 +33,6 @@
                 return _mapper.Map(entity, new CategoryDto());
             }
 
-            public class CommandValidator : AbstractValidator<Command>
-            {
-                public CommandValidator()
-                {
-                    RuleFor(x => x.Category).SetValidator(new CategoryCreateValidator());
-                }
-            }
         }
     }
 }
