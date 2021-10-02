@@ -5,7 +5,7 @@
     public record MenuCreateDto
     {
         [Required]
-        public int Order { get; init; }
+        public  int Order { get; init; }
 
         [Required]
         public string Name { get; init; }
@@ -16,7 +16,7 @@
         public string? Slug { get; init; }
 
         [Required]
-        public int CategoryId { get; init; }
+        public int LanguageId { get; init; }
 
         public string? Url { get; init; }
 

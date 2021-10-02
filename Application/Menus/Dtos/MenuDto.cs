@@ -1,6 +1,7 @@
 ﻿namespace Application.Menus.Dtos
 {
     using System.ComponentModel.DataAnnotations;
+    using Languages.Dtos;
 
     public record MenuDto
     {
@@ -19,7 +20,7 @@
         public bool IsPublished { get; init; }
 
         [Required]
-        public int CategoryId { get; init; }
+        public LanguageDto Language { get; init; }
 
         public string? Url { get; init; }
 

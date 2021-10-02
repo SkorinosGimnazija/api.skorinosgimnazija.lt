@@ -31,9 +31,9 @@
 
         private static void CreateMenuModel(ModelBuilder builder)
         {
-            builder.Entity<Menu>().HasOne(x => x.Category).WithMany();
+            builder.Entity<Menu>().HasOne(x => x.Language).WithMany();
             builder.Entity<Menu>().HasOne(x => x.ParentMenu).WithMany().OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Menu>().HasIndex(x => new { x.Slug, x.CategoryId }).IsUnique();
+            builder.Entity<Menu>().HasIndex(x => new { x.Slug, x.LanguageId }).IsUnique();
         }
 
         private static void CreatePostModel(ModelBuilder builder)

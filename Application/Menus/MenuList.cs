@@ -10,7 +10,7 @@
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using Persistence;
-
+    
     public class MenuList
     {
         public record Query() : IRequest<List<MenuDto>>;

@@ -12,9 +12,9 @@
 
         public string? Slug { get; set; }
 
-        public int CategoryId { get; set; }
+        public int LanguageId { get; set; }
 
-        public Category Category { get; set; }
+        public Language Language { get; set; }
 
         public string? Url { get; set; }
 
