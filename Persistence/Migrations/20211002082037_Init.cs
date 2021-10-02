@@ -57,7 +57,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Code = table.Column<string>(type: "text", nullable: false)
+                    Slug = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,30 +171,83 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LanguageId = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Slug = table.Column<string>(type: "text", nullable: false),
+                    ShowOnHomePage = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Menus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Order = table.Column<int>(type: "integer", nullable: false),
+                    IsPublished = table.Column<bool>(type: "boolean", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Slug = table.Column<string>(type: "text", nullable: true),
+                    LanguageId = table.Column<int>(type: "integer", nullable: false),
+                    Url = table.Column<string>(type: "text", nullable: true),
+                    ParentMenuId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Menus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Menus_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Menus_Menus_ParentMenuId",
+                        column: x => x.ParentMenuId,
+                        principalTable: "Menus",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Clicks = table.Column<int>(type: "integer", nullable: false),
-                    Featured = table.Column<bool>(type: "boolean", nullable: false),
+                    IsFeatured = table.Column<bool>(type: "boolean", nullable: false),
                     Files = table.Column<List<string>>(type: "text[]", nullable: true),
                     Images = table.Column<List<string>>(type: "text[]", nullable: true),
-                    IntroText = table.Column<string>(type: "text", nullable: false),
+                    IntroText = table.Column<string>(type: "text", nullable: true),
                     IsPublished = table.Column<bool>(type: "boolean", nullable: false),
-                    LanguageId = table.Column<int>(type: "integer", nullable: false),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
                     PublishDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     Slug = table.Column<string>(type: "text", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Languages",
+                        name: "FK_Posts_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -237,9 +290,42 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_LanguageId",
-                table: "Posts",
+                name: "IX_Categories_LanguageId",
+                table: "Categories",
                 column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_Slug_LanguageId",
+                table: "Categories",
+                columns: new[] { "Slug", "LanguageId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Languages_Slug",
+                table: "Languages",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_LanguageId",
+                table: "Menus",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_ParentMenuId",
+                table: "Menus",
+                column: "ParentMenuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Menus_Slug_LanguageId",
+                table: "Menus",
+                columns: new[] { "Slug", "LanguageId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_CategoryId",
+                table: "Posts",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -260,6 +346,9 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Menus");
+
+            migrationBuilder.DropTable(
                 name: "Posts");
 
             migrationBuilder.DropTable(
@@ -267,6 +356,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Languages");

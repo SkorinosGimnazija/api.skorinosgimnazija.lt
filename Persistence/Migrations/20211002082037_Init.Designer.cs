@@ -11,18 +11,18 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210715204320_Test4")]
-    partial class Test4
+    [Migration("20211002082037_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Domain.AppRole", b =>
+            modelBuilder.Entity("Domain.Auth.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Domain.AppUser", b =>
+            modelBuilder.Entity("Domain.Auth.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,9 +123,15 @@ namespace Persistence.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("ShowOnHomePage")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -133,7 +139,9 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Slug")
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("Slug", "LanguageId")
                         .IsUnique();
 
                     b.ToTable("Categories");
@@ -162,6 +170,47 @@ namespace Persistence.Migrations
                     b.ToTable("Languages");
                 });
 
+            modelBuilder.Entity("Domain.CMS.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ParentMenuId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("ParentMenuId");
+
+                    b.HasIndex("Slug", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("Menus");
+                });
+
             modelBuilder.Entity("Domain.CMS.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -169,7 +218,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("Clicks")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<List<string>>("Files")
@@ -179,7 +228,6 @@ namespace Persistence.Migrations
                         .HasColumnType("text[]");
 
                     b.Property<string>("IntroText")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsFeatured")
@@ -188,8 +236,8 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsPublished")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("integer");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("timestamp without time zone");
@@ -199,7 +247,6 @@ namespace Persistence.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Text")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -208,7 +255,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Posts");
                 });
@@ -314,7 +361,7 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Domain.CMS.Post", b =>
+            modelBuilder.Entity("Domain.CMS.Category", b =>
                 {
                     b.HasOne("Domain.CMS.Language", "Language")
                         .WithMany()
@@ -325,9 +372,38 @@ namespace Persistence.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("Domain.CMS.Menu", b =>
+                {
+                    b.HasOne("Domain.CMS.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.CMS.Menu", "ParentMenu")
+                        .WithMany()
+                        .HasForeignKey("ParentMenuId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Language");
+
+                    b.Navigation("ParentMenu");
+                });
+
+            modelBuilder.Entity("Domain.CMS.Post", b =>
+                {
+                    b.HasOne("Domain.CMS.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Domain.AppRole", null)
+                    b.HasOne("Domain.Auth.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -336,7 +412,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -345,7 +421,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -354,13 +430,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Domain.AppRole", null)
+                    b.HasOne("Domain.Auth.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,7 +445,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Domain.Auth.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
