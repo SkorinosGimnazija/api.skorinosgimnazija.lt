@@ -1,14 +1,12 @@
-﻿namespace API.Dtos
+﻿namespace API.Dtos;
+
+using System.ComponentModel.DataAnnotations;
+
+public record UserDto
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    [Required]
+    public IEnumerable<string> Roles { get; init; }
 
-    public record UserDto
-    {
-        [Required]
-        public IEnumerable<string> Roles { get; init; }
-
-        [Required]
-        public string UserName { get; init; }
-    }
+    [Required]
+    public string UserName { get; init; }
 }

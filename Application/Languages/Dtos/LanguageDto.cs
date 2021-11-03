@@ -1,16 +1,15 @@
-﻿namespace Application.Languages.Dtos
+﻿namespace Application.Languages.Dtos;
+
+using System.ComponentModel.DataAnnotations;
+
+public record LanguageDto
 {
-    using System.ComponentModel.DataAnnotations;
+    [Required]
+    public int Id { get; init; }
 
-    public record LanguageDto
-    {
-        [Required]
-        public int Id { get; init; }
+    [Required]
+    public string Name { get; init; }
 
-        [Required]
-        public string Name { get; init; }
-
-        [Required]
-        public string Slug { get; init; }
-    }
+    [Required]
+    public string Slug { get; init; }
 }

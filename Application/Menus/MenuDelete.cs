@@ -1,37 +1,34 @@
-﻿namespace Application.Menus
+﻿namespace Application.Menus;
+
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+public class MenuDelete
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using Persistence;
+    public record Command(int Id) : IRequest<bool>;
 
-    public class MenuDelete
+    public class Handler : IRequestHandler<Command, bool>
     {
-        public record Command(int Id) : IRequest<bool>;
+        private readonly DataContext _context;
 
-        public class Handler : IRequestHandler<Command, bool>
+        public Handler(DataContext context)
         {
-            private readonly DataContext _context;
+            _context = context;
+        }
 
-            public Handler(DataContext context)
+        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            if (entity == null)
             {
-                _context = context;
+                return false;
             }
 
-            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-                if (entity == null)
-                {
-                    return false;
-                }
+            _context.Menus.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
 
-                _context.Menus.Remove(entity);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return true;
-            }
+            return true;
         }
     }
 }

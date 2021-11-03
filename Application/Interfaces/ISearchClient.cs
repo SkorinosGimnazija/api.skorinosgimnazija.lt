@@ -1,17 +1,14 @@
-﻿namespace Application.Interfaces
+﻿namespace Application.Interfaces;
+
+using Posts.Dtos;
+
+public interface ISearchClient
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Posts.Dtos;
+    Task SavePost(PostSearchDto post);
 
-    public interface ISearchClient
-    {
-        Task SavePost(PostSearchDto post);
+    Task RemovePost(int id);
 
-        Task RemovePost(int id);
+    Task UpdatePost(PostSearchDto post);
 
-        Task UpdatePost(PostSearchDto post);
-
-        Task<List<PostSearchDto>> Search(string query);
-    }
+    Task<List<PostSearchDto>> Search(string query);
 }

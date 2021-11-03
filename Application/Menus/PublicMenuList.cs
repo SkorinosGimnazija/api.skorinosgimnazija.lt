@@ -1,41 +1,36 @@
-﻿namespace Application.Menus
+﻿namespace Application.Menus;
+
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Dtos;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+public class PublicMenuList
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-    using Dtos;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using Persistence;
+    public record Query(string Language) : IRequest<List<MenuDto>>;
 
-    public class PublicMenuList
+    public class Handler : IRequestHandler<Query, List<MenuDto>>
     {
-        public record Query(string Language) : IRequest<List<MenuDto>>;
+        private readonly DataContext _context;
 
-        public class Handler : IRequestHandler<Query, List<MenuDto>>
+        private readonly IMapper _mapper;
+
+        public Handler(DataContext context, IMapper mapper)
         {
-            private readonly DataContext _context;
+            _context = context;
+            _mapper = mapper;
+        }
 
-            private readonly IMapper _mapper;
-
-            public Handler(DataContext context, IMapper mapper)
-            {
-                _context = context;
-                _mapper = mapper;
-            }
-
-            public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
-            {
-                return await _context.Menus
-                    .AsNoTracking()
-                    .Where(x => x.IsPublished && x.Language.Slug == request.Language)
-                    .OrderBy(x => x.Order)
-                    .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync(cancellationToken);
-            }
+        public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+        {
+            return await _context.Menus
+                .AsNoTracking()
+                .Where(x => x.IsPublished && x.Language.Slug == request.Language)
+                .OrderBy(x => x.Order)
+                .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
         }
     }
 }

@@ -1,14 +1,13 @@
-﻿namespace Application.Languages.Mapping
-{
-    using AutoMapper;
-    using Domain.CMS;
-    using Dtos;
+﻿namespace Application.Languages.Mapping;
 
-    internal class LanguageProfiles : Profile
+using AutoMapper;
+using Domain.CMS;
+using Dtos;
+
+internal class LanguageProfiles : Profile
+{
+    public LanguageProfiles()
     {
-        public LanguageProfiles()
-        {
-            CreateMap<Language, LanguageDto>();
-        }
+        CreateMap<Language, LanguageDto>();
     }
 }

@@ -1,44 +1,41 @@
-﻿namespace Application.Posts
+﻿namespace Application.Posts;
+
+using Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+public class PostDelete
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Interfaces;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using Persistence;
+    public record Command(int Id) : IRequest<bool>;
 
-    public class PostDelete
+    public class Handler : IRequestHandler<Command, bool>
     {
-        public record Command(int Id) : IRequest<bool>;
+        private readonly DataContext _context;
+        private readonly IFileManager _fileManager;
+        private readonly ISearchClient _search;
 
-        public class Handler : IRequestHandler<Command, bool>
+        public Handler(DataContext context, ISearchClient search, IFileManager fileManager)
         {
-            private readonly DataContext _context;
-            private readonly IFileManager _fileManager;
-            private readonly ISearchClient _search;
+            _context = context;
+            _search = search;
+            _fileManager = fileManager;
+        }
 
-            public Handler(DataContext context, ISearchClient search, IFileManager fileManager)
+        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            if (entity is null)
             {
-                _context = context;
-                _search = search;
-                _fileManager = fileManager;
+                return false;
             }
 
-            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-                if (entity is null)
-                {
-                    return false;
-                }
+            _context.Posts.Remove(entity);
+            await _search.RemovePost(entity.Id);
+            await _fileManager.DeleteAllFilesAsync(entity.Id);
+            await _context.SaveChangesAsync(cancellationToken);
 
-                _context.Posts.Remove(entity);
-                await _search.RemovePost(entity.Id);
-                await _fileManager.DeleteAllFilesAsync(entity.Id);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return true;
-            }
+            return true;
         }
     }
 }

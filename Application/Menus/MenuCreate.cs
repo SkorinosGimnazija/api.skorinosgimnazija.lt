@@ -1,39 +1,34 @@
-﻿namespace Application.Menus
+﻿namespace Application.Menus;
+
+using AutoMapper;
+using Domain.CMS;
+using Dtos;
+using MediatR;
+using Persistence;
+
+public class MenuCreate
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Domain.CMS;
-    using Dtos;
-    using MediatR;
-    using Persistence;
+    public record Command(MenuCreateDto Menu) : IRequest<MenuDto>;
 
-    public class MenuCreate
+    public class Handler : IRequestHandler<Command, MenuDto>
     {
-        public record Command(MenuCreateDto Menu) : IRequest<MenuDto>;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public class Handler : IRequestHandler<Command, MenuDto>
+        public Handler(DataContext context, IMapper mapper)
         {
-            private readonly DataContext _context;
-            private readonly IMapper _mapper;
+            _context = context;
+            _mapper = mapper;
+        }
 
-            public Handler(DataContext context, IMapper mapper)
-            {
-                _context = context;
-                _mapper = mapper;
-            }
+        public async Task<MenuDto> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = _mapper.Map(request.Menu, new Menu());
 
-            public async Task<MenuDto> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var entity = _mapper.Map(request.Menu, new Menu());
+            _context.Menus.Add(entity);
+            await _context.SaveChangesAsync(cancellationToken);
 
-                _context.Menus.Add(entity);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return _mapper.Map(entity, new MenuDto());
-            }
-
-          
+            return _mapper.Map(entity, new MenuDto());
         }
     }
 }

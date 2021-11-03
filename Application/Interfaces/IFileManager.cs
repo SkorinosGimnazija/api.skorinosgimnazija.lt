@@ -1,17 +1,14 @@
-﻿namespace Application.Interfaces
+﻿namespace Application.Interfaces;
+
+using Microsoft.AspNetCore.Http;
+
+public interface IFileManager
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
+    Task<List<string>> SaveImagesAsync(int id, IFormFileCollection files);
 
-    public interface IFileManager
-    {
-        Task<List<string>> SaveImagesAsync(int id, IFormFileCollection files);
+    Task DeleteFilesAsync(List<string> files);
 
-        Task DeleteFilesAsync( List<string> files);
+    Task DeleteAllFilesAsync(int postId);
 
-        Task DeleteAllFilesAsync(int postId);
-
-        Task<List<string>> SaveFilesAsync(int postId, IFormFileCollection files);
-    }
+    Task<List<string>> SaveFilesAsync(int postId, IFormFileCollection files);
 }

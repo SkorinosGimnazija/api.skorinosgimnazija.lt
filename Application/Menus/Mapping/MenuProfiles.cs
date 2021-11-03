@@ -1,19 +1,18 @@
-﻿namespace Application.Menus.Mapping
+﻿namespace Application.Menus.Mapping;
+
+using AutoMapper;
+using Domain.CMS;
+using Dtos;
+
+internal class MenuProfiles : Profile
 {
-    using AutoMapper;
-    using Domain.CMS;
-    using Dtos;
-
-    internal class MenuProfiles : Profile
+    public MenuProfiles()
     {
-        public MenuProfiles()
-        {
-            CreateMap<MenuCreateDto, Menu>();
-            CreateMap<MenuEditDto, Menu>();
+        CreateMap<MenuCreateDto, Menu>();
+        CreateMap<MenuEditDto, Menu>();
 
-            CreateMap<Menu, MenuDto>()
-                .ForMember(x => x.ParentMenuId,
-                    x => x.MapFrom(m => m.ParentMenu == null ? (int?) null : m.ParentMenu.Id));
-        }
+        CreateMap<Menu, MenuDto>()
+            .ForMember(x => x.ParentMenuId,
+                x => x.MapFrom(m => m.ParentMenu == null ? (int?) null : m.ParentMenu.Id));
     }
 }

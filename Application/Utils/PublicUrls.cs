@@ -1,11 +1,10 @@
-﻿namespace Application.Utils
+﻿namespace Application.Utils;
+
+public class PublicUrls
 {
-    public class PublicUrls
-    {
-        public string ApiUrl { get; set; }
+    public string ApiUrl { get; set; }
 
-        public string WebUrl { get; set; }
+    public string WebUrl { get; set; }
 
-        public string StaticUrl { get; set; }
-    }
+    public string StaticUrl { get; set; }
 }

@@ -1,16 +1,15 @@
-﻿namespace API.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
+﻿namespace API.Controllers;
 
-    [ApiController]
-    [Route("/")]
-    public class HomeController : ControllerBase
+using Microsoft.AspNetCore.Mvc;
+
+[Route("/")]
+[ApiController]
+public class HomeController : ControllerBase
+{
+    [HttpGet]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public IActionResult Index()
     {
-        [HttpGet]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult Index()
-        {
-            return Ok("👌");
-        }
+        return Ok("👌");
     }
 }

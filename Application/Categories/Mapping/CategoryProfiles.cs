@@ -1,16 +1,15 @@
-﻿namespace Application.Categories.Mapping
-{
-    using AutoMapper;
-    using Domain.CMS;
-    using Dtos;
+﻿namespace Application.Categories.Mapping;
 
-    internal class CategoryProfiles : Profile
+using AutoMapper;
+using Domain.CMS;
+using Dtos;
+
+internal class CategoryProfiles : Profile
+{
+    public CategoryProfiles()
     {
-        public CategoryProfiles()
-        {
-            CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryCreateDto, Category>();
-            CreateMap<CategoryEditDto, Category>();
-        }
+        CreateMap<Category, CategoryDto>();
+        CreateMap<CategoryCreateDto, Category>();
+        CreateMap<CategoryEditDto, Category>();
     }
 }

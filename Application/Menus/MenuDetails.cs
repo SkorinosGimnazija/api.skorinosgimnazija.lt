@@ -1,36 +1,33 @@
-﻿namespace Application.Menus
+﻿namespace Application.Menus;
+
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Dtos;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+public class MenuDetails
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using AutoMapper.QueryableExtensions;
-    using Dtos;
-    using MediatR;
-    using Microsoft.EntityFrameworkCore;
-    using Persistence;
+    public record Query(int Id) : IRequest<MenuDto?>;
 
-    public class MenuDetails
+    public class Handler : IRequestHandler<Query, MenuDto?>
     {
-        public record Query(int Id) : IRequest<MenuDto?>;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public class Handler : IRequestHandler<Query, MenuDto?>
+        public Handler(DataContext context, IMapper mapper)
         {
-            private readonly DataContext _context;
-            private readonly IMapper _mapper;
+            _context = context;
+            _mapper = mapper;
+        }
 
-            public Handler(DataContext context, IMapper mapper)
-            {
-                _context = context;
-                _mapper = mapper;
-            }
-
-            public async Task<MenuDto?> Handle(Query request, CancellationToken cancellationToken)
-            {
-                return await _context.Menus
-                    .AsNoTracking()
-                    .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
-            }
+        public async Task<MenuDto?> Handle(Query request, CancellationToken cancellationToken)
+        {
+            return await _context.Menus
+                .AsNoTracking()
+                .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         }
     }
 }

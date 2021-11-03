@@ -1,19 +1,17 @@
-﻿namespace API.Controllers.Base
+﻿namespace API.Controllers.Base;
+
+using System.Net.Mime;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Produces(MediaTypeNames.Application.Json)]
+public class BaseApiController : ControllerBase
 {
-    using System.Net.Mime;
-    using MediatR;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.DependencyInjection;
+    private IMediator? _mediator;
 
-    [ApiController]
-    [Produces(MediaTypeNames.Application.Json)]
-    public class BaseApiController : ControllerBase
+    protected IMediator Mediator
     {
-        private IMediator? _mediator;
-
-        protected IMediator Mediator
-        {
-            get { return _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!; }
-        }
+        get { return _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!; }
     }
 }

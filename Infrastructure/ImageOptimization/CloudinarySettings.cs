@@ -1,7 +1,6 @@
-﻿namespace Infrastructure.ImageOptimization
+﻿namespace Infrastructure.ImageOptimization;
+
+public record CloudinarySettings
 {
-    public record CloudinarySettings
-    {
-        public string Url { get; set; }
-    }
+    public string Url { get; set; }
 }

@@ -1,11 +1,10 @@
-﻿namespace Application.Interfaces
+﻿namespace Application.Interfaces;
+
+public interface IUserAccessor
 {
-    public interface IUserAccessor
-    {
-        bool IsAdmin();
+    bool IsAdmin();
 
-        bool HasRole(string role);
+    bool HasRole(string role);
 
-        bool IsOwner(int ownerId);
-    }
+    bool IsOwner(int ownerId);
 }

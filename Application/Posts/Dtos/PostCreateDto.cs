@@ -1,38 +1,36 @@
-﻿namespace Application.Posts.Dtos
+﻿namespace Application.Posts.Dtos;
+
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+
+public record PostCreateDto
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Http;
+    [Required]
+    public bool IsFeatured { get; init; }
 
-    public record PostCreateDto
-    {
-        [Required]
-        public bool IsFeatured { get; init; }
-         
-        public IFormFileCollection? NewFiles { get; init; }
-         
-        public IFormFileCollection? NewImages { get; init; }
+    public IFormFileCollection? NewFiles { get; init; }
 
-        [Required]
-        public DateTime PublishDate { get; init; } 
+    public IFormFileCollection? NewImages { get; init; }
 
-        public DateTime? ModifiedDate { get; init; }
+    [Required]
+    public DateTime PublishDate { get; init; }
 
-        public string? IntroText { get; init; }
+    public DateTime? ModifiedDate { get; init; }
 
-        [Required]
-        public bool IsPublished { get; init; }
+    public string? IntroText { get; init; }
 
-        [Required]
-        [Range(1, int.MaxValue)]
-        public int CategoryId { get; init; }
+    [Required]
+    public bool IsPublished { get; init; }
 
-        [Required]
-        public string Slug { get; init; }
+    [Required]
+    [Range(1, int.MaxValue)]
+    public int CategoryId { get; init; }
 
-        public string? Text { get; init; }
+    [Required]
+    public string Slug { get; init; }
 
-        [Required]
-        public string Title { get; init; }
-    }
+    public string? Text { get; init; }
+
+    [Required]
+    public string Title { get; init; }
 }

@@ -1,38 +1,34 @@
-﻿namespace Application.Categories
+﻿namespace Application.Categories;
+
+using AutoMapper;
+using Domain.CMS;
+using Dtos;
+using MediatR;
+using Persistence;
+
+public class CategoryCreate
 {
-    using System.Threading;
-    using System.Threading.Tasks;
-    using AutoMapper;
-    using Domain.CMS;
-    using Dtos;
-    using MediatR;
-    using Persistence;
+    public record Command(CategoryCreateDto Category) : IRequest<CategoryDto>;
 
-    public class CategoryCreate
+    public class Handler : IRequestHandler<Command, CategoryDto>
     {
-        public record Command(CategoryCreateDto Category) : IRequest<CategoryDto>;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public class Handler : IRequestHandler<Command, CategoryDto>
+        public Handler(DataContext context, IMapper mapper)
         {
-            private readonly DataContext _context;
-            private readonly IMapper _mapper;
+            _context = context;
+            _mapper = mapper;
+        }
 
-            public Handler(DataContext context, IMapper mapper)
-            {
-                _context = context;
-                _mapper = mapper;
-            }
+        public async Task<CategoryDto> Handle(Command request, CancellationToken cancellationToken)
+        {
+            var entity = _mapper.Map(request.Category, new Category());
 
-            public async Task<CategoryDto> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var entity = _mapper.Map(request.Category, new Category());
+            _context.Categories.Add(entity);
+            await _context.SaveChangesAsync(cancellationToken);
 
-                _context.Categories.Add(entity);
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return _mapper.Map(entity, new CategoryDto());
-            }
-
+            return _mapper.Map(entity, new CategoryDto());
         }
     }
 }

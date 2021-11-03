@@ -1,6 +1,3 @@
-﻿namespace Infrastructure.ImageOptimization
-{
-    using System;
+﻿namespace Infrastructure.ImageOptimization;
 
-    public record OptimizedImage(string Id, Uri Url);
-}
+public record OptimizedImage(string Id, Uri Url);

@@ -1,47 +1,44 @@
-﻿namespace Infrastructure.Search
+﻿namespace Infrastructure.Search;
+
+using Algolia.Search.Clients;
+using Application.Posts.Dtos;
+using Microsoft.Extensions.Options;
+using ISearchClient = Application.Interfaces.ISearchClient;
+
+public class AlgoliaSearchClient : ISearchClient
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Algolia.Search.Clients;
-    using Application.Posts.Dtos;
-    using Microsoft.Extensions.Options;
-    using ISearchClient = Application.Interfaces.ISearchClient;
+    private readonly SearchClient _client;
+    private readonly SearchIndex _postsIndex;
 
-    public class AlgoliaSearchClient : ISearchClient
+    public AlgoliaSearchClient(IOptions<AlgoliaSettings> options)
     {
-        private readonly SearchClient _client;
-        private readonly SearchIndex _postsIndex;
+        _client = new(options.Value.AppId, options.Value.ApiKey);
+        _postsIndex = _client.InitIndex("posts");
+    }
 
-        public AlgoliaSearchClient(IOptions<AlgoliaSettings> options)
+    public async Task<List<PostSearchDto>> Search(string query)
+    {
+        var result = await _postsIndex.SearchAsync<PostSearchDto>(new(query));
+        return result.Hits;
+    }
+
+    public async Task SavePost(PostSearchDto post)
+    {
+        if (!post.IsPublished)
         {
-            _client = new(options.Value.AppId, options.Value.ApiKey);
-            _postsIndex = _client.InitIndex("posts");
+            return;
         }
 
-        public async Task<List<PostSearchDto>> Search(string query)
-        {
-            var result = await _postsIndex.SearchAsync<PostSearchDto>(new(query));
-            return result.Hits;
-        }
+        await _postsIndex.SaveObjectAsync(post);
+    }
 
-        public async Task SavePost(PostSearchDto post)
-        {
-            if (!post.IsPublished)
-            {
-                return;
-            }
+    public async Task RemovePost(int id)
+    {
+        await _postsIndex.DeleteObjectAsync(id.ToString());
+    }
 
-            await _postsIndex.SaveObjectAsync(post);
-        }
-
-        public async Task RemovePost(int id)
-        {
-            await _postsIndex.DeleteObjectAsync(id.ToString());
-        }
-
-        public async Task UpdatePost(PostSearchDto post)
-        {
-            await SavePost(post);
-        }
+    public async Task UpdatePost(PostSearchDto post)
+    {
+        await SavePost(post);
     }
 }

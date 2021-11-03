@@ -1,25 +1,24 @@
-﻿namespace Application.Menus.Dtos
+﻿namespace Application.Menus.Dtos;
+
+using System.ComponentModel.DataAnnotations;
+
+public record MenuCreateDto
 {
-    using System.ComponentModel.DataAnnotations;
+    [Required]
+    public int Order { get; init; }
 
-    public record MenuCreateDto
-    {
-        [Required]
-        public  int Order { get; init; }
+    [Required]
+    public string Name { get; init; }
 
-        [Required]
-        public string Name { get; init; }
+    [Required]
+    public bool IsPublished { get; init; }
 
-        [Required]
-        public bool IsPublished { get; init; }
+    public string? Slug { get; init; }
 
-        public string? Slug { get; init; }
+    [Required]
+    public int LanguageId { get; init; }
 
-        [Required]
-        public int LanguageId { get; init; }
+    public string? Url { get; init; }
 
-        public string? Url { get; init; }
-
-        public int? ParentMenuId { get; init; }
-    }
+    public int? ParentMenuId { get; init; }
 }

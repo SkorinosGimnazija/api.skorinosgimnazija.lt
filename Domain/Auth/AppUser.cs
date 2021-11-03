@@ -1,8 +1,7 @@
-﻿namespace Domain.Auth
-{
-    using Microsoft.AspNetCore.Identity;
+﻿namespace Domain.Auth;
 
-    public class AppUser : IdentityUser<int>
-    {
-    }
+using Microsoft.AspNetCore.Identity;
+
+public class AppUser : IdentityUser<int>
+{
 }

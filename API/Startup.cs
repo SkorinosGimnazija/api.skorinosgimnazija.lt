@@ -1,163 +1,152 @@
-﻿namespace API
+﻿namespace API;
+
+using Application.Interfaces;
+using Application.Posts;
+using Application.Utils;
+using Domain.Auth;
+using Extensions;
+using Filters;
+using Infrastructure.Auth;
+using Infrastructure.FileManager;
+using Infrastructure.ImageOptimization;
+using Infrastructure.Search;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+
+public class Startup
 {
-    using System.Threading.Tasks;
-    using Application.Interfaces;
-    using Application.Posts;
-    using Application.Utils;
-    using Domain.Auth;
-    using Extensions;
-    using Filters;
-    using Infrastructure.Auth;
-    using Infrastructure.FileManager;
-    using Infrastructure.ImageOptimization;
-    using Infrastructure.Search;
-    using MediatR;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.HttpOverrides;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Persistence;
+    private readonly IConfiguration _config;
 
-    public class Startup
+    public Startup(IConfiguration config)
     {
-        private readonly IConfiguration _config;
+        _config = config;
+    }
 
-        public Startup(IConfiguration config)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        //app.Use(async (context, next) =>
+        //{
+        //    await Task.Delay(1000);
+        //    await next.Invoke();
+        //});
+
+        if (env.IsDevelopment())
         {
-            _config = config;
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API"));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        app.UseForwardedHeaders();
+
+        app.UseCors();
+
+        app.UseRouting();
+
+        app.UseCookiePolicy();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
         {
-            //app.Use(async (context, next) =>
-            //{
-            //    await Task.Delay(1000);
-            //    await next.Invoke();
-            //});
+            var controllers = endpoints.MapControllers();
 
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API"));
+                controllers.WithMetadata(new AllowAnonymousAttribute());
             }
+        });
+    }
 
-            app.UseForwardedHeaders();
-
-            app.UseCors();
-
-            app.UseRouting();
-
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                var controllers = endpoints.MapControllers();
-
-                if (env.IsDevelopment())
-                {
-                    controllers.WithMetadata(new AllowAnonymousAttribute());
-                }
-            });
-        }
-
-        public void ConfigureServices(IServiceCollection services)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.Configure<PublicUrls>(options =>
         {
-            services.Configure<PublicUrls>(options =>
-            {
-                options.ApiUrl = _config.GetApiUrl();
-                options.StaticUrl = _config.GetStaticUrl();
-                options.WebUrl = _config.GetWebUrl();
-            });
-            services.Configure<CloudinarySettings>(options => { options.Url = _config.GetCloudinaryUrl(); });
-            services.Configure<FileManagerSettings>(options => { options.UploadPath = _config.GetFileUploadPath(); });
-            services.Configure<AlgoliaSettings>(options =>
-            {
-                options.ApiKey = _config.GetAlgoliaApiKey();
-                options.AppId = _config.GetAlgoliaAppId();
-            });
+            options.ApiUrl = _config.GetApiUrl();
+            options.StaticUrl = _config.GetStaticUrl();
+            options.WebUrl = _config.GetWebUrl();
+        });
+        services.Configure<CloudinarySettings>(options => { options.Url = _config.GetCloudinaryUrl(); });
+        services.Configure<FileManagerSettings>(options => { options.UploadPath = _config.GetFileUploadPath(); });
+        services.Configure<AlgoliaSettings>(options =>
+        {
+            options.ApiKey = _config.GetAlgoliaApiKey();
+            options.AppId = _config.GetAlgoliaAppId();
+        });
 
-            services.AddScoped<IUserAccessor, UserAccessor>();
-            services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
-            services.AddSingleton<ISearchClient, AlgoliaSearchClient>();
-            services.AddSingleton<IFileManager, FileManager>();
+        services.AddScoped<IUserAccessor, UserAccessor>();
+        services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
+        services.AddSingleton<ISearchClient, AlgoliaSearchClient>();
+        services.AddSingleton<IFileManager, FileManager>();
 
-            services.AddSwaggerGen(options =>
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new() { Title = "Skorinos Gimnazija", Version = "v1" });
+        });
+
+        services.Configure<ForwardedHeadersOptions>(
+            options =>
             {
-                options.SwaggerDoc("v1", new() { Title = "Skorinos Gimnazija", Version = "v1" });
-            });
-
-            services.Configure<ForwardedHeadersOptions>(
-                options =>
-                {
-                    options.KnownProxies.Clear();
-                    options.KnownNetworks.Clear();
-                    options.ForwardedHostHeaderName = "Host";
-                    options.ForwardedHeaders = ForwardedHeaders.All;
-                });
-
-            services.AddDbContext<DataContext>(options =>
-            {
-                options.UseNpgsql(_config.GetDatabaseConnectionString());
+                options.KnownProxies.Clear();
+                options.KnownNetworks.Clear();
+                options.ForwardedHostHeaderName = "Host";
+                options.ForwardedHeaders = ForwardedHeaders.All;
             });
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddDefaultPolicy(
-                        x =>
-                        {
-                            x.AllowAnyMethod().AllowAnyHeader().AllowCredentials();
-                            x.WithOrigins(_config.GetCorsOrigins());
-                        });
-                });
+        services.AddDbContext<DataContext>(options => { options.UseNpgsql(_config.GetDatabaseConnectionString()); });
 
-            services.AddMediatR(typeof(PostCreate).Assembly);
-            services.AddAutoMapper(typeof(PostCreate).Assembly);
-
-            services.AddIdentity<AppUser, AppRole>(options =>
-                {
-                    options.User.RequireUniqueEmail = true;
-                    options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
-                })
-                .AddEntityFrameworkStores<DataContext>();
-
-            services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
-
-            services.ConfigureApplicationCookie(
-                options =>
-                {
-                    options.Cookie.Name = "auth";
-
-                    options.Events.OnRedirectToAccessDenied = x =>
+        services.AddCors(
+            options =>
+            {
+                options.AddDefaultPolicy(
+                    x =>
                     {
-                        x.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        return Task.CompletedTask;
-                    };
-
-                    options.Events.OnRedirectToLogin = x =>
-                    {
-                        x.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        return Task.CompletedTask;
-                    };
-                });
-
-            services.AddAuthentication()
-                .AddGoogle(
-                    options =>
-                    {
-                        options.ClientId = _config.GetGoogleClientId();
-                        options.ClientSecret = _config.GetGoogleClientSecret();
+                        x.AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                        x.WithOrigins(_config.GetCorsOrigins());
                     });
+            });
 
-            services.AddControllers(options => { options.Filters.Add<ExceptionLoggingFilter>(); });
-        }
+        services.AddMediatR(typeof(PostCreate).Assembly);
+        services.AddAutoMapper(typeof(PostCreate).Assembly);
+
+        services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters += "ąčęįšųūĄČĘĖĮŠŲŪ ";
+            })
+            .AddEntityFrameworkStores<DataContext>();
+
+        services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
+
+        services.ConfigureApplicationCookie(
+            options =>
+            {
+                options.Cookie.Name = "auth";
+
+                options.Events.OnRedirectToAccessDenied = x =>
+                {
+                    x.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return Task.CompletedTask;
+                };
+
+                options.Events.OnRedirectToLogin = x =>
+                {
+                    x.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+            });
+
+        services.AddAuthentication()
+            .AddGoogle(
+                options =>
+                {
+                    options.ClientId = _config.GetGoogleClientId();
+                    options.ClientSecret = _config.GetGoogleClientSecret();
+                });
+
+        services.AddControllers(options => { options.Filters.Add<ExceptionLoggingFilter>(); });
     }
 }
