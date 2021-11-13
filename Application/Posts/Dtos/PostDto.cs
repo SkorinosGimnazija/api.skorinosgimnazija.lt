@@ -1,7 +1,7 @@
 ﻿namespace Application.Posts.Dtos;
 
-using System.ComponentModel.DataAnnotations;
 using Categories.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 public record PostDto
 {
@@ -15,7 +15,7 @@ public record PostDto
     public bool IsPublished { get; init; }
 
     [Required]
-    public CategoryDto Category { get; init; }
+    public CategoryDto Category { get; init; } = default!;
 
     [Required]
     public DateTime PublishDate { get; init; }
@@ -23,8 +23,8 @@ public record PostDto
     public DateTime? ModifiedDate { get; init; }
 
     [Required]
-    public string Slug { get; init; }
+    public string Slug { get; init; } = default!;
 
     [Required]
-    public string Title { get; init; }
+    public string Title { get; init; } = default!;
 }

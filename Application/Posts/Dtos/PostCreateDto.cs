@@ -1,7 +1,7 @@
 ﻿namespace Application.Posts.Dtos;
 
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 public record PostCreateDto
 {
@@ -27,10 +27,10 @@ public record PostCreateDto
     public int CategoryId { get; init; }
 
     [Required]
-    public string Slug { get; init; }
+    public string Slug { get; init; } = default!;
 
     public string? Text { get; init; }
 
     [Required]
-    public string Title { get; init; }
+    public string Title { get; init; } = default!;
 }

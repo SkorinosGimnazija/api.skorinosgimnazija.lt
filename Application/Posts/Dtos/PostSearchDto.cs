@@ -6,7 +6,7 @@ public record PostSearchDto
 {
     [Required]
     // ReSharper disable once InconsistentNaming
-    public string ObjectID { get; init; }
+    public string ObjectID { get; init; } = default!;
 
     [Required]
     public bool IsPublished { get; init; }
@@ -15,7 +15,7 @@ public record PostSearchDto
     public DateTime PublishDate { get; init; }
 
     [Required]
-    public string Title { get; init; }
+    public string Title { get; init; } = default!;
 
     public string? Text { get; init; }
 }

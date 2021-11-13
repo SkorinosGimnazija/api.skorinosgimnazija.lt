@@ -7,7 +7,7 @@ using Persistence;
 
 public class Program
 {
-    public static IHostBuilder CreateHostBuilder(string[] args)
+    private static IHostBuilder CreateHostBuilder(string[] args)
     {
         return Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
@@ -20,11 +20,11 @@ public class Program
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
-        using var scope = host.Services.CreateScope();
-        var services = scope.ServiceProvider;
 
-        try
+        using (var scope = host.Services.CreateScope())
         {
+            var services = scope.ServiceProvider;
+
             var context = services.GetRequiredService<DataContext>();
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
             var userManager = services.GetRequiredService<UserManager<AppUser>>();
@@ -33,11 +33,6 @@ public class Program
 
             await Seed.CreateRoles(roleManager);
             await Seed.CreateAdmin(userManager);
-        }
-        catch (Exception e)
-        {
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            logger.LogError(e, "Migration error");
         }
 
         await host.RunAsync();

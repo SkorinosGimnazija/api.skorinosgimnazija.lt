@@ -7,8 +7,7 @@ using Domain.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("menus")]
-[Authorize(Roles = AuthRole.Admin)]
+[Authorize(Roles = Auth.Role.Admin)]
 public class MenusController : BaseApiController
 {
     [HttpGet(Name = "GetMenus")]

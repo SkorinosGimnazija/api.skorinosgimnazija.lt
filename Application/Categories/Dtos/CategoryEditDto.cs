@@ -11,10 +11,10 @@ public record CategoryEditDto
     public int LanguageId { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Name { get; init; } = default!;
 
     [Required]
-    public string Slug { get; init; }
+    public string Slug { get; init; } = default!;
 
     [Required]
     public bool ShowOnHomePage { get; init; }

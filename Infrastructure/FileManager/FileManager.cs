@@ -1,10 +1,10 @@
 ﻿namespace Infrastructure.FileManager;
 
-using System.Collections.Concurrent;
 using Application.Interfaces;
 using ImageOptimization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using System.Collections.Concurrent;
 
 public sealed class FileManager : IFileManager, IDisposable
 {

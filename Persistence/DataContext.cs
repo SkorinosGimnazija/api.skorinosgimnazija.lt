@@ -11,13 +11,13 @@ public class DataContext : IdentityDbContext<AppUser, AppRole, int>
     {
     }
 
-    public DbSet<Category> Categories { get; init; }
+    public DbSet<Category> Categories { get; init; } = default!;
 
-    public DbSet<Language> Languages { get; init; }
+    public DbSet<Language> Languages { get; init; } = default!;
 
-    public DbSet<Menu> Menus { get; init; }
+    public DbSet<Menu> Menus { get; init; } = default!;
 
-    public DbSet<Post> Posts { get; init; }
+    public DbSet<Post> Posts { get; init; } = default!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

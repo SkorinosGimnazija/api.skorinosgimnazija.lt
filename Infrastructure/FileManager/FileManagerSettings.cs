@@ -2,5 +2,5 @@
 
 public record FileManagerSettings
 {
-    public string UploadPath { get; set; }
+    public string UploadPath { get; set; } = default!;
 }

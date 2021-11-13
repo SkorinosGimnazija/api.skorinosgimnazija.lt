@@ -2,9 +2,7 @@
 
 public class PublicUrls
 {
-    public string ApiUrl { get; set; }
+    public string ApiUrl { get; set; } = default!;
 
-    public string WebUrl { get; set; }
-
-    public string StaticUrl { get; set; }
+    public string StaticUrl { get; set; } = default!;
 }

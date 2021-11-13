@@ -7,8 +7,7 @@ using Domain.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("categories")]
-[Authorize(Roles = AuthRole.Admin)]
+[Authorize(Roles = Auth.Role.Admin)]
 public class CategoriesController : BaseApiController
 {
     [HttpGet(Name = "GetCategories")]

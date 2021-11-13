@@ -14,7 +14,7 @@ public static class Seed
             return;
         }
 
-        foreach (var role in AuthRole.GetAllRoles())
+        foreach (var role in Auth.Roles)
         {
             if (await userManager.IsInRoleAsync(admin, role))
             {
@@ -27,7 +27,7 @@ public static class Seed
 
     public static async Task CreateRoles(RoleManager<AppRole> roleManager)
     {
-        foreach (var role in AuthRole.GetAllRoles())
+        foreach (var role in Auth.Roles)
         {
             if (await roleManager.RoleExistsAsync(role))
             {

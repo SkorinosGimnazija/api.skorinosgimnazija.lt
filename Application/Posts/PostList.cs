@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class PostList
+public static class PostList
 {
     public record Query(PaginationDto Pagination) : IRequest<List<PostDto>>;
 

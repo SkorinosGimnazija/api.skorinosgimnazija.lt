@@ -2,7 +2,7 @@
 
 public record AlgoliaSettings
 {
-    public string AppId { get; set; }
+    public string AppId { get; set; } = default!;
 
-    public string ApiKey { get; set; }
+    public string ApiKey { get; set; } = default!;
 }

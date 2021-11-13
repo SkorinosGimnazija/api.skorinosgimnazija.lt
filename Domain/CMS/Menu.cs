@@ -8,13 +8,13 @@ public class Menu
 
     public bool IsPublished { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
     public string? Slug { get; set; }
 
     public int LanguageId { get; set; }
 
-    public Language Language { get; set; }
+    public Language Language { get; set; } = default!;
 
     public string? Url { get; set; }
 

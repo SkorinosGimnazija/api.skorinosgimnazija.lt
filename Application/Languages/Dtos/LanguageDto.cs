@@ -8,8 +8,8 @@ public record LanguageDto
     public int Id { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Name { get; init; } = default!;
 
     [Required]
-    public string Slug { get; init; }
+    public string Slug { get; init; } = default!;
 }

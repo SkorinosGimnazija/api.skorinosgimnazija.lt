@@ -13,6 +13,6 @@ internal class MenuProfiles : Profile
 
         CreateMap<Menu, MenuDto>()
             .ForMember(x => x.ParentMenuId,
-                x => x.MapFrom(m => m.ParentMenu == null ? (int?) null : m.ParentMenu.Id));
+                x => x.MapFrom(m => m.ParentMenu == null ? (int?)null : m.ParentMenu.Id));
     }
 }

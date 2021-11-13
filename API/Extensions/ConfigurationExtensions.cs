@@ -11,8 +11,11 @@ public static class ConfigurationExtensions
             "^(?<protocol>.*)://(?<username>.*):(?<password>.*)@(?<host>.*):(?<port>.*)/(?<database>.*)$");
         var data = regex.Matches(url)[0].Groups;
 
-        return
-            $"Host={data["host"]};Port={data["port"]};Database={data["database"]};Username={data["username"]};Password={data["password"]}";
+        return $"Host={data["host"]};" +
+               $"Port={data["port"]};" +
+               $"Database={data["database"]};" +
+               $"Username={data["username"]};" +
+               $"Password={data["password"]}";
     }
 
     public static string[] GetCorsOrigins(this IConfiguration config)
@@ -63,10 +66,5 @@ public static class ConfigurationExtensions
     public static string GetStaticUrl(this IConfiguration config)
     {
         return config["STATIC_URL"];
-    }
-
-    public static string GetWebUrl(this IConfiguration config)
-    {
-        return config["WEB_URL"];
     }
 }

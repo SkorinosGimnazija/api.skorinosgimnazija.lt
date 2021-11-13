@@ -1,10 +1,10 @@
 ﻿namespace API.Filters;
 
+using Extensions;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
-using Extensions;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 public class ExceptionLoggingFilter : ExceptionFilterAttribute
 {
@@ -31,8 +31,7 @@ public class ExceptionLoggingFilter : ExceptionFilterAttribute
         {
             var message = new ExceptionMessage
             {
-                Title = context.Exception.GetType().Name,
-                Text = $"<p>{context.Exception}</p>"
+                Title = context.Exception.GetType().Name, Text = $"<p>{context.Exception}</p>"
             };
 
             var content = new StringContent(JsonSerializer.Serialize(message), Encoding.UTF8,

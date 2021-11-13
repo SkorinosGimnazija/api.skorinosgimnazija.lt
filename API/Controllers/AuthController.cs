@@ -1,17 +1,14 @@
 ﻿namespace API.Controllers;
 
-using System.Net.Mime;
-using System.Security.Claims;
+using Base;
 using Domain.Auth;
 using Dtos;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
-[Route("auth")]
-[ApiController]
-[Produces(MediaTypeNames.Application.Json)]
-public class AuthController : ControllerBase
+public class AuthController : BaseApiController
 {
     private readonly ILogger<AuthController> _logger;
 
@@ -40,7 +37,8 @@ public class AuthController : ControllerBase
         return Ok(
             new UserDto
             {
-                UserName = User.FindFirstValue(ClaimTypes.Name),
+                DisplayName = User.FindFirstValue(ClaimTypes.Name),
+                Email = User.FindFirstValue(ClaimTypes.Email),
                 Roles = User.FindAll(ClaimTypes.Role).Select(x => x.Value)
             });
     }
@@ -67,8 +65,10 @@ public class AuthController : ControllerBase
             return BadRequest();
         }
 
-        var loginResult =
-            await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+        var provider = info.LoginProvider;
+        var key = info.ProviderKey;
+        var loginResult = await _signInManager.ExternalLoginSignInAsync(provider, key, false, true);
+
         if (loginResult.Succeeded)
         {
             return Redirect(Uri.UnescapeDataString(returnUrl));
@@ -77,21 +77,27 @@ public class AuthController : ControllerBase
         var user = new AppUser
         {
             Email = info.Principal.FindFirstValue(ClaimTypes.Email),
-            UserName = info.Principal.FindFirstValue(ClaimTypes.Name)
+            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+            DisplayName = info.Principal.FindFirstValue(ClaimTypes.Name)
         };
 
         var result = await _userManager.CreateAsync(user);
+
         if (!result.Succeeded)
         {
-            _logger.LogError($"User creation failed // {user}");
-            return BadRequest(result.Errors);
+            return Problem();
         }
 
         result = await _userManager.AddLoginAsync(user, info);
+
         if (!result.Succeeded)
         {
-            _logger.LogError($"User login info failed // {user}");
-            return BadRequest(result.Errors);
+            return Problem();
+        }
+
+        if (user.NormalizedEmail.EndsWith(Auth.NormalizedEmail))
+        {
+            await _userManager.AddToRoleAsync(user, Auth.Role.Teacher);
         }
 
         await _signInManager.SignInAsync(user, false);

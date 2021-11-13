@@ -1,10 +1,11 @@
 ﻿namespace API.Controllers.Base;
 
-using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 [ApiController]
+[Route("[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 public class BaseApiController : ControllerBase
 {

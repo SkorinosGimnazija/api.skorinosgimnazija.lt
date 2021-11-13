@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 using Persistence;
 using Utils;
 
-public class PostEdit
+public static class PostEdit
 {
     public record Command(PostEditDto Post) : IRequest<bool>;
 
@@ -23,13 +23,13 @@ public class PostEdit
         private readonly string _staticWebUrl;
 
         public Handler(DataContext context, ISearchClient search, IFileManager fileManager, IMapper mapper,
-            IOptions<PublicUrls> options)
+            IOptions<PublicUrls> urls)
         {
             _context = context;
             _search = search;
             _fileManager = fileManager;
             _mapper = mapper;
-            _staticWebUrl = options.Value.StaticUrl;
+            _staticWebUrl = urls.Value.StaticUrl;
         }
 
         public async Task<bool> Handle(Command request, CancellationToken cancellationToken)

@@ -1,7 +1,7 @@
 ﻿namespace Application.Menus.Dtos;
 
-using System.ComponentModel.DataAnnotations;
 using Languages.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 public record MenuDto
 {
@@ -12,7 +12,7 @@ public record MenuDto
     public int Order { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Name { get; init; } = default!;
 
     public string? Slug { get; init; }
 
@@ -20,7 +20,7 @@ public record MenuDto
     public bool IsPublished { get; init; }
 
     [Required]
-    public LanguageDto Language { get; init; }
+    public LanguageDto Language { get; init; } = default!;
 
     public string? Url { get; init; }
 

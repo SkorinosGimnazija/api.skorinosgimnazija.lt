@@ -8,8 +8,7 @@ using Domain.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("posts")]
-[Authorize(Roles = AuthRole.Admin)]
+[Authorize(Roles = Auth.Role.Admin)]
 public class PostsController : BaseApiController
 {
     [HttpGet(Name = "GetPosts")]

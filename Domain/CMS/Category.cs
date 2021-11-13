@@ -6,11 +6,11 @@ public class Category
 
     public int LanguageId { get; set; }
 
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 
-    public string Slug { get; set; }
+    public string Slug { get; set; } = default!;
 
-    public Language Language { get; set; }
+    public Language Language { get; set; } = default!;
 
     public bool ShowOnHomePage { get; set; }
 }

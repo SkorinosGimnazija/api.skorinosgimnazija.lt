@@ -1,18 +1,16 @@
 ﻿namespace Infrastructure.Auth;
 
-using System.Security.Claims;
 using Application.Interfaces;
 using Domain.Auth;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 public class UserAccessor : IUserAccessor
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ClaimsPrincipal? _user;
 
     public UserAccessor(IHttpContextAccessor httpContextAccessor)
     {
-        _httpContextAccessor = httpContextAccessor;
         _user = httpContextAccessor.HttpContext?.User;
     }
 
@@ -28,7 +26,7 @@ public class UserAccessor : IUserAccessor
 
     public bool IsAdmin()
     {
-        return HasRole(AuthRole.Admin);
+        return HasRole(Auth.Role.Admin);
     }
 
     public bool HasRole(string role)

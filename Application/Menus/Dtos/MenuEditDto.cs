@@ -11,7 +11,7 @@ public record MenuEditDto
     public int Order { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Name { get; init; } = default!;
 
     public string? Slug { get; init; }
 

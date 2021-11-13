@@ -30,8 +30,7 @@ public class CloudinaryImageOptimizer : IImageOptimizer
 
         var uploadParams = new ImageUploadParams
         {
-            Transformation = _defaultTransformation,
-            File = new(image.FileName, stream)
+            Transformation = _defaultTransformation, File = new(image.FileName, stream)
         };
 
         var result = await _cloudinary.UploadAsync(uploadParams);

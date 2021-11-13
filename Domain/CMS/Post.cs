@@ -16,15 +16,15 @@ public class Post
 
     public int CategoryId { get; set; }
 
-    public Category Category { get; set; }
+    public Category Category { get; set; } = default!;
 
     public DateTime PublishDate { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
 
-    public string Slug { get; set; }
+    public string Slug { get; set; } = default!;
 
     public string? Text { get; set; }
 
-    public string Title { get; set; }
+    public string Title { get; set; } = default!;
 }

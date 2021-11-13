@@ -29,9 +29,9 @@ public class PublicPostSearchList
         {
             return await _context.Posts
                 .AsNoTracking()
-                .Where(x => x.IsPublished && x.PublishDate <= DateTime.Now &&
-                            x.Category.Language.Slug == request.Language &&
-                            EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText) ||
+                .Where(x => (x.IsPublished && x.PublishDate <= DateTime.Now &&
+                             x.Category.Language.Slug == request.Language &&
+                             EF.Functions.ToTsVector("lithuanian", x.Title).Matches(request.SearchText)) ||
                             EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(x => x.PublishDate)

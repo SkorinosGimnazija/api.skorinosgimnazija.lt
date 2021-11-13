@@ -8,7 +8,7 @@ public record MenuCreateDto
     public int Order { get; init; }
 
     [Required]
-    public string Name { get; init; }
+    public string Name { get; init; } = default!;
 
     [Required]
     public bool IsPublished { get; init; }
