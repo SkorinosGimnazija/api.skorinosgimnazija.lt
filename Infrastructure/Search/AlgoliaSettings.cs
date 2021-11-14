@@ -5,4 +5,6 @@ public record AlgoliaSettings
     public string AppId { get; set; } = default!;
 
     public string ApiKey { get; set; } = default!;
+
+    public string IndexPrefix { get; set; } = default!;
 }

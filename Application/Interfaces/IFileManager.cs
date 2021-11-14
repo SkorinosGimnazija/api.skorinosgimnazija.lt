@@ -6,9 +6,9 @@ public interface IFileManager
 {
     Task<List<string>> SaveImagesAsync(int id, IFormFileCollection files);
 
-    Task DeleteFilesAsync(List<string> files);
+    void DeleteFiles(List<string> files);
 
-    Task DeleteAllFilesAsync(int postId);
+    void DeleteAllFiles(int postId);
 
     Task<List<string>> SaveFilesAsync(int postId, IFormFileCollection files);
 }

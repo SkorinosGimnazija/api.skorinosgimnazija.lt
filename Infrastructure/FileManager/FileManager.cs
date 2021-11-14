@@ -58,28 +58,22 @@ public sealed class FileManager : IFileManager, IDisposable
         return savedFiles;
     }
 
-    public Task DeleteFilesAsync(List<string> files)
+    public void DeleteFiles(List<string> files)
     {
-        return Task.Run(() =>
+        foreach (var file in files)
         {
-            foreach (var file in files)
-            {
-                File.Delete(Path.Combine(_baseUploadPath, file));
-            }
-        });
+            File.Delete(Path.Combine(_baseUploadPath, file));
+        }
     }
 
-    public Task DeleteAllFilesAsync(int postId)
+    public void DeleteAllFiles(int postId)
     {
-        return Task.Run(() =>
-        {
-            var folderPath = Path.Combine(_baseUploadPath, postId.ToString());
+        var folderPath = Path.Combine(_baseUploadPath, postId.ToString());
 
-            if (Directory.Exists(folderPath))
-            {
-                Directory.Delete(folderPath, true);
-            }
-        });
+        if (Directory.Exists(folderPath))
+        {
+            Directory.Delete(folderPath, true);
+        }
     }
 
     private async Task<string> DownloadFileAsync(Uri url, string directoryPath)

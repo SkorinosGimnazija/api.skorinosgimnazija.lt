@@ -3,6 +3,7 @@
 using Application.Interfaces;
 using Application.Posts;
 using Application.Utils;
+using Core;
 using Domain.Auth;
 using Extensions;
 using Filters;
@@ -12,6 +13,7 @@ using Infrastructure.ImageOptimization;
 using Infrastructure.Search;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -84,11 +86,7 @@ public class Startup
         {
             options.ApiKey = _config.GetAlgoliaApiKey();
             options.AppId = _config.GetAlgoliaAppId();
-        });
-
-        services.Configure<CookiePolicyOptions>(options =>
-        {
-            options.Secure = CookieSecurePolicy.Always;
+            options.IndexPrefix = _config.IsProduction() ? "prod_" : "dev_";
         });
 
         services.Configure<ForwardedHeadersOptions>(options =>
@@ -99,22 +97,8 @@ public class Startup
             options.ForwardedHeaders = ForwardedHeaders.All;
         });
 
-        services.ConfigureApplicationCookie(options =>
-        {
-            options.Events.OnRedirectToAccessDenied = x =>
-            {
-                x.Response.StatusCode = StatusCodes.Status403Forbidden;
-                return Task.CompletedTask;
-            };
-
-            options.Events.OnRedirectToLogin = x =>
-            {
-                x.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return Task.CompletedTask;
-            };
-        });
-
         services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, AppUserClaimsPrincipalFactory>();
+
         services.AddScoped<IUserAccessor, UserAccessor>();
         services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
         services.AddSingleton<ISearchClient, AlgoliaSearchClient>();
@@ -148,6 +132,30 @@ public class Startup
                 options.ClientSecret = _config.GetGoogleClientSecret();
             });
 
-        services.AddControllers(options => { options.Filters.Add<ExceptionLoggingFilter>(); });
+        services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.Secure = CookieSecurePolicy.Always;
+            options.HttpOnly = HttpOnlyPolicy.Always;
+        });
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.Events.OnRedirectToAccessDenied = x =>
+            {
+                x.Response.StatusCode = StatusCodes.Status403Forbidden;
+                return Task.CompletedTask;
+            };
+
+            options.Events.OnRedirectToLogin = x =>
+            {
+                x.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            };
+        });
+
+        services.AddControllers(options =>
+        {
+            options.Filters.Add<ExceptionLoggingFilter>();
+        });
     }
 }

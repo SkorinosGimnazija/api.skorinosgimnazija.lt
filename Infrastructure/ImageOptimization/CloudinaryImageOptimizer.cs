@@ -35,7 +35,7 @@ public class CloudinaryImageOptimizer : IImageOptimizer
 
         var result = await _cloudinary.UploadAsync(uploadParams);
 
-        if (result.Error != null)
+        if (result.Error is not null)
         {
             throw new(result.Error.Message);
         }

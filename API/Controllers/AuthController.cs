@@ -48,9 +48,8 @@ public class AuthController : BaseApiController
     public IActionResult LoginGoogle(string returnUrl)
     {
         var redirectUrl = Url.Action(nameof(LoginCallback), new { returnUrl });
-        var properties = _signInManager.ConfigureExternalAuthenticationProperties(
-            GoogleDefaults.AuthenticationScheme,
-            redirectUrl);
+        var properties =
+            _signInManager.ConfigureExternalAuthenticationProperties(GoogleDefaults.DisplayName, redirectUrl);
 
         return Challenge(properties, GoogleDefaults.AuthenticationScheme);
     }

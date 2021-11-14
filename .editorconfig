@@ -226,3 +226,9 @@ dotnet_diagnostic.RCS1021.severity = none
 
 # RCS1080: Use 'Count/Length' property instead of 'Any' method.
 dotnet_diagnostic.RCS1080.severity = none
+
+# CA2016: Forward the 'CancellationToken' parameter to methods
+dotnet_diagnostic.CA2016.severity = none
+
+# IDE0079: Remove unnecessary suppression
+dotnet_diagnostic.IDE0079.severity = none

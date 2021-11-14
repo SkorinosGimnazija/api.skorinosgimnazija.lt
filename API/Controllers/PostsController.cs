@@ -23,32 +23,32 @@ public class PostsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostDetailsDto>> GetPost(int id, CancellationToken ct)
     {
-        var entity = await Mediator.Send(new PostDetails.Query(id), ct);
-        if (entity is null)
+        var result = await Mediator.Send(new PostDetails.Query(id), ct);
+        if (result is null)
         {
             return NotFound();
         }
 
-        return entity;
+        return result;
     }
 
     [HttpPost(Name = "CreatePost")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm] PostCreateDto post, CancellationToken ct)
+    public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm] PostCreateDto post)
     {
-        var entity = await Mediator.Send(new PostCreate.Command(post), ct);
+        var result = await Mediator.Send(new PostCreate.Command(post));
 
-        return CreatedAtAction(nameof(GetPost), new { entity.Id }, entity);
+        return CreatedAtAction(nameof(GetPost), new { result.Id }, result);
     }
 
     [HttpPut(Name = "EditPost")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> EditPost([FromForm] PostEditDto post, CancellationToken ct)
+    public async Task<IActionResult> EditPost([FromForm] PostEditDto post)
     {
-        var result = await Mediator.Send(new PostEdit.Command(post), ct);
+        var result = await Mediator.Send(new PostEdit.Command(post));
         if (!result)
         {
             return NotFound();
@@ -91,7 +91,7 @@ public class PostsController : BaseApiController
     public async Task<List<PostDto>> SearchPosts(string text, [FromQuery] PaginationDto pagination,
         CancellationToken ct)
     {
-        return await Mediator.Send(new PostSearchList.Query(text, pagination), ct);
+        return await Mediator.Send(new PostSearch.Query(text, pagination), ct);
     }
 
     [AllowAnonymous]
@@ -100,13 +100,13 @@ public class PostsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PostDetailsDto>> GetPublicPost(int id, CancellationToken ct)
     {
-        var entity = await Mediator.Send(new PublicPostDetails.Query(id), ct);
-        if (entity is null)
+        var result = await Mediator.Send(new PublicPostDetails.Query(id), ct);
+        if (result is null)
         {
             return NotFound();
         }
 
-        return entity;
+        return result;
     }
 
     [AllowAnonymous]
@@ -119,11 +119,11 @@ public class PostsController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/{language}/search/{text:minlength(3)}", Name = "SearchPublicPostsByLanguageAndText")]
+    [HttpGet("public/search/{text:minlength(3)}", Name = "SearchPublicPostsByText")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<PostDto>> SearchPublicPosts(string language, string text,
-        [FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<List<PostDto>> SearchPublicPosts(string text, [FromQuery] PaginationDto pagination,
+        CancellationToken ct)
     {
-        return await Mediator.Send(new PublicPostSearchList.Query(language, text, pagination), ct);
+        return await Mediator.Send(new PublicPostSearchList.Query(text, pagination), ct);
     }
 }

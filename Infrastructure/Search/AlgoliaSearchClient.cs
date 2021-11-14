@@ -7,38 +7,34 @@ using ISearchClient = Application.Interfaces.ISearchClient;
 
 public class AlgoliaSearchClient : ISearchClient
 {
-    private readonly SearchClient _client;
+    private readonly SearchIndex _menusIndex;
     private readonly SearchIndex _postsIndex;
 
     public AlgoliaSearchClient(IOptions<AlgoliaSettings> options)
     {
-        _client = new(options.Value.AppId, options.Value.ApiKey);
-        _postsIndex = _client.InitIndex("posts");
+        //TODO pagination ?
+
+        var client = new SearchClient(options.Value.AppId, options.Value.ApiKey);
+
+        _postsIndex = client.InitIndex(options.Value.IndexPrefix + "posts");
+        _menusIndex = client.InitIndex(options.Value.IndexPrefix + "menus");
     }
 
-    public async Task<List<PostSearchDto>> Search(string query)
+    public async Task<List<int>> SearchPost(string query, CancellationToken ct)
     {
-        var result = await _postsIndex.SearchAsync<PostSearchDto>(new(query));
-        return result.Hits;
+        var result = await _postsIndex.SearchAsync<PostIndexDto>(new(query), null, ct);
+        var ids = result.Hits.ConvertAll(x => int.Parse(x.ObjectID));
+
+        return ids;
     }
 
-    public async Task SavePost(PostSearchDto post)
+    public async Task SavePost(PostIndexDto post)
     {
-        if (!post.IsPublished)
-        {
-            return;
-        }
-
         await _postsIndex.SaveObjectAsync(post);
     }
 
     public async Task RemovePost(int id)
     {
         await _postsIndex.DeleteObjectAsync(id.ToString());
-    }
-
-    public async Task UpdatePost(PostSearchDto post)
-    {
-        await SavePost(post);
     }
 }

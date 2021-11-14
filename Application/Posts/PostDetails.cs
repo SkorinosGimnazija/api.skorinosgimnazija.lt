@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class PostDetails
+public static class PostDetails
 {
     public record Query(int Id) : IRequest<PostDetailsDto?>;
 

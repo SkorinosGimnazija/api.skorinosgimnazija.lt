@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class CategoryList
+public static class CategoryList
 {
     public record Query() : IRequest<List<CategoryDto>>;
 

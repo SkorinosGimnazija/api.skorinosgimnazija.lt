@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Auth;
+﻿namespace API.Core;
 
 using Domain.Auth;
 using Microsoft.AspNetCore.Identity;

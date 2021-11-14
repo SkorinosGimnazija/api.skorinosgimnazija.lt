@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class PublicPostList
+public static class PublicPostList
 {
     public record Query(string Language, PaginationDto Pagination) : IRequest<List<PostDto>>;
 
@@ -30,7 +30,7 @@ public class PublicPostList
             return await _context.Posts
                 .AsNoTracking()
                 .Where(
-                    x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.Now
+                    x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.UtcNow
                          && x.Category.Language.Slug == request.Language)
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(x => x.IsFeatured)

@@ -50,7 +50,7 @@ public static class ConfigurationExtensions
 
     public static string GetWebHookUrl(this IConfiguration config)
     {
-        return config["TEAMS_WEB_HOOK_URL"];
+        return config["WEB_HOOK_URL"];
     }
 
     public static string GetFileUploadPath(this IConfiguration config)
@@ -66,5 +66,15 @@ public static class ConfigurationExtensions
     public static string GetStaticUrl(this IConfiguration config)
     {
         return config["STATIC_URL"];
+    }
+
+    public static bool IsProduction(this IConfiguration config)
+    {
+        return config["ASPNETCORE_ENVIRONMENT"] == "Production";
+    }
+
+    public static bool IsDevelopment(this IConfiguration config)
+    {
+        return !config.IsProduction();
     }
 }

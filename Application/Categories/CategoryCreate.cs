@@ -6,7 +6,7 @@ using Dtos;
 using MediatR;
 using Persistence;
 
-public class CategoryCreate
+public static class CategoryCreate
 {
     public record Command(CategoryCreateDto Category) : IRequest<CategoryDto>;
 

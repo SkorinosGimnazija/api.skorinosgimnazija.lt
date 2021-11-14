@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class MenuDetails
+public static class MenuDetails
 {
     public record Query(int Id) : IRequest<MenuDto?>;
 

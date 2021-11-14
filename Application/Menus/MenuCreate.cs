@@ -6,7 +6,7 @@ using Dtos;
 using MediatR;
 using Persistence;
 
-public class MenuCreate
+public static class MenuCreate
 {
     public record Command(MenuCreateDto Menu) : IRequest<MenuDto>;
 

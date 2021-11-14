@@ -1,11 +1,14 @@
 ﻿namespace Application.Posts;
 
+using Dtos;
 using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Microsoft.AspNetCore.Http;
+using System.Diagnostics.CodeAnalysis;
 
-public class PostDelete
+public static class PostDelete
 {
     public record Command(int Id) : IRequest<bool>;
 
@@ -22,18 +25,20 @@ public class PostDelete
             _fileManager = fileManager;
         }
 
-        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<bool> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (entity is null)
             {
                 return false;
             }
 
-            _context.Posts.Remove(entity);
             await _search.RemovePost(entity.Id);
-            await _fileManager.DeleteAllFilesAsync(entity.Id);
-            await _context.SaveChangesAsync(cancellationToken);
+            _fileManager.DeleteAllFiles(entity.Id);
+            
+            _context.Posts.Remove(entity);
+            await _context.SaveChangesAsync();
 
             return true;
         }

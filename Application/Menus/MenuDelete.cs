@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class MenuDelete
+public static class MenuDelete
 {
     public record Command(int Id) : IRequest<bool>;
 

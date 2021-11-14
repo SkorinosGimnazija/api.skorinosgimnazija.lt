@@ -6,8 +6,9 @@ using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
-public class PostPatch
+public static class PostPatch
 {
     public record Command(int Id, PostPatchDto Post) : IRequest<bool>;
 
@@ -24,17 +25,19 @@ public class PostPatch
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<bool> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var entity = await _context.Posts.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (entity is null)
             {
                 return false;
             }
 
             _mapper.Map(request.Post, entity);
-            await _context.SaveChangesAsync(cancellationToken);
-            await _search.UpdatePost(_mapper.Map(entity, new PostSearchDto()));
+
+            //await _search.SavePost(_mapper.Map<PostIndexDto>(entity));
+            await _context.SaveChangesAsync();
 
             return true;
         }

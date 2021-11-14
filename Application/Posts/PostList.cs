@@ -26,8 +26,8 @@ public static class PostList
         }
 
         public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
-        {
-            return await _context.Posts
+        { 
+           return  await _context.Posts
                 .AsNoTracking()
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(x => x.PublishDate)

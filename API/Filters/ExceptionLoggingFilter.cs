@@ -22,7 +22,12 @@ public class ExceptionLoggingFilter : ExceptionFilterAttribute
 
     public override async Task OnExceptionAsync(ExceptionContext context)
     {
-        if (!_env.IsProduction() || context.Exception is OperationCanceledException)
+        if (!_env.IsProduction())
+        {
+            return;
+        }
+
+        if (context.Exception is OperationCanceledException)
         {
             return;
         }

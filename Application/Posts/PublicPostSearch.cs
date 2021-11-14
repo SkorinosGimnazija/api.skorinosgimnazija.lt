@@ -4,13 +4,12 @@ using Application.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Dtos;
-using Extensions;
 using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class PostSearchList
+public static class PublicPostSearchList
 {
     public record Query(string SearchText, PaginationDto Pagination) : IRequest<List<PostDto>>;
 
@@ -29,15 +28,25 @@ public class PostSearchList
 
         public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            await _search.Search(request.SearchText);
+            var postIds = await _search.SearchPost(request.SearchText, cancellationToken);
 
             return await _context.Posts
                 .AsNoTracking()
-                .Where(x => EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
+                .Where(x => x.IsPublished && x.PublishDate <= DateTime.UtcNow &&
+                            postIds.Contains(x.Id))
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                .OrderByDescending(x => x.PublishDate)
-                .Paginate(request.Pagination)
+                .OrderBy(x => postIds.IndexOf(x.Id))
                 .ToListAsync(cancellationToken);
+
+            //return await _context.Posts
+            //    .AsNoTracking()
+            //    .Where(x => x.IsPublished && x.PublishDate <= DateTime.UtcNow &&
+            //                x.Category.Language.Slug == request.Language &&
+            //                EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
+            //    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+            //    .OrderByDescending(x => x.PublishDate)
+            //    .Paginate(request.Pagination)
+            //    .ToListAsync(cancellationToken);
         }
     }
 }

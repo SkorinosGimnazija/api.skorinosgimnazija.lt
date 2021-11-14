@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class CategoryDetails
+public static class CategoryDetails
 {
     public record Query(int Id) : IRequest<CategoryDto?>;
 

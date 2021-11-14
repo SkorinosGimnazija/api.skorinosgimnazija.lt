@@ -27,4 +27,8 @@ public record PostDto
 
     [Required]
     public string Title { get; init; } = default!;
+
+    public string? Intro { get; init; }
+
+
 }

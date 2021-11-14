@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class MenuEdit
+public static class MenuEdit
 {
     public record Command(MenuEditDto Menu) : IRequest<bool>;
 

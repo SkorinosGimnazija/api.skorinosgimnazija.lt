@@ -1,11 +1,18 @@
 ﻿namespace API;
 
 using Domain.Auth;
+using Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging.Configuration;
+using Microsoft.Extensions.Options;
 using Persistence;
+using System;
+using System.Collections.Concurrent;
 
-public class Program
+
+public static class Program
 {
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
@@ -16,7 +23,7 @@ public class Program
                 webBuilder.UseKestrel(options => options.Limits.MaxRequestBodySize = null);
             });
     }
-
+     
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();

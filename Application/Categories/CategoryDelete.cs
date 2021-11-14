@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class CategoryDelete
+public static class CategoryDelete
 {
     public record Command(int Id) : IRequest<bool>;
 

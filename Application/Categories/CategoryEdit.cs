@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class CategoryEdit
+public static class CategoryEdit
 {
     public record Command(CategoryEditDto Category) : IRequest<bool>;
 

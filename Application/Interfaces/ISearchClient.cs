@@ -4,11 +4,9 @@ using Posts.Dtos;
 
 public interface ISearchClient
 {
-    Task SavePost(PostSearchDto post);
+    Task SavePost(PostIndexDto post);
 
     Task RemovePost(int id);
 
-    Task UpdatePost(PostSearchDto post);
-
-    Task<List<PostSearchDto>> Search(string query);
+    Task<List<int>> SearchPost(string query, CancellationToken ct);
 }
