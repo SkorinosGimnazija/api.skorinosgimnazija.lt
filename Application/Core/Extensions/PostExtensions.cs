@@ -1,4 +1,4 @@
-﻿namespace Application.Extensions;
+﻿namespace Application.Core.Extensions;
 
 using Domain.CMS;
 

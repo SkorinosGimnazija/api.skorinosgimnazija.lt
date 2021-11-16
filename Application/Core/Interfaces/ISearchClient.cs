@@ -1,4 +1,4 @@
-﻿namespace Application.Interfaces;
+﻿namespace Application.Core.Interfaces;
 
 using Posts.Dtos;
 

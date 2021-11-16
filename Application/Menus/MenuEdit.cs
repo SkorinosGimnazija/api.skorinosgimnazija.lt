@@ -5,6 +5,7 @@ using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 public static class MenuEdit
 {
@@ -22,16 +23,17 @@ public static class MenuEdit
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<bool> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Menu.Id, cancellationToken);
+            var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Menu.Id);
             if (entity is null)
             {
                 return false;
             }
 
             _mapper.Map(request.Menu, entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync();
 
             return true;
         }

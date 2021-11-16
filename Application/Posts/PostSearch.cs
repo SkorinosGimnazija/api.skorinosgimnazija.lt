@@ -1,10 +1,10 @@
 ﻿namespace Application.Posts;
 
-using Application.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Core.Dtos;
+using Core.Interfaces;
 using Dtos;
-using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

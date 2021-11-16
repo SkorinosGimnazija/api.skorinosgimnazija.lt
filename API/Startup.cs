@@ -1,8 +1,8 @@
 ﻿namespace API;
 
-using Application.Interfaces;
+using Application.Core;
+using Application.Core.Interfaces;
 using Application.Posts;
-using Application.Utils;
 using Core;
 using Domain.Auth;
 using Extensions;
@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-public class Startup
+internal sealed class Startup
 {
     private readonly IConfiguration _config;
 

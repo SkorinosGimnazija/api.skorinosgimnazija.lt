@@ -1,4 +1,4 @@
-﻿namespace Application.Utils;
+﻿namespace Application.Core;
 
 public class PublicUrls
 {

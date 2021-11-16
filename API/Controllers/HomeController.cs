@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [Route("/")]
-public class HomeController : ControllerBase
+public sealed class HomeController : ControllerBase
 {
     [HttpGet]
     [ApiExplorerSettings(IgnoreApi = true)]

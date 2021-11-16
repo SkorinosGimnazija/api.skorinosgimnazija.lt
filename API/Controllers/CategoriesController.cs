@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Authorize(Roles = Auth.Role.Admin)]
-public class CategoriesController : BaseApiController
+public sealed class CategoriesController : BaseApiController
 {
     [HttpGet(Name = "GetCategories")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -20,34 +20,34 @@ public class CategoriesController : BaseApiController
     [HttpGet("{id:int}", Name = "GetCategoryById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<CategoryDto?>> GetCategory(int id, CancellationToken ct)
+    public async Task<ActionResult<CategoryDto>> GetCategory(int id, CancellationToken ct)
     {
-        var entity = await Mediator.Send(new CategoryDetails.Query(id), ct);
-        if (entity is null)
+        var result = await Mediator.Send(new CategoryDetails.Query(id), ct);
+        if (result is null)
         {
             return NotFound();
         }
 
-        return entity;
+        return result;
     }
 
     [HttpPost(Name = "CreateCategory")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryCreateDto category, CancellationToken ct)
+    public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryCreateDto category)
     {
-        var entity = await Mediator.Send(new CategoryCreate.Command(category), ct);
+        var result = await Mediator.Send(new CategoryCreate.Command(category));
 
-        return CreatedAtAction(nameof(GetCategory), new { entity.Id }, entity);
+        return CreatedAtAction(nameof(GetCategory), new { result.Id }, result);
     }
 
     [HttpPut(Name = "EditCategory")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> EditCategory(CategoryEditDto category, CancellationToken ct)
+    public async Task<IActionResult> EditCategory(CategoryEditDto category)
     {
-        var result = await Mediator.Send(new CategoryEdit.Command(category), ct);
+        var result = await Mediator.Send(new CategoryEdit.Command(category));
         if (!result)
         {
             return NotFound();
@@ -59,9 +59,9 @@ public class CategoriesController : BaseApiController
     [HttpDelete("{id:int}", Name = "DeleteCategory")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteCategory(int id, CancellationToken ct)
+    public async Task<IActionResult> DeleteCategory(int id)
     {
-        var result = await Mediator.Send(new CategoryDelete.Command(id), ct);
+        var result = await Mediator.Send(new CategoryDelete.Command(id));
         if (!result)
         {
             return NotFound();

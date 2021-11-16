@@ -8,11 +8,17 @@ internal class MenuProfiles : Profile
 {
     public MenuProfiles()
     {
+        CreateMap<MenuLocation, MenuLocationDto>();
+
         CreateMap<MenuCreateDto, Menu>();
+
         CreateMap<MenuEditDto, Menu>();
 
-        CreateMap<Menu, MenuDto>()
-            .ForMember(x => x.ParentMenuId,
-                x => x.MapFrom(m => m.ParentMenu == null ? (int?)null : m.ParentMenu.Id));
+        CreateMap<Menu, MenuDto>();
+
+        
+        
+
+
     }
 }

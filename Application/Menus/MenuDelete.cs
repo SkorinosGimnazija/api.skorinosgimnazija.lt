@@ -3,6 +3,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 public static class MenuDelete
 {
@@ -17,16 +18,17 @@ public static class MenuDelete
             _context = context;
         }
 
-        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<bool> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var entity = await _context.Menus.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (entity == null)
             {
                 return false;
             }
 
             _context.Menus.Remove(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync();
 
             return true;
         }

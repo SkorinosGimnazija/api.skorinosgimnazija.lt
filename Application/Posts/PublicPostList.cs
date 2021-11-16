@@ -1,17 +1,17 @@
 ﻿namespace Application.Posts;
 
-using Application.Dtos;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Core.Dtos;
+using Core.Extensions;
 using Dtos;
-using Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 public static class PublicPostList
 {
-    public record Query(string Language, PaginationDto Pagination) : IRequest<List<PostDto>>;
+    public record Query(string LanguageSlug, PaginationDto Pagination) : IRequest<List<PostDto>>;
 
     public class Handler : IRequestHandler<Query, List<PostDto>>
     {
@@ -29,9 +29,11 @@ public static class PublicPostList
         {
             return await _context.Posts
                 .AsNoTracking()
-                .Where(
-                    x => x.IsPublished && x.Category.ShowOnHomePage && x.PublishDate <= DateTime.UtcNow
-                         && x.Category.Language.Slug == request.Language)
+                .Where(x =>
+                    x.IsPublished &&
+                    x.Category.ShowOnHomePage &&
+                    x.PublishDate <= DateTime.UtcNow &&
+                    x.Category.Language.Slug == request.LanguageSlug)
                 .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                 .OrderByDescending(x => x.IsFeatured)
                 .ThenByDescending(x => x.PublishDate)

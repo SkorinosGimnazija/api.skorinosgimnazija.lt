@@ -6,7 +6,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
-public class ExceptionLoggingFilter : ExceptionFilterAttribute
+internal sealed class ExceptionLoggingFilter : ExceptionFilterAttribute
 {
     private readonly IConfiguration _config;
     private readonly IWebHostEnvironment _env;

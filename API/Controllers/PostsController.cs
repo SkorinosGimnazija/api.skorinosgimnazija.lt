@@ -1,6 +1,6 @@
 ﻿namespace API.Controllers;
 
-using Application.Dtos;
+using Application.Core.Dtos;
 using Application.Posts;
 using Application.Posts.Dtos;
 using Base;
@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Authorize(Roles = Auth.Role.Admin)]
-public class PostsController : BaseApiController
+public sealed class PostsController : BaseApiController
 {
     [HttpGet(Name = "GetPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,9 +61,9 @@ public class PostsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> PatchPost(int id, PostPatchDto post, CancellationToken ct)
+    public async Task<IActionResult> PatchPost(int id, PostPatchDto post)
     {
-        var result = await Mediator.Send(new PostPatch.Command(id, post), ct);
+        var result = await Mediator.Send(new PostPatch.Command(id, post));
         if (!result)
         {
             return NotFound();
@@ -75,9 +75,9 @@ public class PostsController : BaseApiController
     [HttpDelete("{id:int}", Name = "DeletePost")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeletePost(int id, CancellationToken ct)
+    public async Task<IActionResult> DeletePost(int id)
     {
-        var result = await Mediator.Send(new PostDelete.Command(id), ct);
+        var result = await Mediator.Send(new PostDelete.Command(id));
         if (!result)
         {
             return NotFound();
@@ -86,7 +86,7 @@ public class PostsController : BaseApiController
         return NoContent();
     }
 
-    [HttpGet("search/{text}", Name = "SearchPost")]
+    [HttpGet("search/{text}", Name = "SearchPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<PostDto>> SearchPosts(string text, [FromQuery] PaginationDto pagination,
         CancellationToken ct)
@@ -94,13 +94,13 @@ public class PostsController : BaseApiController
         return await Mediator.Send(new PostSearch.Query(text, pagination), ct);
     }
 
-    [AllowAnonymous]
-    [HttpGet("public/{id:int}", Name = "GetPublicPostById")]
+    [AllowAnonymous] 
+    [HttpGet("public/{category}/{id:int}", Name = "GetPublicPostByCategoryAndId")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostDetailsDto>> GetPublicPost(int id, CancellationToken ct)
+    public async Task<ActionResult<PostDetailsDto>> GetPublicPost(string category, int id, CancellationToken ct)
     {
-        var result = await Mediator.Send(new PublicPostDetails.Query(id), ct);
+        var result = await Mediator.Send(new PublicPostDetails.Query(id, category), ct);
         if (result is null)
         {
             return NotFound();
@@ -119,7 +119,7 @@ public class PostsController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/search/{text:minlength(3)}", Name = "SearchPublicPostsByText")]
+    [HttpGet("public/search/{text}", Name = "SearchPublicPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<PostDto>> SearchPublicPosts(string text, [FromQuery] PaginationDto pagination,
         CancellationToken ct)

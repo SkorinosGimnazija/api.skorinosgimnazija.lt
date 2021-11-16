@@ -1,11 +1,11 @@
 ﻿namespace Infrastructure.Auth;
 
-using Application.Interfaces;
+using Application.Core.Interfaces;
 using Domain.Auth;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-public class UserAccessor : IUserAccessor
+public sealed class UserAccessor : IUserAccessor
 {
     private readonly ClaimsPrincipal? _user;
 

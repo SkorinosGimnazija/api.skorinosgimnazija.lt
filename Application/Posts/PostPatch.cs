@@ -2,7 +2,6 @@
 
 using AutoMapper;
 using Dtos;
-using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -16,12 +15,10 @@ public static class PostPatch
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly ISearchClient _search;
 
-        public Handler(DataContext context, ISearchClient search, IMapper mapper)
+        public Handler(DataContext context, IMapper mapper)
         {
             _context = context;
-            _search = search;
             _mapper = mapper;
         }
 

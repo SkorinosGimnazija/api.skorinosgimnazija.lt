@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Persistence;
@@ -12,9 +13,10 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211115145551_Dev1")]
+    partial class Dev1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,9 +132,6 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -145,8 +144,6 @@ namespace Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
 
                     b.HasIndex("Slug")
                         .IsUnique();
@@ -192,9 +189,6 @@ namespace Persistence.Migrations
                     b.Property<int>("LanguageId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MenuLocationId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -215,38 +209,12 @@ namespace Persistence.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("MenuLocationId");
-
                     b.HasIndex("ParentMenuId");
 
-                    b.HasIndex("Slug")
+                    b.HasIndex("Slug", "LanguageId")
                         .IsUnique();
 
                     b.ToTable("Menus");
-                });
-
-            modelBuilder.Entity("Domain.CMS.MenuLocation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
-
-                    b.ToTable("MenuLocations");
                 });
 
             modelBuilder.Entity("Domain.CMS.Post", b =>
@@ -275,6 +243,9 @@ namespace Persistence.Migrations
                     b.Property<bool>("IsPublished")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -297,6 +268,8 @@ namespace Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("IsPublished");
+
+                    b.HasIndex("LanguageId");
 
                     b.HasIndex("PublishDate");
 
@@ -406,28 +379,11 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.CMS.Category", b =>
-                {
-                    b.HasOne("Domain.CMS.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-                });
-
             modelBuilder.Entity("Domain.CMS.Menu", b =>
                 {
                     b.HasOne("Domain.CMS.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.CMS.MenuLocation", "MenuLocation")
-                        .WithMany()
-                        .HasForeignKey("MenuLocationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -437,8 +393,6 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Language");
-
-                    b.Navigation("MenuLocation");
 
                     b.Navigation("ParentMenu");
                 });
@@ -451,7 +405,15 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Domain.CMS.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

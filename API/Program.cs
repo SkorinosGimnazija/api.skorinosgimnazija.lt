@@ -1,18 +1,11 @@
 ﻿namespace API;
 
 using Domain.Auth;
-using Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Options;
 using Persistence;
-using System;
-using System.Collections.Concurrent;
 
-
-public static class Program
+internal static class Program
 {
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
@@ -23,7 +16,7 @@ public static class Program
                 webBuilder.UseKestrel(options => options.Limits.MaxRequestBodySize = null);
             });
     }
-     
+
     public static async Task Main(string[] args)
     {
         var host = CreateHostBuilder(args).Build();
@@ -38,8 +31,10 @@ public static class Program
 
             await context.Database.MigrateAsync();
 
-            await Seed.CreateRoles(roleManager);
-            await Seed.CreateAdmin(userManager);
+            await Seed.AddRoles(roleManager);
+            await Seed.AddAdmin(userManager);
+            await Seed.AddLanguages(context);
+            await Seed.AddMenuLocations(context);
         }
 
         await host.RunAsync();

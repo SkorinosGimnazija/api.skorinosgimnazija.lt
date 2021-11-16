@@ -12,13 +12,14 @@ public class Menu
 
     public string? Slug { get; set; }
 
+    public string? Url { get; set; }
+
     public int LanguageId { get; set; }
 
     public Language Language { get; set; } = default!;
 
-    public string? Url { get; set; }
-
     public int? ParentMenuId { get; set; }
-
     public Menu? ParentMenu { get; set; }
+    public int MenuLocationId { get; set; }
+    public MenuLocation MenuLocation { get; set; } = default!;
 }

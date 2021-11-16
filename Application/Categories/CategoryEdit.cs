@@ -5,6 +5,7 @@ using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 public static class CategoryEdit
 {
@@ -22,17 +23,17 @@ public static class CategoryEdit
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<bool> Handle(Command request, CancellationToken _)
         {
-            var entity =
-                await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id, cancellationToken);
+            var entity = await _context.Categories.FirstOrDefaultAsync(x => x.Id == request.Category.Id);
             if (entity is null)
             {
                 return false;
             }
 
             _mapper.Map(request.Category, entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync();
 
             return true;
         }

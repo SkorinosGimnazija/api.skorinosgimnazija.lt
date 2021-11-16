@@ -4,7 +4,9 @@ using AutoMapper;
 using Domain.CMS;
 using Dtos;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 public static class MenuCreate
 {
@@ -21,14 +23,15 @@ public static class MenuCreate
             _mapper = mapper;
         }
 
-        public async Task<MenuDto> Handle(Command request, CancellationToken cancellationToken)
+
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<MenuDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _mapper.Map(request.Menu, new Menu());
+            var entity = _context.Menus.Add(_mapper.Map<Menu>(request.Menu)).Entity;
 
-            _context.Menus.Add(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+                await _context.SaveChangesAsync();
 
-            return _mapper.Map(entity, new MenuDto());
+            return _mapper.Map<MenuDto>(entity);
         }
     }
 }

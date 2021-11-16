@@ -16,7 +16,7 @@ public record PostDto
 
     [Required]
     public CategoryDto Category { get; init; } = default!;
-
+     
     [Required]
     public DateTime PublishDate { get; init; }
 
@@ -28,7 +28,7 @@ public record PostDto
     [Required]
     public string Title { get; init; } = default!;
 
-    public string? Intro { get; init; }
+    public string? IntroText { get; init; }
 
 
 }

@@ -2,20 +2,11 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public record CategoryEditDto
+public record CategoryEditDto : CategoryCreateDto
 {
     [Required]
+    [Range(1, int.MaxValue)]
     public int Id { get; init; }
 
-    [Required]
-    public int LanguageId { get; init; }
-
-    [Required]
-    public string Name { get; init; } = default!;
-
-    [Required]
-    public string Slug { get; init; } = default!;
-
-    [Required]
-    public bool ShowOnHomePage { get; init; }
+ 
 }

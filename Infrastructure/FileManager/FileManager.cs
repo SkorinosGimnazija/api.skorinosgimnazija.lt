@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.FileManager;
 
-using Application.Interfaces;
+using Application.Core.Interfaces;
 using ImageOptimization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

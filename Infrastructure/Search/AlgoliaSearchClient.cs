@@ -3,9 +3,9 @@
 using Algolia.Search.Clients;
 using Application.Posts.Dtos;
 using Microsoft.Extensions.Options;
-using ISearchClient = Application.Interfaces.ISearchClient;
+using ISearchClient = Application.Core.Interfaces.ISearchClient;
 
-public class AlgoliaSearchClient : ISearchClient
+public sealed class AlgoliaSearchClient : ISearchClient
 {
     private readonly SearchIndex _menusIndex;
     private readonly SearchIndex _postsIndex;

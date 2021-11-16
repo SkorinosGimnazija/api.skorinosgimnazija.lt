@@ -9,7 +9,7 @@ using Persistence;
 
 public static class PublicMenuList
 {
-    public record Query(string Language) : IRequest<List<MenuDto>>;
+    public record Query(string Language, string LocationSlug) : IRequest<List<MenuDto>>;
 
     public class Handler : IRequestHandler<Query, List<MenuDto>>
     {
@@ -25,12 +25,24 @@ public static class PublicMenuList
 
         public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await _context.Menus
+            var menus = await _context.Menus
                 .AsNoTracking()
-                .Where(x => x.IsPublished && x.Language.Slug == request.Language)
+                .Where(x =>
+                    x.IsPublished &&
+                    x.Language.Slug == request.Language &&
+                    x.MenuLocation.Slug == request.LocationSlug)
                 .OrderBy(x => x.Order)
                 .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
+
+            // can ef populate menus ?
+            foreach (var childMenu in menus.Where(x => x.ParentMenuId is not null))
+            {
+                var parent = menus.Find(x => x.Id == childMenu.ParentMenuId);
+                parent?.ChildMenus.Add(childMenu);
+            }
+
+            return menus.Where(x => x.ParentMenuId is null).ToList();
         }
     }
 }

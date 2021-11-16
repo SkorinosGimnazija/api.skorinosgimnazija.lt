@@ -1,4 +1,4 @@
-﻿namespace Application.Dtos;
+﻿namespace Application.Core.Dtos;
 
 using System.ComponentModel.DataAnnotations;
 

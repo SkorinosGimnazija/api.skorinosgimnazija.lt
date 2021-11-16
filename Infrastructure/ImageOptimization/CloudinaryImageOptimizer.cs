@@ -5,7 +5,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-public class CloudinaryImageOptimizer : IImageOptimizer
+public sealed class CloudinaryImageOptimizer : IImageOptimizer
 {
     private readonly Cloudinary _cloudinary;
     private readonly Transformation _defaultTransformation;
@@ -17,7 +17,7 @@ public class CloudinaryImageOptimizer : IImageOptimizer
             .Quality("90")
             .Gravity("face")
             .AspectRatio("16:9")
-            .Width(1600)
+            .Width("1600")
             .Crop("fill")
             .Effect("improve")
             //.Effect("viesus_correct")

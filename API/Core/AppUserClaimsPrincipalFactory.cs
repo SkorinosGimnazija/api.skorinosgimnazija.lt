@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-public class AppUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<AppUser, AppRole>
+internal sealed class AppUserClaimsPrincipalFactory : UserClaimsPrincipalFactory<AppUser, AppRole>
 {
     public AppUserClaimsPrincipalFactory(
         UserManager<AppUser> userManager,

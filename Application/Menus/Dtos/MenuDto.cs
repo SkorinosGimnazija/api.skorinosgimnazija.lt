@@ -1,5 +1,6 @@
 ﻿namespace Application.Menus.Dtos;
 
+using Domain.CMS;
 using Languages.Dtos;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,7 +23,13 @@ public record MenuDto
     [Required]
     public LanguageDto Language { get; init; } = default!;
 
+    [Required]
+    public MenuLocationDto MenuLocation { get; init; } = default!;
+
     public string? Url { get; init; }
 
     public int? ParentMenuId { get; init; }
+
+    [Required] 
+    public List<MenuDto> ChildMenus { get; init; } = new();
 }

@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-public class ExceptionMessage
+internal class ExceptionMessage
 {
     [JsonPropertyName("@type")]
     public string Type { get; } = "MessageCard";

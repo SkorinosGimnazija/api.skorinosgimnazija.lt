@@ -1,7 +1,7 @@
 ﻿namespace Application.Posts;
 
+using Core.Interfaces;
 using Dtos;
-using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;

@@ -1,16 +1,16 @@
 ﻿namespace Application.Posts;
 
 using AutoMapper;
+using Core;
+using Core.Extensions;
+using Core.Interfaces;
 using Domain.CMS;
 using Dtos;
-using Extensions;
-using Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Persistence;
 using System.Diagnostics.CodeAnalysis;
-using Utils;
 
 public static class PostEdit
 {

@@ -5,6 +5,7 @@ using Domain.CMS;
 using Dtos;
 using MediatR;
 using Persistence;
+using System.Diagnostics.CodeAnalysis;
 
 public static class CategoryCreate
 {
@@ -21,14 +22,13 @@ public static class CategoryCreate
             _mapper = mapper;
         }
 
-        public async Task<CategoryDto> Handle(Command request, CancellationToken cancellationToken)
+        [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
+        public async Task<CategoryDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _mapper.Map(request.Category, new Category());
+            var entity = _context.Categories.Add(_mapper.Map<Category>(request.Category)).Entity;
+            await _context.SaveChangesAsync();
 
-            _context.Categories.Add(entity);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return _mapper.Map(entity, new CategoryDto());
+            return _mapper.Map<CategoryDto>(entity);
         }
     }
 }

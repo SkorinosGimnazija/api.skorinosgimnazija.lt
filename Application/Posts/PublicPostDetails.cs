@@ -9,7 +9,7 @@ using Persistence;
 
 public static class PublicPostDetails
 {
-    public record Query(int Id) : IRequest<PostDetailsDto?>;
+    public record Query(int Id, string CategorySlug) : IRequest<PostDetailsDto?>;
 
     public class Handler : IRequestHandler<Query, PostDetailsDto?>
     {
@@ -27,7 +27,12 @@ public static class PublicPostDetails
             return await _context.Posts
                 .AsNoTracking()
                 .ProjectTo<PostDetailsDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+                .FirstOrDefaultAsync(x =>
+                        x.Id == request.Id &&
+                        x.Category.Slug == request.CategorySlug &&
+                        x.IsPublished &&
+                        x.PublishDate <= DateTime.UtcNow,
+                    cancellationToken);
         }
     }
 }
