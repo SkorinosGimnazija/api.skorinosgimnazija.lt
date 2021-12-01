@@ -20,23 +20,24 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        try
-        {
+        //try
+        //{
             return await base.SaveChangesAsync(cancellationToken);
-        }
-        catch (DbUpdateException e) when (e.InnerException is PostgresException ie && ie.IsConstraintViolation())
-        {
-            var validationFailure = ie.ConstraintName switch
-            {
-                //"ConstraintName" => new ("PropertyName", "Description"),
-                _ => new ValidationFailure(ie.ConstraintName ?? ie.ColumnName, "Constraint violation")
-            };
+        //}
+        //catch (DbUpdateException e) when (e.InnerException is PostgresException ie && ie.IsConstraintViolation())
+        //{
+        //    var validationFailure = ie.ConstraintName switch
+        //    {
+        //        //"ConstraintName" => new ("PropertyName", "Description"),
+        //        _ => new ValidationFailure(ie.ConstraintName ?? ie.ColumnName, "Constraint violation")
+        //    };
 
-            throw new ValidationException(validationFailure);
-        }
+        //    throw new ValidationException(validationFailure);
+        //}
     }
 
     public DbSet<Language> Languages { get; set; } = default!;
+    public DbSet<Banner> Banners { get; set; } = default!;
 
     public DbSet<Menu> Menus { get; set; } = default!;
 

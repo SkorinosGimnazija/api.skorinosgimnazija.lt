@@ -11,6 +11,6 @@ internal class LanguageConfiguration : IEntityTypeConfiguration<Language>
         builder.HasIndex(x => x.Slug).IsUnique();
 
         builder.Property(x => x.Name).HasMaxLength(50);
-        builder.Property(x => x.Slug).HasMaxLength(20);
+        builder.Property(x => x.Slug).HasMaxLength(30);
     }
 }

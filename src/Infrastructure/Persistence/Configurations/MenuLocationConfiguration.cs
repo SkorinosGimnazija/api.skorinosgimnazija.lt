@@ -10,7 +10,7 @@ internal class MenuLocationConfiguration : IEntityTypeConfiguration<MenuLocation
     {
         builder.HasIndex(x => x.Slug).IsUnique();
 
-        builder.Property(x => x.Name).HasMaxLength(100);
-        builder.Property(x => x.Slug).HasMaxLength(100);
+        builder.Property(x => x.Name).HasMaxLength(50);
+        builder.Property(x => x.Slug).HasMaxLength(30);
     }
 }

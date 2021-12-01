@@ -10,5 +10,7 @@ public interface IMediaManager
 
     void DeleteFiles(IEnumerable<string>? files);
 
+    void DeleteFile(string file);
+
     string? GenerateFileLinks(string? text, ICollection<string>? files);
 }

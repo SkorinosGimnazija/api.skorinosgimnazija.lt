@@ -111,16 +111,19 @@ public class GetMenuTests
     }
 
     [Fact]
-    public async Task MenuList_ShouldOrderMenus()
+    public async Task PublicMenuList_ShouldOrderMenus()
     {
+        var lang = await _app.AddAsync(new Language { Slug = Path.GetRandomFileName(), Name = "name" });
+        var loc = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
+
         var rng = new Random();
 
         for (var i = 0; i < 5; i++)
         {
             var menu = new Menu
             {
-                LanguageId = 1,
-                MenuLocationId = 1,
+                LanguageId = lang.Id,
+                MenuLocationId = loc.Id,
                 IsPublished = true,
                 Title = "title" + i,
                 Slug = "slug" + i,
@@ -131,7 +134,7 @@ public class GetMenuTests
             await _app.AddAsync(menu);
         }
 
-        var command = new MenuList.Query();
+        var command = new PublicMenuList.Query(lang.Slug, loc.Slug);
 
         var actual = await _app.SendAsync(command);
 

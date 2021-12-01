@@ -9,7 +9,7 @@ public interface IAppDbContext
     DbSet<Language> Languages { get; }
 
     DbSet<Menu> Menus { get; }
-
+    DbSet<Banner> Banners { get;  }
     DbSet<MenuLocation> MenuLocations { get; }
 
     DbSet<Post> Posts { get; }

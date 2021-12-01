@@ -75,38 +75,6 @@ public class UpdatePostTests
     }
 
     [Fact]
-    public async Task PostEdit_ShouldThrowValidationEx_WhenDuplicateOldNewFileNames()
-    {
-        var post = new Post { Slug = "slug", Title = "title" };
-        await _app.AddAsync(post);
-
-        var postDto = new PostEditDto
-        { 
-            Id = post.Id,
-            Title = "new title",
-            Slug = "new slug",
-            LanguageId = 1,
-            PublishDate = DateTime.UtcNow,
-            Files = new List<string>
-            {
-                "FileName.pdf",
-            },
-            NewFiles = new FormFileCollection
-            {
-                new FormFile(null!, 0, 0, null!, "FileName.pdf"),
-            }
-        };
-
-        var command = new PostEdit.Command(postDto);
-
-        await FluentActions.Invoking(() => _app.SendAsync(command))
-            .Should()
-            .ThrowAsync<ValidationException>();
-    }
-
-   
-
-    [Fact]
     public async Task PostPatch_ShouldEditPost()
     {
         var post = new Post

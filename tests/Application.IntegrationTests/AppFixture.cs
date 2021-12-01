@@ -55,6 +55,7 @@ public class AppFixture
 
         SearchClientMock = new(services);
         CurrentUserMock = new(services);
+        MediaManagerMock = new(services);
 
         _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
@@ -64,6 +65,7 @@ public class AppFixture
     public SearchClientMock SearchClientMock { get; }
 
     public CurrentUserMock CurrentUserMock { get; }
+    public MediaManagerMock MediaManagerMock { get; }
 
     private void CreateDatabase()
     {

@@ -125,7 +125,12 @@ public sealed class MediaManager : IMediaManager
 
         foreach (var file in files)
         {
-            _fileService.DeleteFile(file);
+            DeleteFile(file);
         }
+    }
+
+    public void DeleteFile(string file)
+    {
+        _fileService.DeleteFile(Path.Combine(_baseUploadPath, file));
     }
 }

@@ -16,8 +16,8 @@ internal class MenuConfiguration : IEntityTypeConfiguration<Menu>
         builder.HasIndex(x => x.IsPublished);
         builder.HasIndex(x => x.Order);
 
-        builder.Property(x => x.Title).HasMaxLength(100);
+        builder.Property(x => x.Title).HasMaxLength(256);
         builder.Property(x => x.Slug).HasMaxLength(100);
-        builder.Property(x => x.Path).HasMaxLength(200);
+        builder.Property(x => x.Path).HasMaxLength(300);
     }
 }
