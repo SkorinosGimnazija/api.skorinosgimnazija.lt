@@ -2,9 +2,10 @@
 
 	<PropertyGroup>
 		<Nullable>enable</Nullable>
-		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<TargetFramework>net6.0</TargetFramework>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+		<AssemblyName>SkorinosGimnazija.$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>SkorinosGimnazija.$(MSBuildProjectName)</RootNamespace>
 	</PropertyGroup>
 
 </Project>
