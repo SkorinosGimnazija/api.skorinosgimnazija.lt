@@ -1,12 +1,15 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Identity;
 
+using System.Security.Claims;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Posts.Dtos;
 using FluentValidation.Results;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Services;
+using SkorinosGimnazija.Application.Authorization.Dtos;
 
 public sealed class IdentityService : IIdentityService
 {
@@ -31,7 +34,7 @@ public sealed class IdentityService : IIdentityService
         _claimsPrincipal = claimsPrincipal;
     }
 
-    public async Task<string> AuthorizeAsync(string token)
+    public async Task<UserAuthDto> AuthorizeAsync(string token)
     {
         var payload = await ValidateSignatureAsync(token);
         var user = await _userManager.FindByLoginAsync(LoginProvider, payload.Subject);
@@ -47,7 +50,12 @@ public sealed class IdentityService : IIdentityService
 
         var principal = await _claimsPrincipal.CreateAsync(user);
 
-        return _tokenService.CreateToken(principal.Claims);
+        return new()
+        {
+            Token = _tokenService.CreateToken(principal.Claims),
+            Roles = principal.FindAll(ClaimTypes.Role).Select(x=> x.Value),
+            DisplayName = user.DisplayName ?? user.Email
+        };
     }
 
     private async Task UpdateUserInfoAsync(AppUser user, GoogleJsonWebSignature.Payload payload)

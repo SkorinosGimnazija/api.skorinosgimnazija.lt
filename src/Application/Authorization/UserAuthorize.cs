@@ -7,17 +7,17 @@ using MediatR;
 
 public static class UserAuthorize
 {
-    public record Command(AuthDto Auth) : IRequest<AuthDto>;
+    public record Command(GoogleAuthDto GoogleAuth) : IRequest<UserAuthDto>;
 
     public class Validator : AbstractValidator<Command>
     {
         public Validator()
         {
-            RuleFor(v => v.Auth.Token).NotEmpty();
+            RuleFor(v => v.GoogleAuth.Token).NotEmpty();
         }
     }
 
-    public class Handler : IRequestHandler<Command, AuthDto>
+    public class Handler : IRequestHandler<Command, UserAuthDto>
     {
         private readonly IIdentityService _identityService;
 
@@ -26,11 +26,9 @@ public static class UserAuthorize
             _identityService = identityService;
         }
 
-        public async Task<AuthDto> Handle(Command request, CancellationToken _)
+        public async Task<UserAuthDto> Handle(Command request, CancellationToken _)
         {
-            var jwtToken = await _identityService.AuthorizeAsync(request.Auth.Token);
-
-            return new() { Token = jwtToken };
+            return await _identityService.AuthorizeAsync(request.GoogleAuth.Token);
         }
     }
 }

@@ -8,6 +8,7 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using SchemaFilter;
 
 public sealed class Startup
 {
@@ -42,7 +43,7 @@ public sealed class Startup
 
             if (env.IsDevelopment())
             {
-                controllers.WithMetadata(new AllowAnonymousAttribute());
+                //controllers.WithMetadata(new AllowAnonymousAttribute());
             }
         });
     }
@@ -54,7 +55,11 @@ public sealed class Startup
 
         services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
-        services.AddSwaggerGen(x => x.SupportNonNullableReferenceTypes());
+        services.AddSwaggerGen(x =>
+        {
+            x.SupportNonNullableReferenceTypes();
+            x.SchemaFilter<OpenApiImplicitRequiredSchemaFilter>();
+        });
 
         services.AddCors(options =>
         {

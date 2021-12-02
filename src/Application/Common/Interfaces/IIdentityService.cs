@@ -1,6 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
+using SkorinosGimnazija.Application.Authorization.Dtos;
+
 public interface IIdentityService
 {
-    Task<string> AuthorizeAsync(string token);
+    Task<UserAuthDto> AuthorizeAsync(string token);
 }
