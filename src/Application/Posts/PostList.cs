@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PostList
 {
-    public record Query(PaginationDto Pagination) : IRequest<List<PostDto>>;
+    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<PostDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -22,7 +22,7 @@ public static class PostList
         }
     }
 
-    public class Handler : IRequestHandler<Query, List<PostDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<PostDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -34,14 +34,15 @@ public static class PostList
             _mapper = mapper;
         }
 
-        public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<PostDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Posts
                        .AsNoTracking()
                        .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.PublishDate)
-                       .Paginate(request.Pagination)
-                       .ToListAsync(cancellationToken);
+                       //.OrderByDescending(x => x.IsFeatured)
+                       //.ThenByDescending(x => x.PublishDate)
+                       .PaginateToListAsync(request.Pagination, cancellationToken);
         }
     }
 }

@@ -98,9 +98,10 @@ public static class PostEdit
             {
                 var newFiles = await _mediaManager.SaveFilesAsync(request.Post.NewFiles);
                 post.Files = post.Files?.Concat(newFiles).ToList() ?? newFiles;
+            }
+
                 post.IntroText = _mediaManager.GenerateFileLinks( post.IntroText, post.Files);
                 post.Text = _mediaManager.GenerateFileLinks( post.Text, post.Files);
-            }
         }
 
         private static ICollection<string>? GetFilesToDelete(

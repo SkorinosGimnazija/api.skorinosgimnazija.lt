@@ -11,4 +11,6 @@ public interface IFileService
     void DeleteFile(string filePath);
 
     void DeleteFolder(string folderPath);
+
+    void DeleteEmptyFileFolder(string filePath);
 }

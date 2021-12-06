@@ -28,9 +28,9 @@ public sealed class MenusController : BaseApiController
     [HttpPost(Name = "CreateMenu")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<MenuDto>> CreateMenu(MenuCreateDto menu)
+    public async Task<ActionResult<MenuDto>> CreateMenu(MenuCreateDto dto)
     {
-        var result = await Mediator.Send(new MenuCreate.Command(menu));
+        var result = await Mediator.Send(new MenuCreate.Command(dto));
         return CreatedAtAction(nameof(GetMenu), new { result.Id }, result);
     }
 
@@ -38,9 +38,9 @@ public sealed class MenusController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> EditMenu(MenuEditDto menu)
+    public async Task<IActionResult> EditMenu(MenuEditDto dto)
     {
-        await Mediator.Send(new MenuEdit.Command(menu));
+        await Mediator.Send(new MenuEdit.Command(dto));
         return Ok();
     }
 

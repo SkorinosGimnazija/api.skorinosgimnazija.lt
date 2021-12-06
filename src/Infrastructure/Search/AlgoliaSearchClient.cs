@@ -2,6 +2,7 @@
 
 using Algolia.Search.Clients;
 using Application.Common.Exceptions;
+using Application.Common.Pagination;
 using Application.Posts.Dtos;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -22,14 +23,24 @@ public sealed class AlgoliaSearchClient : ISearchClient
         _menusIndex = client.InitIndex(prefix + "menus");
     }
 
-    public async Task<List<int>> SearchPostAsync(string query, CancellationToken ct)
+    public async Task<PaginatedList<int>> SearchPostAsync(string query, PaginationDto pagination, CancellationToken ct)
     {
         try
         {
-            var result = await _postsIndex.SearchAsync<PostIndexDto>(new(query), null, ct);
-            var ids = result.Hits.ConvertAll(x => int.Parse(x.ObjectID));
+            var result = await _postsIndex.SearchAsync<PostIndexDto>(
+                             new(query)
+                             {
+                                 HitsPerPage = pagination.Items,
+                                 Page = pagination.Page
+                             },
+                             null,
+                             ct);
 
-            return ids;
+            return new(
+                result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
+                result.NbHits,
+                result.Page,
+                result.HitsPerPage);
         }
         catch (Exception e)
         {
@@ -41,7 +52,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _postsIndex.SaveObjectAsync(post);
+            //await _postsIndex.SaveObjectAsync(post);
         }
         catch (Exception e)
         {
@@ -53,7 +64,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _postsIndex.DeleteObjectAsync(id.ToString());
+            //await _postsIndex.DeleteObjectAsync(id.ToString());
         }
         catch (Exception e)
         {

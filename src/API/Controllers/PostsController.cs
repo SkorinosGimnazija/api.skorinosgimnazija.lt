@@ -13,7 +13,7 @@ public sealed class PostsController : BaseApiController
 {
     [HttpGet(Name = "GetPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<PostDto>> GetPosts([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<PostDto>> GetPosts([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new PostList.Query(pagination), ct);
     }
@@ -29,9 +29,9 @@ public sealed class PostsController : BaseApiController
     [HttpPost(Name = "CreatePost")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm] PostCreateDto post)
+    public async Task<ActionResult<PostDetailsDto>> CreatePost([FromForm] PostCreateDto dto)
     {
-        var result = await Mediator.Send(new PostCreate.Command(post));
+        var result = await Mediator.Send(new PostCreate.Command(dto));
         return CreatedAtAction(nameof(GetPost), new { result.Id }, result);
     }
 
@@ -39,9 +39,9 @@ public sealed class PostsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> EditPost([FromForm] PostEditDto post)
+    public async Task<IActionResult> EditPost([FromForm] PostEditDto dto)
     {
-        await Mediator.Send(new PostEdit.Command(post));
+        await Mediator.Send(new PostEdit.Command(dto));
         return Ok();
     }
 
@@ -49,9 +49,9 @@ public sealed class PostsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> PatchPost(int id, PostPatchDto post)
+    public async Task<IActionResult> PatchPost(int id, PostPatchDto dto)
     {
-        await Mediator.Send(new PostPatch.Command(id, post));
+        await Mediator.Send(new PostPatch.Command(id, dto));
         return Ok();
     }
 
@@ -66,8 +66,9 @@ public sealed class PostsController : BaseApiController
 
     [HttpGet("search/{text}", Name = "SearchPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<PostDto>> SearchPosts(
-        string text, [FromQuery] PaginationDto pagination,
+    public async Task<PaginatedList<PostDto>> SearchPosts(
+        string text,
+        [FromQuery] PaginationDto pagination,
         CancellationToken ct)
     {
         return await Mediator.Send(new PostSearch.Query(text, pagination), ct);
@@ -94,7 +95,7 @@ public sealed class PostsController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/search/{text}", Name = "SearchPublicPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<PostDto>> SearchPublicPosts(
+    public async Task<PaginatedList<PostDto>> SearchPublicPosts(
         string text, [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new PublicPostSearchList.Query(text, pagination), ct);

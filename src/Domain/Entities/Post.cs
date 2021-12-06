@@ -11,7 +11,7 @@ public sealed class Post
     public bool ShowInFeed { get; set; }
 
     public DateTime PublishDate { get; set; }
-
+     
     public int LanguageId { get; set; }
 
     public Language Language { get; set; } = default!;
@@ -23,6 +23,8 @@ public sealed class Post
     public string? IntroText { get; set; }
 
     public string? Text { get; set; }
+
+    public string? Meta { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
 

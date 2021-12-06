@@ -16,7 +16,7 @@ public sealed class MediaManager : IMediaManager
     public const string FileUrlUploadsFolder = "uploads";
 
     private static readonly Regex FileUrlReplaceTemplateRegex =
-        new($"\\({FileUrlReplaceTemplate}/(.*?)\\)", RegexOptions.Compiled, TimeSpan.FromSeconds(3));
+        new($"(\\(|\"){FileUrlReplaceTemplate}/(.*?)(\\)|\")", RegexOptions.Compiled, TimeSpan.FromSeconds(3));
 
     private readonly string _baseUploadPath;
     private readonly IFileService _fileService;
@@ -104,15 +104,17 @@ public sealed class MediaManager : IMediaManager
       
         return FileUrlReplaceTemplateRegex.Replace(text, x =>
         {
-            var path = files.FirstOrDefault(z => z.EndsWith(x.Groups[1].Value));
+            var path = files.FirstOrDefault(z => z.EndsWith(x.Groups[2].Value));
             if (path is null)
             {
                 return x.Value;
             }
 
             var slug = string.Join("/", path.Split("/").Select(Uri.EscapeDataString));
+            var openChar = x.Groups[1].Value;
+            var closeChar = x.Groups[3].Value;
 
-            return $"({_staticFilesUploadUrl}/{slug})";
+            return $"{openChar}{_staticFilesUploadUrl}/{slug}{closeChar}";
         });
     }
 

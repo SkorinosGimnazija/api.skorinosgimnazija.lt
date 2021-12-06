@@ -270,7 +270,7 @@ public class GetPostTests
 
         var actual = await _app.SendAsync(command);
 
-        actual.Should().HaveCount(2);
-        actual.Select(x => x.Id).Should().ContainInOrder(post4.Id, post1.Id);
+        actual.Items.Should().HaveCount(2);
+        actual.Items.Select(x => x.Id).Should().ContainInOrder(post4.Id, post1.Id);
     }
 }

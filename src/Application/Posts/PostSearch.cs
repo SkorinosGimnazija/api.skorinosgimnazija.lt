@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PostSearch
 {
-    public record Query(string SearchText, PaginationDto Pagination) : IRequest<List<PostDto>>;
+    public record Query(string SearchText, PaginationDto Pagination) : IRequest<PaginatedList<PostDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -22,7 +22,7 @@ public static class PostSearch
         }
     }
 
-    public class Handler : IRequestHandler<Query, List<PostDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<PostDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -35,16 +35,22 @@ public static class PostSearch
             _mapper = mapper;
         }
 
-        public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<PostDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var postIds = await _search.SearchPostAsync(request.SearchText, cancellationToken);
+            var searchResult = await _search.SearchPostAsync(request.SearchText, request.Pagination, cancellationToken);
+            var items = await _context.Posts
+                            .AsNoTracking()
+                            .Where(x => searchResult.Items.Contains(x.Id))
+                            .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                            .OrderBy(x => searchResult.Items.IndexOf(x.Id))
+                            .ToListAsync(cancellationToken);
 
-            return await _context.Posts
-                       .AsNoTracking()
-                       .Where(x => postIds.Contains(x.Id))
-                       .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                       .OrderBy(x => postIds.IndexOf(x.Id))
-                       .ToListAsync(cancellationToken);
+            return new(
+                items,
+                searchResult.TotalCount,
+                request.Pagination.Page,
+                request.Pagination.Items
+            );
 
             //return await _context.Posts
             //    .AsNoTracking()

@@ -18,6 +18,25 @@ public sealed class FileService : IFileService
         {
             File.Delete(filePath);
         }
+
+        DeleteEmptyFileFolder(filePath);
+    }
+
+    public void DeleteEmptyFileFolder(string filePath)
+    {
+        var directoryPath = Path.GetDirectoryName(filePath);
+         
+        if (Directory.Exists(directoryPath))
+        {
+            try
+            {
+                Directory.Delete(directoryPath);
+            }
+            catch
+            {
+                // ignore
+            }
+        }
     }
 
     public void DeleteFolder(string folderPath)

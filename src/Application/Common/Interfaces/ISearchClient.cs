@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
+using Pagination;
 using Posts.Dtos;
 
 public interface ISearchClient
@@ -8,5 +9,5 @@ public interface ISearchClient
 
     Task RemovePostAsync(int id);
 
-    Task<List<int>> SearchPostAsync(string query, CancellationToken ct);
+    Task<PaginatedList<int>> SearchPostAsync(string query, PaginationDto pagination, CancellationToken ct);
 }

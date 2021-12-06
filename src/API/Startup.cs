@@ -43,7 +43,7 @@ public sealed class Startup
 
             if (env.IsDevelopment())
             {
-                //controllers.WithMetadata(new AllowAnonymousAttribute());
+                controllers.WithMetadata(new AllowAnonymousAttribute());
             }
         });
     }

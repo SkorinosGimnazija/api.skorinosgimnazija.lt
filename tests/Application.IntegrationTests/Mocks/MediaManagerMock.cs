@@ -22,6 +22,7 @@ public class MediaManagerMock
 
     public void SetReturnFilesData(IEnumerable<string> files)
     {
+        _mockData.Clear();
         _mockData.AddRange(files);
     }
 }

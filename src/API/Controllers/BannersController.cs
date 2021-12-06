@@ -31,9 +31,9 @@ public class BannersController : BaseApiController
     [HttpPost(Name = "CreateBanner")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BannerDto>> Create(BannerCreateDto menu)
+    public async Task<ActionResult<BannerDto>> Create([FromForm]BannerCreateDto dto)
     {
-        var result = await Mediator.Send(new BannerCreate.Command(menu));
+        var result = await Mediator.Send(new BannerCreate.Command(dto));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
     }
 
@@ -41,9 +41,9 @@ public class BannersController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Edit(BannerEditDto menu)
+    public async Task<IActionResult> Edit([FromForm] BannerEditDto dto)
     {
-        await Mediator.Send(new BannerEdit.Command(menu));
+        await Mediator.Send(new BannerEdit.Command(dto));
         return Ok();
     }
 
