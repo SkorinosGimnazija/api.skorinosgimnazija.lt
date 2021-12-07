@@ -25,11 +25,13 @@ public static class MenuCreate
     public class Handler : IRequestHandler<Command, MenuDto>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
         private readonly IMapper _mapper;
 
-        public Handler(IAppDbContext context, IMapper mapper)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
         {
             _context = context;
+            _searchClient = searchClient;
             _mapper = mapper;
         }
 
@@ -43,11 +45,17 @@ public static class MenuCreate
             await _context.SaveChangesAsync();
 
             await UpdatePathFromParent(entity);
+            await SaveSearchIndex(entity);
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
             return _mapper.Map<MenuDto>(entity);
+        }
+
+        private async Task SaveSearchIndex(Menu menu)
+        {
+            await _searchClient.SaveMenuAsync(_mapper.Map<MenuIndexDto>(menu));
         }
 
         private async Task UpdatePathFromParent(Menu entity)

@@ -2,16 +2,28 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Extensions;
 using Common.Interfaces;
 using Dtos;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Posts;
+using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class MenuList
 {
-    public record Query() : IRequest<List<MenuDto>>;
+    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<MenuDto>>;
 
-    public class Handler : IRequestHandler<Query, List<MenuDto>>
+    public class Validator : AbstractValidator<PostList.Query>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.Pagination).SetValidator(new PaginationValidator());
+        }
+    }
+
+    public class Handler : IRequestHandler<Query, PaginatedList<MenuDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -23,13 +35,14 @@ public static class MenuList
             _mapper = mapper;
         }
 
-        public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Menus
                        .AsNoTracking()
-                       .OrderBy(x => x.Order)
                        .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
-                       .ToListAsync(cancellationToken);
+                       .OrderBy(x => x.Order)
+                       .ThenBy(x=> x.Path)
+                       .PaginateToListAsync(request.Pagination, cancellationToken);
         }
     }
 }

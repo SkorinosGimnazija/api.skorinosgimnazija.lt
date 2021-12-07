@@ -3,6 +3,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Dtos;
+using SkorinosGimnazija.Application.Posts.Dtos;
 
 public class MenuProfiles : Profile
 {
@@ -25,5 +26,8 @@ public class MenuProfiles : Profile
                 x.MapFrom(m => m.Slug);
                 x.AddTransform(slug => $"/{slug}");
             });
+
+        CreateMap<Menu, MenuIndexDto>()
+            .ForMember(x => x.ObjectID, x => x.MapFrom(p => p.Id.ToString()));
     }
 }

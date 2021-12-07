@@ -14,12 +14,12 @@ public static class PostDelete
     {
         private readonly IAppDbContext _context;
         private readonly IMediaManager _mediaManager;
-        private readonly ISearchClient _search;
+        private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient search, IMediaManager mediaManager)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager)
         {
             _context = context;
-            _search = search;
+            _searchClient = searchClient;
             _mediaManager = mediaManager;
         }
 
@@ -31,8 +31,8 @@ public static class PostDelete
             {
                 throw new NotFoundException();
             }
-
-            await _search.RemovePostAsync(entity.Id);
+             
+            await _searchClient.RemovePostAsync(entity);
             _mediaManager.DeleteFiles(entity.Files);
             _mediaManager.DeleteFiles(entity.Images);
 

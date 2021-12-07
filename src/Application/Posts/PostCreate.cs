@@ -104,7 +104,7 @@ public static class PostCreate
 
         private async Task Cleanup(Post post)
         {
-            await _searchClient.RemovePostAsync(post.Id);
+            await _searchClient.RemovePostAsync(post);
             _mediaManager.DeleteFiles(post.Files);
             _mediaManager.DeleteFiles(post.Images);
         }

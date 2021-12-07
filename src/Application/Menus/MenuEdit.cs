@@ -10,6 +10,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Application.Posts.Dtos;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
 
@@ -28,12 +29,14 @@ public static class MenuEdit
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
 
         private readonly IMapper _mapper;
 
-        public Handler(IAppDbContext context, IMapper mapper)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
         {
             _context = context;
+            _searchClient = searchClient;
             _mapper = mapper;
         }
 
@@ -55,6 +58,7 @@ public static class MenuEdit
 
             await UpdatePathFromParent(entity, oldMenuPath);
             await UpdateChildrenPaths(entity, oldMenuPath);
+            await SaveSearchIndex(entity);
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -62,6 +66,12 @@ public static class MenuEdit
             return Unit.Value;
         }
 
+
+        private async Task SaveSearchIndex(Menu menu)
+        {
+            await _searchClient.SaveMenuAsync(_mapper.Map<MenuIndexDto>(menu));
+        }
+         
         private async Task UpdatePathFromParent(Menu entity, string oldMenuPath)
         {
             if (entity.ParentMenuId is null)

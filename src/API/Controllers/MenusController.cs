@@ -1,20 +1,33 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
+using Application.MenuLocations;
 using Application.Menus;
 using Application.Menus.Dtos;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkorinosGimnazija.Application.Common.Pagination;
+using SkorinosGimnazija.Application.Posts.Dtos;
+using SkorinosGimnazija.Application.Posts;
+using SkorinosGimnazija.Application.Languages.Dtos;
+using SkorinosGimnazija.Application.Languages;
 
 [Authorize(Roles = Auth.Role.Admin)]
 public sealed class MenusController : BaseApiController
 {
     [HttpGet(Name = "GetMenus")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<MenuDto>> GetMenus(CancellationToken ct)
+    public async Task<PaginatedList<MenuDto>> GetMenus([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
-        return await Mediator.Send(new MenuList.Query(), ct);
+        return await Mediator.Send(new MenuList.Query(pagination), ct);
+    }
+
+    [HttpGet("/locations", Name = "GetMenuLocations")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<MenuLocationDto>> GetPublicMenuLocations(CancellationToken ct)
+    {
+        return await Mediator.Send(new MenuLocationsList.Query(), ct);
     }
 
     [HttpGet("{id:int}", Name = "GetMenuById")]
@@ -53,6 +66,16 @@ public sealed class MenusController : BaseApiController
         return NoContent();
     }
 
+    [HttpGet("search/{text}", Name = "SearchMenus")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PaginatedList<MenuDto>> SearchMenus(
+        string text, 
+        [FromQuery] PaginationDto pagination,
+        CancellationToken ct)
+    {
+        return await Mediator.Send(new MenuSearch.Query(text, pagination), ct);
+    }
+
     [AllowAnonymous]
     [HttpGet("public/{language}/{location}", Name = "GetPublicMenusByLanguageAndLocation")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -60,4 +83,6 @@ public sealed class MenusController : BaseApiController
     {
         return await Mediator.Send(new PublicMenuList.Query(language, location), ct);
     }
+
+  
 }

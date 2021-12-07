@@ -7,6 +7,8 @@ public record PostIndexDto
 
     public DateTime PublishDate { get; init; }
 
+    public  bool IsPublished { get; init; }
+
     public string Title { get; init; } = default!;
 
     public string? Text { get; init; }

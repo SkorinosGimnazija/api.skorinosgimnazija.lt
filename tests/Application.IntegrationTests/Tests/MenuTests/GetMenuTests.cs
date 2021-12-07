@@ -1,8 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.MenuTests;
 
 using Common.Exceptions;
+using Common.Pagination;
 using Domain.Entities;
 using FluentAssertions;
+using MenuLocations;
 using Menus;
 using Xunit;
 
@@ -25,6 +27,23 @@ public class GetMenuTests
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<NotFoundException>();
+    }
+
+
+    [Fact]
+    public async Task MenuLocationsList_ShouldListMenuLocations()
+    {
+        var menuLoc1 = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
+        var menuLoc2 = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
+         
+        await _app.AddAsync(menuLoc1);
+        await _app.AddAsync(menuLoc2);
+
+        var command = new MenuLocationsList.Query();
+
+        var actual = await _app.SendAsync(command);
+
+        actual.Select(x=> x.Slug).Should().Contain(menuLoc1.Slug, menuLoc2.Slug);
     }
 
     [Fact]
@@ -103,11 +122,12 @@ public class GetMenuTests
 
         await _app.AddAsync(menu1);
 
-        var command = new MenuList.Query();
+        var command = new MenuList.Query(new ());
 
         var actual = await _app.SendAsync(command);
 
-        actual.Should().HaveCount(expected);
+        actual.Items.Should().HaveCount(expected);
+        actual.TotalCount.Should().Be(expected);
     }
 
     [Fact]

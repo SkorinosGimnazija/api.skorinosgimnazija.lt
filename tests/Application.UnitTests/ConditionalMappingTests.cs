@@ -50,6 +50,16 @@ public class ConditionalMappingTests
     }
 
     [Fact]
+    public void MenuToMenuIndex_ShouldMapStringObjectId()
+    {
+        var menu = new Menu { Id = 1 };
+
+        var actual = _mapper.Map<MenuIndexDto>(menu);
+
+        actual.ObjectID.Should().Be(menu.Id.ToString());
+    }
+
+    [Fact]
     public void PostPatchToPostShouldSetFeaturedAndPublished()
     {
         var postPatch = new PostPatchDto

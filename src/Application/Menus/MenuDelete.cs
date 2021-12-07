@@ -13,10 +13,12 @@ public static class MenuDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context)
+        public Handler(IAppDbContext context, ISearchClient searchClient)
         {
             _context = context;
+            _searchClient = searchClient;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -28,6 +30,7 @@ public static class MenuDelete
                 throw new NotFoundException();
             }
 
+            await _searchClient.RemoveMenuAsync(entity);
             _context.Menus.Remove(entity);
             await _context.SaveChangesAsync();
 
