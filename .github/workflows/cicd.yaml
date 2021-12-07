@@ -36,17 +36,17 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release
 
-  deploy:
-    needs: [ build ]
-    name: CD
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+  # deploy:
+  #   needs: [ build ]
+  #   name: CD
+  #   if: github.event_name == 'push'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
 
-      - uses: dokku/github-action@master
-        with:
-          git_remote_url: 'ssh://${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}/api'
-          ssh_private_key: ${{ secrets.SSH_KEY }}
+  #     - uses: dokku/github-action@master
+  #       with:
+  #         git_remote_url: 'ssh://${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}/api'
+  #         ssh_private_key: ${{ secrets.SSH_KEY }}
