@@ -22,7 +22,7 @@ public static class MenuEdit
     {
         public Validator()
         {
-            RuleFor(v => v.Menu).SetValidator(new MenuEditValidator());
+            RuleFor(v => v.Menu).NotNull().SetValidator(new MenuEditValidator());
         }
     }
 

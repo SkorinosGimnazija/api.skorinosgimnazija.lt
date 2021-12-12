@@ -18,7 +18,7 @@ public static class MenuCreate
     {
         public Validator()
         {
-            RuleFor(v => v.Menu).SetValidator(new MenuCreateValidator());
+            RuleFor(v => v.Menu).NotNull().SetValidator(new MenuCreateValidator());
         }
     }
 

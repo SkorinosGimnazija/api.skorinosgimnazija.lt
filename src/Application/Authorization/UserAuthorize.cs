@@ -13,7 +13,12 @@ public static class UserAuthorize
     {
         public Validator()
         {
-            RuleFor(v => v.GoogleAuth.Token).NotEmpty();
+            RuleFor(v => v.GoogleAuth)
+                .NotNull()
+                .DependentRules(() =>
+                {
+                    RuleFor(v => v.GoogleAuth.Token).NotEmpty();
+                });
         }
     }
 

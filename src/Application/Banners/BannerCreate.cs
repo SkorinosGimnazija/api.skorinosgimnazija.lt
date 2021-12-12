@@ -18,7 +18,7 @@ public static class BannerCreate
     {
         public Validator()
         {
-            RuleFor(v => v.Banner).SetValidator(new BannerCreateValidator());
+            RuleFor(v => v.Banner).NotNull().SetValidator(new BannerCreateValidator());
         }
     }
 

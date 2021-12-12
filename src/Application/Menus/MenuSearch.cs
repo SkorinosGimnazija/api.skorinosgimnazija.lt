@@ -17,7 +17,7 @@ public static class MenuSearch
     {
         public Validator()
         {
-            RuleFor(x => x.Pagination).SetValidator(new PaginationValidator());
+            RuleFor(x => x.Pagination).NotNull().SetValidator(new PaginationValidator());
             RuleFor(x => x.SearchText).MaximumLength(50);
         }
     }

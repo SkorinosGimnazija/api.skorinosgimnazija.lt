@@ -26,7 +26,7 @@ public static class BannerEdit
     {
         public Validator()
         {
-            RuleFor(v => v.Banner).SetValidator(new BannerEditValidator());
+            RuleFor(v => v.Banner).NotNull().SetValidator(new BannerEditValidator());
         }
     }
 

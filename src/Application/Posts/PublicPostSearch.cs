@@ -17,7 +17,7 @@ public static class PublicPostSearchList
     {
         public Validator()
         {
-            RuleFor(x => x.Pagination).SetValidator(new PaginationValidator());
+            RuleFor(x => x.Pagination).NotNull().SetValidator(new PaginationValidator());
             RuleFor(x => x.SearchText).MinimumLength(3).MaximumLength(50);
         }
     }

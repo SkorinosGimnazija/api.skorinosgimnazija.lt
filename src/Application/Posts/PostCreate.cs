@@ -17,7 +17,7 @@ public static class PostCreate
     {
         public Validator()
         {
-            RuleFor(x => x.Post).SetValidator(new PostCreateValidator());
+            RuleFor(x => x.Post).NotNull().SetValidator(new PostCreateValidator());
         }
     }
 

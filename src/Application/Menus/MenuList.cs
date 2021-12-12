@@ -19,7 +19,7 @@ public static class MenuList
     {
         public Validator()
         {
-            RuleFor(x => x.Pagination).SetValidator(new PaginationValidator());
+            RuleFor(x => x.Pagination).NotNull().SetValidator(new PaginationValidator());
         }
     }
 

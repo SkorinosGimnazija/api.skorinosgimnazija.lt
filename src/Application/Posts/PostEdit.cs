@@ -19,7 +19,7 @@ public static class PostEdit
     {
         public Validator()
         {
-            RuleFor(x => x.Post).SetValidator(new PostEditValidator());
+            RuleFor(x => x.Post).NotNull().SetValidator(new PostEditValidator());
         }
     }
 
