@@ -35,9 +35,6 @@ public class GetMenuTests
     {
         var menuLoc1 = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
         var menuLoc2 = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
-         
-        await _app.AddAsync(menuLoc1);
-        await _app.AddAsync(menuLoc2);
 
         var command = new MenuLocationsList.Query();
 
