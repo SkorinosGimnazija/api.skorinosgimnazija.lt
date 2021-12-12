@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Search;
 
 using Algolia.Search.Clients;
+using Application.Banners.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Pagination;
 using Application.Menus.Dtos;
@@ -13,6 +14,7 @@ using ISearchClient = Application.Common.Interfaces.ISearchClient;
 
 public sealed class AlgoliaSearchClient : ISearchClient
 {
+    private readonly SearchIndex _bannersIndex;
     private readonly SearchIndex _menusIndex;
     private readonly SearchIndex _postsIndex;
 
@@ -23,26 +25,27 @@ public sealed class AlgoliaSearchClient : ISearchClient
 
         _postsIndex = client.InitIndex(prefix + "posts");
         _menusIndex = client.InitIndex(prefix + "menus");
+        _bannersIndex = client.InitIndex(prefix + "banners");
+    }
+
+    public async Task<PaginatedList<int>> SearchBannersAsync(
+        string query, PaginationDto pagination, CancellationToken ct)
+    {
+        try
+        {
+            return await SearchAsync(query, pagination, _bannersIndex, ct);
+        }
+        catch (Exception e)
+        {
+            throw new SearchIndexException("Banner search failed", e);
+        }
     }
 
     public async Task<PaginatedList<int>> SearchMenuAsync(string query, PaginationDto pagination, CancellationToken ct)
     {
         try
         {
-            var result = await _menusIndex.SearchAsync<MenuIndexDto>(
-                             new(query)
-                             {
-                                 HitsPerPage = pagination.Items,
-                                 Page = pagination.Page
-                             },
-                             null,
-                             ct);
-
-            return new(
-                result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
-                result.NbHits,
-                result.Page,
-                result.HitsPerPage);
+            return await SearchAsync(query, pagination, _menusIndex, ct);
         }
         catch (Exception e)
         {
@@ -54,20 +57,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            var result = await _postsIndex.SearchAsync<PostIndexDto>(
-                             new(query)
-                             {
-                                 HitsPerPage = pagination.Items,
-                                 Page = pagination.Page
-                             },
-                             null,
-                             ct);
-
-            return new(
-                result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
-                result.NbHits,
-                result.Page,
-                result.HitsPerPage);
+            return await SearchAsync(query, pagination, _postsIndex, ct);
         }
         catch (Exception e)
         {
@@ -121,5 +111,48 @@ public sealed class AlgoliaSearchClient : ISearchClient
         {
             throw new SearchIndexException("Post Removing failed", e);
         }
+    }
+
+    public async Task SaveBannerAsync(BannerIndexDto banner)
+    {
+        try
+        {
+            await _bannersIndex.SaveObjectAsync(banner);
+        }
+        catch (Exception e)
+        {
+            throw new SearchIndexException("Banner saving failed", e);
+        }
+    }
+
+    public async Task RemoveBannerAsync(Banner banner)
+    {
+        try
+        {
+            await _bannersIndex.DeleteObjectAsync(banner.Id.ToString());
+        }
+        catch (Exception e)
+        {
+            throw new SearchIndexException("Banner Removing failed", e);
+        }
+    } 
+
+    private static async Task<PaginatedList<int>> SearchAsync(
+        string query, PaginationDto pagination, ISearchIndex index, CancellationToken ct)
+    {
+        var result = await index.SearchAsync<SearchObject>(
+                         new(query)
+                         {
+                             HitsPerPage = pagination.Items,
+                             Page = pagination.Page
+                         },
+                         null,
+                         ct);
+         
+        return new(
+            result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
+            result.NbHits,
+            result.Page,
+            result.HitsPerPage);
     }
 }

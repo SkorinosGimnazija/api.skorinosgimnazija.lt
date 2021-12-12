@@ -9,15 +9,18 @@ using SkorinosGimnazija.Infrastructure.Identity;
 using System.Xml.Linq;
 using Application.Banners;
 using Application.Banners.Dtos;
- 
+using Application.Common.Pagination;
+using SkorinosGimnazija.Application.Menus.Dtos;
+using SkorinosGimnazija.Application.Menus;
+
 [Authorize(Roles = Auth.Role.Admin)]
 public class BannersController : BaseApiController
 {
     [HttpGet(Name = "GetBanners")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<BannerDto>> GetAll(CancellationToken ct)
+    public async Task<PaginatedList<BannerDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
-        return await Mediator.Send(new BannerList.Query(), ct);
+        return await Mediator.Send(new BannerList.Query(pagination), ct);
     } 
       
     [HttpGet("{id:int}", Name = "GetBannerById")]
@@ -56,6 +59,16 @@ public class BannersController : BaseApiController
         return NoContent();
     }
      
+    [HttpGet("search/{text}", Name = "SearchBanners")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PaginatedList<BannerDto>> Search(
+        string text,
+        [FromQuery] PaginationDto pagination,
+        CancellationToken ct)
+    {
+        return await Mediator.Send(new BannerSearch.Query(text, pagination), ct);
+    }
+
     [AllowAnonymous] 
     [HttpGet("public/{language}", Name = "GetPublicBannersByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -30,7 +30,6 @@ public static class MenuEdit
     {
         private readonly IAppDbContext _context;
         private readonly ISearchClient _searchClient;
-
         private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)

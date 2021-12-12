@@ -3,18 +3,20 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkorinosGimnazija.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211212164831_MenuCascade1")]
+    partial class MenuCascade1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -530,7 +532,7 @@ namespace Persistence.Migrations
                     b.HasOne("SkorinosGimnazija.Domain.Entities.Menu", "ParentMenu")
                         .WithMany()
                         .HasForeignKey("ParentMenuId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.Navigation("Language");
 

@@ -8,6 +8,7 @@ using Dtos;
 using FluentValidation;
 using MediatR;
 using Menus.Validators;
+using SkorinosGimnazija.Application.Menus.Dtos;
 using Validators;
 
 public static class BannerCreate
@@ -25,12 +26,14 @@ public static class BannerCreate
     public class Handler : IRequestHandler<Command, BannerDto>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
         private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
 
-        public Handler(IAppDbContext context, IMediaManager mediaManager, IMapper mapper)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager, IMapper mapper)
         {
             _context = context;
+            _searchClient = searchClient;
             _mediaManager = mediaManager;
             _mapper = mapper;
         }
@@ -40,13 +43,24 @@ public static class BannerCreate
         {
             var entity = _context.Banners.Add(_mapper.Map<Banner>(request.Banner)).Entity;
 
-            var image = await _mediaManager.SaveFilesAsync(new[] { request.Banner.Picture });
-
-            entity.PictureUrl = image[0];
+            await SaveSearchIndexAsync(entity);
+            await SavePictureAsync(entity, request.Banner);
 
             await _context.SaveChangesAsync();
 
             return _mapper.Map<BannerDto>(entity);
+        }
+
+        private async Task SavePictureAsync(Banner banner, BannerCreateDto newBanner)
+        {
+            var image = await _mediaManager.SaveFilesAsync(new[] { newBanner.Picture });
+            banner.PictureUrl = image[0];
+        }
+
+
+        private async Task SaveSearchIndexAsync(Banner banner)
+        {
+            await _searchClient.SaveBannerAsync(_mapper.Map<BannerIndexDto>(banner));
         }
     }
 }

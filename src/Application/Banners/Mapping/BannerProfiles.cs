@@ -19,5 +19,8 @@ public class BannerProfiles : Profile
         CreateMap<BannerEditDto, Banner>();
 
         CreateMap<BannerCreateDto, Banner>();
+
+        CreateMap<Banner, BannerIndexDto>()
+            .ForMember(x => x.ObjectID, x => x.MapFrom(p => p.Id.ToString()));
     }
 }

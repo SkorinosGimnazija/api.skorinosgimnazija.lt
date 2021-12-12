@@ -51,7 +51,7 @@ public class UpdateMenuTests
     [Fact]
     public async Task MenuEdit_ShouldEditMenu()
     {
-        var rootMenu = new Menu
+        var menu = new Menu
         {
             LanguageId = 1,
             MenuLocationId = 1,
@@ -60,28 +60,16 @@ public class UpdateMenuTests
             Path = "/slug"
         };
 
-        await _app.AddAsync(rootMenu);
-
-        var childMenu = new Menu
-        {
-            LanguageId = 1,
-            MenuLocationId = 1,
-            ParentMenuId = rootMenu.Id,
-            Slug = "slug1",
-            Title = "title1",
-            Path = "/slug/slug1"
-        };
-
-        await _app.AddAsync(childMenu);
+        await _app.AddAsync(menu);
 
         var menuEdit = new MenuEditDto
         {
-            Id = childMenu.Id,
+            Id = menu.Id,
             LanguageId = 1,
             MenuLocationId = 1,
             ParentMenuId = null,
-            Slug = "new-slug",
-            Title = "new-title"
+            Slug = "slug-1",
+            Title = "title 1"
         };
 
         var command = new MenuEdit.Command(menuEdit);
@@ -190,9 +178,13 @@ public class UpdateMenuTests
         var command = new MenuEdit.Command(menuEdit);
 
         await _app.SendAsync(command);
-
+         
+        var actualEdit = await _app.FindAsync<Menu>(menuEdit.Id);
         var actualChild1 = await _app.FindAsync<Menu>(child1.Id);
         var actualChild2 = await _app.FindAsync<Menu>(child2.Id);
+
+        actualEdit.Should().NotBeNull();
+        actualEdit.Path.Should().Be("/new-slug");
 
         actualChild1.Should().NotBeNull();
         actualChild1.Path.Should().Be("/new-slug/slug2");

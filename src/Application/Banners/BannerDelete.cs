@@ -18,11 +18,13 @@ public static class BannerDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
         private readonly IMediaManager _mediaManager;
 
-        public Handler(IAppDbContext context,IMediaManager mediaManager)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager)
         {
             _context = context;
+            _searchClient = searchClient;
             _mediaManager = mediaManager;
         }
 
@@ -35,8 +37,12 @@ public static class BannerDelete
                 throw new NotFoundException();
             }
 
+            await _searchClient.RemoveBannerAsync(entity);
+
             _mediaManager.DeleteFile(entity.PictureUrl);
+
             _context.Banners.Remove(entity);
+
             await _context.SaveChangesAsync();
 
             return Unit.Value;

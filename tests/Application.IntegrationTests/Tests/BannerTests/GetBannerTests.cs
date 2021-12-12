@@ -2,6 +2,7 @@
 
 using Banners;
 using Common.Exceptions;
+using Common.Pagination;
 using Domain.Entities;
 using FluentAssertions;
 using Xunit;
@@ -46,6 +47,41 @@ public class GetBannerTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task BannerList_ShouldPaginateBanners()
+    {
+        var entity1 = new Banner
+        {
+            LanguageId = 1,
+            Url = "slug",
+            Title = "title",
+            IsPublished = false,
+            PictureUrl = "/slug/pic.jpg"
+        };
+
+        var entity2 = new Banner
+        {
+            LanguageId = 1,
+            Url = "slug",
+            Title = "title",
+            IsPublished = false,
+            PictureUrl = "/slug/pic.jpg"
+        };
+
+        await _app.AddAsync(entity1);
+        await _app.AddAsync(entity2);
+
+        var command = new BannerList.Query(new ());
+
+        var actual = await _app.SendAsync(command);
+         
+        actual.Items.Should().HaveCount(2);
+        actual.Items.Select(x => x.Id).Should().Contain(new[] { entity1.Id, entity1.Id });
+        actual.TotalCount.Should().Be(2);
+        actual.PageNumber.Should().Be(0);
+        actual.TotalPages.Should().Be(1);
     }
 
     [Theory]

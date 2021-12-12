@@ -1,21 +1,15 @@
 ﻿namespace SkorinosGimnazija.Application.Banners;
+
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
-using FluentValidation.Results;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
 using FluentValidation;
 using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Banners.Dtos;
-
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Menus.Validators;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Application.Menus.Dtos;
+using SkorinosGimnazija.Domain.Entities;
 using Validators;
 
 public static class BannerEdit
@@ -33,13 +27,14 @@ public static class BannerEdit
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
-        private readonly IMediaManager _mediaManager;
-
         private readonly IMapper _mapper;
+        private readonly IMediaManager _mediaManager;
+        private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, IMediaManager mediaManager, IMapper mapper)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager, IMapper mapper)
         {
             _context = context;
+            _searchClient = searchClient;
             _mediaManager = mediaManager;
             _mapper = mapper;
         }
@@ -51,20 +46,35 @@ public static class BannerEdit
             if (entity is null)
             {
                 throw new NotFoundException();
-            }
+}
 
             _mapper.Map(request.Banner, entity);
 
-            if (request.Banner.Picture is not null)
-            {
-                _mediaManager.DeleteFile(entity.PictureUrl);
-                var image = await _mediaManager.SaveFilesAsync(new[] { request.Banner.Picture });
-                entity.PictureUrl = image[0];
-            }
+            await SaveSearchIndexAsync(entity);
+            await SavePictureAsync(entity, request.Banner);
 
             await _context.SaveChangesAsync();
 
             return Unit.Value;
+        }
+         
+        private async Task SavePictureAsync(Banner banner, BannerEditDto newBanner)
+        {
+            if (newBanner.Picture is null)
+            {
+                return;
+            }
+
+            _mediaManager.DeleteFile(banner.PictureUrl);
+
+            var image = await _mediaManager.SaveFilesAsync(new[] { newBanner.Picture });
+            banner.PictureUrl = image[0];
+        }
+
+
+        private async Task SaveSearchIndexAsync(Banner banner)
+        {
+            await _searchClient.SaveBannerAsync(_mapper.Map<BannerIndexDto>(banner));
         }
     }
 }
