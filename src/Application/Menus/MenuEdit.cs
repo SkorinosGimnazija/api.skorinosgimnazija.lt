@@ -94,7 +94,7 @@ public static class MenuEdit
         private async Task UpdateChildrenPaths(Menu entity, string oldMenuPath)
         {
             await _context.Menus
-                .Where(x => x.Path.StartsWith(oldMenuPath))
+                .Where(x => x.Id != entity.Id &&  x.Path.StartsWith(oldMenuPath))
                 .ForEachAsync(x => x.Path = entity.Path + "/" + x.Slug);
         }
     }

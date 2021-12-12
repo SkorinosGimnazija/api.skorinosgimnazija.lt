@@ -11,7 +11,7 @@ internal class MenuConfiguration : IEntityTypeConfiguration<Menu>
         builder.HasOne(x => x.LinkedPost).WithOne().OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Language).WithMany().OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.MenuLocation).WithMany().OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(x => x.ParentMenu).WithMany().OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.ParentMenu).WithMany().OnDelete(DeleteBehavior.Cascade);
         builder.HasIndex(x => new { x.Slug, x.LanguageId }).IsUnique();
         builder.HasIndex(x => x.IsPublished);
         builder.HasIndex(x => x.Order);
