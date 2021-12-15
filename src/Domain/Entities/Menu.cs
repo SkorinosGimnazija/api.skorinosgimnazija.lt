@@ -13,6 +13,7 @@ public sealed class Menu
     public string Slug { get; set; } = default!;
 
     public string Path { get; set; } = default!;
+    public string? Url { get; set; }
 
     public int? LinkedPostId { get; set; }
 

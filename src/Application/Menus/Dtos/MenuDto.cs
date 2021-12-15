@@ -9,6 +9,7 @@ public record MenuDto
     public int Id { get; init; }
 
     public int Order { get; init; }
+    public string? Url { get; init; }
 
     public string Title { get; init; } = default!;
 

@@ -19,5 +19,6 @@ internal class MenuConfiguration : IEntityTypeConfiguration<Menu>
         builder.Property(x => x.Title).HasMaxLength(256);
         builder.Property(x => x.Slug).HasMaxLength(100);
         builder.Property(x => x.Path).HasMaxLength(300);
+        builder.Property(x => x.Url).HasMaxLength(300);
     }
 }
