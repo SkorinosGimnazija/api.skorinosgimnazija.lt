@@ -41,12 +41,17 @@ public static class BannerCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<BannerDto> Handle(Command request, CancellationToken _)
         {
+            await using var transaction = await _context.BeginTransactionAsync();
+
             var entity = _context.Banners.Add(_mapper.Map<Banner>(request.Banner)).Entity;
 
-            await SaveSearchIndexAsync(entity);
             await SavePictureAsync(entity, request.Banner);
-
+            
             await _context.SaveChangesAsync();
+
+            await SaveSearchIndexAsync(entity);
+
+            await transaction.CommitAsync();
 
             return _mapper.Map<BannerDto>(entity);
         }

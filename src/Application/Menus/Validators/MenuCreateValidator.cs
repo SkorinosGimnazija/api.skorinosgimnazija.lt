@@ -14,5 +14,6 @@ internal class MenuCreateValidator : AbstractValidator<MenuCreateDto>
         {
             RuleFor(x => x.Slug).Must(x => !x.Contains('/')).WithMessage("Forbidden char '/'");
         });
+        RuleFor(x => x.Url).Null().When(x => x.LinkedPostId is not null).WithMessage("Set url or post id");
     }
 }
