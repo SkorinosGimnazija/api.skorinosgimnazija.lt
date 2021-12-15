@@ -4,10 +4,13 @@ using System.Security.Claims;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Posts.Dtos;
+using Calendar;
 using FluentValidation.Results;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Options;
 using Services;
 using SkorinosGimnazija.Application.Authorization.Dtos;
 
@@ -25,10 +28,11 @@ public sealed class IdentityService : IIdentityService
         UserManager<AppUser> userManager,
         IUserClaimsPrincipalFactory<AppUser> claimsPrincipal,
         TokenService tokenService,
-        IConfiguration config)
+        IOptions<GoogleOptions> googleOptions,
+        IOptions<UrlOptions> urlOptions)
     {
-        _googleClientId = config["Google:ClientId"];
-        _domain = config["Urls:Domain"];
+        _googleClientId = googleOptions.Value.ClientId;
+        _domain = urlOptions.Value.Domain;
         _userManager = userManager;
         _tokenService = tokenService;
         _claimsPrincipal = claimsPrincipal;

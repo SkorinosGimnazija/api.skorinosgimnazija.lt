@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 public class LanguagesController : BaseApiController
 { 
     [AllowAnonymous]
-    [HttpGet("/public", Name = "GetPublicLanguages")]
+    [HttpGet("public", Name = "GetPublicLanguages")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<LanguageDto>> GetAll(CancellationToken ct)
     {

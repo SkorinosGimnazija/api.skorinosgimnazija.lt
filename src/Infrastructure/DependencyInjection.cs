@@ -4,6 +4,10 @@ using System.Text;
 using Application.Common.Interfaces;
 using Extensions;
 using FileManagement;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
+using Google.Apis.Services;
 using Identity;
 using ImageOptimization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,6 +23,7 @@ using Options;
 using Persistence;
 using Search;
 using Services;
+using SkorinosGimnazija.Infrastructure.Calendar;
 
 public static class DependencyInjection
 {
@@ -58,6 +63,8 @@ public static class DependencyInjection
         services.AddOptions<CloudinaryOptions>().BindConfiguration("Cloudinary");
         services.AddOptions<MediaManagerOptions>().BindConfiguration("FileManager");
         services.AddOptions<UrlOptions>().BindConfiguration("Urls");
+        services.AddOptions<GoogleOptions>().BindConfiguration("Google");
+        services.AddOptions<CalendarOptions>().BindConfiguration("Calendar");
         services.AddOptions<JwtOptions>().BindConfiguration("Jwt");
 
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
@@ -68,6 +75,7 @@ public static class DependencyInjection
         services.AddSingleton<IMediaManager, MediaManager>();
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<ICalendarClient, GoogleCalendar>();
         services.AddSingleton<TokenService>();
 
         return services;

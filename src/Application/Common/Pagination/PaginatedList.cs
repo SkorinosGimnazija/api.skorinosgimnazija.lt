@@ -2,15 +2,15 @@
 
 public class PaginatedList<T>
 {
-    public PaginatedList(List<T> items, int totalCount, int pageNumber, int pageSize)
+    public PaginatedList(IList<T> items, int totalCount, int pageNumber, int pageSize)
     {
         Items = items;
         TotalCount = totalCount;
         PageNumber = pageNumber;
         TotalPages = (int) Math.Ceiling(totalCount / (double) pageSize);
     }
-
-    public List<T> Items { get; }
+        
+    public IList<T> Items { get; }
 
     public int PageNumber { get; }
 
