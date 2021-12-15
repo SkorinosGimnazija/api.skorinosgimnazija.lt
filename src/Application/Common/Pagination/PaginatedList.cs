@@ -2,7 +2,7 @@
 
 public class PaginatedList<T>
 {
-    public PaginatedList(IList<T> items, int totalCount, int pageNumber, int pageSize)
+    public PaginatedList(List<T> items, int totalCount, int pageNumber, int pageSize)
     {
         Items = items;
         TotalCount = totalCount;
@@ -10,7 +10,7 @@ public class PaginatedList<T>
         TotalPages = (int) Math.Ceiling(totalCount / (double) pageSize);
     }
         
-    public IList<T> Items { get; }
+    public List<T> Items { get; }
 
     public int PageNumber { get; }
 
