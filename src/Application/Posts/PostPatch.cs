@@ -7,6 +7,7 @@ using Common.Interfaces;
 using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Domain.Entities;
 
 public static class PostPatch
 {
@@ -15,11 +16,13 @@ public static class PostPatch
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
+        private readonly ISearchClient _searchClient;
         private readonly IMapper _mapper;
 
-        public Handler(IAppDbContext context, IMapper mapper)
+        public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
         {
             _context = context;
+            _searchClient = searchClient;
             _mapper = mapper;
         }
 
@@ -34,6 +37,7 @@ public static class PostPatch
 
             _mapper.Map(request.Post, entity);
 
+            await _searchClient.SavePostAsync(_mapper.Map<PostIndexDto>(entity));
             await _context.SaveChangesAsync();
 
             return Unit.Value;
