@@ -13,7 +13,7 @@ using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class MenuList
 {
-    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<MenuDto>>;
+    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<MenuDetailsDto>>;
 
     public class Validator : AbstractValidator<PostList.Query>
     {
@@ -23,7 +23,7 @@ public static class MenuList
         }
     }
 
-    public class Handler : IRequestHandler<Query, PaginatedList<MenuDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<MenuDetailsDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -35,11 +35,11 @@ public static class MenuList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<MenuDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Menus
                        .AsNoTracking()
-                       .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                       .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderBy(x => x.Order)
                        .ThenBy(x=> x.Path)
                        .PaginateToListAsync(request.Pagination, cancellationToken);

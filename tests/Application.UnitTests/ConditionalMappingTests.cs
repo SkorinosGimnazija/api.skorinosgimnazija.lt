@@ -102,22 +102,22 @@ public class ConditionalMappingTests
     }
 
     [Fact]
-    public void MenuEditToMenuShouldSetAndModifyPath()
+    public void MenuEditToMenuShouldSetPath()
     {
         var menu = new MenuEditDto { Slug = "slug" };
 
         var actual = _mapper.Map<Menu>(menu);
 
-        actual.Path.Should().Be("/slug");
+        actual.Path.Should().Be("slug");
     }
 
     [Fact]
-    public void MenuCreateToMenuShouldSetAndModifyPath()
+    public void MenuCreateToMenuShouldSetPath()
     {
         var menu = new MenuCreateDto { Slug = "slug" };
 
         var actual = _mapper.Map<Menu>(menu);
 
-        actual.Path.Should().Be("/slug");
+        actual.Path.Should().Be("slug");
     }
 }

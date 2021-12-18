@@ -81,7 +81,7 @@ public class UpdateMenuTests
         actual.Should().NotBeNull();
         actual.Slug.Should().Be(menuEdit.Slug);
         actual.Title.Should().Be(menuEdit.Title);
-        actual.Path.Should().Be("/" + menuEdit.Slug);
+        actual.Path.Should().Be( menuEdit.Slug);
     }
 
     [Fact]
@@ -184,13 +184,13 @@ public class UpdateMenuTests
         var actualChild2 = await _app.FindAsync<Menu>(child2.Id);
 
         actualEdit.Should().NotBeNull();
-        actualEdit.Path.Should().Be("/new-slug");
+        actualEdit.Path.Should().Be("new-slug");
 
         actualChild1.Should().NotBeNull();
-        actualChild1.Path.Should().Be("/new-slug/slug2");
-
+        actualChild1.Path.Should().Be("new-slug/slug2");
+         
         actualChild2.Should().NotBeNull();
-        actualChild2.Path.Should().Be("/new-slug/slug3");
+        actualChild2.Path.Should().Be("new-slug/slug3");
     }
 
     [Fact]

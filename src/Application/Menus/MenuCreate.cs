@@ -66,7 +66,8 @@ public static class MenuCreate
             }
 
             var parentMenu = await _context.Menus.AsNoTracking().FirstAsync(x => x.Id == entity.ParentMenuId);
-            entity.Path = parentMenu.Path + entity.Path;
+
+            entity.Path = parentMenu.Path + "/" + entity.Path;
         }
     }
 }

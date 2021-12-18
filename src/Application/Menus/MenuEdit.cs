@@ -51,6 +51,7 @@ public static class MenuEdit
             await using var transaction = await _context.BeginTransactionAsync();
 
             var oldMenuPath = entity.Path;
+
             _mapper.Map(request.Menu, entity);
 
             await _context.SaveChangesAsync();
@@ -79,15 +80,16 @@ public static class MenuEdit
             }
 
             var parentMenu = await _context.Menus.AsNoTracking().FirstAsync(x => x.Id == entity.ParentMenuId);
+
             if (parentMenu.Path.StartsWith(oldMenuPath))
             {
                 throw new ValidationException(
                     new ValidationFailure(nameof(entity.ParentMenuId),
-                        "Selected parent menu is not valid")
+                        "Selected parent menu is not allowed")
                 );
             }
 
-            entity.Path = parentMenu.Path + entity.Path;
+            entity.Path = parentMenu.Path + "/" + entity.Path;
         }
 
         private async Task UpdateChildrenPaths(Menu entity, string oldMenuPath)

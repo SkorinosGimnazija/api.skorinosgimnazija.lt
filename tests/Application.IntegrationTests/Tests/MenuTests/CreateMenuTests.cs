@@ -52,7 +52,8 @@ public class CreateMenuTests
         var actual = await _app.FindAsync<Menu>(createdMenu.Id);
 
         actual.Should().NotBeNull();
-        actual.Path.Should().Be("/slug");
+        actual.Slug.Should().Be("slug");
+        actual.Path.Should().Be("slug");
     }
 
     [Fact]

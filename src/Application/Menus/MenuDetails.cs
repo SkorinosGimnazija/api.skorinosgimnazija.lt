@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 public static class MenuDetails
 {
-    public record Query(int Id) : IRequest<MenuDto>;
+    public record Query(int Id) : IRequest<MenuDetailsDto>;
 
-    public class Handler : IRequestHandler<Query, MenuDto>
+    public class Handler : IRequestHandler<Query, MenuDetailsDto>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -23,11 +23,11 @@ public static class MenuDetails
             _mapper = mapper;
         }
 
-        public async Task<MenuDto> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<MenuDetailsDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var entity = await _context.Menus
                              .AsNoTracking()
-                             .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                             .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                              .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (entity is null)

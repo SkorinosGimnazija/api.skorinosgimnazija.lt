@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class MenuSearch
 {
-    public record Query(string SearchText, PaginationDto Pagination) : IRequest<PaginatedList<MenuDto>>;
+    public record Query(string SearchText, PaginationDto Pagination) : IRequest<PaginatedList<MenuDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -22,7 +22,7 @@ public static class MenuSearch
         }
     }
 
-    public class Handler : IRequestHandler<Query, PaginatedList<MenuDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<MenuDetailsDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -35,13 +35,13 @@ public static class MenuSearch
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<MenuDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var searchResult = await _search.SearchMenuAsync(request.SearchText, request.Pagination, cancellationToken);
             var items = await _context.Menus
                             .AsNoTracking()
                             .Where(x => searchResult.Items.Contains(x.Id))
-                            .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                            .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                             .OrderBy(x => searchResult.Items.IndexOf(x.Id))
                             .ToListAsync(cancellationToken);
 

@@ -14,19 +14,11 @@ public class MenuProfiles : Profile
         CreateMap<Menu, MenuDto>();
         CreateMap<Menu, MenuDetailsDto>();
 
-        CreateMap<MenuEditDto, Menu>()
-            .ForMember(x => x.Path, x =>
-            {
-                x.MapFrom(m => m.Slug);
-                x.AddTransform(slug => $"/{slug}");
-            });
-
         CreateMap<MenuCreateDto, Menu>()
-            .ForMember(x => x.Path, x =>
-            {
-                x.MapFrom(m => m.Slug);
-                x.AddTransform(slug => $"/{slug}");
-            });
+            .ForMember(x => x.Path, x => x.MapFrom(m => m.Slug));
+
+        CreateMap<MenuEditDto, Menu>()
+            .ForMember(x => x.Path, x => x.MapFrom(m => m.Slug));
 
         CreateMap<Menu, MenuIndexDto>()
             .ForMember(x => x.ObjectID, x => x.MapFrom(p => p.Id.ToString()));

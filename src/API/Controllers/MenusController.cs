@@ -18,7 +18,7 @@ public sealed class MenusController : BaseApiController
 {
     [HttpGet(Name = "GetMenus")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<MenuDto>> GetMenus([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<MenuDetailsDto>> GetMenus([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new MenuList.Query(pagination), ct);
     }
@@ -33,7 +33,7 @@ public sealed class MenusController : BaseApiController
     [HttpGet("{id:int}", Name = "GetMenuById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<MenuDto>> GetMenu(int id, CancellationToken ct)
+    public async Task<ActionResult<MenuDetailsDto>> GetMenu(int id, CancellationToken ct)
     {
         return await Mediator.Send(new MenuDetails.Query(id), ct);
     }
@@ -68,7 +68,7 @@ public sealed class MenusController : BaseApiController
 
     [HttpGet("search/{text}", Name = "SearchMenus")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<MenuDto>> SearchMenus(
+    public async Task<PaginatedList<MenuDetailsDto>> SearchMenus(
         string text, 
         [FromQuery] PaginationDto pagination,
         CancellationToken ct)
