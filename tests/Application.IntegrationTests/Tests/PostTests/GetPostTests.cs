@@ -3,7 +3,9 @@
 using Common.Exceptions;
 using Domain.Entities;
 using FluentAssertions;
+using Microsoft.Extensions.Hosting;
 using Posts;
+using SkorinosGimnazija.Application.Menus;
 using Xunit;
 
 [Collection("App")]
@@ -193,8 +195,47 @@ public class GetPostTests
             .Should()
             .ThrowAsync<NotFoundException>();
     }
-
+     
     [Fact]
+    public async Task PublicMenuLinkedPost_ShouldReturnPostByMenuPath()
+    {
+        var post = new Post
+        {
+            LanguageId = 1,
+            Slug = "post-slug",
+            Title = "post title",
+            IsPublished = true,
+            PublishDate = DateTime.UtcNow
+        };
+
+        await _app.AddAsync(post);
+
+        var menu = new Menu
+        {
+            LanguageId = 1,
+            MenuLocationId = 1,
+            Title = "menu title",
+            Slug = "menu-slug",
+            Path = "/menu-slug/title",
+            IsPublished = true,
+            LinkedPostId = post.Id
+        };
+         
+        await _app.AddAsync(menu);
+
+        var path = Uri.EscapeDataString(menu.Path);
+
+        var command = new PublicMenuLinkedPost.Query(path);
+
+        var actual = await _app.SendAsync(command);
+
+        actual.Should().NotBeNull();
+        actual.Id.Should().Be(post.Id);
+        actual.Slug.Should().Be(post.Slug);
+        actual.Title.Should().Be(post.Title);
+}
+
+[Fact]
     public async Task PublicPostDetails_ShouldNotGetPublishedInTheFuturePost()
     {
         var post = new Post

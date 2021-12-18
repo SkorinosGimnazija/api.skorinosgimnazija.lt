@@ -12,6 +12,7 @@ public class MenuProfiles : Profile
         CreateMap<MenuLocation, MenuLocationDto>();
 
         CreateMap<Menu, MenuDto>();
+        CreateMap<Menu, MenuDetailsDto>();
 
         CreateMap<MenuEditDto, Menu>()
             .ForMember(x => x.Path, x =>

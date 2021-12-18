@@ -7,6 +7,8 @@ using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SkorinosGimnazija.Application.Menus.Dtos;
+using SkorinosGimnazija.Application.Menus;
 
 [Authorize(Roles = Auth.Role.Admin)]
 public sealed class PostsController : BaseApiController
@@ -84,7 +86,15 @@ public sealed class PostsController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/{language}", Name = "GetPublicPostsByLanguage")]
+    [HttpGet("public/path/{path}", Name = "GetPublicPostByMenuPath")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PostDetailsDto> GetPublicPost(string path, CancellationToken ct)
+    {
+        return await Mediator.Send(new PublicMenuLinkedPost.Query(path), ct);
+    }
+    
+    [AllowAnonymous]
+    [HttpGet("public/language/{language}", Name = "GetPublicPostsByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<PostDto>> GetPublicPosts(
         string language, [FromQuery] PaginationDto pagination, CancellationToken ct)
@@ -100,4 +110,6 @@ public sealed class PostsController : BaseApiController
     {
         return await Mediator.Send(new PublicPostSearchList.Query(text, pagination), ct);
     }
+
+ 
 }

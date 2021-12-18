@@ -19,12 +19,6 @@ public record MenuDto
 
     public bool IsPublished { get; init; }
 
-    public LanguageDto Language { get; init; } = default!;
-
-    public MenuLocationDto MenuLocation { get; init; } = default!;
-
-    public PostDto? LinkedPost { get; set; }
-
     public int? ParentMenuId { get; init; }
 
     public List<MenuDto> ChildMenus { get; init; } = new();
