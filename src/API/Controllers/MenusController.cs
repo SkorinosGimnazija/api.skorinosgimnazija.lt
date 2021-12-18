@@ -23,7 +23,7 @@ public sealed class MenusController : BaseApiController
         return await Mediator.Send(new MenuList.Query(pagination), ct);
     }
 
-    [HttpGet("/locations", Name = "GetMenuLocations")]
+    [HttpGet("locations", Name = "GetMenuLocations")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<MenuLocationDto>> GetPublicMenuLocations(CancellationToken ct)
     {
@@ -84,5 +84,4 @@ public sealed class MenusController : BaseApiController
         return await Mediator.Send(new PublicMenuList.Query(language, location), ct);
     }
 
-  
 }
