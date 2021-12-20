@@ -4,6 +4,7 @@ using System.Reflection;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Identity;
 using Extensions;
 using FluentValidation.Results;
 using Identity;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
+using SkorinosGimnazija.Domain.Entities.Teacher;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
 {
@@ -41,6 +43,7 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<Banner> Banners { get; set; } = default!;
 
     public DbSet<Menu> Menus { get; set; } = default!;
+    public DbSet<Course> Courses { get; set; } = default!;
 
     public DbSet<MenuLocation> MenuLocations { get; set; } = default!;
 

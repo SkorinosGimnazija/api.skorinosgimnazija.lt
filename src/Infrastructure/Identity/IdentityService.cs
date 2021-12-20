@@ -5,6 +5,7 @@ using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Posts.Dtos;
 using Calendar;
+using Domain.Entities.Identity;
 using FluentValidation.Results;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;

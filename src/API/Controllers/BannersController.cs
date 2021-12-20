@@ -7,8 +7,6 @@ using SkorinosGimnazija.Application.Banners.Dtos;
 using SkorinosGimnazija.Application.Banners;
 using SkorinosGimnazija.Infrastructure.Identity;
 using System.Xml.Linq;
-using Application.Banners;
-using Application.Banners.Dtos;
 using Application.Common.Pagination;
 using SkorinosGimnazija.Application.Menus.Dtos;
 using SkorinosGimnazija.Application.Menus;

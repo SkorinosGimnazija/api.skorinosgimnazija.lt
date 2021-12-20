@@ -86,15 +86,15 @@ public sealed class PostsController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/path/{path}", Name = "GetPublicPostByMenuPath")]
+    [HttpGet("public/{language}/{path}", Name = "GetPublicPostByMenuLanguageAndPath")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PostDetailsDto> GetPublicPost(string path, CancellationToken ct)
-    {
-        return await Mediator.Send(new PublicMenuLinkedPost.Query(path), ct);
+    public async Task<PostDetailsDto> GetPublicPost(string language, string path, CancellationToken ct)
+    { 
+        return await Mediator.Send(new PublicMenuLinkedPost.Query(language,path), ct);
     }
     
     [AllowAnonymous]
-    [HttpGet("public/language/{language}", Name = "GetPublicPostsByLanguage")]
+    [HttpGet("public/{language}/all", Name = "GetPublicPostsByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<PostDto>> GetPublicPosts(
         string language, [FromQuery] PaginationDto pagination, CancellationToken ct)

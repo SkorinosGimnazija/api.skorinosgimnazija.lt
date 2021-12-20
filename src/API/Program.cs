@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.API;
 
+using Domain.Entities.Identity;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;

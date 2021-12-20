@@ -15,7 +15,7 @@ public static class MenuList
 {
     public record Query(PaginationDto Pagination) : IRequest<PaginatedList<MenuDetailsDto>>;
 
-    public class Validator : AbstractValidator<PostList.Query>
+    public class Validator : AbstractValidator<Query>
     {
         public Validator()
         {
@@ -42,7 +42,7 @@ public static class MenuList
                        .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderBy(x => x.Order)
                        .ThenBy(x=> x.Path)
-                       .PaginateToListAsync(request.Pagination, cancellationToken);
+                       .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using System.Text;
 using Application.Common.Interfaces;
+using Domain.Entities.Identity;
 using Extensions;
 using FileManagement;
 using Google.Apis.Auth.OAuth2;

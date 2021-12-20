@@ -1,11 +1,6 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Identity;
+﻿namespace SkorinosGimnazija.Domain.Entities.Identity;
 
 using Microsoft.AspNetCore.Identity;
-
-public class AppUser : IdentityUser<int>
-{
-    public string? DisplayName { get; set; }
-}
 
 public class AppUserRole : IdentityRole<int>
 {

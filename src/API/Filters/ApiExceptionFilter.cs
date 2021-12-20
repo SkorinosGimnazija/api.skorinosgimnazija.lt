@@ -85,7 +85,7 @@ public sealed class ApiExceptionFilter : ExceptionFilterAttribute
     private static void HandleUnauthorizedAccess(ExceptionContext context)
     {
         var exception = context.Exception;
-        var details = new ProblemDetails()
+        var details = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7235#section-3.1",
             Title = "Unauthorized",

@@ -3,6 +3,7 @@ namespace SkorinosGimnazija.Application.IntegrationTests;
 using API;
 using Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Identity;
 using Infrastructure.Extensions;
 using Infrastructure.Identity;
 using Infrastructure.ImageOptimization;

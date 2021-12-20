@@ -42,7 +42,7 @@ public static class PostList
                        .OrderByDescending(x => x.PublishDate)
                        //.OrderByDescending(x => x.IsFeatured)
                        //.ThenByDescending(x => x.PublishDate)
-                       .PaginateToListAsync(request.Pagination, cancellationToken);
+                       .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }
 }

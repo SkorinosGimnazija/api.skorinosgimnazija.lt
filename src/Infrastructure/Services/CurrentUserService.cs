@@ -19,7 +19,7 @@ public sealed class CurrentUserService : ICurrentUserService
         get { return _httpContextAccessor.HttpContext?.User; }
     }
 
-    public int? UserId
+    public int UserId
     {
         get
         {
@@ -27,11 +27,16 @@ public sealed class CurrentUserService : ICurrentUserService
             {
                 return id;
             }
-
-            return null;
+             
+            return -1;
         }
     }
 
+    public bool IsOwnerOrAdmin(int resourceOwnerId)
+    {
+        return IsResourceOwner(resourceOwnerId) ||IsAdmin() ;
+    }
+     
     public bool IsResourceOwner(int resourceOwnerId)
     {
         return UserId == resourceOwnerId;

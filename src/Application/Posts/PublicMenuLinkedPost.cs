@@ -1,22 +1,17 @@
 ﻿namespace SkorinosGimnazija.Application.Menus;
-using AutoMapper;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Application.Menus.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Posts.Dtos;
- 
-public  static class PublicMenuLinkedPost
-{ 
-    public record Query(string Path) : IRequest<PostDetailsDto>; 
+using Posts.Dtos;
+
+public static class PublicMenuLinkedPost
+{
+    public record Query(string LanguageSlug, string Path) : IRequest<PostDetailsDto>;
 
     public class Handler : IRequestHandler<Query, PostDetailsDto>
     {
@@ -28,7 +23,7 @@ public  static class PublicMenuLinkedPost
             _context = context;
             _mapper = mapper;
         }
-        
+
         public async Task<PostDetailsDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var path = Uri.UnescapeDataString(request.Path);
@@ -38,9 +33,10 @@ public  static class PublicMenuLinkedPost
                              .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                              .FirstOrDefaultAsync(x =>
                                      x.IsPublished &&
-                                     x.Path == path,
+                                     x.Path == path &&
+                                     x.Language.Slug == request.LanguageSlug,
                                  cancellationToken);
-            
+
             if (entity?.LinkedPost is null)
             {
                 throw new NotFoundException();

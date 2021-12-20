@@ -5,6 +5,7 @@ using Common.Exceptions;
 using Common.Pagination;
 using Domain.Entities;
 using FluentAssertions;
+using SkorinosGimnazija.Application.Menus;
 using Xunit;
 
 [Collection("App")]
@@ -47,6 +48,16 @@ public class GetBannerTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task BannerList_ShouldThrowEx_WhenInvalidPagination()
+    {
+        var command = new BannerList.Query(new() { Items = int.MaxValue, Page = int.MaxValue });
+
+        await FluentActions.Invoking(() => _app.SendAsync(command))
+            .Should()
+            .ThrowAsync<ValidationException>();
     }
 
     [Fact]

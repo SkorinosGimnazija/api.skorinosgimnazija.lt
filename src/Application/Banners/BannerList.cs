@@ -15,7 +15,7 @@ public static class BannerList
 {
     public record Query(PaginationDto Pagination) : IRequest<PaginatedList<BannerDto>>;
 
-    public class Validator : AbstractValidator<PostList.Query>
+    public class Validator : AbstractValidator<Query>
     {
         public Validator()
         {
@@ -41,7 +41,7 @@ public static class BannerList
                        .AsNoTracking()
                        .ProjectTo<BannerDto>(_mapper.ConfigurationProvider)
                        .OrderBy(x => x.Order)
-                       .PaginateToListAsync(request.Pagination, cancellationToken);
+                       .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }
 }

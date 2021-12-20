@@ -93,6 +93,16 @@ public class GetMenuTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().HaveCount(expected);
+    } 
+
+    [Fact]
+    public async Task MenuList_ShouldThrowEx_WhenInvalidPagination()
+    {
+        var command = new MenuList.Query(new(){Items = int.MaxValue, Page = int.MaxValue});
+
+        await FluentActions.Invoking(() => _app.SendAsync(command))
+            .Should()
+            .ThrowAsync<ValidationException>();
     }
 
     [Theory]

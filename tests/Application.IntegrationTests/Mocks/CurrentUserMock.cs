@@ -11,14 +11,14 @@ public class CurrentUserMock
 
     public CurrentUserMock(ServiceCollection services)
     {
-        _mock.Setup(x => x.UserId).Returns(CurrentUserId);
-        _mock.Setup(x => x.IsAdmin()).Returns(IsAdmin);
-
         services.RemoveService<ICurrentUserService>();
         services.AddTransient(_ => _mock.Object);
     }
 
-    public int CurrentUserId { get; set; }
-
-    public bool IsAdmin { get; set; }
+    public void SetCurrentUserData(int userId)
+    {
+        _mock.Setup(x => x.UserId).Returns(userId);
+        _mock.Setup(x => x.IsResourceOwner(It.Is<int>(id => id == userId))).Returns(true);
+        _mock.Setup(x => x.IsOwnerOrAdmin(It.Is<int>(id => id == userId))).Returns(true);
+    }
 }

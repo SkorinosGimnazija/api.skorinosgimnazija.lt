@@ -13,7 +13,7 @@ public static class QueryExtensions
         return query.Skip(skip).Take(take);
     }
 
-    public static async Task<PaginatedList<T>> PaginateToListAsync<T>(
+    public static async Task<PaginatedList<T>> ToPaginatedListAsync<T>(
         this IOrderedQueryable<T> query, PaginationDto pagination, CancellationToken ct = default)
     {
         var items = await query.Paginate(pagination).ToListAsync(ct);

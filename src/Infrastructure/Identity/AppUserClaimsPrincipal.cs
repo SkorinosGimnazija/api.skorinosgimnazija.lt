@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Identity;
 
 using System.Security.Claims;
+using Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 

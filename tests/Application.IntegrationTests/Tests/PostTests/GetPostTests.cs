@@ -46,12 +46,12 @@ public class GetPostTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().NotBeNull();
-    }
+    } 
 
     [Fact]
-    public async Task PublicPostList_ShouldThrowValidationExWithBigPageNumber()
+    public async Task PublicPostList_ShouldThrowEx_WhenInvalidPagination()
     {
-        var command = new PublicPostList.Query("language", new() { Items = 20, Page = int.MaxValue });
+        var command = new PublicPostList.Query("language", new() { Items = int.MaxValue, Page = int.MaxValue });
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
@@ -199,6 +199,8 @@ public class GetPostTests
     [Fact]
     public async Task PublicMenuLinkedPost_ShouldReturnPostByMenuPath()
     {
+        var lang = await _app.AddAsync(new Language { Slug = Path.GetRandomFileName(), Name = "name" });
+
         var post = new Post
         {
             LanguageId = 1,
@@ -212,7 +214,7 @@ public class GetPostTests
 
         var menu = new Menu
         {
-            LanguageId = 1,
+            LanguageId = lang.Id,
             MenuLocationId = 1,
             Title = "menu title",
             Slug = "menu-slug",
@@ -225,7 +227,7 @@ public class GetPostTests
 
         var path = Uri.EscapeDataString(menu.Path);
 
-        var command = new PublicMenuLinkedPost.Query(path);
+        var command = new PublicMenuLinkedPost.Query(lang.Slug, path);
 
         var actual = await _app.SendAsync(command);
 
