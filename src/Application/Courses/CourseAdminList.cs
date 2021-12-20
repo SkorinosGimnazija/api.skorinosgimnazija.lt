@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class CourseAdminList
 {
-    public record Query(DateOnly Start, DateOnly End) : IRequest<List<CourseDto>>;
+    public record Query(DateTime Start, DateTime End) : IRequest<List<CourseDto>>;
 
     public class Handler : IRequestHandler<Query, List<CourseDto>>
     {
@@ -25,9 +25,12 @@ public static class CourseAdminList
 
         public async Task<List<CourseDto>> Handle(Query request, CancellationToken cancellationToken)
         {
+            var start = DateOnly.FromDateTime(request.Start);
+            var end = DateOnly.FromDateTime(request.End);
+
             return await _context.Courses
                        .AsNoTracking()
-                       .Where(x => x.StartDate >= request.Start && x.EndDate <= request.End)
+                       .Where(x => x.StartDate >= start && x.EndDate <= end)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

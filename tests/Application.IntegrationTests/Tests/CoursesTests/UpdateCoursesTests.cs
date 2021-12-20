@@ -51,8 +51,8 @@ public class UpdateCoursesTests
         {
             Id = 1,
             DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
+            StartDate = DateTime.Parse("2021-01-01"),
+            EndDate = DateTime.Parse("2021-01-04"),
             Name = "Course",
             Organizer = "Organizer",
         };
@@ -81,8 +81,8 @@ public class UpdateCoursesTests
         {
             Id= course.Id,
           DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
+            StartDate = DateTime.Parse("2021-01-01"),
+            EndDate = DateTime.Parse("2021-01-04"),
             Name = "Updated name",
             Organizer = "Organizer"
         };
@@ -120,8 +120,8 @@ public class UpdateCoursesTests
         {
             Id = course.Id,
             DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
+            StartDate = DateTime.Parse("2021-01-01"),
+            EndDate = DateTime.Parse("2021-01-04"),
             Name = "Updated name",
             Organizer = "Organizer"
         };

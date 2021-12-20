@@ -62,8 +62,8 @@ public class CreateCoursesTests
             UserId = _currentUserId
         });
 
-        var starDate = DateOnly.Parse("2021-01-01");
-        var endDate = DateOnly.Parse("2021-12-31");
+        var starDate = DateTime.Parse("2021-01-01");
+        var endDate = DateTime.Parse("2021-12-31");
 
         var command = new CourseAdminList.Query(starDate, endDate);
 
@@ -91,8 +91,8 @@ public class CreateCoursesTests
         var course = new CourseCreateDto
         {
             DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
+            StartDate = DateTime.Parse("2021-01-01"),
+            EndDate = DateTime.Parse("2021-01-04"),
             Name = "Course",
             Organizer = "Organizer",
         };

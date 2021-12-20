@@ -18,11 +18,11 @@ public class CoursesController : BaseApiController
     [HttpGet("all", Name = "GetAllCoursesByDate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<CourseDto>> GetAll(
-        [FromQuery] DateOnly start, [FromQuery] DateOnly end, CancellationToken ct)
+        [FromQuery] DateTime start, [FromQuery] DateTime end, CancellationToken ct)
     {
         return await Mediator.Send(new CourseAdminList.Query(start, end), ct);
-    }  
-       
+    }
+
     [HttpGet(Name = "GetMyCourses")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<CourseDto>> GetAllMy([FromQuery] PaginationDto pagination, CancellationToken ct)
@@ -37,11 +37,11 @@ public class CoursesController : BaseApiController
     {
         return await Mediator.Send(new CourseDetails.Query(id), ct);
     }
-     
+
     [HttpPost(Name = "CreateCourse")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<CourseDto>> Create([FromForm] CourseCreateDto dto)
+    public async Task<ActionResult<CourseDto>> Create(CourseCreateDto dto)
     {
         var result = await Mediator.Send(new CourseCreate.Command(dto));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
@@ -51,12 +51,12 @@ public class CoursesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Edit([FromForm] CourseEditDto dto)
+    public async Task<IActionResult> Edit(CourseEditDto dto)
     {
         await Mediator.Send(new CourseEdit.Command(dto));
         return Ok();
     }
-      
+
     [HttpDelete("{id:int}", Name = "DeleteCourse")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

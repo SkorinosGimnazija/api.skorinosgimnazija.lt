@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Courses.Dtos;
 
+using SkorinosGimnazija.Application.Common.Dtos;
 using SkorinosGimnazija.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,14 @@ public record CourseDto
 
     public string Organizer { get; set; } = default!;
 
-    public DateOnly StartDate { get; set; }
+    public string StartDate { get; set; } = default!;
 
-    public DateOnly EndDate { get; set; }
+    public string EndDate { get; set; } = default!;
 
     public int DurationInHours { get; set; }
 
     public string? CertificateNr { get; set; }
 
-    public AppUser User { get; set; } = default!;
+    public AppUserDto User { get; set; } = default!;
     public int UserId { get; set; } 
 }

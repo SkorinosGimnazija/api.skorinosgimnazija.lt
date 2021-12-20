@@ -16,8 +16,12 @@ public class CourseProfiles : Profile
     {
         CreateMap<Course, CourseDto>();
 
-        CreateMap<CourseEditDto, Course>();
+        CreateMap<CourseEditDto, Course>()
+            .ForMember(x => x.StartDate, x => x.MapFrom(c => DateOnly.FromDateTime(c.StartDate)))
+            .ForMember(x => x.EndDate, x => x.MapFrom(c => DateOnly.FromDateTime(c.EndDate)));
 
-        CreateMap<CourseCreateDto, Course>();
+        CreateMap<CourseCreateDto, Course>()
+            .ForMember(x=> x.StartDate, x=> x.MapFrom(c=> DateOnly.FromDateTime(c.StartDate)))
+            .ForMember(x=> x.EndDate, x=> x.MapFrom(c=> DateOnly.FromDateTime(c.EndDate)));
     }
 }

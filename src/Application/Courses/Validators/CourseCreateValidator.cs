@@ -16,5 +16,8 @@ internal class CourseCreateValidator : AbstractValidator<CourseCreateDto>
         RuleFor(x => x.Name).NotEmpty().MaximumLength(256);
         RuleFor(x => x.Organizer).NotEmpty().MaximumLength(256);
         RuleFor(x => x.CertificateNr).MaximumLength(100);
+        RuleFor(x => x.DurationInHours).GreaterThan(0);
+        RuleFor(x => x.StartDate).NotEmpty();
+        RuleFor(x => x.EndDate).NotEmpty().GreaterThanOrEqualTo(x => x.StartDate);
     }
 }

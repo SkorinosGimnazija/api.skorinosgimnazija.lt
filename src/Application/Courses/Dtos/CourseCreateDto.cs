@@ -11,9 +11,9 @@ public record CourseCreateDto
 
     public string Organizer { get; set; } = default!;
 
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; } = default!;
 
-    public DateOnly EndDate { get; set; }
+    public DateTime EndDate { get; set; } = default!;
 
     public int DurationInHours { get; set; }
 
