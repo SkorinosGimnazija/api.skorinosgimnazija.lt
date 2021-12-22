@@ -1,12 +1,13 @@
 ﻿namespace SkorinosGimnazija.Domain.Entities.Teacher;
 
 using Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class Course
 {
     public int Id { get; set; }
 
-    public string Name { get; set; } = default!;
+    public string Title { get; set; } = default!;
 
     public string Organizer { get; set; } = default!;
 
@@ -14,7 +15,9 @@ public class Course
 
     public DateOnly EndDate { get; set; }
 
-    public int DurationInHours { get; set; }
+    public DateTime ModifyDate { get; set; }
+
+    public float DurationInHours { get; set; }
 
     public string? CertificateNr { get; set; }
 

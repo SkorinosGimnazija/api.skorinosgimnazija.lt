@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Mapping\" />
+    <Folder Include="Users\Dtos\" />
+    <Folder Include="Users\Validators\" />
+  </ItemGroup>
+
 </Project>

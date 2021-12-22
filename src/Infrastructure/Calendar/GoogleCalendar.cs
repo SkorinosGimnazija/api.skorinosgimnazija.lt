@@ -3,6 +3,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Pagination;
 using Application.Events.Dtos;
+using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;

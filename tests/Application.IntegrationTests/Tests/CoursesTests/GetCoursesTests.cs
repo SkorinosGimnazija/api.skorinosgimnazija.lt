@@ -50,7 +50,7 @@ public class GetCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -60,7 +60,7 @@ public class GetCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-08-01"),
             EndDate = DateOnly.Parse("2021-08-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -70,7 +70,7 @@ public class GetCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2023-01-01"),
             EndDate = DateOnly.Parse("2023-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = randomUserId
         });
@@ -91,7 +91,7 @@ public class GetCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -125,7 +125,7 @@ public class GetCoursesTests
             DurationInHours = 4, 
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = ownerId
         });

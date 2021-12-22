@@ -53,7 +53,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
         };
          
@@ -72,7 +72,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -83,7 +83,7 @@ public class UpdateCoursesTests
           DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
-            Name = "Updated name",
+            Title = "Updated name",
             Organizer = "Organizer"
         };
 
@@ -94,7 +94,7 @@ public class UpdateCoursesTests
         var actual = await _app.FindAsync<Course>(expected.Id);
 
         actual.Should().NotBeNull();
-        actual.Name.Should().Be(expected.Name);
+        actual.Title.Should().Be(expected.Title);
         actual.Id.Should().Be(expected.Id);
         actual.UserId.Should().Be(_currentUserId);
     }
@@ -111,7 +111,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = ownerId
         });
@@ -122,7 +122,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
-            Name = "Updated name",
+            Title = "Updated name",
             Organizer = "Organizer"
         };
          
@@ -151,7 +151,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         }); 
@@ -175,7 +175,7 @@ public class UpdateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = ownerId
         }); 

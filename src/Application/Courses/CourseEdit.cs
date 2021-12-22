@@ -52,6 +52,7 @@ public static class CourseEdit
             }
 
             _mapper.Map(request.Course, entity);
+
             await _context.SaveChangesAsync();
 
             return Unit.Value;

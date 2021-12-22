@@ -21,7 +21,7 @@ public sealed class AppUserClaimsPrincipal : UserClaimsPrincipalFactory<AppUser,
         var roles = await UserManager.GetRolesAsync(user);
 
         identity.AddClaim(new(ClaimTypes.NameIdentifier, user.Id.ToString()));
-        identity.AddClaims(roles.Select(x => new Claim(ClaimTypes.Role, x)));
+        identity.AddClaims(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return identity;
     }

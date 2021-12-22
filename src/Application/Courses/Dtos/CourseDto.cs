@@ -10,20 +10,21 @@ using System.Threading.Tasks;
 
 public record CourseDto
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public string Name { get; set; } = default!;
+    public string Title { get; init; } = default!;
 
-    public string Organizer { get; set; } = default!;
+    public string Organizer { get; init; } = default!;
 
-    public string StartDate { get; set; } = default!;
+    public DateTime StartDate { get; init; } = default!;
+     
+    public DateTime EndDate { get; init; } = default!;
+    public DateTime ModifyDate { get; init; } = default!;
 
-    public string EndDate { get; set; } = default!;
+    public float DurationInHours { get; init; }
 
-    public int DurationInHours { get; set; }
+    public string? CertificateNr { get; init; }
 
-    public string? CertificateNr { get; set; }
-
-    public AppUserDto User { get; set; } = default!;
-    public int UserId { get; set; } 
+    public UserDto User { get; init; } = default!;
+    public int UserId { get; init; } 
 }

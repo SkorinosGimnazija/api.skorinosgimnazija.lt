@@ -77,6 +77,7 @@ public static class DependencyInjection
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<ICalendarClient, GoogleCalendar>();
+        services.AddSingleton<ITeachersService, GoogleTeachersService>();
         services.AddSingleton<TokenService>();
 
         return services;

@@ -35,12 +35,6 @@ public static class CourseDelete
                 throw new NotFoundException();
             }
 
-            var q0 = entity.UserId;
-            var q1 = _currentUser.UserId;
-            var q2 = _currentUser.IsAdmin();
-            var q3 = _currentUser.IsResourceOwner(entity.UserId);
-            var q4 = _currentUser.IsOwnerOrAdmin(entity.UserId);
-            
             if (!_currentUser.IsOwnerOrAdmin(entity.UserId))
             {
                 throw new UnauthorizedAccessException();

@@ -15,6 +15,6 @@ public class AppUserProfile : Profile
 {
     public AppUserProfile()
     {   
-        CreateMap<AppUser, AppUserDto>();
+        CreateMap<AppUser, UserDto>();
     }
 }

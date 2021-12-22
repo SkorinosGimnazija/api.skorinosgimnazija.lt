@@ -37,7 +37,7 @@ public class CreateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -47,7 +47,7 @@ public class CreateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-08-01"),
             EndDate = DateOnly.Parse("2021-08-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -57,7 +57,7 @@ public class CreateCoursesTests
             DurationInHours = 4,
             StartDate = DateOnly.Parse("2023-01-01"),
             EndDate = DateOnly.Parse("2023-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
         });
@@ -93,7 +93,7 @@ public class CreateCoursesTests
             DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
-            Name = "Course",
+            Title = "Course",
             Organizer = "Organizer",
         };
 
@@ -102,7 +102,7 @@ public class CreateCoursesTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().NotBeNull();
-        actual.Name.Should().Be(course.Name);
+        actual.Title.Should().Be(course.Title);
         actual.UserId.Should().Be(_currentUserId);
     }
 

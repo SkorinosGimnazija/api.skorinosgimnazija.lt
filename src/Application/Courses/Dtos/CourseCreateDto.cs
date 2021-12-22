@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 public record CourseCreateDto
 {
-    public string Name { get; set; } = default!;
+    public string Title { get; init; } = default!;
 
-    public string Organizer { get; set; } = default!;
+    public string Organizer { get; init; } = default!;
 
-    public DateTime StartDate { get; set; } = default!;
+    public DateTime StartDate { get; init; } = default!;
 
-    public DateTime EndDate { get; set; } = default!;
+    public DateTime EndDate { get; init; } = default!;
+     
+    public float DurationInHours { get; init; }
 
-    public int DurationInHours { get; set; }
-
-    public string? CertificateNr { get; set; }
+    public string? CertificateNr { get; init; }
 }

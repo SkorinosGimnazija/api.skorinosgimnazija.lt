@@ -1,24 +1,20 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Identity;
 
 using System.Security.Claims;
+using Application.Authorization.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Posts.Dtos;
 using Calendar;
 using Domain.Entities.Identity;
 using FluentValidation.Results;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Options;
 using Services;
-using SkorinosGimnazija.Application.Authorization.Dtos;
 
 public sealed class IdentityService : IIdentityService
 {
-    private const string LoginProvider = "Google";
-
     private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipal;
     private readonly string _domain;
     private readonly string _googleClientId;
@@ -42,7 +38,7 @@ public sealed class IdentityService : IIdentityService
     public async Task<UserAuthDto> AuthorizeAsync(string token)
     {
         var payload = await ValidateSignatureAsync(token);
-        var user = await _userManager.FindByLoginAsync(LoginProvider, payload.Subject);
+        var user = await _userManager.FindByNameAsync(payload.Subject);
 
         if (user is null)
         {
@@ -58,7 +54,7 @@ public sealed class IdentityService : IIdentityService
         return new()
         {
             Token = _tokenService.CreateToken(principal.Claims),
-            Roles = principal.FindAll(ClaimTypes.Role).Select(x=> x.Value),
+            Roles = principal.FindAll(ClaimTypes.Role).Select(x => x.Value),
             DisplayName = user.DisplayName ?? user.Email
         };
     }
@@ -81,7 +77,7 @@ public sealed class IdentityService : IIdentityService
     {
         var user = new AppUser
         {
-            UserName = payload.Email,
+            UserName = payload.Subject,
             Email = payload.Email,
             DisplayName = payload.Name,
             EmailConfirmed = true
@@ -95,8 +91,6 @@ public sealed class IdentityService : IIdentityService
         }
 
         await _userManager.AddToRoleAsync(user, Auth.Role.Teacher);
-        await _userManager.AddLoginAsync(user,
-            new ExternalLoginInfo(new(), LoginProvider, payload.Subject, LoginProvider));
 
         return user;
     }

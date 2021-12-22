@@ -5,8 +5,10 @@ using System.Text;
 public record GoogleOptions
 {
     private readonly string _credential = default!;
-
+     
     public string ClientId { get; init; } = default!;
+
+    public string Admin { get; init; } = default!;
 
     public string Credential
     {

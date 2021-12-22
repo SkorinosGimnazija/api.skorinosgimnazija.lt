@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 public record CourseEditDto : CourseCreateDto
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 }
  
