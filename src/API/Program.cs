@@ -49,10 +49,8 @@ public static class Program
             await context.Database.MigrateAsync();
 
             var roleManager = services.GetRequiredService<RoleManager<AppUserRole>>();
-            var userManager = services.GetRequiredService<UserManager<AppUser>>();
 
             await Seed.AddRoles(roleManager);
-            await Seed.AddAdmin(userManager);
             await Seed.AddLanguages(context);
             await Seed.AddMenuLocations(context);
         }

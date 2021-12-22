@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-  
+using Domain.Entities.Identity;
+
 public record UserDto
 {
     public int Id { get; init; }

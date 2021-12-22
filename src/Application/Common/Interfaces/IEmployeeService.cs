@@ -7,7 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public interface ITeachersService
+public interface IEmployeeService
 {
+    Task<ICollection<string>> GetUserRolesAsync(string userId);
+
     Task<IEnumerable<TeacherDto>> GetTeachersAsync(CancellationToken ct);
+
+    Task<IEnumerable<string>> GetUserGroupIdsAsync(string userId);
 }

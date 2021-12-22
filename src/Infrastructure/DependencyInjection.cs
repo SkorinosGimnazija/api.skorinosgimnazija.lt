@@ -67,6 +67,7 @@ public static class DependencyInjection
         services.AddOptions<GoogleOptions>().BindConfiguration("Google");
         services.AddOptions<CalendarOptions>().BindConfiguration("Calendar");
         services.AddOptions<JwtOptions>().BindConfiguration("Jwt");
+        services.AddOptions<GroupOptions>().BindConfiguration("Groups");
 
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IIdentityService, IdentityService>();
@@ -77,7 +78,7 @@ public static class DependencyInjection
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<ICalendarClient, GoogleCalendar>();
-        services.AddSingleton<ITeachersService, GoogleTeachersService>();
+        services.AddSingleton<IEmployeeService, EmployeeService>();
         services.AddSingleton<TokenService>();
 
         return services;

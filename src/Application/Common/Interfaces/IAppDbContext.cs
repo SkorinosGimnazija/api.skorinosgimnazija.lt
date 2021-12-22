@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Domain.Entities;
+using Domain.Entities.Identity;
 using Domain.Entities.Teacher;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -8,7 +9,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 public interface IAppDbContext
 {
     DbSet<Language> Languages { get; }
-
     DbSet<Menu> Menus { get; }
     DbSet<Banner> Banners { get;  }
     DbSet<MenuLocation> MenuLocations { get; }

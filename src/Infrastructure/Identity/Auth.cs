@@ -4,7 +4,7 @@ using System.Reflection;
 
 public static class Auth
 {
-    public static IEnumerable<string> Roles
+    public static IEnumerable<string> AllRoles
     {
         get
         {
@@ -22,6 +22,6 @@ public static class Auth
 
         public const string BullyManager = "Bully";
 
-        public const string Mod = "Mod";
+        public const string Manager = "Manager";
     }
 }

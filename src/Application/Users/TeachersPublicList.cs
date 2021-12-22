@@ -16,16 +16,16 @@ public static class TeachersPublicList
 
     public class Handler : IRequestHandler<Query, List<TeacherDto>>
     {
-        private readonly ITeachersService _teachersService;
+        private readonly IEmployeeService _employeeService;
 
-        public Handler(ITeachersService teachersService)
+        public Handler(IEmployeeService employeeService)
         {
-            _teachersService = teachersService;
+            _employeeService = employeeService;
         }
-
+         
         public async Task<List<TeacherDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return (await _teachersService.GetTeachersAsync(cancellationToken)).ToList();
+            return (await _employeeService.GetTeachersAsync(cancellationToken)).ToList();
         }
     }
 }

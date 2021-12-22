@@ -7,39 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 public static class Seed
 {
-    public static async Task AddAdmin(UserManager<AppUser> userManager)
-    {
-        const string AdminEmail = "admin@skorinosgimnazija.lt";
-        var admin = await userManager.FindByEmailAsync(AdminEmail);
-        if (admin == null)
-        {
-            return;
-        }
-
-        foreach (var role in Auth.Roles)
-        {
-            if (await userManager.IsInRoleAsync(admin, role))
-            {
-                continue;
-            }
-
-            await userManager.AddToRoleAsync(admin, role);
-        }
-    }
-
     public static async Task AddRoles(RoleManager<AppUserRole> roleManager)
     {
-        foreach (var role in Auth.Roles)
-        {
-            if (await roleManager.RoleExistsAsync(role))
-            {
-                continue;
-            }
+        var currentRoles = await roleManager.Roles.Select(x => x.Name).ToListAsync();
 
+        foreach (var role in Auth.AllRoles.Except(currentRoles))
+        {
             await roleManager.CreateAsync(new(role));
         }
     }
-
+      
     public static async Task AddLanguages(AppDbContext dbContext)
     {
         if (await dbContext.Languages.AnyAsync())

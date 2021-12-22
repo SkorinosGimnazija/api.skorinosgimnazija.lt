@@ -19,12 +19,14 @@ public sealed class IdentityService : IIdentityService
     private readonly string _domain;
     private readonly string _googleClientId;
     private readonly TokenService _tokenService;
+    private readonly IEmployeeService _employeeService;
     private readonly UserManager<AppUser> _userManager;
 
     public IdentityService(
+        TokenService tokenService,
         UserManager<AppUser> userManager,
         IUserClaimsPrincipalFactory<AppUser> claimsPrincipal,
-        TokenService tokenService,
+        IEmployeeService employeeService,
         IOptions<GoogleOptions> googleOptions,
         IOptions<UrlOptions> urlOptions)
     {
@@ -32,6 +34,7 @@ public sealed class IdentityService : IIdentityService
         _domain = urlOptions.Value.Domain;
         _userManager = userManager;
         _tokenService = tokenService;
+        _employeeService = employeeService;
         _claimsPrincipal = claimsPrincipal;
     }
 
@@ -49,6 +52,8 @@ public sealed class IdentityService : IIdentityService
             await UpdateUserInfoAsync(user, payload);
         }
 
+        await UpdateUserRolesAsync(user);
+
         var principal = await _claimsPrincipal.CreateAsync(user);
 
         return new()
@@ -59,6 +64,15 @@ public sealed class IdentityService : IIdentityService
         };
     }
 
+    private async Task UpdateUserRolesAsync(AppUser user)
+    {
+        var userRoles = await _employeeService.GetUserRolesAsync(user.UserName);
+        var currentRoles = await _userManager.GetRolesAsync(user);
+
+        await _userManager.AddToRolesAsync(user, userRoles.Except(currentRoles));
+        await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(userRoles));
+    }
+     
     private async Task UpdateUserInfoAsync(AppUser user, GoogleJsonWebSignature.Payload payload)
     {
         if (string.Equals(user.DisplayName, payload.Name, StringComparison.Ordinal) &&
@@ -84,13 +98,12 @@ public sealed class IdentityService : IIdentityService
         };
 
         var result = await _userManager.CreateAsync(user);
+
         if (!result.Succeeded)
         {
             throw new ValidationException(
                 result.Errors.Select(x => new ValidationFailure(x.Code, x.Description)));
         }
-
-        await _userManager.AddToRoleAsync(user, Auth.Role.Teacher);
 
         return user;
     }

@@ -14,7 +14,7 @@ using Application.Menus;
 [Authorize(Roles = Auth.Role.Teacher)]
 public class CoursesController : BaseApiController
 {
-    [Authorize(Roles = Auth.Role.Mod)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("all", Name = "GetAllCoursesByDate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<CourseDto>> GetAll(
