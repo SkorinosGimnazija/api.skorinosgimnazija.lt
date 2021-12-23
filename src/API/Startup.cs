@@ -66,8 +66,9 @@ public sealed class Startup
             options.AddDefaultPolicy(x =>
             {
                 x.AllowAnyHeader();
+                x.AllowAnyMethod();
+                x.SetPreflightMaxAge(TimeSpan.FromHours(1));
                 x.WithOrigins(_config.GetSection("CORS:Origins").Get<string[]>());
-                x.WithMethods(_config.GetSection("CORS:Methods").Get<string[]>());
             });
         });
 
