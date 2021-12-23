@@ -70,6 +70,7 @@ public static class DependencyInjection
         services.AddOptions<CalendarOptions>().BindConfiguration("Calendar");
         services.AddOptions<JwtOptions>().BindConfiguration("Jwt");
         services.AddOptions<GroupOptions>().BindConfiguration("Groups");
+        services.AddOptions<CaptchaOptions>().BindConfiguration("Captcha");
 
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IIdentityService, IdentityService>();
@@ -82,6 +83,7 @@ public static class DependencyInjection
         services.AddSingleton<ICalendarClient, GoogleCalendar>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
         services.AddSingleton<TokenService>();
+        services.AddSingleton<CaptchaService>();
 
         return services;
     }
