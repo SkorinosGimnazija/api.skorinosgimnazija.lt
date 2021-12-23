@@ -24,7 +24,7 @@ public sealed class TokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new(claims),
-            Expires = DateTime.UtcNow.AddDays(1),
+            Expires = DateTime.UtcNow.AddDays(7),
             Audience = _jwt.Audience,
             Issuer = _jwt.Issuer,
             SigningCredentials = cred
