@@ -3,18 +3,20 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkorinosGimnazija.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211226134210_CoursesDateTest4")]
+    partial class CoursesDateTest4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,10 +417,10 @@ namespace Persistence.Migrations
                     b.Property<string>("Meta")
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("ModifiedAt")
+                    b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("PublishedAt")
+                    b.Property<DateTime>("PublishDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("ShowInFeed")
@@ -445,7 +447,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("PublishedAt");
+                    b.HasIndex("PublishDate");
 
                     b.ToTable("Posts");
                 });
@@ -462,19 +464,15 @@ namespace Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("now()");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("interval");
-
                     b.Property<float>("DurationInHours")
                         .HasColumnType("real");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
+
+                    b.Property<DateTime>("ModifyDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Organizer")
                         .IsRequired()
@@ -495,6 +493,8 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EndDate");
+
+                    b.HasIndex("StartDate");
 
                     b.HasIndex("UserId");
 

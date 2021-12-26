@@ -27,10 +27,10 @@ public static class CourseAdminList
         {
             var start = DateOnly.FromDateTime(request.Start);
             var end = DateOnly.FromDateTime(request.End);
-
+            
             return await _context.Courses
                        .AsNoTracking()
-                       .Where(x => x.StartDate >= start && x.EndDate <= end)
+                       .Where(x => x.EndDate >= start && x.EndDate <= end)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

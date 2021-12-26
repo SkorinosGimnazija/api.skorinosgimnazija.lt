@@ -10,7 +10,7 @@ public sealed class Post
 
     public bool ShowInFeed { get; set; }
 
-    public DateTime PublishDate { get; set; }
+    public DateTime PublishedAt { get; set; }
      
     public int LanguageId { get; set; }
 
@@ -26,7 +26,7 @@ public sealed class Post
 
     public string? Meta { get; set; }
 
-    public DateTime? ModifiedDate { get; set; }
+    public DateTime? ModifiedAt { get; set; }
 
     public List<string>? Files { get; set; }
 

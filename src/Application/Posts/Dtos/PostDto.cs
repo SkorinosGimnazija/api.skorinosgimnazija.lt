@@ -12,9 +12,9 @@ public record PostDto
 
     public bool ShowInFeed { get; init; }
 
-    public DateTime PublishDate { get; init; }
+    public DateTime PublishedAt { get; init; }
 
-    public DateTime? ModifiedDate { get; init; }
+    public DateTime? ModifiedAt { get; init; }
 
     public LanguageDto Language { get; init; } = default!;
 

@@ -41,11 +41,11 @@ public static class PublicPostList
                        .Where(x =>
                            x.IsPublished &&
                            x.ShowInFeed &&
-                           x.PublishDate <= DateTime.UtcNow &&
+                           x.PublishedAt <= DateTime.UtcNow &&
                            x.Language.Slug == request.LanguageSlug)
                        .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.IsFeatured)
-                       .ThenByDescending(x => x.PublishDate)
+                       .ThenByDescending(x => x.PublishedAt)
                        .Paginate(request.Pagination)
                        .ToListAsync(cancellationToken);
         }

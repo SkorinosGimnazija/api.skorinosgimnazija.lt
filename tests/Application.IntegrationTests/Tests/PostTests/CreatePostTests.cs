@@ -39,7 +39,7 @@ public class CreatePostTests
             Slug = "slug",
             Title = "title",
             LanguageId = 1,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         var command = new PostCreate.Command(post);
@@ -60,7 +60,7 @@ public class CreatePostTests
             Title = "new title",
             Slug = "new slug",
             LanguageId = 1,
-            PublishDate = DateTime.UtcNow,
+            PublishedAt = DateTime.UtcNow,
             NewFiles = new FormFileCollection
             {
                 new FormFile(null!, 0, 0, null!, "FileName.pdf"),

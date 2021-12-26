@@ -11,11 +11,11 @@ public class Course
 
     public string Organizer { get; set; } = default!;
 
-    public DateOnly StartDate { get; set; } 
+    public DateOnly StartDate { get; set; }
 
     public DateOnly EndDate { get; set; }
 
-    public DateTime ModifyDate { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public float DurationInHours { get; set; }
 

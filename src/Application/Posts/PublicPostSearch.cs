@@ -42,7 +42,7 @@ public static class PublicPostSearchList
                             .AsNoTracking()
                             .Where(x =>
                                 x.IsPublished &&
-                                x.PublishDate <= DateTime.UtcNow &&
+                                x.PublishedAt <= DateTime.UtcNow &&
                                 searchResult.Items.Contains(x.Id))
                             .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                             .OrderBy(x => searchResult.Items.IndexOf(x.Id))

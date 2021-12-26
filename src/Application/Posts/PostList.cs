@@ -39,7 +39,7 @@ public static class PostList
             return await _context.Posts
                        .AsNoTracking()
                        .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
-                       .OrderByDescending(x => x.PublishDate)
+                       .OrderByDescending(x => x.PublishedAt)
                        //.OrderByDescending(x => x.IsFeatured)
                        //.ThenByDescending(x => x.PublishDate)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);

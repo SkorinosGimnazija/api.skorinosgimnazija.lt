@@ -39,7 +39,7 @@ public class UpdatePostTests
             Title = "title",
             Slug = "slug",
             LanguageId = 1,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         var command = new PostEdit.Command(post);
@@ -61,7 +61,7 @@ public class UpdatePostTests
             Title = "new title",
             Slug = "new slug",
             LanguageId = 1,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         var command = new PostEdit.Command(postDto);

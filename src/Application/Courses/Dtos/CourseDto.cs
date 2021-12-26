@@ -19,7 +19,7 @@ public record CourseDto
     public DateTime StartDate { get; init; } = default!;
      
     public DateTime EndDate { get; init; } = default!;
-    public DateTime ModifyDate { get; init; } = default!;
+    public DateTime CreatedAt { get; init; } = default!;
 
     public float DurationInHours { get; init; }
 

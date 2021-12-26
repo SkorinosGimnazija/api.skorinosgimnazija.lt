@@ -9,7 +9,7 @@ public class PostCreateValidator : AbstractValidator<PostCreateDto>
 {
     public PostCreateValidator()
     {
-        RuleFor(x => x.PublishDate).NotEmpty();
+        RuleFor(x => x.PublishedAt).NotEmpty();
         RuleFor(x => x.LanguageId).NotEmpty();
         RuleFor(x => x.Title).NotEmpty().MaximumLength(256);
         RuleFor(x => x.NewFiles).Must(BeUnique).WithMessage("File names must be unique");

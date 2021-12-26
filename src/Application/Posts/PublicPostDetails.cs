@@ -31,7 +31,7 @@ public static class PublicPostDetails
                              .FirstOrDefaultAsync(x =>
                                      x.Id == request.Id &&
                                      x.IsPublished &&
-                                     x.PublishDate <= DateTime.UtcNow,
+                                     x.PublishedAt <= DateTime.UtcNow,
                                  cancellationToken);
 
             if (entity is null)

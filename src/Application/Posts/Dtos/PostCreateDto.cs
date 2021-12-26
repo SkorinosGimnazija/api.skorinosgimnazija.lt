@@ -10,9 +10,9 @@ public record PostCreateDto
 
     public IFormFileCollection? NewImages { get; init; }
 
-    public DateTime PublishDate { get; init; }
+    public DateTime PublishedAt { get; init; }
 
-    public DateTime? ModifiedDate { get; init; }
+    public DateTime? ModifiedAt { get; init; }
 
     public string? IntroText { get; init; }
 

@@ -5,7 +5,7 @@ public record PostIndexDto
     // ReSharper disable once InconsistentNaming
     public string ObjectID { get; init; } = default!;
 
-    public DateTime PublishDate { get; init; }
+    public DateTime PublishedAt { get; init; }
 
     public  bool IsPublished { get; init; }
 

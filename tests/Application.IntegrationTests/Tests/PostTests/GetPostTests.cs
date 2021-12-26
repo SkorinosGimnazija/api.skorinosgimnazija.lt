@@ -88,7 +88,7 @@ public class GetPostTests
             LanguageId = langId ?? lang.Id,
             ShowInFeed = showInFeed,
             IsPublished = isPublished,
-            PublishDate = DateTime.UtcNow.AddDays(rng.Next(-20, -10))
+            PublishedAt = DateTime.UtcNow.AddDays(rng.Next(-20, -10))
         };
 
         var postDummy = new Post
@@ -98,7 +98,7 @@ public class GetPostTests
             LanguageId = lang.Id,
             ShowInFeed = true,
             IsPublished = true,
-            PublishDate = DateTime.UtcNow.AddDays(-15)
+            PublishedAt = DateTime.UtcNow.AddDays(-15)
         };
 
         await _app.AddAsync(post);
@@ -109,7 +109,7 @@ public class GetPostTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().HaveCount(expected);
-        actual.Select(x => x.PublishDate).Should().BeInDescendingOrder();
+        actual.Select(x => x.PublishedAt).Should().BeInDescendingOrder();
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class GetPostTests
             ShowInFeed = true,
             IsPublished = true,
             IsFeatured = true,
-            PublishDate = DateTime.UtcNow.AddDays(-10)
+            PublishedAt = DateTime.UtcNow.AddDays(-10)
         };
 
         var post2 = new Post
@@ -136,7 +136,7 @@ public class GetPostTests
             ShowInFeed = true,
             IsPublished = true,
             IsFeatured = false,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         await _app.AddAsync(post1);
@@ -162,7 +162,7 @@ public class GetPostTests
             Title = "title",
             ShowInFeed = false,
             IsPublished = true,
-            PublishDate = DateTime.MinValue
+            PublishedAt = DateTime.MinValue
         };
 
         await _app.AddAsync(post);
@@ -184,7 +184,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = false,
-            PublishDate = DateTime.MinValue
+            PublishedAt = DateTime.MinValue
         };
 
         await _app.AddAsync(post);
@@ -207,7 +207,7 @@ public class GetPostTests
             Slug = "post-slug",
             Title = "post title",
             IsPublished = true,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         await _app.AddAsync(post);
@@ -247,7 +247,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = true,
-            PublishDate = DateTime.MaxValue
+            PublishedAt = DateTime.MaxValue
         };
 
         await _app.AddAsync(post);
@@ -269,7 +269,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = true,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         var post2 = new Post
@@ -279,7 +279,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = true,
-            PublishDate = DateTime.UtcNow.AddDays(3)
+            PublishedAt = DateTime.UtcNow.AddDays(3)
         };
 
         var post3 = new Post
@@ -289,7 +289,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = false,
-            PublishDate = DateTime.UtcNow
+            PublishedAt = DateTime.UtcNow
         };
 
         var post4 = new Post
@@ -299,7 +299,7 @@ public class GetPostTests
             Slug = "slug",
             Title = "title",
             IsPublished = true,
-            PublishDate = DateTime.UtcNow.AddDays(-1)
+            PublishedAt = DateTime.UtcNow.AddDays(-1)
         };
 
         await _app.AddAsync(post1);

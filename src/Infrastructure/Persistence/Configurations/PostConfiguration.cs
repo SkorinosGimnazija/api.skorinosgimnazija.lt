@@ -11,7 +11,7 @@ internal class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasOne(x => x.Language).WithMany().OnDelete(DeleteBehavior.Restrict);
         builder.HasIndex(x => x.IsPublished);
         builder.HasIndex(x => x.IsFeatured);
-        builder.HasIndex(x => x.PublishDate);
+        builder.HasIndex(x => x.PublishedAt);
 
         builder.Property(x => x.Slug).HasMaxLength(256);
         builder.Property(x => x.Title).HasMaxLength(256);
