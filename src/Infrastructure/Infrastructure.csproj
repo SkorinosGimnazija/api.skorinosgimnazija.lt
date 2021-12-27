@@ -11,8 +11,10 @@
     <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.55.0.2532" />
     <PackageReference Include="Google.Apis.Auth" Version="1.55.0" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.55.0.2500" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.55.0.2510" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="MimeKit" Version="3.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
   </ItemGroup>
 

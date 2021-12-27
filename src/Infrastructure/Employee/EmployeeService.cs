@@ -9,7 +9,7 @@ using Google.Apis.Auth.OAuth2;
 using Identity;
 using Microsoft.Extensions.Options;
 using Options;
- 
+
 public sealed class EmployeeService : IEmployeeService
 {
     private readonly DirectoryService _directoryService;
@@ -35,6 +35,14 @@ public sealed class EmployeeService : IEmployeeService
                     DirectoryService.ScopeConstants.AdminDirectoryGroupReadonly)
                 .CreateWithUser(googleOptions.Value.Admin)
         });
+    }
+
+    public async Task<string> GetGroupEmailAsync(string groupId)
+    {
+        var request = _directoryService.Groups.Get(groupId);
+        var response = await request.ExecuteAsync();
+
+        return response.Email;
     }
 
     public async Task<ICollection<string>> GetUserRolesAsync(string userId)

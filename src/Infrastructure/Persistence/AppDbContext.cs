@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
+using SkorinosGimnazija.Domain.Entities.Bullies;
 using SkorinosGimnazija.Domain.Entities.Teacher;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
@@ -41,6 +42,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<Language> Languages { get; set; } = default!;
 
     public DbSet<Banner> Banners { get; set; } = default!;
+    
+    public DbSet<BullyReport> BullyReports { get; set; } = default!;
 
     public DbSet<Menu> Menus { get; set; } = default!;
     public DbSet<Course> Courses { get; set; } = default!;

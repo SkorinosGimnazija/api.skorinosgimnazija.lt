@@ -14,4 +14,6 @@ public interface IEmployeeService
     Task<IEnumerable<TeacherDto>> GetTeachersAsync(CancellationToken ct);
 
     Task<IEnumerable<string>> GetUserGroupIdsAsync(string userId);
+
+    Task<string> GetGroupEmailAsync(string groupId);
 }

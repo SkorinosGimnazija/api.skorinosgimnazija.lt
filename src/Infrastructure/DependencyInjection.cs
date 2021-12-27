@@ -25,6 +25,7 @@ using Persistence;
 using Search;
 using Services;
 using SkorinosGimnazija.Infrastructure.Calendar;
+using SkorinosGimnazija.Infrastructure.Email;
 
 public static class DependencyInjection
 {
@@ -71,6 +72,7 @@ public static class DependencyInjection
         services.AddOptions<JwtOptions>().BindConfiguration("Jwt");
         services.AddOptions<GroupOptions>().BindConfiguration("Groups");
         services.AddOptions<CaptchaOptions>().BindConfiguration("Captcha");
+        services.AddOptions<EmailOptions>().BindConfiguration("Email");
 
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IIdentityService, IdentityService>();
@@ -82,8 +84,9 @@ public static class DependencyInjection
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<ICalendarClient, GoogleCalendar>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
+        services.AddSingleton<ICaptchaService,CaptchaService>();
+        services.AddSingleton<IEmailService, EmailService>();
         services.AddSingleton<TokenService>();
-        services.AddSingleton<CaptchaService>();
 
         return services;
     }
