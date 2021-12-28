@@ -9,12 +9,12 @@ using SkorinosGimnazija.Application.Common.Pagination;
 using SkorinosGimnazija.Infrastructure.Identity;
 using System.Xml.Linq;
 using Application.Banners;
+using Application.BullyReports.Events;
 using Application.Menus;
  
 [Authorize(Roles = Auth.Role.BullyManager)]
 public class BullyReportsController : BaseApiController
 {
-    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet(Name = "GetAllBullyReports")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<BullyReportDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
@@ -30,16 +30,7 @@ public class BullyReportsController : BaseApiController
         return await Mediator.Send(new BullyReportDetails.Query(id), ct);
     }
 
-    [HttpPut(Name = "EditBullyReport")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Edit(BullyReportEditDto dto)
-    {
-        await Mediator.Send(new BullyReportEdit.Command(dto));
-        return Ok();
-    }
-
+    [Authorize(Roles = Auth.Role.Admin)]
     [HttpDelete("{id:int}", Name = "DeleteBullyReport")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,6 +47,7 @@ public class BullyReportsController : BaseApiController
     public async Task<ActionResult<BullyReportDto>> Create(BullyReportCreateDto dto)
     {
         var result = await Mediator.Send(new BullyReportPublicCreate.Command(dto));
+        await Mediator.Publish(new BullyReportCreatedNotification(result.Id));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
     }
 }

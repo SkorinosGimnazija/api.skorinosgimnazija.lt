@@ -14,7 +14,6 @@ using MediatR;
 using Menus.Validators;
 using SkorinosGimnazija.Application.Courses.Validators;
 using SkorinosGimnazija.Application.Menus.Dtos;
-using Validators;
  
 public static class BullyReportPublicCreate
 {
@@ -24,8 +23,7 @@ public static class BullyReportPublicCreate
     {
         public Validator(ICaptchaService captchaService)
         {
-            RuleFor(v => v.BullyReport).NotNull().SetValidator(new BullyReportCreateValidator());
-            RuleFor(x => x.BullyReport.CaptchaToken).NotNull().SetValidator(new CaptchaValidator(captchaService));
+            RuleFor(v => v.BullyReport).NotNull().SetValidator(new BullyReportCreateValidator(captchaService));
         }
     }
 

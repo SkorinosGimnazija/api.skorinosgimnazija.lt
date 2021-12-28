@@ -17,8 +17,6 @@ public class BullyReportProfiles : Profile
     {
         CreateMap<BullyReport, BullyReportDto>();
 
-        CreateMap<BullyReportEditDto, BullyReport>();
-
         CreateMap<BullyReportCreateDto, BullyReport>();
     }
 }
