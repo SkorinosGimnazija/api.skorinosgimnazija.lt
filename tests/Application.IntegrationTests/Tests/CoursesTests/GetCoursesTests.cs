@@ -30,6 +30,8 @@ public class GetCoursesTests
         _app.CurrentUserMock.SetCurrentUserData(_currentUserId);
     }
 
+   
+
     [Fact]
     public async Task CourseList_ShouldThrowEx_WhenInvalidPagination()
     {
@@ -38,6 +40,50 @@ public class GetCoursesTests
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<ValidationException>();
+    }
+
+    [Fact]
+    public async Task CourseAdminList_ShouldListAllCoursesByDate()
+    {
+        var course1 = await _app.AddAsync(new Course
+        {
+            DurationInHours = 4,
+            StartDate = DateOnly.Parse("2021-01-01"),
+            EndDate = DateOnly.Parse("2021-01-04"),
+            Title = "Course",
+            Organizer = "Organizer",
+            UserId = _currentUserId
+        });
+
+        var course2 = await _app.AddAsync(new Course
+        {
+            DurationInHours = 4,
+            StartDate = DateOnly.Parse("2021-08-01"),
+            EndDate = DateOnly.Parse("2021-08-04"),
+            Title = "Course",
+            Organizer = "Organizer",
+            UserId = _currentUserId
+        });
+
+        await _app.AddAsync(new Course
+        {
+            DurationInHours = 4,
+            StartDate = DateOnly.Parse("2023-01-01"),
+            EndDate = DateOnly.Parse("2023-01-04"),
+            Title = "Course",
+            Organizer = "Organizer",
+            UserId = _currentUserId
+        });
+
+        var starDate = DateTime.Parse("2021-01-01");
+        var endDate = DateTime.Parse("2021-12-31");
+
+        var command = new CourseAdminList.Query(starDate, endDate);
+
+        var actual = await _app.SendAsync(command);
+
+        actual.Count.Should().Be(2);
+        actual.Select(x => x.Id).Should().Contain(new[] { course1.Id, course2.Id });
     }
 
     [Fact]

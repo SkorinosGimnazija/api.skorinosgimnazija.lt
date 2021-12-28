@@ -49,24 +49,27 @@ public class AppFixture
 
         services.AddSingleton<IConfiguration>(_configuration);
 
-        services.AddSingleton(Mock.Of<IWebHostEnvironment>(x => x.EnvironmentName == "Development"));
-        services.AddSingleton(Mock.Of<IHostEnvironment>(x => x.EnvironmentName == "Development"));
+        services.AddSingleton(Mock.Of<IWebHostEnvironment>(x => x.EnvironmentName == "Production"));
+        services.AddSingleton(Mock.Of<IHostEnvironment>(x => x.EnvironmentName == "Production"));
         services.AddSingleton(Mock.Of<IImageOptimizer>());
-        services.AddSingleton(Mock.Of<IMediaManager>());
 
         SearchClientMock = new(services);
         CurrentUserMock = new(services);
         MediaManagerMock = new(services);
-
+        CaptchaServiceMock = new(services);
+        NotificationPublisherMock = new(services);
+         
         _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
         CreateDatabase();
     }
 
     public SearchClientMock SearchClientMock { get; }
+    public PublisherMock NotificationPublisherMock { get; }
 
     public CurrentUserMock CurrentUserMock { get; }
     public MediaManagerMock MediaManagerMock { get; }
+    public CaptchaServiceMock CaptchaServiceMock { get; }
 
     private void CreateDatabase()
     {

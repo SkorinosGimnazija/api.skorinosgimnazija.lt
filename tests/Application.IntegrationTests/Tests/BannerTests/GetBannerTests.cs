@@ -89,7 +89,7 @@ public class GetBannerTests
         var actual = await _app.SendAsync(command);
          
         actual.Items.Should().HaveCount(2);
-        actual.Items.Select(x => x.Id).Should().Contain(new[] { entity1.Id, entity1.Id });
+        actual.Items.Select(x => x.Id).Should().Contain(new[] { entity1.Id, entity2.Id });
         actual.TotalCount.Should().Be(2);
         actual.PageNumber.Should().Be(0);
         actual.TotalPages.Should().Be(1);

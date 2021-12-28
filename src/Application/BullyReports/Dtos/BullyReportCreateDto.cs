@@ -20,6 +20,4 @@ public record BullyReportCreateDto
     public string CaptchaToken { get; init; } = default!;
 
     public DateTime Date { get; init; }
-
-    public DateTime CreatedAt { get; init; }
-}
+}   

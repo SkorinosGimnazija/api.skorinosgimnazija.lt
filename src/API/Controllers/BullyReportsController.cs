@@ -47,7 +47,6 @@ public class BullyReportsController : BaseApiController
     public async Task<ActionResult<BullyReportDto>> Create(BullyReportCreateDto dto)
     {
         var result = await Mediator.Send(new BullyReportPublicCreate.Command(dto));
-        await Mediator.Publish(new BullyReportCreatedNotification(result.Id));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
     }
 }

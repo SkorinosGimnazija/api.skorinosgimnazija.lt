@@ -13,6 +13,7 @@ using Common.Exceptions;
 using Xunit;
 using SkorinosGimnazija.Application.Menus;
 using SkorinosGimnazija.Domain.Entities.Teacher;
+using SkorinosGimnazija.Domain.Entities.Bullies;
 
 [Collection("App")]
 public class CreateCoursesTests
@@ -29,56 +30,11 @@ public class CreateCoursesTests
         _app.CurrentUserMock.SetCurrentUserData(_currentUserId);
     }
 
-    [Fact]
-    public async Task CourseAdminList_ShouldListAllCoursesByDate()
-    {
-        var course1 = await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = _currentUserId
-        });
-
-        var course2 = await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-08-01"),
-            EndDate = DateOnly.Parse("2021-08-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = _currentUserId
-        });
-
-        await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2023-01-01"),
-            EndDate = DateOnly.Parse("2023-01-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = _currentUserId
-        });
-
-        var starDate = DateTime.Parse("2021-01-01");
-        var endDate = DateTime.Parse("2021-12-31");
-
-        var command = new CourseAdminList.Query(starDate, endDate);
-
-        var actual = await _app.SendAsync(command);
-
-        actual.Count.Should().Be(2);
-        actual.Select(x => x.Id).Should().Contain(new[] { course1.Id, course2.Id });
-    }
-
-
     [Fact] 
     public async Task CourseCreate_ShouldThrowEx_WhenInvalidData()
     {
-        var menu = new CourseCreateDto();
-        var command = new CourseCreate.Command(menu);
+        var course = new CourseCreateDto();
+        var command = new CourseCreate.Command(course);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
@@ -99,9 +55,11 @@ public class CreateCoursesTests
 
         var command = new CourseCreate.Command(course);
 
-        var actual = await _app.SendAsync(command);
+        var createdCourse = await _app.SendAsync(command);
 
-        actual.Should().NotBeNull();
+        var actual = await _app.FindAsync<Course>(createdCourse.Id);
+
+        actual.Should().NotBeNull();    
         actual.Title.Should().Be(course.Title);
         actual.UserId.Should().Be(_currentUserId);
     }

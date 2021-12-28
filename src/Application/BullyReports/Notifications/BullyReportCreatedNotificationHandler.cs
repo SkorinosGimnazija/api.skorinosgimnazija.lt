@@ -10,10 +10,11 @@ using Common.Interfaces;
 using Infrastructure.Email;
 using Microsoft.Extensions.Options;
 using System.Text.RegularExpressions;
+using Domain.Entities.Bullies;
 using Infrastructure.Options;
 using Microsoft.Extensions.Logging;
 
-public record BullyReportCreatedNotification(int Id) : INotification;
+public record BullyReportCreatedNotification(BullyReport Report) : INotification;
 
 public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyReportCreatedNotification>
 {
@@ -36,15 +37,15 @@ public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyR
         _groupId = groupOptions.Value.BullyManagers;
         _baseUrl = urlOptions.Value.Admin;
     }
-
-
-    public async Task Handle(BullyReportCreatedNotification notification, CancellationToken cancellationToken)
+     
+     
+    public async Task Handle(BullyReportCreatedNotification notification, CancellationToken _)
     {
         try
         {
             var groupEmail = await _employeeService.GetGroupEmailAsync(_groupId);
 
-            var body = @$"<p>Gautas <a href=""{_baseUrl}/bullies/{notification.Id}"">naujas pranešimas</a>.</p>";
+            var body = @$"<p>Gautas <a href=""{_baseUrl}/bullies/{notification.Report.Id}"">naujas pranešimas</a>.</p>";
 
             await _emailService.SendAsync(groupEmail, "Patyčių dėžutė", body);
         }
