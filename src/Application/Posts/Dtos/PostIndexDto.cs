@@ -11,5 +11,7 @@ public record PostIndexDto
 
     public string Title { get; init; } = default!;
 
-    public string? Text { get; init; }
+    public string Slug { get; init; } = default!;
+     
+    public string? IntroText { get; init; }
 }
