@@ -38,7 +38,7 @@ public class MediaManagerTests
     [Fact]
     public void GenerateFileLinks_ShouldReplaceTemplateWithLinksInText()
     {
-        var staticUrl = $"{_urlOptions.Static}/{MediaManager.FileUrlUploadsFolder}";
+        var staticUrl = _urlOptions.Static;
         var text = $"text1 text [link]({MediaManager.FileUrlReplaceTemplate}/file.pdf) text text text" +
                    $"text text [link]({MediaManager.FileUrlReplaceTemplate}/file 1.pdf) \n\n\n" +
                    $"asd asd [link]({MediaManager.FileUrlReplaceTemplate}/file@55.docx)asda";
