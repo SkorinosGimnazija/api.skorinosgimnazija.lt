@@ -39,7 +39,7 @@ public static class BullyReportList
             return await _context.BullyReports
                        .AsNoTracking()
                        .ProjectTo<BullyReportDto>(_mapper.ConfigurationProvider)
-                       .OrderBy(x => x.Id)
+                       .OrderByDescending(x => x.Id)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }

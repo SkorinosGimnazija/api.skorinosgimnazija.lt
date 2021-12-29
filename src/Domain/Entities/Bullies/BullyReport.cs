@@ -8,8 +8,6 @@ public class BullyReport
 
     public string VictimInfo { get; set; } = default!;
 
-    public string? ReporterInfo { get; set; }
-
     public string? Details { get; set; }
      
     public string Location { get; set; } = default!;

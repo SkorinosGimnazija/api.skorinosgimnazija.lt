@@ -15,7 +15,7 @@ using Application.Menus;
 [Authorize(Roles = Auth.Role.BullyManager)]
 public class BullyReportsController : BaseApiController
 {
-    [HttpGet(Name = "GetAllBullyReports")]
+    [HttpGet(Name = "GetBullyReports")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<BullyReportDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
     {

@@ -31,6 +31,7 @@ public static class CourseAdminList
             return await _context.Courses
                        .AsNoTracking()
                        .Where(x => x.EndDate >= start && x.EndDate <= end)
+                       .OrderByDescending(x=> x.EndDate)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

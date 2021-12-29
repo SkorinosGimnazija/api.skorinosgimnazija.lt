@@ -42,7 +42,6 @@ public class UpdateBullyReportsTests
         {
             BullyInfo = "Bully name",
             VictimInfo = "Victim name",
-            ReporterInfo = "Reporter name",
             Location = "Location",
             Details = "More details",
             Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),

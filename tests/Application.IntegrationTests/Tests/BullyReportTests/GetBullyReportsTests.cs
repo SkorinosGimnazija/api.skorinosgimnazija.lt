@@ -41,7 +41,6 @@ public class GetBullyReportsTests
         {
             BullyInfo = "Bully name",
             VictimInfo = "Victim name",
-            ReporterInfo = "Reporter name",
             Location = "Location",
             Details = "More details",
             Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
@@ -56,7 +55,6 @@ public class GetBullyReportsTests
         actual.Should().NotBeNull();
         actual.BullyInfo.Should().Be(entity.BullyInfo);
         actual.VictimInfo.Should().Be(entity.VictimInfo);
-        actual.ReporterInfo.Should().Be(entity.ReporterInfo);
         actual.Location.Should().Be(entity.Location);
         actual.Details.Should().Be(entity.Details);
         actual.Date.Should().Be(entity.Date);
@@ -80,7 +78,6 @@ public class GetBullyReportsTests
         {
             BullyInfo = "Bully name",
             VictimInfo = "Victim name",
-            ReporterInfo = "Reporter name",
             Location = "Location",
             Details = "More details",
             Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
@@ -90,7 +87,6 @@ public class GetBullyReportsTests
         {
             BullyInfo = "Bully name2",
             VictimInfo = "Victim name2",
-            ReporterInfo = "Reporter name2",
             Location = "Location2",
             Details = "More details2",
             Date = DateTime.Parse("2021-01-02 12:00:00").ToUniversalTime(),

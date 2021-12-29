@@ -46,7 +46,6 @@ public class CreateBullyReportsTests
         {
            BullyInfo = "Bully name",
            VictimInfo = "Victim name",
-           ReporterInfo = "Reporter name",
            Location = "Location",
            Details = "More details",
            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
@@ -62,7 +61,6 @@ public class CreateBullyReportsTests
         actual.Should().NotBeNull();
         actual.BullyInfo.Should().Be(dto.BullyInfo);
         actual.VictimInfo.Should().Be(dto.VictimInfo);
-        actual.ReporterInfo.Should().Be(dto.ReporterInfo);
         actual.Location.Should().Be(dto.Location);
         actual.Details.Should().Be(dto.Details);
         actual.Date.Should().Be(dto.Date);

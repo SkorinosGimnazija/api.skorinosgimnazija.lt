@@ -13,8 +13,6 @@ public record BullyReportDto
 
     public string VictimInfo { get; init; } = default!;
 
-    public string? ReporterInfo { get; init; }
-
     public string? Details { get; init; }
 
     public string Location { get; init; } = default!;
