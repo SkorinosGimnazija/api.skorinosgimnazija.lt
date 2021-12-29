@@ -13,7 +13,6 @@ using Options;
 public sealed class MediaManager : IMediaManager
 {
     public const string FileUrlReplaceTemplate = "{auto-link}";
-    public const string FileUrlUploadsFolder = "uploads";
 
     private static readonly Regex FileUrlReplaceTemplateRegex =
         new($"(\\(|\"){FileUrlReplaceTemplate}/(.*?)(\\)|\")", RegexOptions.Compiled, TimeSpan.FromSeconds(3));
@@ -30,7 +29,7 @@ public sealed class MediaManager : IMediaManager
         IFileService fileService)
     {
         _baseUploadPath = Path.Combine(options.Value.UploadPath);
-        _staticFilesUploadUrl = $"{urls.Value.Static}/{FileUrlUploadsFolder}";
+        _staticFilesUploadUrl = urls.Value.Static;
         _imageOptimizer = imageOptimizer;
         _fileService = fileService;
     }
