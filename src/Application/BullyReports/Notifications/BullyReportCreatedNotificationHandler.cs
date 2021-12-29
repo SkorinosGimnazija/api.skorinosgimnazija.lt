@@ -45,7 +45,8 @@ public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyR
         {
             var groupEmail = await _employeeService.GetGroupEmailAsync(_groupId);
 
-            var body = @$"<p>Gautas <a href=""{_baseUrl}/bullies/{notification.Report.Id}"">naujas pranešimas</a>.</p>";
+            var reportLink = $"{_baseUrl}/admin/bullies/{notification.Report.Id}";
+            var body = @$"<p>Gautas <a href=""{reportLink}"">naujas pranešimas</a>.</p>";
 
             await _emailService.SendAsync(groupEmail, "Patyčių dėžutė", body);
         }

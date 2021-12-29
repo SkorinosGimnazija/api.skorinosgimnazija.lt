@@ -135,13 +135,21 @@ public sealed class AlgoliaSearchClient : ISearchClient
         {
             throw new SearchIndexException("Banner Removing failed", e);
         }
-    } 
+    }
 
     private static async Task<PaginatedList<int>> SearchAsync(
-        string query, PaginationDto pagination, ISearchIndex index, CancellationToken ct)
+        string query,
+        PaginationDto pagination,
+        ISearchIndex index,
+        CancellationToken ct)
     {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return new(new(), 0, pagination.Page, pagination.Items);
+        }
+
         var result = await index.SearchAsync<SearchObject>(
-                         new(query)
+                         new(Uri.UnescapeDataString(query))
                          {
                              HitsPerPage = pagination.Items,
                              Page = pagination.Page
