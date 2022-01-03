@@ -4,6 +4,7 @@ using System.Reflection;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Appointments;
 using Domain.Entities.Identity;
 using Extensions;
 using FluentValidation.Results;
@@ -51,6 +52,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<MenuLocation> MenuLocations { get; set; } = default!;
 
     public DbSet<Post> Posts { get; set; } = default!;
+    public DbSet<ParentAppointment> ParentAppointments { get; set; } = default!;
+    public DbSet<AppointmentDate> ParentAppointmentDates { get; set; } = default!;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {

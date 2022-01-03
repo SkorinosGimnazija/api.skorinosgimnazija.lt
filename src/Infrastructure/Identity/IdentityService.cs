@@ -38,6 +38,28 @@ public sealed class IdentityService : IIdentityService
         _claimsPrincipal = claimsPrincipal;
     }
 
+    public async Task<AppUser?> GetOrCreateUserAsync(string? userName)
+    {
+        if (string.IsNullOrEmpty(userName))
+        {
+            return null;
+        }
+            
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user is not null)
+        {
+            return user;
+        }
+
+        var employee = await _employeeService.GetEmployeeAsync(userName);
+        if (employee is null)
+        {
+            return null;
+        }
+
+        return await CreateUserAsync(employee);
+    }
+     
     public async Task<UserAuthDto> AuthorizeAsync(string token)
     {
         var payload = await ValidateSignatureAsync(token);
@@ -66,7 +88,7 @@ public sealed class IdentityService : IIdentityService
 
     private async Task UpdateUserRolesAsync(AppUser user)
     {
-        var userRoles = await _employeeService.GetUserRolesAsync(user.UserName);
+        var userRoles = await _employeeService.GetEmployeeRolesAsync(user.UserName);
         var currentRoles = await _userManager.GetRolesAsync(user);
 
         await _userManager.AddToRolesAsync(user, userRoles.Except(currentRoles));
@@ -94,6 +116,27 @@ public sealed class IdentityService : IIdentityService
             UserName = payload.Subject,
             Email = payload.Email,
             DisplayName = payload.Name,
+            EmailConfirmed = true
+        };
+
+        var result = await _userManager.CreateAsync(user);
+
+        if (!result.Succeeded)
+        {
+            throw new ValidationException(
+                result.Errors.Select(x => new ValidationFailure(x.Code, x.Description)));
+        }
+
+        return user;
+    }
+
+    private async Task<AppUser> CreateUserAsync(Employee employee)
+    {
+        var user = new AppUser
+        {
+            UserName = employee.Id,
+            Email = employee.Email,
+            DisplayName = employee.FullName,
             EmailConfirmed = true
         };
 

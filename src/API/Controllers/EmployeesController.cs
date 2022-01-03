@@ -6,9 +6,9 @@ using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+ 
 [Authorize(Roles = Auth.Role.Admin)]
-public class UsersController : BaseApiController
+public class EmployeesController : BaseApiController
 {
     [AllowAnonymous]
     [HttpGet("public/teachers", Name = "GetPublicTeachers")]

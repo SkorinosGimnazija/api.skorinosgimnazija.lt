@@ -12,5 +12,4 @@ public record MenuIndexDto
         
     public string Title { get; init; } = default!;
     public string Path { get; init; } = default!;
-    public string? Url { get; set; }
 }

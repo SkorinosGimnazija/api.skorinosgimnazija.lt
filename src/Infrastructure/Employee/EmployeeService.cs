@@ -9,6 +9,7 @@ using Google.Apis.Auth.OAuth2;
 using Identity;
 using Microsoft.Extensions.Options;
 using Options;
+using SkorinosGimnazija.Domain.Entities.Identity;
 
 public sealed class EmployeeService : IEmployeeService
 {
@@ -44,12 +45,12 @@ public sealed class EmployeeService : IEmployeeService
 
         return response.Email;
     }
-
-    public async Task<ICollection<string>> GetUserRolesAsync(string userId)
+     
+    public async Task<ICollection<string>> GetEmployeeRolesAsync(string userName)
     {
-        var userTask = GetUserAsync(userId);
-        var groupsTask = GetUserGroupIdsAsync(userId);
-
+        var userTask = GetEmployeeAsync(userName);
+        var groupsTask = GetEmployeeGroupsAsync(userName);
+         
         var user = await userTask;
         if (user?.IsAdmin == true)
         {
@@ -97,13 +98,13 @@ public sealed class EmployeeService : IEmployeeService
         return teachers;
     }
 
-    public async Task<IEnumerable<string>> GetUserGroupIdsAsync(string userId)
+    public async Task<IEnumerable<string>> GetEmployeeGroupsAsync(string userName)
     {
         try
         {
             var request = _directoryService.Groups.List();
 
-            request.UserKey = userId;
+            request.UserKey = userName;
             request.Domain = _domain;
 
             var response = await request.ExecuteAsync();
@@ -116,13 +117,20 @@ public sealed class EmployeeService : IEmployeeService
         }
     }
 
-    private async Task<User?> GetUserAsync(string userId)
+    public async Task<Employee?> GetEmployeeAsync(string userName)
     {
         try
         {
-            var request = _directoryService.Users.Get(userId);
+            var request = _directoryService.Users.Get(userName);
             var response = await request.ExecuteAsync();
-            return response;
+
+            return new()
+            {
+                Id = response.Id,
+                FullName = response.Name.FullName,
+                Email = response.PrimaryEmail,
+                IsAdmin = response.IsAdmin == true
+            };
         }
         catch
         {

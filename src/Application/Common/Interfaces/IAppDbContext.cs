@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Domain.Entities;
+using Domain.Entities.Appointments;
 using Domain.Entities.Bullies;
 using Domain.Entities.Identity;
 using Domain.Entities.Teacher;
@@ -18,6 +19,10 @@ public interface IAppDbContext
     DbSet<Post> Posts { get; }
 
     DbSet<BullyReport> BullyReports { get; set; }
+
+    DbSet<ParentAppointment> ParentAppointments { get; set; }
+
+    DbSet<AppointmentDate> ParentAppointmentDates { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
