@@ -3,18 +3,20 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkorinosGimnazija.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Persistence.Migrations
+namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220104050330_Appointments3")]
+    partial class Appointments3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +141,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParentAppointmentDates", (string)null);
+                    b.ToTable("ParentAppointmentDates");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentReservedDate", b =>
@@ -169,7 +171,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserName");
 
-                    b.ToTable("ParentAppointmentReservedDates", (string)null);
+                    b.ToTable("ParentAppointmentReservedDates");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.ParentAppointment", b =>
@@ -218,7 +220,7 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId", "DateId")
                         .IsUnique();
 
-                    b.ToTable("ParentAppointments", (string)null);
+                    b.ToTable("ParentAppointments");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Banner", b =>
@@ -261,7 +263,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("Order");
 
-                    b.ToTable("Banners", (string)null);
+                    b.ToTable("Banners");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Bullies.BullyReport", b =>
@@ -301,7 +303,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BullyReports", (string)null);
+                    b.ToTable("BullyReports");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Identity.AppUser", b =>
@@ -426,7 +428,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Menu", b =>
@@ -492,7 +494,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Slug", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.MenuLocation", b =>
@@ -518,7 +520,7 @@ namespace Persistence.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("MenuLocations", (string)null);
+                    b.ToTable("MenuLocations");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Post", b =>
@@ -582,7 +584,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("PublishedAt");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Teacher.Course", b =>
@@ -630,7 +632,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

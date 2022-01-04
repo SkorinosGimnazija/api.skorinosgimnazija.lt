@@ -22,46 +22,51 @@ using SkorinosGimnazija.Application.Appointments.Dtos;
  
 public static class AppointmentTeacherDates
 {
-    public record Query(string UserName) : IRequest<List<AppointmentDateDto>>;
+    public record Query(string TeachersUserName) : IRequest<List<AppointmentDateDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
         public Validator()
         {
-            RuleFor(x => x.UserName).NotEmpty().MaximumLength(50);
+            RuleFor(x => x.TeachersUserName).NotEmpty().MaximumLength(100);
         }
-    }
+    } 
         
     public class Handler : IRequestHandler<Query, List<AppointmentDateDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IIdentityService _identityService;
+        private readonly IEmployeeService _employeeService;
 
         public Handler(
-            IAppDbContext context, IMapper mapper, IIdentityService identityService)
+            IAppDbContext context, IMapper mapper, IEmployeeService employeeService)
         {
             _context = context;
             _mapper = mapper;
-            _identityService = identityService;
+            _employeeService = employeeService;
         }
          
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var teacher =await  _identityService.GetOrCreateUserAsync(request.UserName);
+            var teacher = await _employeeService.GetEmployeeAsync(request.TeachersUserName);
             if (teacher is null)
             {
-                return new();
+                throw new NotFoundException();
             }
-             
-            var registeredDates = _context.ParentAppointments.AsNoTracking()
-                                    .Where(x => x.TeacherId == teacher.Id)
-                                    .Select(x => x.DateId);
 
+            var reservedDatesQuery = _context.ParentAppointmentReservedDates
+                .Where(x => x.UserName == request.TeachersUserName)
+                .Select(x => x.DateId);
+
+            var registeredDatesQuery = _context.ParentAppointments
+                .Where(x => x.UserName == request.TeachersUserName)
+                .Select(x => x.DateId);
+             
             return await _context.ParentAppointmentDates.AsNoTracking()
                        .Where(x =>
                            x.Date > DateTime.Now &&
-                           !registeredDates.Contains(x.Id))
+                           !registeredDatesQuery.Contains(x.Id) &&
+                           !reservedDatesQuery.Contains(x.Id))
                        .ProjectTo<AppointmentDateDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

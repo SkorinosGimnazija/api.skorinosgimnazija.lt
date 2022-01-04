@@ -54,6 +54,7 @@ public class AppointmentsController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/time/{userName}", Name = "GetPublicTeachersAvailableTime")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<AppointmentDateDto>> GetTeachersTime(string userName, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentTeacherDates.Query(userName), ct);
