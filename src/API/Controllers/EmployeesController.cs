@@ -13,7 +13,7 @@ public class EmployeesController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/teachers", Name = "GetPublicTeachers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<TeacherDto>> GetTeachers(CancellationToken ct)
+    public async Task<List<EmployeeDto>> GetTeachers(CancellationToken ct)
     {
         return await Mediator.Send(new TeachersPublicList.Query(), ct);
     }

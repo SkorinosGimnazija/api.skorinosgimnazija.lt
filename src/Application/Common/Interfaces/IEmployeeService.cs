@@ -12,11 +12,13 @@ public interface IEmployeeService
 {
     Task<ICollection<string>> GetEmployeeRolesAsync(string userName);
      
-    Task<IEnumerable<TeacherDto>> GetTeachersAsync(CancellationToken ct);
+    Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct);
       
     Task<IEnumerable<string>> GetEmployeeGroupsAsync(string userName);
 
     Task<string> GetGroupEmailAsync(string groupId);
        
     Task<Employee?> GetEmployeeAsync(string userName);
+
+    Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct);
 }

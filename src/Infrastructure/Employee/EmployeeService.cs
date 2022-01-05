@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Services;
 
+using System.Collections;
 using Application.Common.Identity;
 using Application.Common.Interfaces;
 using Calendar;
@@ -13,9 +14,9 @@ using SkorinosGimnazija.Domain.Entities.Identity;
 
 public sealed class EmployeeService : IEmployeeService
 {
+    private readonly IReadOnlyDictionary<string, IReadOnlyCollection<string>> _groupRoles;
     private readonly DirectoryService _directoryService;
     private readonly string _domain;
-    private readonly Dictionary<string, string[]> _groupRoles = new();
 
     public EmployeeService(
         IOptions<GoogleOptions> googleOptions,
@@ -24,9 +25,13 @@ public sealed class EmployeeService : IEmployeeService
     {
         _domain = urlOptions.Value.Domain;
 
-        _groupRoles.Add(groupOptions.Value.Teachers, new[] { Auth.Role.Teacher });
-        _groupRoles.Add(groupOptions.Value.BullyManagers, new[] { Auth.Role.BullyManager });
-        _groupRoles.Add(groupOptions.Value.Managers, new[] { Auth.Role.Manager, Auth.Role.BullyManager });
+        _groupRoles = new Dictionary<string, IReadOnlyCollection<string>>
+        {
+            { groupOptions.Value.Teachers, new[] { Auth.Role.Teacher } },
+            { groupOptions.Value.BullyManagers, new[] { Auth.Role.BullyManager } },
+            { groupOptions.Value.Managers, new[] { Auth.Role.Manager, Auth.Role.BullyManager } },
+            { groupOptions.Value.Service, Auth.AllRoles.ToArray() }
+        };
 
         _directoryService = new(new()
         {
@@ -48,16 +53,7 @@ public sealed class EmployeeService : IEmployeeService
      
     public async Task<ICollection<string>> GetEmployeeRolesAsync(string userName)
     {
-        var userTask = GetEmployeeAsync(userName);
-        var groupsTask = GetEmployeeGroupsAsync(userName);
-         
-        var user = await userTask;
-        if (user?.IsAdmin == true)
-        {
-            return Auth.AllRoles.ToArray();
-        }
-
-        var userGroups = await groupsTask;
+        var userGroups = await GetEmployeeGroupsAsync(userName);
         var userRoles = new HashSet<string>();
 
         foreach (var groupId in userGroups)
@@ -71,16 +67,16 @@ public sealed class EmployeeService : IEmployeeService
         return userRoles;
     }
 
-    public async Task<IEnumerable<TeacherDto>> GetTeachersAsync(CancellationToken ct)
+    private async Task<IEnumerable<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
     {
-        var teachers = new List<TeacherDto>();
+        var employes = new List<Employee>();
         string? pageToken = null;
 
         do
         {
             var request = _directoryService.Users.List();
 
-            request.Query = "orgUnitPath=/Teachers isSuspended=false";
+            request.Query = $"orgUnitPath={unitPath} isSuspended=false";
             request.Domain = _domain;
             request.PageToken = pageToken;
 
@@ -88,14 +84,27 @@ public sealed class EmployeeService : IEmployeeService
 
             pageToken = response.NextPageToken;
 
-            teachers.AddRange(response.UsersValue.Select(x => new TeacherDto
+            employes.AddRange(response.UsersValue.Select(x => new Employee
             {
-                UserName = x.Id,
-                DisplayName = x.Name.FullName
+                Id = x.Id,
+                FullName = x.Name.FullName,
+                Email = x.PrimaryEmail
             }));
         } while (!string.IsNullOrEmpty(pageToken));
 
-        return teachers;
+        return employes;
+    }
+
+    public Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct)
+    {
+        const string Path = "/Teachers/HeadTeachers";
+        return GetEmployesAsync(Path, ct);
+    }
+
+    public Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct)
+    {
+        const string Path = "/Teachers";
+        return GetEmployesAsync(Path, ct);
     }
 
     public async Task<IEnumerable<string>> GetEmployeeGroupsAsync(string userName)
@@ -129,7 +138,6 @@ public sealed class EmployeeService : IEmployeeService
                 Id = response.Id,
                 FullName = response.Name.FullName,
                 Email = response.PrimaryEmail,
-                IsAdmin = response.IsAdmin == true
             };
         }
         catch

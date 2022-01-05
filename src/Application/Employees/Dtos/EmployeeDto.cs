@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
  
 
-public record TeacherDto
+public record EmployeeDto
 {
     public string UserName { get; init; } = default!;
     public string DisplayName { get; init; } = default!;
