@@ -31,6 +31,14 @@ public sealed class CurrentUserService : ICurrentUserService
             return -1;
         }
     }
+     
+    public string UserName
+    {
+        get
+        {
+            return User?.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
+        }
+    }
 
     public bool IsOwnerOrAdmin(int resourceOwnerId)
     {

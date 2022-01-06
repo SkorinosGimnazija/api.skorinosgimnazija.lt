@@ -17,54 +17,57 @@ using Domain.Entities.Identity;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using ParentAppointments.Dtos;
 using SkorinosGimnazija.Application.Courses.Validators;
 using SkorinosGimnazija.Application.Appointments.Dtos;
- 
-public static class AppointmentTeacherDates
+using SkorinosGimnazija.Application.ParentAppointments.Validators;
+
+public static class AppointmentDatesList
 {
-    public record Query(string TeachersUserName) : IRequest<List<AppointmentDateDto>>;
+    public record Query(AppointmentDatesQuery Appointment) : IRequest<List<AppointmentDateDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
-        public Validator()
+        public Validator(IEmployeeService employeeService)
         {
-            RuleFor(x => x.TeachersUserName).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.Appointment).NotNull().SetValidator(new AppointmentDatesQueryValidator(employeeService));
         }
     } 
-        
+          
     public class Handler : IRequestHandler<Query, List<AppointmentDateDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IEmployeeService _employeeService;
 
-        public Handler(
-            IAppDbContext context, IMapper mapper, IEmployeeService employeeService)
+        public Handler(IAppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _employeeService = employeeService;
         }
          
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var teacher = await _employeeService.GetEmployeeAsync(request.TeachersUserName);
-            if (teacher is null)
+            var appointmentType = await _context.AppointmentTypes.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Slug == request.Appointment.AppointmentTypeSlug,
+                cancellationToken);
+
+            if (appointmentType is null)
             {
                 throw new NotFoundException();
             }
 
             var reservedDatesQuery = _context.AppointmentReservedDates
-                .Where(x => x.UserName == request.TeachersUserName)
+                .Where(x => x.UserName == request.Appointment.UserName)
                 .Select(x => x.DateId);
-
+             
             var registeredDatesQuery = _context.Appointments
-                .Where(x => x.UserName == request.TeachersUserName)
+                .Where(x => x.UserName == request.Appointment.UserName)
                 .Select(x => x.DateId);
              
             return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
                            x.Date > DateTime.Now &&
+                           x.TypeId == appointmentType.Id &&
                            !registeredDatesQuery.Contains(x.Id) &&
                            !reservedDatesQuery.Contains(x.Id))
                        .ProjectTo<AppointmentDateDto>(_mapper.ConfigurationProvider)

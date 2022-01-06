@@ -90,13 +90,11 @@ public static class Seed
             {
                 Name = "Tėvų dienos",
                 Slug = "parent",
-                IsPublic = true
             },
             new()
             {
                 Name = "Metiniai pokalbiai",
                 Slug = "teacher",
-                IsPublic = false
             }
         );
 

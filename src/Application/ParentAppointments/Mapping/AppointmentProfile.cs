@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Appointments;
 using Dtos;
+using SkorinosGimnazija.Application.ParentAppointments.Dtos;
 
 internal class AppointmentProfile : Profile
 {
@@ -17,7 +18,9 @@ internal class AppointmentProfile : Profile
         CreateMap<AppointmentDate, AppointmentDateDto>();
 
         CreateMap<Appointment, AppointmentDto>();
-
+        
         CreateMap<AppointmentCreateDto, Appointment>();
+
+        CreateMap<AppointmentType, AppointmentTypeDto>();
     }
 }
