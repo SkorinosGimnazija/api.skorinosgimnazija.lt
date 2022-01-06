@@ -14,7 +14,6 @@ internal class AppointmentReservedDateConfiguration : IEntityTypeConfiguration<A
     public void Configure(EntityTypeBuilder<AppointmentReservedDate> builder)
     {
         builder.HasOne(x => x.Date).WithMany().OnDelete(DeleteBehavior.Cascade);
-        builder.HasOne(x => x.User).WithMany().OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(x => x.UserName).HasMaxLength(100);
 

@@ -77,4 +77,29 @@ public static class Seed
 
         await dbContext.SaveChangesAsync();
     }
+     
+    public static async Task AddAppointmentTypes(AppDbContext dbContext)
+    {
+        if (await dbContext.AppointmentTypes.AnyAsync())
+        {
+            return;
+        }
+
+        dbContext.AppointmentTypes.AddRange(
+            new()
+            {
+                Name = "Tėvų dienos",
+                Slug = "parent",
+                IsPublic = true
+            },
+            new()
+            {
+                Name = "Metiniai pokalbiai",
+                Slug = "teacher",
+                IsPublic = false
+            }
+        );
+
+        await dbContext.SaveChangesAsync();
+    }
 }

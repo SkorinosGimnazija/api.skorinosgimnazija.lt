@@ -12,7 +12,5 @@ public class AppointmentReservedDate
     public int Id { get; set; }
     public AppointmentDate Date { get; set; } = default!;
     public int DateId { get; set; }
-    public AppUser User { get; set; } = default!; 
-    public int UserId { get; set; }
     public string UserName { get; set; } = default!;
 }

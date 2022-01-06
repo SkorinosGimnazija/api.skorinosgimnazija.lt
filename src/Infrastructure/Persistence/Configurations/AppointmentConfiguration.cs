@@ -10,20 +10,21 @@ using System.Text;
 using System.Threading.Tasks;
 using SkorinosGimnazija.Domain.Entities.Appointments;
 
-internal class ParentAppointmentConfiguration : IEntityTypeConfiguration<ParentAppointment>
+internal class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
-    public void Configure(EntityTypeBuilder<ParentAppointment> builder)
+    public void Configure(EntityTypeBuilder<Appointment> builder)
     {
         builder.HasOne(x => x.Date).WithMany().OnDelete(DeleteBehavior.Cascade);
-        builder.HasOne(x => x.User).WithMany().OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Type).WithMany().OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.UserName).HasMaxLength(100);
         builder.Property(x => x.EventId).HasMaxLength(100);
-        builder.Property(x => x.ParentName).HasMaxLength(256);
-        builder.Property(x => x.ParentEmail).HasMaxLength(256);
+        builder.Property(x => x.AttendeeName).HasMaxLength(256);
+        builder.Property(x => x.AttendeeEmail).HasMaxLength(256);
 
         builder.HasIndex(x => x.UserName);
-        builder.HasIndex(x => new { x.ParentEmail, x.DateId }).IsUnique();
-        builder.HasIndex(x => new { TeacherId = x.UserId, x.DateId }).IsUnique();
+        builder.HasIndex(x => x.AttendeeEmail);
+        builder.HasIndex(x => new { x.DateId, x.AttendeeEmail }).IsUnique();
+        builder.HasIndex(x => new { x.DateId, x.UserName }).IsUnique();
     }
 }

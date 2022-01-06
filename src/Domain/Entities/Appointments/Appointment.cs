@@ -6,17 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Identity;
 
-public  class ParentAppointment
+public  class Appointment
 {
     public int Id { get; set; }
     public string EventId { get; set; } = default!;
     public int DateId { get; set; }
     public AppointmentDate Date { get; set; } = default!;
-    public int UserId { get; set; }  
+    public AppointmentType Type { get; set; } = default!;
+    public int TypeId { get; set; } 
     public string UserName { get; set; } = default!;
-    public AppUser User { get; set; } = default!; 
-    public string ParentName { get; set; } = default!;
-    public string ParentEmail{ get; set; } = default!;
+    public string AttendeeName { get; set; } = default!;
+    public string AttendeeEmail{ get; set; } = default!;
 
 }
  

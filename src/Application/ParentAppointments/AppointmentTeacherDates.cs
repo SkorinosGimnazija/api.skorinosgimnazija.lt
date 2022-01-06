@@ -54,15 +54,15 @@ public static class AppointmentTeacherDates
                 throw new NotFoundException();
             }
 
-            var reservedDatesQuery = _context.ParentAppointmentReservedDates
+            var reservedDatesQuery = _context.AppointmentReservedDates
                 .Where(x => x.UserName == request.TeachersUserName)
                 .Select(x => x.DateId);
 
-            var registeredDatesQuery = _context.ParentAppointments
+            var registeredDatesQuery = _context.Appointments
                 .Where(x => x.UserName == request.TeachersUserName)
                 .Select(x => x.DateId);
              
-            return await _context.ParentAppointmentDates.AsNoTracking()
+            return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
                            x.Date > DateTime.Now &&
                            !registeredDatesQuery.Contains(x.Id) &&

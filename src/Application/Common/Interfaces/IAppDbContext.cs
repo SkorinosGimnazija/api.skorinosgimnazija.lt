@@ -20,10 +20,12 @@ public interface IAppDbContext
 
     DbSet<BullyReport> BullyReports { get;  }
 
-    DbSet<ParentAppointment> ParentAppointments { get;}
-    DbSet<AppointmentReservedDate> ParentAppointmentReservedDates { get;  }
+    DbSet<Appointment> Appointments { get;}
+    DbSet<AppointmentReservedDate> AppointmentReservedDates { get;  }
 
-    DbSet<AppointmentDate> ParentAppointmentDates { get; }
+    DbSet<AppointmentDate> AppointmentDates { get; }
+
+    DbSet<AppointmentType> AppointmentTypes { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

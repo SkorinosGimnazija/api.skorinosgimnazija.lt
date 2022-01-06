@@ -52,9 +52,10 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<MenuLocation> MenuLocations { get; set; } = default!;
 
     public DbSet<Post> Posts { get; set; } = default!;
-    public DbSet<ParentAppointment> ParentAppointments { get; set; } = default!;
-    public DbSet<AppointmentDate> ParentAppointmentDates { get; set; } = default!;
-    public DbSet<AppointmentReservedDate> ParentAppointmentReservedDates { get; set; } = default!;
+    public DbSet<Appointment> Appointments { get; set; } = default!;
+    public DbSet<AppointmentType> AppointmentTypes { get; set; } = default!;
+    public DbSet<AppointmentDate> AppointmentDates { get; set; } = default!;
+    public DbSet<AppointmentReservedDate> AppointmentReservedDates { get; set; } = default!;
      
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {

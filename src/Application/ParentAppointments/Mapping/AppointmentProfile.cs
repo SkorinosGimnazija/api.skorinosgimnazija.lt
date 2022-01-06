@@ -16,8 +16,8 @@ internal class AppointmentProfile : Profile
     {
         CreateMap<AppointmentDate, AppointmentDateDto>();
 
-        CreateMap<ParentAppointment, AppointmentDto>();
+        CreateMap<Appointment, AppointmentDto>();
 
-        CreateMap<AppointmentCreateDto, ParentAppointment>();
+        CreateMap<AppointmentCreateDto, Appointment>();
     }
 }
