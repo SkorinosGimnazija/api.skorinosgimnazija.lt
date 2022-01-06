@@ -13,8 +13,8 @@ using SkorinosGimnazija.Infrastructure.Persistence;
 namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220103043350_Appointments2")]
-    partial class Appointments2
+    [Migration("20220106005701_Clean")]
+    partial class Clean
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,6 +128,57 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AttendeeEmail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("AttendeeName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<int>("DateId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EventId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttendeeEmail");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserName");
+
+                    b.HasIndex("DateId", "AttendeeEmail")
+                        .IsUnique();
+
+                    b.HasIndex("DateId", "UserName")
+                        .IsUnique();
+
+                    b.ToTable("Appointments");
+                });
+
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentDate", b =>
                 {
                     b.Property<int>("Id")
@@ -141,10 +192,10 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParentAppointmentDates");
+                    b.ToTable("AppointmentDates");
                 });
 
-            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.ParentAppointment", b =>
+            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentReservedDate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,28 +206,44 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.Property<int>("DateId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("EventId")
+                    b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ParentEmail")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ParentName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("integer");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DateId");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("UserName");
 
-                    b.ToTable("ParentAppointments");
+                    b.ToTable("AppointmentReservedDates");
+                });
+
+            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppointmentTypes");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Banner", b =>
@@ -642,7 +709,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.ParentAppointment", b =>
+            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.Appointment", b =>
                 {
                     b.HasOne("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentDate", "Date")
                         .WithMany()
@@ -650,15 +717,26 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SkorinosGimnazija.Domain.Entities.Identity.AppUser", "Teacher")
+                    b.HasOne("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentType", "Type")
                         .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Date");
 
-                    b.Navigation("Teacher");
+                    b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentReservedDate", b =>
+                {
+                    b.HasOne("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentDate", "Date")
+                        .WithMany()
+                        .HasForeignKey("DateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Date");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Banner", b =>
