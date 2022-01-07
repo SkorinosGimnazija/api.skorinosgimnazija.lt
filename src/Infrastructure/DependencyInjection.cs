@@ -82,7 +82,7 @@ public static class DependencyInjection
         services.AddSingleton<IMediaManager, MediaManager>();
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
-        services.AddSingleton<ICalendarClient, GoogleCalendar>();
+        services.AddSingleton<ICalendarService, GoogleCalendar>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
         services.AddSingleton<ICaptchaService,CaptchaService>();
         services.AddSingleton<IEmailService, EmailService>();

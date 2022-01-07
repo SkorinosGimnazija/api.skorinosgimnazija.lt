@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Events.Dtos;
 using Pagination;
 
-public interface ICalendarClient
+public interface ICalendarService
 {
     Task<List<EventDto>> GetEventsAsync(DateTime start, DateTime end, CancellationToken ct);
 
@@ -19,4 +19,8 @@ public interface ICalendarClient
         DateTime startDate,
         DateTime endDate,
         params string[] attendeeEmails);
+
+    Task DeleteAppointmentAsync(string eventId);
+
+    Task DeleteEventAsync(string eventId);
 }

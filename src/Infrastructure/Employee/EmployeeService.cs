@@ -95,13 +95,19 @@ public sealed class EmployeeService : IEmployeeService
         return employes;
     }
 
-    public Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct)
+    public Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct = default)
     {
         const string Path = "/Teachers/HeadTeachers";
         return GetEmployesAsync(Path, ct);
     }
 
-    public Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct)
+    public async Task<Employee> GetPrincipalAsync(CancellationToken ct = default)
+    {
+        const string Path = "/Teachers/Principal";
+        return (await GetEmployesAsync(Path, ct)).First();
+    }
+
+    public Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct = default)
     {
         const string Path = "/Teachers";
         return GetEmployesAsync(Path, ct);

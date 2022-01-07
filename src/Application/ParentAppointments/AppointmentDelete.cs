@@ -18,10 +18,12 @@ public  static class AppointmentDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
+        private readonly ICalendarService _calendarService;
 
-        public Handler(IAppDbContext context)
+        public Handler(IAppDbContext context, ICalendarService calendarService)
         {
             _context = context;
+            _calendarService = calendarService;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -34,6 +36,8 @@ public  static class AppointmentDelete
             }
 
             _context.Appointments.Remove(entity);
+           
+            await  _calendarService.DeleteAppointmentAsync(entity.EventId);
             await _context.SaveChangesAsync();
 
             return Unit.Value;

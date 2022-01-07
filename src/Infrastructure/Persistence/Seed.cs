@@ -90,11 +90,15 @@ public static class Seed
             {
                 Name = "Tėvų dienos",
                 Slug = "parent",
+                DurationInMinutes = 15,
+                InvitePrincipal = false
             },
             new()
             {
                 Name = "Metiniai pokalbiai",
                 Slug = "teacher",
+                DurationInMinutes = 20,
+                InvitePrincipal = true
             }
         );
 

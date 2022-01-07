@@ -9,7 +9,7 @@ using Identity;
 public  class Appointment
 {
     public int Id { get; set; }
-    public string EventId { get; set; } = default!;
+    public string EventId { get; set; } = string.Empty;
     public int DateId { get; set; }
     public AppointmentDate Date { get; set; } = default!;
     public string UserName { get; set; } = default!;

@@ -4,6 +4,11 @@ using FluentValidation.Results;
 
 public sealed class ValidationException : Exception
 {
+    public ValidationException(string property, string message)
+        : this(new ValidationFailure(property, message))
+    {
+    }
+
     public ValidationException(ValidationFailure failure)
         : this(new[] { failure })
     {

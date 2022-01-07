@@ -10,19 +10,19 @@ using Google.Apis.Calendar.v3.Data;
 using Microsoft.Extensions.Options;
 using Options;
 
-public class GoogleCalendar : ICalendarClient
+public class GoogleCalendar : ICalendarService
 {
     private const string TimeZone = "Europe/Vilnius";
 
     private readonly string _appointmentsCalendarId;
     private readonly CalendarService _calendarService;
     private readonly string _eventsCalendarId;
-
+     
     public GoogleCalendar(
         IOptions<GoogleOptions> googleOptions,
         IOptions<CalendarOptions> calendarOptions)
     {
-        _appointmentsCalendarId = calendarOptions.Value.ParentAppointmentsCalendarId;
+        _appointmentsCalendarId = calendarOptions.Value.AppointmentsCalendarId;
         _eventsCalendarId = calendarOptions.Value.EventsCalendarId;
          
         _calendarService = new(new()
@@ -81,6 +81,7 @@ public class GoogleCalendar : ICalendarClient
         return response.Id;
     }
 
+
     public async Task<string> AddAppointmentAsync(
         string title,
         string description,
@@ -92,19 +93,10 @@ public class GoogleCalendar : ICalendarClient
         {
             Summary = title,
             Description = description,
-            Start = new()
-            {
-                DateTime = startDate
-                //TimeZone = TimeZone
-            },
-            End = new()
-            {
-                DateTime = endDate
-                //TimeZone = TimeZone
-            },
+            Start = new() { DateTime = startDate },
+            End = new() { DateTime = endDate },
             Attendees = attendeeEmails.Select(email => new EventAttendee { Email = email }).ToArray(),
             GuestsCanInviteOthers = false,
-            Visibility = "private",
             ConferenceData = new()
             {
                 CreateRequest = new()
@@ -126,5 +118,20 @@ public class GoogleCalendar : ICalendarClient
         var response = await request.ExecuteAsync();
 
         return response.Id;
+    }
+
+    public async Task DeleteEventAsync(string eventId)
+    {
+        var request = _calendarService.Events.Delete(_eventsCalendarId, eventId);
+        await request.ExecuteAsync();
+    }
+
+    public async Task DeleteAppointmentAsync(string eventId)
+    {
+        var request = _calendarService.Events.Delete(_appointmentsCalendarId, eventId);
+
+        request.SendUpdates = EventsResource.DeleteRequest.SendUpdatesEnum.All;
+
+        await request.ExecuteAsync();
     }
 }

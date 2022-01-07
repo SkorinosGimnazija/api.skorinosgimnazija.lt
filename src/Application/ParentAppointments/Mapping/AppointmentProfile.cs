@@ -15,11 +15,15 @@ internal class AppointmentProfile : Profile
 {
     public AppointmentProfile()
     {
-        CreateMap<AppointmentDate, AppointmentDateDto>();
-
         CreateMap<Appointment, AppointmentDto>();
+
+        CreateMap<Appointment, AppointmentDetailsDto>();
         
+        CreateMap<AppointmentPublicCreateDto, Appointment>();
+
         CreateMap<AppointmentCreateDto, Appointment>();
+
+        CreateMap<AppointmentDate, AppointmentDateDto>();
 
         CreateMap<AppointmentType, AppointmentTypeDto>();
     }

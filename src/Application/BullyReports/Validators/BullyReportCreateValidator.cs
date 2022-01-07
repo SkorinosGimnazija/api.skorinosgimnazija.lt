@@ -14,6 +14,6 @@ internal class BullyReportCreateValidator : AbstractValidator<BullyReportCreateD
         RuleFor(x => x.Location).NotEmpty().MaximumLength(128);
         RuleFor(x => x.Date).NotNull();
         RuleFor(x => x.Details).MaximumLength(2048);
-        RuleFor(x => x.CaptchaToken).SetValidator(new CaptchaValidator(captchaService));
+        RuleFor(x => x.CaptchaToken).NotEmpty().SetValidator(new CaptchaValidator(captchaService));
     }
 }

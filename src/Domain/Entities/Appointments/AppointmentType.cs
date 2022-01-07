@@ -9,6 +9,10 @@ public class AppointmentType
 {
     public int Id { get; set; }
 
+    public int DurationInMinutes { get; set; }
+
+    public bool InvitePrincipal { get; set; }
+
     public string Name { get; set; } = default!;
 
     public string Slug { get; set; } = default!;

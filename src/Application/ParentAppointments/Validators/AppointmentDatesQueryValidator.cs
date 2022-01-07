@@ -25,9 +25,9 @@ internal class AppointmentDatesQueryValidator : AbstractValidator<AppointmentDat
         RuleFor(x => x.AppointmentTypeSlug).NotEmpty().MaximumLength(100);
     }
 
-    private async Task<bool> ValidEmployee(string userName, CancellationToken ct)
-{
-        var employee = await _employeeService.GetEmployeeAsync(userName);
-        return employee is not null;
-}
+        private async Task<bool> ValidEmployee(string userName, CancellationToken ct)
+        {
+            var employee = await _employeeService.GetEmployeeAsync(userName);
+            return employee is not null;
+        }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public  record CalendarOptions
 {
-    public string ParentAppointmentsCalendarId { get; init; } = default!;
+    public string AppointmentsCalendarId { get; init; } = default!;
     public string EventsCalendarId { get; init; } = default!;
     public string User { get; init; } = default!;
 }

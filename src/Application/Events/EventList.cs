@@ -17,11 +17,11 @@ public static class EventList
      
     public class Handler : IRequestHandler<Query, List<EventDto>>
     {
-        private readonly ICalendarClient _calendarClient;
+        private readonly ICalendarService _calendarService;
 
-        public Handler(ICalendarClient calendarClient)
+        public Handler(ICalendarService calendarService)
         {
-            _calendarClient = calendarClient;
+            _calendarService = calendarService;
         }
          
         public async Task<List<EventDto>> Handle(Query request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public static class EventList
                 end = DateTime.Now.AddDays(1).Date;
             }
 
-            return await _calendarClient.GetEventsAsync(start, end, cancellationToken);
+            return await _calendarService.GetEventsAsync(start, end, cancellationToken);
         }
     }
 }
