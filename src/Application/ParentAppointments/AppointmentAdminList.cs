@@ -12,13 +12,14 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using Common.Pagination;
+using Dtos;
 using FluentValidation;
 using SkorinosGimnazija.Application.Menus.Dtos;
 using SkorinosGimnazija.Application.Common.Extensions;
 
 public  static class AppointmentAdminList
 {
-    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDto>>;
+    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -28,7 +29,7 @@ public  static class AppointmentAdminList
         }
     }
 
-    public class Handler : IRequestHandler<Query, PaginatedList<AppointmentDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<AppointmentDetailsDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -40,11 +41,11 @@ public  static class AppointmentAdminList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<AppointmentDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<AppointmentDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Appointments
                        .AsNoTracking()
-                       .ProjectTo<AppointmentDto>(_mapper.ConfigurationProvider)
+                       .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.Date.Date)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }

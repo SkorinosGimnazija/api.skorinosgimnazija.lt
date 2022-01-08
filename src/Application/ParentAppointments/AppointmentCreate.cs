@@ -22,7 +22,7 @@ using FluentValidation.Results;
  
 public  static class AppointmentCreate
 {
-    public record Command(AppointmentCreateDto Appointment, string TypeSlug) : IRequest<AppointmentDto>;
+    public record Command(AppointmentCreateDto Appointment) : IRequest<AppointmentDto>;
      
     public class Validator : AbstractValidator<Command>
     {
@@ -57,7 +57,7 @@ public  static class AppointmentCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<AppointmentDto> Handle(Command request, CancellationToken _)
         {
-            var date = await GetDate(request.Appointment.DateId, request.TypeSlug);
+            var date = await GetDate(request.Appointment.DateId);
             var teacher = await GetTeacher(request.Appointment.UserName);
             var attendee = await GetTeacher(_currentUserService.UserName);
               
@@ -100,13 +100,12 @@ public  static class AppointmentCreate
             return teacher;
         }
 
-        private async Task<AppointmentDate> GetDate(int dateId, string typeSlug)
+        private async Task<AppointmentDate> GetDate(int dateId)
         {
          var date=   await _context.AppointmentDates.AsNoTracking()
                 .Include(x => x.Type)
                 .FirstOrDefaultAsync(x =>
-                    x.Id == dateId &&
-                    x.Type.Slug == typeSlug);
+                    x.Id == dateId);
 
             if (date is null)
             {

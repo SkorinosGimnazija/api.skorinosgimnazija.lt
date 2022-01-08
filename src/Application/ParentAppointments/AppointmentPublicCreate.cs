@@ -12,6 +12,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using Domain.Entities.Appointments;
 using Domain.Entities.Identity;
 using FluentValidation;

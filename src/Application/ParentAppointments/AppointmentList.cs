@@ -17,10 +17,11 @@ using Microsoft.AspNetCore.Identity;
 using SkorinosGimnazija.Application.Menus.Dtos;
 using SkorinosGimnazija.Application.Common.Extensions;
 using SkorinosGimnazija.Domain.Entities.Identity;
+using SkorinosGimnazija.Application.ParentAppointments.Dtos;
 
 public  static class AppointmentList
 {
-    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDto>>;
+    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -30,7 +31,7 @@ public  static class AppointmentList
         }
     } 
 
-    public class Handler : IRequestHandler<Query, PaginatedList<AppointmentDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<AppointmentDetailsDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -43,12 +44,12 @@ public  static class AppointmentList
             _currentUser = currentUser;
         }
 
-        public async Task<PaginatedList<AppointmentDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<AppointmentDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Appointments
                        .AsNoTracking()
                        .Where(x => x.UserName == _currentUser.UserName)
-                       .ProjectTo<AppointmentDto>(_mapper.ConfigurationProvider)
+                       .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.Date.Date)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }

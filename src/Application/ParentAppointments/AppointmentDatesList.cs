@@ -1,39 +1,33 @@
-﻿namespace SkorinosGimnazija.Application.Appointments;
+﻿namespace SkorinosGimnazija.Application.ParentAppointments;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
+using SkorinosGimnazija.Application.Appointments.Dtos;
+using SkorinosGimnazija.Application.Common.Exceptions;
 using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Common.Pagination;
+using SkorinosGimnazija.Application.ParentAppointments.Dtos;
 
-using SkorinosGimnazija.Application.Courses.Dtos;
+using SkorinosGimnazija.Application.ParentAppointments.Validators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
-using Common.Exceptions;
-using Common.Extensions;
-using Domain.Entities.Identity;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
-using ParentAppointments.Dtos;
-using SkorinosGimnazija.Application.Courses.Validators;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.ParentAppointments.Validators;
 
-public static class AppointmentDatesList
+public  static class AppointmentDatesList
 {
-    public record Query(AppointmentDatesQuery Appointment) : IRequest<List<AppointmentDateDto>>;
+    public record Query(string TypeSlug) : IRequest<List<AppointmentDateDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
-        public Validator(IEmployeeService employeeService)
+        public Validator()
         {
-            RuleFor(x => x.Appointment).NotNull().SetValidator(new AppointmentDatesQueryValidator(employeeService));
+            RuleFor(x => x.TypeSlug).NotEmpty().MaximumLength(100);
         }
-    } 
-          
+    }
+     
     public class Handler : IRequestHandler<Query, List<AppointmentDateDto>>
     {
         private readonly IAppDbContext _context;
@@ -44,32 +38,12 @@ public static class AppointmentDatesList
             _context = context;
             _mapper = mapper;
         }
-         
+
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var appointmentType = await _context.AppointmentTypes.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Slug == request.Appointment.AppointmentTypeSlug,
-                cancellationToken);
-
-            if (appointmentType is null)
-            {
-                throw new NotFoundException();
-            }
-
-            var reservedDatesQuery = _context.AppointmentReservedDates
-                .Where(x => x.UserName == request.Appointment.UserName)
-                .Select(x => x.DateId);
-             
-            var registeredDatesQuery = _context.Appointments
-                .Where(x => x.UserName == request.Appointment.UserName)
-                .Select(x => x.DateId);
-             
             return await _context.AppointmentDates.AsNoTracking()
-                       .Where(x =>
-                           x.Date > DateTime.Now &&
-                           x.TypeId == appointmentType.Id &&
-                           !registeredDatesQuery.Contains(x.Id) &&
-                           !reservedDatesQuery.Contains(x.Id))
+                       .Where(x => x.Type.Slug == request.TypeSlug)
+                       .OrderBy(x=> x.Date)
                        .ProjectTo<AppointmentDateDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

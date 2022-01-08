@@ -24,9 +24,16 @@ public class AppointmentsController : BaseApiController
     [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("all", Name = "GetAllAppointments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<AppointmentDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<AppointmentDetailsDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentAdminList.Query(pagination), ct);
+    }
+    
+    [HttpGet(Name = "GetMyAppointments")] 
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PaginatedList<AppointmentDetailsDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentList.Query(pagination), ct);
     }
 
     [Authorize(Roles = Auth.Role.Manager)]
@@ -36,13 +43,6 @@ public class AppointmentsController : BaseApiController
     public async Task<ActionResult<AppointmentDetailsDto>> Get(int id, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentDetails.Query(id), ct);
-    }
-
-    [HttpGet(Name = "GetMyAppointments")] 
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<AppointmentDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
-    {
-        return await Mediator.Send(new AppointmentList.Query(pagination), ct);
     }
 
     [Authorize(Roles = Auth.Role.Admin)]
@@ -62,26 +62,42 @@ public class AppointmentsController : BaseApiController
         return await Mediator.Send(new AppointmentTypesList.Query(), ct);
     }
       
-    [AllowAnonymous]
-    [HttpPost("create/{type}",Name = "CreateAppointment")]
+    [HttpPost("create",Name = "CreateAppointment")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AppointmentDto>> Create(string type, AppointmentCreateDto dto)
+    public async Task<ActionResult<AppointmentDto>> Create(AppointmentCreateDto dto)
     {
-        var result = await Mediator.Send(new AppointmentCreate.Command(dto, type));
+        var result = await Mediator.Send(new AppointmentCreate.Command(dto));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
     }
-     
-     
+
+    [HttpGet("time/{type}", Name = "GetAppointmentDates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<AppointmentDateDto>> GetDates(string type, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentDatesList.Query(type), ct);
+    }
+
+    [HttpGet("time/{type}/{userName}", Name = "GetAppointmentAvailableDates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<List<AppointmentDateDto>> GetDates(string type, string userName, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentAvailableDatesList.Query(new(userName, type)), ct);
+    } 
+        
     [AllowAnonymous]
     [HttpGet("public/time/{userName}", Name = "GetPublicAppointmentAvailableDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<AppointmentDateDto>> GetDates(string userName, CancellationToken ct)
+    public async Task<List<AppointmentDateDto>> GetPublicDates(string userName, CancellationToken ct)
     {
         const string TypeSlug = "parent";
-        return await Mediator.Send(new AppointmentDatesList.Query(new(userName, TypeSlug)), ct);
+        return await Mediator.Send(new AppointmentAvailableDatesList.Query(new(userName, TypeSlug)), ct);
     }
 
     [AllowAnonymous]

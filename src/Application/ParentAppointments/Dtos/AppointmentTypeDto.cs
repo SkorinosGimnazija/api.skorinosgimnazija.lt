@@ -12,4 +12,9 @@ public record AppointmentTypeDto
     public string Name { get; init; } = default!;
 
     public string Slug { get; init; } = default!;
+
+    public int DurationInMinutes { get; init; }
+    public bool InvitePrincipal { get; init; }
+
+
 }
