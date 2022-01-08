@@ -58,6 +58,8 @@ public class AppFixture
         MediaManagerMock = new(services);
         CaptchaServiceMock = new(services);
         NotificationPublisherMock = new(services);
+        CalendarServiceMock = new(services);
+        EmployeeServiceMock = new(services);
          
         _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
@@ -66,10 +68,11 @@ public class AppFixture
 
     public SearchClientMock SearchClientMock { get; }
     public PublisherMock NotificationPublisherMock { get; }
-
     public CurrentUserMock CurrentUserMock { get; }
     public MediaManagerMock MediaManagerMock { get; }
     public CaptchaServiceMock CaptchaServiceMock { get; }
+    public CalendarServiceMock CalendarServiceMock { get; }
+    public EmployeeServiceMock EmployeeServiceMock { get; }
 
     private void CreateDatabase()
     {
