@@ -15,7 +15,11 @@ public record BannerCreateDto
     public string Url { get; init; } = default!;
 
     public bool IsPublished { get; init; }
-     
+
+    public int Width { get; set; }
+
+    public int Height { get; set; }
+
     public IFormFile Picture { get; init; } = default!;
 
     public int Order { get; init; }

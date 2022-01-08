@@ -15,6 +15,8 @@ internal class BannerValidator : AbstractValidator<BannerCreateDto>
     {
         RuleFor(x => x.Title).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Url).NotEmpty().MaximumLength(256);
+        RuleFor(x => x.Width).NotNull();
+        RuleFor(x => x.Height).NotNull();
         RuleFor(x => x.LanguageId).NotEmpty();
     }
 }

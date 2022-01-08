@@ -16,6 +16,10 @@ public record BannerDto
 
     public string Url { get; init; } = default!;
 
+    public int Width { get; set; }
+
+    public int Height { get; set; }
+
     public bool IsPublished { get; init; }
 
     public string PictureUrl { get; init; } = default!;
