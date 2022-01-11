@@ -86,18 +86,17 @@ public class AppointmentsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<List<AppointmentDateDto>> GetDates(string type, string userName, CancellationToken ct)
     {
-        return await Mediator.Send(new AppointmentAvailableDatesList.Query(new(userName, type)), ct);
+        return await Mediator.Send(new AppointmentAvailableDatesList.Query(type, userName, false), ct);
     } 
         
     [AllowAnonymous]
-    [HttpGet("public/time/{userName}", Name = "GetPublicAppointmentAvailableDates")]
+    [HttpGet("public/time/{type}/{userName}", Name = "GetPublicAppointmentAvailableDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<AppointmentDateDto>> GetPublicDates(string userName, CancellationToken ct)
+    public async Task<List<AppointmentDateDto>> GetPublicDates(string type, string userName, CancellationToken ct)
     {
-        const string TypeSlug = "parent";
-        return await Mediator.Send(new AppointmentAvailableDatesList.Query(new(userName, TypeSlug)), ct);
+        return await Mediator.Send(new AppointmentAvailableDatesList.Query(type, userName, true), ct);
     }
 
     [AllowAnonymous]

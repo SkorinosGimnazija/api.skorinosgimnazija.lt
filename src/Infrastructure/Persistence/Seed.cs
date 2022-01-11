@@ -78,30 +78,4 @@ public static class Seed
         await dbContext.SaveChangesAsync();
     }
      
-    public static async Task AddAppointmentTypes(AppDbContext dbContext)
-    {
-        if (await dbContext.AppointmentTypes.AnyAsync())
-        {
-            return;
-        }
-
-        dbContext.AppointmentTypes.AddRange(
-            new()
-            {
-                Name = "Tėvų dienos",
-                Slug = "parent",
-                DurationInMinutes = 15,
-                InvitePrincipal = false
-            },
-            new()
-            {
-                Name = "Metiniai pokalbiai",
-                Slug = "teacher",
-                DurationInMinutes = 20,
-                InvitePrincipal = true
-            }
-        );
-
-        await dbContext.SaveChangesAsync();
-    }
 }

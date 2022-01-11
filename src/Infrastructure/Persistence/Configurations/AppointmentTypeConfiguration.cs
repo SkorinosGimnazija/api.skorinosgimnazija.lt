@@ -13,9 +13,12 @@ internal class AppointmentTypeConfiguration : IEntityTypeConfiguration<Appointme
 {
     public void Configure(EntityTypeBuilder<AppointmentType> builder)
     {
-        builder.HasIndex(x => x.Slug);
+        builder.HasIndex(x => x.Slug).IsUnique();
 
         builder.Property(x => x.Slug).HasMaxLength(100);
         builder.Property(x => x.Name).HasMaxLength(100);
+        builder.Property(x => x.Start).HasColumnType("timestamp");
+        builder.Property(x => x.End).HasColumnType("timestamp");
+        builder.Property(x => x.RegistrationEnd).HasColumnType("timestamp");
     }
 }

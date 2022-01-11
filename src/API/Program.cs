@@ -53,7 +53,6 @@ public static class Program
             await Seed.AddRoles(roleManager);
             await Seed.AddLanguages(context);
             await Seed.AddMenuLocations(context);
-            await Seed.AddAppointmentTypes(context);
         }
 
         await host.RunAsync();

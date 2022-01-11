@@ -13,6 +13,12 @@ public class AppointmentType
 
     public bool InvitePrincipal { get; set; }
 
+    public bool IsPublic { get; set; }
+
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
+    public DateTime RegistrationEnd { get; set; }
+
     public string Name { get; set; } = default!;
 
     public string Slug { get; set; } = default!;

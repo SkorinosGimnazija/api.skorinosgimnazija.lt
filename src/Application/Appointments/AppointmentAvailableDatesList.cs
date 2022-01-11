@@ -21,47 +21,47 @@ using ParentAppointments.Dtos;
 using SkorinosGimnazija.Application.Courses.Validators;
 using SkorinosGimnazija.Application.Appointments.Dtos;
 using SkorinosGimnazija.Application.ParentAppointments.Validators;
+using SkorinosGimnazija.Domain.Entities.Appointments;
+using System.Threading;
 
 public static class AppointmentAvailableDatesList
 {
-    public record Query(AppointmentDatesQuery Appointment) : IRequest<List<AppointmentDateDto>>;
+    public record Query(string AppointmentTypeSlug, string UserName, bool IsPublic) : IRequest<List<AppointmentDateDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
-        public Validator(IEmployeeService employeeService)
+        public Validator()
         {
-            RuleFor(x => x.Appointment).NotNull().SetValidator(new AppointmentDatesQueryValidator(employeeService));
+            RuleFor(x => x.AppointmentTypeSlug).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.UserName).NotEmpty().MaximumLength(100);
         }
-    } 
-          
+    }
+
     public class Handler : IRequestHandler<Query, List<AppointmentDateDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
-
+         
         public Handler(IAppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-         
+
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var appointmentType = await _context.AppointmentTypes.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Slug == request.Appointment.AppointmentTypeSlug,
-                cancellationToken);
-
-            if (appointmentType is null)
+            var appointmentType = await GetTypeAsync(request.AppointmentTypeSlug, request.IsPublic, cancellationToken);
+            if (DateTime.Now >= appointmentType.RegistrationEnd)
             {
-                throw new NotFoundException();
+                return new();
             }
 
             var reservedDatesQuery = _context.AppointmentReservedDates
-                .Where(x => x.UserName == request.Appointment.UserName)
+                .Where(x => x.UserName == request.UserName)
                 .Select(x => x.DateId);
              
             var registeredDatesQuery = _context.Appointments
-                .Where(x => x.UserName == request.Appointment.UserName)
+                .Where(x => x.UserName == request.UserName)
                 .Select(x => x.DateId);
              
             return await _context.AppointmentDates.AsNoTracking()
@@ -73,6 +73,23 @@ public static class AppointmentAvailableDatesList
                        .OrderBy(x=> x.Date)
                        .ProjectTo<AppointmentDateDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
+        }
+
+        private async Task<AppointmentType> GetTypeAsync(string slug, bool isPublicRequest, CancellationToken ct)
+        {
+            var type = await _context.AppointmentTypes.AsNoTracking().FirstOrDefaultAsync(x => x.Slug == slug, ct);
+         
+            if (type is null)
+            {
+                throw new NotFoundException();
+            }
+
+            if (isPublicRequest && !type.IsPublic)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            return type;
         }
     }
 
