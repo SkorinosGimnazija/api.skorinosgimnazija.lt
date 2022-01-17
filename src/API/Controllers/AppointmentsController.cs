@@ -55,14 +55,37 @@ public class AppointmentsController : BaseApiController
         return NoContent();
     }
 
+
+    [Authorize(Roles = Auth.Role.Admin)]
     [HttpGet("types", Name = "GetAppointmentTypes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AppointmentTypeDto>> GetTypes(CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentTypesList.Query(), ct);
     }
-      
-    [HttpPost("create",Name = "CreateAppointment")]
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpGet("type/{id:int}", Name = "GetAppointmentTypeById")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AppointmentTypeDto>> GetType(int id, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentTypeDetails.Query(id), ct);
+    }
+
+
+     
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPost("type", Name = "CreateAppointmentType")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AppointmentDto>> CreateType(AppointmentTypeCreateDto dto)
+    {
+        var result = await Mediator.Send(new AppointmentTypeCreate.Command(dto));
+        return CreatedAtAction(nameof(GetType), new { result.Id }, result);
+    }
+
+    [HttpPost("create", Name = "CreateAppointment")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AppointmentDto>> Create(AppointmentCreateDto dto)
@@ -87,8 +110,17 @@ public class AppointmentsController : BaseApiController
     public async Task<List<AppointmentDateDto>> GetDates(string type, string userName, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentAvailableDatesList.Query(type, userName, false), ct);
-    } 
-        
+    }
+
+    [AllowAnonymous]
+    [HttpGet("public/type/{slug}", Name = "GetAppointmentTypeBySlug")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AppointmentTypeDto>> GetType(string slug, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentTypePublicDetails.Query(slug), ct);
+    }
+
     [AllowAnonymous]
     [HttpGet("public/time/{type}/{userName}", Name = "GetPublicAppointmentAvailableDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]

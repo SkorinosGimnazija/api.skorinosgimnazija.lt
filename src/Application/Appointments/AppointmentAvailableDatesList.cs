@@ -26,13 +26,13 @@ using System.Threading;
 
 public static class AppointmentAvailableDatesList
 {
-    public record Query(string AppointmentTypeSlug, string UserName, bool IsPublic) : IRequest<List<AppointmentDateDto>>;
-
+    public record Query(string TypeSlug, string UserName, bool IsPublic) : IRequest<List<AppointmentDateDto>>;
+     
     public class Validator : AbstractValidator<Query>
     {
         public Validator()
         {
-            RuleFor(x => x.AppointmentTypeSlug).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.TypeSlug).NotEmpty().MaximumLength(100);
             RuleFor(x => x.UserName).NotEmpty().MaximumLength(100);
         }
     }
@@ -50,7 +50,7 @@ public static class AppointmentAvailableDatesList
 
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var appointmentType = await GetTypeAsync(request.AppointmentTypeSlug, request.IsPublic, cancellationToken);
+            var appointmentType = await GetTypeAsync(request.TypeSlug, request.IsPublic, cancellationToken);
             if (DateTime.Now >= appointmentType.RegistrationEnd)
             {
                 return new();

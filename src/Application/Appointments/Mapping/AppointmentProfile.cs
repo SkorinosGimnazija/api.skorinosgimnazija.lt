@@ -26,5 +26,7 @@ internal class AppointmentProfile : Profile
         CreateMap<AppointmentDate, AppointmentDateDto>();
 
         CreateMap<AppointmentType, AppointmentTypeDto>();
+
+        CreateMap<AppointmentTypeCreateDto, AppointmentType>();
     }
 }

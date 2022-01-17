@@ -104,9 +104,11 @@ public  static class AppointmentCreate
         {
             var date = await _context.AppointmentDates.AsNoTracking()
                            .Include(x => x.Type)
-                           .FirstOrDefaultAsync(x => x.Id == dateId);
+                           .FirstOrDefaultAsync(x =>
+                               x.Id == dateId &&
+                               x.Type.RegistrationEnd > DateTime.Now);
 
-            if (date is null || DateTime.Now >= date.Type.RegistrationEnd)
+            if (date is null)
             {
                 throw new ValidationException(nameof(dateId), "Invalid date");
             }

@@ -94,9 +94,10 @@ public  static class AppointmentPublicCreate
                            .Include(x => x.Type)
                            .FirstOrDefaultAsync(x =>
                                x.Id == dateId &&
+                               x.Type.RegistrationEnd > DateTime.Now &&
                                x.Type.IsPublic);
 
-            if (date is null || DateTime.Now >= date.Type.RegistrationEnd)
+            if (date is null)
             {
                 throw new ValidationException(nameof(dateId), "Invalid date");
             }
