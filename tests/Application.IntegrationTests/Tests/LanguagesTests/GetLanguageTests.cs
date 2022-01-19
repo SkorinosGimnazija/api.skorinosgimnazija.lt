@@ -15,7 +15,7 @@ public class GetLanguageTests
     public GetLanguageTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
     [Fact]

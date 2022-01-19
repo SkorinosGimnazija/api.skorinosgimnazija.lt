@@ -16,7 +16,7 @@ public class UpdatePostTests
     public UpdatePostTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
     [Fact]

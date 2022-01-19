@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.Identity;
+using CloudinaryDotNet.Actions;
+using Google.Apis.Admin.Directory.directory_v1.Data;
 
 public class EmployeeServiceMock
 {
@@ -20,21 +22,26 @@ public class EmployeeServiceMock
         services.RemoveService<IEmployeeService>();
         services.AddTransient(_ => Mock.Object);
 
-        Mock.Setup(x => x.GetEmployeeAsync(It.IsAny<string>()))
+        Mock.Setup(x => x.GetPrincipalAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Employee
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = "principal@email",
+                FullName = "Principal Name"
+            });
+    }
+
+    public void SetEmployeeData(string userName, string email)
+    {
+        Mock.Setup(x => x.GetEmployeeAsync(It.Is<string>(z=> z == userName)))
             .ReturnsAsync(
                 new Employee
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Email = "email",
-                    FullName = "Name"
+                    Id = userName,
+                    Email = email,
+                    FullName = "Employee Name"
                 });
-
-        //Mock.Setup(x => x.GetPrincipalAsync());
-        //Mock.Setup(x => x.GetHeadTeachersAsync());
-        //Mock.Setup(x => x.GetTeachersAsync());
-
     }
-
 
 
 }

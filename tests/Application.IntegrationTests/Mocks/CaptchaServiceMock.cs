@@ -12,13 +12,19 @@ using Extensions;
 
 public class CaptchaServiceMock
 {
-    public Mock<ICaptchaService> Mock { get; } = new();
+    public Mock<ICaptchaService> Mock { get; private set; } = default!;
 
     public CaptchaServiceMock(ServiceCollection services)
     {
         services.RemoveService<ICaptchaService>();
         services.AddTransient(_ => Mock.Object);
       
+        Reset();
+    }
+
+    public void Reset()
+    {
+        Mock = new();
         Mock.Setup(x => x.ValidateAsync(It.IsAny<string>())).ReturnsAsync(true);
     }
 }

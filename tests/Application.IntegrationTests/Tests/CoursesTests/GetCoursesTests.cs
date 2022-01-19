@@ -24,10 +24,12 @@ public class GetCoursesTests
     public GetCoursesTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
 
-        _currentUserId = _app.CreateUserAsync().GetAwaiter().GetResult();
-        _app.CurrentUserMock.SetCurrentUserData(_currentUserId);
+        var user = _app.CreateUserAsync().GetAwaiter().GetResult();
+        _currentUserId = user.Id;
+
+        _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
 
    
@@ -89,7 +91,7 @@ public class GetCoursesTests
     [Fact]
     public async Task CourseList_ShouldListOwnerCourses()
     { 
-        var randomUserId = await _app.CreateUserAsync();
+        var randomUser = await _app.CreateUserAsync();
 
         var course1 = await _app.AddAsync(new Course
         {
@@ -118,7 +120,7 @@ public class GetCoursesTests
             EndDate = DateOnly.Parse("2023-01-04"),
             Title = "Course",
             Organizer = "Organizer",
-            UserId = randomUserId
+            UserId = randomUser.Id
         });
 
         var command = new CourseList.Query(new());
@@ -164,7 +166,7 @@ public class GetCoursesTests
     [Fact] 
     public async Task CourseDetails_ShouldThrowEx_WhenAccessingNotOwnedCourse()
     {
-        var ownerId = await _app.CreateUserAsync();
+        var owner = await _app.CreateUserAsync();
          
         var course = await _app.AddAsync(new Course
         {
@@ -173,7 +175,7 @@ public class GetCoursesTests
             EndDate = DateOnly.Parse("2021-01-04"),
             Title = "Course",
             Organizer = "Organizer",
-            UserId = ownerId
+            UserId = owner.Id
         });
 
         var command = new CourseDetails.Query(course.Id);

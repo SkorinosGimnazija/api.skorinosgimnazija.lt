@@ -17,6 +17,8 @@ using SkorinosGimnazija.Application.MenuLocations;
 using SkorinosGimnazija.Application.Menus.Dtos;
 using SkorinosGimnazija.Application.ParentAppointments;
 using SkorinosGimnazija.Application.ParentAppointments.Dtos;
+using SkorinosGimnazija.Application.Courses.Dtos;
+using SkorinosGimnazija.Application.Courses;
 
 [Authorize(Roles = Auth.Role.Teacher)]
 public class AppointmentsController : BaseApiController
@@ -28,7 +30,7 @@ public class AppointmentsController : BaseApiController
     {
         return await Mediator.Send(new AppointmentAdminList.Query(pagination), ct);
     }
-    
+
     [HttpGet(Name = "GetMyAppointments")] 
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<AppointmentDetailsDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
@@ -36,7 +38,7 @@ public class AppointmentsController : BaseApiController
         return await Mediator.Send(new AppointmentList.Query(pagination), ct);
     }
 
-    [Authorize(Roles = Auth.Role.Manager)]
+    [Authorize(Roles = Auth.Role.Admin)]
     [HttpGet("{id:int}", Name = "GetAppointmentById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,6 +57,26 @@ public class AppointmentsController : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpDelete("type/{id:int}", Name = "DeleteAppointmentType")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteType(int id)
+    {
+        await Mediator.Send(new AppointmentTypeDelete.Command(id));
+        return NoContent();
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPut(Name = "EditAppointmentType")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Edit(AppointmentTypeEditDto dto)
+    {
+        await Mediator.Send(new AppointmentTypeEdit.Command(dto));
+        return Ok();
+    }
 
     [Authorize(Roles = Auth.Role.Admin)]
     [HttpGet("types", Name = "GetAppointmentTypes")]
@@ -113,7 +135,7 @@ public class AppointmentsController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/type/{slug}", Name = "GetAppointmentTypeBySlug")]
+    [HttpGet("public/type/{slug}", Name = "GetPublicAppointmentTypeBySlug")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<AppointmentTypeDto>> GetType(string slug, CancellationToken ct)

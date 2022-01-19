@@ -24,7 +24,8 @@ public class CalendarServiceMock
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<DateTime>(),
-                    It.IsAny<DateTime>()
+                    It.IsAny<DateTime>(),
+                    It.IsAny<string[]>()
                 )
             )
             .ReturnsAsync(Guid.NewGuid().ToString());

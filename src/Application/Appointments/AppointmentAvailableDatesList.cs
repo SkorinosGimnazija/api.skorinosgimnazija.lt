@@ -67,6 +67,8 @@ public static class AppointmentAvailableDatesList
             return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
                            x.Date > DateTime.Now &&
+                           x.Date >= x.Type.Start &&
+                           x.Date <= x.Type.End &&
                            x.TypeId == appointmentType.Id &&
                            !registeredDatesQuery.Contains(x.Id) &&
                            !reservedDatesQuery.Contains(x.Id))

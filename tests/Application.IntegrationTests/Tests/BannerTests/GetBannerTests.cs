@@ -16,7 +16,7 @@ public class GetBannerTests
     public GetBannerTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
     [Fact]

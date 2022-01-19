@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ParentAppointments.Dtos;
 
 public  record AppointmentDateDto
 {
@@ -13,5 +14,5 @@ public  record AppointmentDateDto
 
     public DateTime Date { get; init; }
 
-    public AppointmentType Type { get; init; } = default!;
+    public AppointmentTypeDto Type { get; init; } = default!;
 }

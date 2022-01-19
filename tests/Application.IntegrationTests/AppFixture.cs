@@ -19,6 +19,7 @@ using Mocks;
 using Moq;
 using Npgsql;
 using Respawn;
+using Respawn.Graph;
 using Xunit;
 
 [CollectionDefinition("App", DisableParallelization = true)]
@@ -87,12 +88,12 @@ public class AppFixture
         Seed.AddMenuLocations(context).GetAwaiter().GetResult();
     }
 
-    public void ResetDatabase()
+    public void ResetData()
     {
         using var scope = _scopeFactory.CreateScope();
         var checkpoint = new Checkpoint
         {
-            TablesToIgnore = new[]
+            TablesToIgnore = new Table[]
             {
                 "__EFMigrationsHistory",
                 nameof(AppDbContext.Roles),
@@ -101,10 +102,12 @@ public class AppFixture
             },
             DbAdapter = DbAdapter.Postgres
         };
-
+         
         using var conn = new NpgsqlConnection(_configuration.GetNpgsqlConnectionString("DATABASE_URL"));
         conn.Open();
         checkpoint.Reset(conn).GetAwaiter().GetResult();
+
+        CaptchaServiceMock.Reset();
     }
 
     public async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
@@ -147,7 +150,7 @@ public class AppFixture
         return await context.Set<TEntity>().CountAsync();
     }
 
-    public async Task<int> CreateUserAsync()
+    public async Task<AppUser> CreateUserAsync()
     {
         using var scope = _scopeFactory.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
@@ -160,6 +163,6 @@ public class AppFixture
             throw new(result.Errors.First().Description);
         }
 
-        return user.Id;
+        return user;
     }
 }

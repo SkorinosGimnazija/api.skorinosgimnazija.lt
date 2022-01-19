@@ -25,14 +25,14 @@ public class CreateBullyReportsTests
     public CreateBullyReportsTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
     [Fact]
     public async Task BullyReportPublicCreate_ShouldThrowEx_WhenInvalidData()
     {
-        var report = new BullyReportCreateDto();
-        var command = new BullyReportPublicCreate.Command(report);
+        var dto = new BullyReportCreateDto();
+        var command = new BullyReportPublicCreate.Command(dto);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()

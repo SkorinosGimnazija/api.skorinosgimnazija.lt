@@ -24,10 +24,12 @@ public class CreateCoursesTests
     public CreateCoursesTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
 
-        _currentUserId = _app.CreateUserAsync().GetAwaiter().GetResult();
-        _app.CurrentUserMock.SetCurrentUserData(_currentUserId);
+        var user = _app.CreateUserAsync().GetAwaiter().GetResult();
+        _currentUserId = user.Id;
+
+        _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
 
     [Fact] 

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class AppointmentTypeCreateValidator : AbstractValidator<AppointmentTypeCreateDto>
+internal class AppointmentTypeCreateValidator : AbstractValidator<AppointmentTypeCreateDto>
 {
     public AppointmentTypeCreateValidator()
     {

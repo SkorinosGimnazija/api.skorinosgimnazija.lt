@@ -27,10 +27,12 @@ public class UpdateCoursesTests
     public UpdateCoursesTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
 
-        _currentUserId = _app.CreateUserAsync().GetAwaiter().GetResult();
-        _app.CurrentUserMock.SetCurrentUserData(_currentUserId);
+        var user = _app.CreateUserAsync().GetAwaiter().GetResult();
+        _currentUserId = user.Id;
+
+        _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
       
     [Fact] 
@@ -104,7 +106,7 @@ public class UpdateCoursesTests
     [Fact] 
     public async Task CourseEdit_ShouldThrowEx_WhenEditingNotOwned()
     {
-        var ownerId = await _app.CreateUserAsync();
+        var owner = await _app.CreateUserAsync();
  
         var course = await _app.AddAsync(new Course
         {
@@ -113,7 +115,7 @@ public class UpdateCoursesTests
             EndDate = DateOnly.Parse("2021-01-04"),
             Title = "Course",
             Organizer = "Organizer",
-            UserId = ownerId
+            UserId = owner.Id
         });
 
         var dto = new CourseEditDto
@@ -168,7 +170,7 @@ public class UpdateCoursesTests
     [Fact]
     public async Task CourseDelete_ShouldThrowEx_WhenNotOwned()
     {
-        var ownerId = await _app.CreateUserAsync();
+        var owner = await _app.CreateUserAsync();
 
         var course = await _app.AddAsync(new Course
         {
@@ -177,7 +179,7 @@ public class UpdateCoursesTests
             EndDate = DateOnly.Parse("2021-01-04"),
             Title = "Course",
             Organizer = "Organizer",
-            UserId = ownerId
+            UserId = owner.Id
         }); 
 
         var command = new CourseDelete.Command(course.Id);

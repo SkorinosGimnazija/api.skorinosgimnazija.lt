@@ -19,7 +19,7 @@ public class CreateMenuTests
     public CreateMenuTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
 

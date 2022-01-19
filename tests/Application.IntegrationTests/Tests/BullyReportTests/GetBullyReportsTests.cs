@@ -20,7 +20,7 @@ public class GetBullyReportsTests
     public GetBullyReportsTests(AppFixture appFixture)
     {
         _app = appFixture;
-        _app.ResetDatabase();
+        _app.ResetData();
     }
 
 
