@@ -17,5 +17,9 @@ public record CourseCreateDto
      
     public float DurationInHours { get; init; }
 
+    public float? Price { get; init; }
+
+    public bool IsUseful { get; init; }
+
     public string? CertificateNr { get; init; }
 }

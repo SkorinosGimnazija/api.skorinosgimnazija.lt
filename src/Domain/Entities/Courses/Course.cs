@@ -21,6 +21,10 @@ public class Course
 
     public string? CertificateNr { get; set; }
 
+    public bool IsUseful { get; set; }
+    
+    public float? Price { get; set; }
+
     public int UserId { get; set; }
     public AppUser User { get; set; } = default!;
 }

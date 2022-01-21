@@ -25,6 +25,10 @@ public record CourseDto
 
     public string? CertificateNr { get; init; }
 
+    public float? Price { get; init; }
+
+    public bool IsUseful { get; init; }
+
     public UserDto User { get; init; } = default!;
     public int UserId { get; init; } 
 }
