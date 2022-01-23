@@ -14,6 +14,22 @@ using Application.Menus;
 [Authorize(Roles = Auth.Role.Teacher)]
 public class CoursesController : BaseApiController
 {
+    // stats by teacher and date
+
+    // all stats by date
+
+    // courses by teacher
+
+    //[Authorize(Roles = Auth.Role.Manager)]
+    //[HttpGet("teacher/{id:int}", Name = "GetTeachersCoursesByDate")]
+    //[ProducesResponseType(StatusCodes.Status200OK)]
+    //public async Task<List<CourseDto>> GetAll(
+    //    [FromQuery] DateTime start, [FromQuery] DateTime end, CancellationToken ct)
+    //{
+    //    return await Mediator.Send(new CourseAdminList.Query(start, end), ct);
+    //}
+
+
     [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("all", Name = "GetAllCoursesByDate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -25,10 +41,10 @@ public class CoursesController : BaseApiController
 
     [HttpGet(Name = "GetMyCourses")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<CourseDto>> GetAllMy([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<CourseDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new CourseList.Query(pagination), ct);
-    }
+    } 
 
     [HttpGet("{id:int}", Name = "GetCourseById")]
     [ProducesResponseType(StatusCodes.Status200OK)]

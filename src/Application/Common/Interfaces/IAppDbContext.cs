@@ -12,6 +12,7 @@ public interface IAppDbContext
 {
     DbSet<Language> Languages { get; }
     DbSet<Menu> Menus { get; }
+    DbSet<AppUser> Users { get; }
     DbSet<Banner> Banners { get;  }
     DbSet<MenuLocation> MenuLocations { get; }
     DbSet<Course> Courses { get; }
