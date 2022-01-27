@@ -10,33 +10,27 @@ using SkorinosGimnazija.Infrastructure.Identity;
 using System.Xml.Linq;
 using Application.Banners;
 using Application.Menus;
+using CourseStats = Application.Courses.CourseStats;
 
 [Authorize(Roles = Auth.Role.Teacher)]
 public class CoursesController : BaseApiController
 {
-    // stats by teacher and date
-
-    // all stats by date
-
-    // courses by teacher
-
-    //[Authorize(Roles = Auth.Role.Manager)]
-    //[HttpGet("teacher/{id:int}", Name = "GetTeachersCoursesByDate")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //public async Task<List<CourseDto>> GetAll(
-    //    [FromQuery] DateTime start, [FromQuery] DateTime end, CancellationToken ct)
-    //{
-    //    return await Mediator.Send(new CourseAdminList.Query(start, end), ct);
-    //}
-
-
     [Authorize(Roles = Auth.Role.Manager)]
-    [HttpGet("all", Name = "GetAllCoursesByDate")]
+    [HttpGet("stats", Name = "GetCoursesStatsByDate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<CourseDto>> GetAll(
+    public async Task<List<CourseStatsDto>> GetStats(
         [FromQuery] DateTime start, [FromQuery] DateTime end, CancellationToken ct)
     {
-        return await Mediator.Send(new CourseAdminList.Query(start, end), ct);
+        return await Mediator.Send(new CourseStats.Query(start, end), ct);
+    }
+
+    [Authorize(Roles = Auth.Role.Manager)]
+    [HttpGet("teacher/{id:int}", Name = "GetTeacherCoursesByIdAndDate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<CourseDto>> GetByTeacher(
+        int id, [FromQuery] DateTime start, [FromQuery] DateTime end, CancellationToken ct)
+    {
+        return await Mediator.Send(new CourseAdminList.Query(id, start, end), ct);
     }
 
     [HttpGet(Name = "GetMyCourses")]

@@ -155,7 +155,7 @@ public class AppFixture
         using var scope = _scopeFactory.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
-        var user = new AppUser { UserName = Guid.NewGuid().ToString() };
+        var user = new AppUser { UserName = Guid.NewGuid().ToString(), DisplayName = Path.GetRandomFileName() };
         var result = await userManager.CreateAsync(user);
 
         if (!result.Succeeded)

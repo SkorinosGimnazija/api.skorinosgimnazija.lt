@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 public static class CourseAdminList
 {
-    public record Query(DateTime Start, DateTime End) : IRequest<List<CourseDto>>;
-
+    public record Query(int UserId, DateTime Start, DateTime End) : IRequest<List<CourseDto>>;
+     
     public class Handler : IRequestHandler<Query, List<CourseDto>>
     {
         private readonly IAppDbContext _context;
@@ -25,75 +25,22 @@ public static class CourseAdminList
             _mapper = mapper;
         }
 
-        class Me
-        {
-            public string Name { get; init; } = default!;
-            public float Hours { get; init; }
-            public float? Price { get; init; }
-            public DateTime LastUpdate { get; init; }
-        }
-
         public async Task<List<CourseDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var start = DateOnly.FromDateTime(request.Start);
             var end = DateOnly.FromDateTime(request.End);
-             
-            //var gr = await _context.Courses
-            //             .AsNoTracking()
-            //             .Where(x => x.EndDate >= start && x.EndDate <= end)
-            //             .GroupBy(_ => 0)
-            //             .Select(x => new CourseStatsDto
-            //             {
-            //                 UserDisplayName = "Visi",
-            //                 Hours = x.Sum(z => z.DurationInHours),
-            //                 Price = x.Sum(z => z.Price),
-            //                 LastUpdate = x.Max(z => z.CreatedAt)
-            //             })
-            //             .ToListAsync(cancellationToken);
 
-            var users = _context.Users
+            var coursesQuery = _context.Courses
                 .AsNoTracking()
-                .Select(x => new
-                {
-                    x.Id,
-                    DisplayName = x.DisplayName ?? x.Email
-                })
-                .OrderBy(x => x.DisplayName);
+                .Where(x => x.EndDate >= start && x.EndDate <= end);
 
-            var courses = _context.Courses
-                .AsNoTracking()
-                .Where(x => x.EndDate >= start && x.EndDate <= end)
-                .GroupBy(x => x.UserId)
-                .Select(x => new
-                {
-                    UserId = x.Key,
-                    Hours = x.Sum(z => z.DurationInHours),
-                    Price = x.Sum(z => z.Price),
-                    LastUpdate = x.Max(z => z.CreatedAt)
-                });
+            if (request.UserId != 0)
+            {
+                coursesQuery = coursesQuery.Where(x => x.UserId == request.UserId);
+            }
 
-            var merged = await users.AsNoTracking()
-                             .Join(courses,
-                                 x => x.Id,
-                                 x => x.UserId,
-                                 (user, dto) => new Me
-                                 {
-                                     Name = user.DisplayName,
-                                     Price = dto.Price,
-                                     LastUpdate = dto.LastUpdate,
-                                     Hours = dto.Hours
-                                 })
-                             .ToListAsync(cancellationToken);
-
-
-
-            return new List<CourseDto>();
-
-
-            return await _context.Courses
-                       .AsNoTracking()
-                       .Where(x => x.EndDate >= start && x.EndDate <= end)
-                       .OrderByDescending(x=> x.EndDate)
+            return await coursesQuery
+                       .OrderByDescending(x => x.EndDate)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }
