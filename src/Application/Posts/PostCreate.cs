@@ -49,6 +49,7 @@ public static class PostCreate
             await _context.SaveChangesAsync();
 
             await SaveSearchIndex(entity);
+            await SaveFeaturedImage(entity, request);
             await SaveImages(entity, request);
             await SaveFiles(entity, request);
 
@@ -73,7 +74,7 @@ public static class PostCreate
             try
             {
                 entity.Images =
-                    await _mediaManager.SaveImagesAsync(request.Post.NewImages, request.Post.OptimizeImages);
+                    await _mediaManager.SaveImagesAsync(request.Post.NewImages, request.Post.OptimizeImages, false);
             }
             catch
             {
@@ -81,7 +82,27 @@ public static class PostCreate
                 throw;
             }
         }
-            
+
+        public async Task SaveFeaturedImage(Post entity, Command request)
+        {
+            if (request.Post.NewFeaturedImage is null)
+            {
+                return;
+            }
+
+            try
+            {
+                entity.FeaturedImage = (await _mediaManager.SaveImagesAsync(
+                                            new[] { request.Post.NewFeaturedImage },
+                                            request.Post.OptimizeImages, true))[0];
+            }
+            catch
+            {
+                await Cleanup(entity);
+                throw;
+            }
+        }
+
         public async Task SaveFiles(Post entity, Command request)
         {
             if (request.Post.NewFiles?.Any() != true)
@@ -102,11 +123,12 @@ public static class PostCreate
             }
         }
 
-        private async Task Cleanup(Post post)
+        private async Task Cleanup(Post post) 
         {
             await _searchClient.RemovePostAsync(post);
-            _mediaManager.DeleteFiles(post.Files);
+            _mediaManager.DeleteFiles(post.Files);  
             _mediaManager.DeleteFiles(post.Images);
+            _mediaManager.DeleteFiles(post.FeaturedImage );
         }
     }
 }

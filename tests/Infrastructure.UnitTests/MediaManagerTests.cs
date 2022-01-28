@@ -127,7 +127,7 @@ public class MediaManagerTests
             .Setup(x => x.DownloadFileAsync(It.IsAny<Uri>(), It.IsAny<string>()))
             .ReturnsAsync(Path.GetRandomFileName);
 
-        var actual = await _sut.SaveImagesAsync(files, true);
+        var actual = await _sut.SaveImagesAsync(files, true, false);
 
         actual.Should().HaveCount(files.Count);
         actual.Should().NotContain(files.Select(x => x.FileName));
@@ -137,7 +137,7 @@ public class MediaManagerTests
                 Times.Exactly(files.Count));
 
         _imageOptimizerMock.
-            Verify(x => x.OptimizeAsync(It.IsIn(files.AsEnumerable()), It.IsAny<string>()),
+            Verify(x => x.OptimizeAsync(It.IsIn(files.AsEnumerable()), It.IsAny<string>(), It.IsAny<bool>()),
                 Times.Exactly(files.Count));
     }
 }

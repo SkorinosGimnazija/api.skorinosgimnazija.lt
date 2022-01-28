@@ -7,4 +7,5 @@ public record PostEditDto : PostCreateDto
     public ICollection<string>? Files { get; init; } 
      
     public ICollection<string>? Images { get; init; }
+    public string? FeaturedImage { get; init; }
 }

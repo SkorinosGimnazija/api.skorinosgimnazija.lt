@@ -12,7 +12,8 @@ using Options;
 public sealed class CloudinaryImageOptimizer : IImageOptimizer
 {
     private readonly Cloudinary _cloudinary;
-    private readonly Transformation _defaultTransformation;
+    private readonly Transformation _galleryTransformation;
+    private readonly Transformation _featuredImageTransformation;
     private readonly ILogger<CloudinaryImageOptimizer> _logger;
 
     public CloudinaryImageOptimizer(
@@ -22,24 +23,30 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
     {
         _logger = logger;
         _cloudinary = new(options.Value.Url);
-        _defaultTransformation = new Transformation()
+        _galleryTransformation = new Transformation()
             .Quality("90")
             .Gravity("face")
             .AspectRatio("16:9")
             .Width("1600")
             .Crop("fill")
-            .Effect("improve")
-            //.Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+            .FetchFormat("jpg");
+        _featuredImageTransformation = new Transformation()
+            .Quality("90")
+            .Width("500")
+            .Height("500")
+            .Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
+            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct") 
             .FetchFormat("jpg");
     }
 
-    public async Task<Uri> OptimizeAsync(IFormFile image, string directoryName)
+    public async Task<Uri> OptimizeAsync(IFormFile image, string directoryName, bool featuredImage)
     {
         await using var stream = image.OpenReadStream();
 
         var uploadParams = new ImageUploadParams
         {
-            Transformation = _defaultTransformation,
+            Transformation = featuredImage ? _featuredImageTransformation : _galleryTransformation, 
             File = new(image.FileName, stream),
             Tags = directoryName
         };
@@ -48,6 +55,7 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
 
         if (result.Error is not null)
         {
+            Console.WriteLine(result.Error.Message);
             throw new ImageOptimizationException(result.Error.Message);
         }
 

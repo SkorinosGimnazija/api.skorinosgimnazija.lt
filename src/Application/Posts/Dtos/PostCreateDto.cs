@@ -9,6 +9,8 @@ public record PostCreateDto
     public IFormFileCollection? NewFiles { get; init; }
 
     public IFormFileCollection? NewImages { get; init; }
+     
+    public IFormFile? NewFeaturedImage { get; init; }
 
     public DateTime PublishedAt { get; init; }
 

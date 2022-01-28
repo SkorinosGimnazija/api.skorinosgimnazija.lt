@@ -24,6 +24,8 @@ public sealed class Post
 
     public string? Text { get; set; }
 
+    public string? FeaturedImage { get; set; }
+
     public string? Meta { get; set; }
 
     public DateTime? ModifiedAt { get; set; }

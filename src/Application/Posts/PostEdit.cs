@@ -52,6 +52,7 @@ public static class PostEdit
             _mapper.Map(request.Post, entity);
 
             await SaveSearchIndex(entity);
+            await SaveFeaturedImage(entity, request);
             await SaveImages(entity, request);
             await SaveFiles(entity, request);
 
@@ -79,8 +80,28 @@ public static class PostEdit
             if (request.Post.NewImages?.Any() == true)
             {
                 var newImages =
-                    await _mediaManager.SaveImagesAsync(request.Post.NewImages, request.Post.OptimizeImages);
+                    await _mediaManager.SaveImagesAsync(request.Post.NewImages, request.Post.OptimizeImages, false);
                 post.Images = post.Images?.Concat(newImages).ToList() ?? newImages;
+            }
+        }
+
+        private async Task SaveFeaturedImage(Post post, Command request)
+        {
+            if (request.Post.FeaturedImage is null)
+            {
+                _mediaManager.DeleteFiles(post.FeaturedImage);
+            }
+            
+            if (request.Post.NewFeaturedImage is not null)
+            {
+                _mediaManager.DeleteFiles(post.FeaturedImage);
+                post.FeaturedImage =
+                    (await _mediaManager.SaveImagesAsync(new[] { request.Post.NewFeaturedImage },
+                         request.Post.OptimizeImages, true))[0];
+            }
+            else
+            {
+                post.FeaturedImage = request.Post.FeaturedImage;
             }
         }
 

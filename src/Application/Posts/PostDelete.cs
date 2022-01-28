@@ -35,6 +35,7 @@ public static class PostDelete
             await _searchClient.RemovePostAsync(entity);
             _mediaManager.DeleteFiles(entity.Files);
             _mediaManager.DeleteFiles(entity.Images);
+            _mediaManager.DeleteFiles(entity.FeaturedImage);
 
             _context.Posts.Remove(entity);
             await _context.SaveChangesAsync();

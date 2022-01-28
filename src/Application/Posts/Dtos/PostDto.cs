@@ -24,4 +24,6 @@ public record PostDto
 
     public string? IntroText { get; init; }
     public string? Meta { get; init; }
+
+    public string? FeaturedImage { get; init; }
 }

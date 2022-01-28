@@ -34,7 +34,8 @@ public sealed class MediaManager : IMediaManager
         _fileService = fileService;
     }
 
-    public async Task<List<string>> SaveImagesAsync(IEnumerable<IFormFile> files, bool optimize)
+    public async Task<List<string>> SaveImagesAsync(
+        IEnumerable<IFormFile> files, bool optimize, bool featuredImageProfile)
     {
         if (!optimize)
         {
@@ -51,7 +52,7 @@ public sealed class MediaManager : IMediaManager
                 new ParallelOptions { MaxDegreeOfParallelism = 8 },
                 async (file, _) =>
                 {
-                    var imageUrl = await _imageOptimizer.OptimizeAsync(file, directory.Name);
+                    var imageUrl = await _imageOptimizer.OptimizeAsync(file, directory.Name, featuredImageProfile);
                     var savedImage = await _fileService.DownloadFileAsync(imageUrl, directory.FullName);
 
                     savedFiles.Add($"{directory.Name}/{savedImage}");
@@ -115,6 +116,16 @@ public sealed class MediaManager : IMediaManager
 
             return $"{openChar}{_staticFilesUploadUrl}/{slug}{closeChar}";
         });
+    }
+
+    public void DeleteFiles(string? file)
+    {
+        if (file is null)
+        {
+            return;
+        }
+
+        DeleteFile(file);
     }
 
     public void DeleteFiles(IEnumerable<string>? files)

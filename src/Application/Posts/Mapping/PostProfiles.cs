@@ -14,7 +14,8 @@ public class PostProfiles : Profile
 
         CreateMap<PostEditDto, Post>()
             .ForMember(x => x.Images, x => x.Ignore())
-            .ForMember(x => x.Files, x => x.Ignore());
+            .ForMember(x => x.Files, x => x.Ignore())
+            .ForMember(x => x.FeaturedImage, x => x.Ignore());
 
         CreateMap<PostCreateDto, Post>();
 
