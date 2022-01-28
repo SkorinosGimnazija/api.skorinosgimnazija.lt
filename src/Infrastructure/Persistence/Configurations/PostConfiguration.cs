@@ -15,5 +15,6 @@ internal class PostConfiguration : IEntityTypeConfiguration<Post>
 
         builder.Property(x => x.Slug).HasMaxLength(256);
         builder.Property(x => x.Title).HasMaxLength(256);
+        builder.Property(x => x.Meta).HasMaxLength(256);
     }
 }
