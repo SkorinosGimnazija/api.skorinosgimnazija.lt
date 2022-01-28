@@ -19,7 +19,7 @@ internal class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.HasIndex(x => x.EndDate);
 
         builder.Property(x => x.CreatedAt).HasDefaultValueSql("now()");
-        builder.Property(x => x.Title).HasMaxLength(256);
+        builder.Property(x => x.Title).HasMaxLength(512);
         builder.Property(x => x.Organizer).HasMaxLength(256);
         builder.Property(x => x.CertificateNr).HasMaxLength(100);
     }

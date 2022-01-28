@@ -29,6 +29,5 @@ public record CourseDto
 
     public bool IsUseful { get; init; }
 
-    public UserDto User { get; init; } = default!;
     public int UserId { get; init; } 
 }

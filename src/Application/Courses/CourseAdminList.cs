@@ -30,17 +30,12 @@ public static class CourseAdminList
             var start = DateOnly.FromDateTime(request.Start);
             var end = DateOnly.FromDateTime(request.End);
 
-            var coursesQuery = _context.Courses
-                .AsNoTracking()
-                .Where(x => x.EndDate >= start && x.EndDate <= end);
-
-            if (request.UserId != 0)
-            {
-                coursesQuery = coursesQuery.Where(x => x.UserId == request.UserId);
-            }
-
-            return await coursesQuery
-                       .OrderByDescending(x => x.EndDate)
+            return await _context.Courses
+                       .AsNoTracking()
+                       .Where(x => 
+                           x.UserId == request.UserId &&
+                           x.EndDate >= start &&
+                           x.EndDate <= end).OrderByDescending(x => x.EndDate)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }
