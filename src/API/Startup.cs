@@ -83,6 +83,11 @@ public sealed class Startup
         services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilter>(); })
-            .AddFluentValidation(x => { x.AutomaticValidationEnabled = false; });
+            .AddFluentValidation(options => { options.AutomaticValidationEnabled = false; })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition =
+                    System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+            });
     }
 }

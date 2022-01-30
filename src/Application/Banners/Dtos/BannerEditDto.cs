@@ -11,6 +11,6 @@ using System.Threading.Tasks;
 public record BannerEditDto : BannerCreateDto
 {
     public int Id { get; init; } 
-    public new IFormFile? Picture { get; init; } = default!;
+    public new IFormFile? Picture { get; init; }
 
 }
