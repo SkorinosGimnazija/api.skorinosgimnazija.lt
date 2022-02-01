@@ -1,22 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Mocks;
+
+using Common.Interfaces;
+using Domain.Entities.Identity;
+using Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.IntegrationTests.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.Identity;
-using CloudinaryDotNet.Actions;
-using Google.Apis.Admin.Directory.directory_v1.Data;
-
 public class EmployeeServiceMock
 {
-    public Mock<IEmployeeService> Mock { get; } = new();
-
     public EmployeeServiceMock(ServiceCollection services)
     {
         services.RemoveService<IEmployeeService>();
@@ -31,9 +22,11 @@ public class EmployeeServiceMock
             });
     }
 
+    public Mock<IEmployeeService> Mock { get; } = new();
+
     public void SetEmployeeData(string userName, string email)
     {
-        Mock.Setup(x => x.GetEmployeeAsync(It.Is<string>(z=> z == userName)))
+        Mock.Setup(x => x.GetEmployeeAsync(It.Is<string>(z => z == userName)))
             .ReturnsAsync(
                 new Employee
                 {
@@ -42,6 +35,4 @@ public class EmployeeServiceMock
                     FullName = "Employee Name"
                 });
     }
-
-
 }

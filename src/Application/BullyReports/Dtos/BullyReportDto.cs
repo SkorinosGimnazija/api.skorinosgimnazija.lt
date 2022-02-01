@@ -1,9 +1,4 @@
 ﻿namespace SkorinosGimnazija.Application.BullyReports.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public record BullyReportDto
 {
@@ -16,7 +11,7 @@ public record BullyReportDto
     public string? Details { get; init; }
 
     public string Location { get; init; } = default!;
-    
+
     public DateTime Date { get; init; }
 
     public DateTime CreatedAt { get; init; }

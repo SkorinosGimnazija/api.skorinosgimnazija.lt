@@ -1,28 +1,17 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Banners;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Appointments;
+using Common.Exceptions;
 using Domain.Entities.Appointments;
+using FluentAssertions;
+using ParentAppointments;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.ParentAppointments;
-using SkorinosGimnazija.Application.Courses;
-using SkorinosGimnazija.Domain.Entities.Teacher;
 
 [Collection("App")]
 public class GetAppointmentTests
 {
     private readonly AppFixture _app;
     private readonly string _currentUserName;
-     
+
     public GetAppointmentTests(AppFixture appFixture)
     {
         _app = appFixture;
@@ -42,14 +31,14 @@ public class GetAppointmentTests
             .Should()
             .ThrowAsync<ValidationException>();
     }
-      
+
     [Fact]
     public async Task AppointmentAdminList_ShouldPaginateAppointments()
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(1),
-            Type= new()
+            Type = new()
             {
                 Id = 1,
                 Name = "Name",
@@ -69,7 +58,7 @@ public class GetAppointmentTests
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         var entity2 = new Appointment
@@ -78,7 +67,7 @@ public class GetAppointmentTests
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         await _app.AddAsync(entity1);
@@ -133,7 +122,7 @@ public class GetAppointmentTests
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         var entity2 = new Appointment
@@ -142,7 +131,7 @@ public class GetAppointmentTests
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         await _app.AddAsync(entity1);
@@ -159,8 +148,6 @@ public class GetAppointmentTests
         actual.TotalPages.Should().Be(1);
     }
 
-
-
     [Fact]
     public async Task AppointmentDetails_ShouldThrowEx_WhenInvalidId()
     {
@@ -169,7 +156,6 @@ public class GetAppointmentTests
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<NotFoundException>();
-
     }
 
     [Fact]
@@ -198,7 +184,7 @@ public class GetAppointmentTests
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         await _app.AddAsync(entity);
@@ -213,10 +199,4 @@ public class GetAppointmentTests
         actual.DateId.Should().Be(entity.DateId);
         actual.UserName.Should().Be(entity.UserName);
     }
-
-
-
-
-
-
 }

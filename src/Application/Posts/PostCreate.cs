@@ -24,8 +24,8 @@ public static class PostCreate
     public class Handler : IRequestHandler<Command, PostDetailsDto>
     {
         private readonly IAppDbContext _context;
-        private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
+        private readonly IMediaManager _mediaManager;
         private readonly ISearchClient _searchClient;
 
         public Handler(
@@ -114,7 +114,7 @@ public static class PostCreate
             {
                 entity.Files = await _mediaManager.SaveFilesAsync(request.Post.NewFiles);
                 entity.IntroText = _mediaManager.GenerateFileLinks(entity.IntroText, entity.Files);
-                entity.Text = _mediaManager.GenerateFileLinks( entity.Text, entity.Files);
+                entity.Text = _mediaManager.GenerateFileLinks(entity.Text, entity.Files);
             }
             catch
             {
@@ -123,12 +123,12 @@ public static class PostCreate
             }
         }
 
-        private async Task Cleanup(Post post) 
+        private async Task Cleanup(Post post)
         {
             await _searchClient.RemovePostAsync(post);
-            _mediaManager.DeleteFiles(post.Files);  
+            _mediaManager.DeleteFiles(post.Files);
             _mediaManager.DeleteFiles(post.Images);
-            _mediaManager.DeleteFiles(post.FeaturedImage );
+            _mediaManager.DeleteFiles(post.FeaturedImage);
         }
     }
 }

@@ -3,19 +3,13 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Domain.Entities;
+using Courses.Validators;
 using Domain.Entities.Bullies;
-using Domain.Entities.Teacher;
 using Dtos;
+using Events;
 using FluentValidation;
-using Infrastructure.Captcha;
-using Infrastructure.Email;
 using MediatR;
-using Menus.Validators;
-using SkorinosGimnazija.Application.BullyReports.Events;
-using SkorinosGimnazija.Application.Courses.Validators;
-using SkorinosGimnazija.Application.Menus.Dtos;
- 
+
 public static class BullyReportPublicCreate
 {
     public record Command(BullyReportCreateDto BullyReport) : IRequest<BullyReportDto>;
@@ -45,14 +39,12 @@ public static class BullyReportPublicCreate
         public async Task<BullyReportDto> Handle(Command request, CancellationToken _)
         {
             var entity = _context.BullyReports.Add(_mapper.Map<BullyReport>(request.BullyReport)).Entity;
-             
+
             await _context.SaveChangesAsync();
 
             await _publisher.Publish(new BullyReportCreatedNotification(entity));
-             
+
             return _mapper.Map<BullyReportDto>(entity);
         }
-
-
     }
 }

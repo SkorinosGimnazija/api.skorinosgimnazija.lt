@@ -9,7 +9,7 @@ public class BullyReport
     public string VictimInfo { get; set; } = default!;
 
     public string? Details { get; set; }
-     
+
     public string Location { get; set; } = default!;
 
     public DateTime Date { get; set; }

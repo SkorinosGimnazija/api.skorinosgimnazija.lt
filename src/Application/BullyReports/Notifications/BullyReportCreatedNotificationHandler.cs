@@ -1,32 +1,26 @@
 ﻿namespace SkorinosGimnazija.Application.BullyReports.Events;
 
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Interfaces;
-using Infrastructure.Email;
-using Microsoft.Extensions.Options;
-using System.Text.RegularExpressions;
 using Domain.Entities.Bullies;
+using Infrastructure.Email;
 using Infrastructure.Options;
+using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 public record BullyReportCreatedNotification(BullyReport Report) : INotification;
 
 public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyReportCreatedNotification>
 {
-    private readonly ILogger<BullyReportCreatedNotificationHandler> _logger;
+    private readonly string _baseUrl;
     private readonly IEmailService _emailService;
     private readonly IEmployeeService _employeeService;
     private readonly string _groupId;
-    private readonly string _baseUrl;
+    private readonly ILogger<BullyReportCreatedNotificationHandler> _logger;
 
     public BullyReportCreatedNotificationHandler(
         ILogger<BullyReportCreatedNotificationHandler> logger,
-        IEmailService emailService, 
+        IEmailService emailService,
         IEmployeeService employeeService,
         IOptions<GroupOptions> groupOptions,
         IOptions<UrlOptions> urlOptions)
@@ -37,8 +31,7 @@ public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyR
         _groupId = groupOptions.Value.BullyManagers;
         _baseUrl = urlOptions.Value.Admin;
     }
-     
-     
+
     public async Task Handle(BullyReportCreatedNotification notification, CancellationToken _)
     {
         try

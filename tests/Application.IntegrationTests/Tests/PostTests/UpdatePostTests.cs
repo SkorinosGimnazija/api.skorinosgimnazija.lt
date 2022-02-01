@@ -3,7 +3,6 @@
 using Common.Exceptions;
 using Domain.Entities;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Posts;
 using Posts.Dtos;
 using Xunit;

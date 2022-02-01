@@ -1,29 +1,19 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.CoursesTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Application.Common.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Banners;
+using Common.Exceptions;
+using Courses;
+using Courses.Dtos;
 using Domain.Entities.Teacher;
+using FluentAssertions;
 using Xunit;
-using Microsoft.AspNetCore.Http;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
-using SkorinosGimnazija.Domain.Entities;
-using SkorinosGimnazija.Application.Courses;
 
 [Collection("App")]
 public class UpdateCoursesTests
 {
     private readonly AppFixture _app;
     private readonly int _currentUserId;
-     
+
     public UpdateCoursesTests(AppFixture appFixture)
     {
         _app = appFixture;
@@ -34,8 +24,8 @@ public class UpdateCoursesTests
 
         _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
-      
-    [Fact] 
+
+    [Fact]
     public async Task CourseEdit_ShouldThrowEx_WhenInvalidData()
     {
         var entityDto = new CourseEditDto();
@@ -47,7 +37,7 @@ public class UpdateCoursesTests
     }
 
     [Fact]
-    public async Task CourseEdit_ShouldThrowEx_WhenInvalidId ()
+    public async Task CourseEdit_ShouldThrowEx_WhenInvalidId()
     {
         var entity = new CourseEditDto
         {
@@ -56,9 +46,9 @@ public class UpdateCoursesTests
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
             Title = "Course",
-            Organizer = "Organizer",
+            Organizer = "Organizer"
         };
-         
+
         var command = new CourseEdit.Command(entity);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
@@ -78,11 +68,11 @@ public class UpdateCoursesTests
             Organizer = "Organizer",
             UserId = _currentUserId
         });
-         
+
         var expected = new CourseEditDto
         {
-            Id= course.Id,
-          DurationInHours = 4,
+            Id = course.Id,
+            DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
             Title = "Updated name",
@@ -100,14 +90,12 @@ public class UpdateCoursesTests
         actual.Id.Should().Be(expected.Id);
         actual.UserId.Should().Be(_currentUserId);
     }
-     
-   
 
-    [Fact] 
+    [Fact]
     public async Task CourseEdit_ShouldThrowEx_WhenEditingNotOwned()
     {
         var owner = await _app.CreateUserAsync();
- 
+
         var course = await _app.AddAsync(new Course
         {
             DurationInHours = 4,
@@ -127,7 +115,7 @@ public class UpdateCoursesTests
             Title = "Updated name",
             Organizer = "Organizer"
         };
-         
+
         var command = new CourseEdit.Command(dto);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
@@ -144,7 +132,7 @@ public class UpdateCoursesTests
             .Should()
             .ThrowAsync<NotFoundException>();
     }
-     
+
     [Fact]
     public async Task CourseDelete_ShouldDeleteCourse_WhenOwned()
     {
@@ -156,7 +144,7 @@ public class UpdateCoursesTests
             Title = "Course",
             Organizer = "Organizer",
             UserId = _currentUserId
-        }); 
+        });
 
         var command = new CourseDelete.Command(course.Id);
 
@@ -166,7 +154,7 @@ public class UpdateCoursesTests
 
         actual.Should().BeNull();
     }
-     
+
     [Fact]
     public async Task CourseDelete_ShouldThrowEx_WhenNotOwned()
     {
@@ -180,7 +168,7 @@ public class UpdateCoursesTests
             Title = "Course",
             Organizer = "Organizer",
             UserId = owner.Id
-        }); 
+        });
 
         var command = new CourseDelete.Command(course.Id);
 

@@ -27,24 +27,21 @@ public sealed class CurrentUserService : ICurrentUserService
             {
                 return id;
             }
-             
+
             return -1;
         }
     }
-     
+
     public string UserName
     {
-        get
-        {
-            return User?.FindFirstValue(ClaimTypes.Name) ?? string.Empty;
-        }
+        get { return User?.FindFirstValue(ClaimTypes.Name) ?? string.Empty; }
     }
 
     public bool IsOwnerOrAdmin(int resourceOwnerId)
     {
-        return IsResourceOwner(resourceOwnerId) ||IsAdmin() ;
+        return IsResourceOwner(resourceOwnerId) || IsAdmin();
     }
-     
+
     public bool IsResourceOwner(int resourceOwnerId)
     {
         return UserId == resourceOwnerId;

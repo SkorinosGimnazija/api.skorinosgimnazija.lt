@@ -1,18 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments;
+
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Common.Exceptions;
+using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
+using ParentAppointments.Dtos;
 
-using SkorinosGimnazija.Application.ParentAppointments.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
- 
 public static class AppointmentTypeDetails
 {
     public record Query(int Id) : IRequest<AppointmentTypeDto>;
@@ -27,7 +22,7 @@ public static class AppointmentTypeDetails
             _context = context;
             _mapper = mapper;
         }
-         
+
         public async Task<AppointmentTypeDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var entity = await _context.AppointmentTypes

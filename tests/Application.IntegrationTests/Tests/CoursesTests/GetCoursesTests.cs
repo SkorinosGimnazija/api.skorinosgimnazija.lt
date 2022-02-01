@@ -1,19 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.CoursesTests;
-using SkorinosGimnazija.Application.Languages;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
+using Courses;
 using Domain.Entities.Teacher;
 using FluentAssertions;
+using Menus;
 using Xunit;
-using SkorinosGimnazija.Application.Banners;
-using SkorinosGimnazija.Application.Courses;
-using SkorinosGimnazija.Application.Menus;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
 [Collection("App")]
 public class GetCoursesTests
@@ -32,17 +24,15 @@ public class GetCoursesTests
         _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
 
-   
-
     [Fact]
     public async Task CourseList_ShouldThrowEx_WhenInvalidPagination()
     {
-        var command = new CourseList.Query(new() {Page = int.MaxValue, Items = int.MaxValue}) ;
+        var command = new CourseList.Query(new() { Page = int.MaxValue, Items = int.MaxValue });
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<ValidationException>();
-    } 
+    }
 
     [Fact]
     public async Task CourseStats_ShouldListStats_ByTeacher()
@@ -50,7 +40,7 @@ public class GetCoursesTests
         var teacher1 = await _app.CreateUserAsync();
         var teacher2 = await _app.CreateUserAsync();
         var teacher3 = await _app.CreateUserAsync();
-         
+
         var course1 = await _app.AddAsync(new Course
         {
             DurationInHours = 4,
@@ -70,7 +60,7 @@ public class GetCoursesTests
             Organizer = "Organizer",
             UserId = teacher1.Id
         });
-         
+
         var course3 = await _app.AddAsync(new Course
         {
             DurationInHours = 4,
@@ -86,7 +76,7 @@ public class GetCoursesTests
         var course4 = await _app.AddAsync(new Course
         {
             DurationInHours = 10.5f,
-            Price =  10,
+            Price = 10,
             StartDate = DateOnly.Parse("2021-10-01"),
             EndDate = DateOnly.Parse("2021-10-04"),
             IsUseful = true,
@@ -97,7 +87,7 @@ public class GetCoursesTests
 
         var starDate = DateTime.Parse("2021-01-01");
         var endDate = DateTime.Parse("2021-12-31");
-         
+
         var command = new CourseStats.Query(starDate, endDate);
 
         var actual = await _app.SendAsync(command);
@@ -165,60 +155,12 @@ public class GetCoursesTests
 
         actual.Count.Should().Be(2);
         actual.Select(x => x.Id).Should().Contain(new[] { course1.Id, course2.Id });
-        actual.Select(x=> x.EndDate).Should().BeInDescendingOrder();
-    }
-
-    [Fact]
-    public async Task CourseAdminList_ShouldListAllCoursesByDate()
-    {
-        var teacher1 = await _app.CreateUserAsync();
-
-        var course1 = await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-01-01"),
-            EndDate = DateOnly.Parse("2021-01-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = teacher1.Id
-        });
-
-        var course2 = await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2021-08-01"),
-            EndDate = DateOnly.Parse("2021-08-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = teacher1.Id
-        });
-
-        await _app.AddAsync(new Course
-        {
-            DurationInHours = 4,
-            StartDate = DateOnly.Parse("2020-01-01"),
-            EndDate = DateOnly.Parse("2020-01-04"),
-            Title = "Course",
-            Organizer = "Organizer",
-            UserId = _currentUserId
-        });
-
-        var starDate = DateTime.Parse("2021-01-01");
-        var endDate = DateTime.Parse("2021-12-31");
-
-        var command = new CourseAdminList.Query(0, starDate, endDate);
-
-        var actual = await _app.SendAsync(command);
-
-        actual.Count.Should().Be(2);
-        actual.Select(x => x.Id).Should().Contain(new[] { course1.Id, course2.Id });
         actual.Select(x => x.EndDate).Should().BeInDescendingOrder();
     }
 
-
     [Fact]
     public async Task CourseList_ShouldListOwnerCourses()
-    { 
+    {
         var randomUser = await _app.CreateUserAsync();
 
         var course1 = await _app.AddAsync(new Course
@@ -230,7 +172,7 @@ public class GetCoursesTests
             Organizer = "Organizer",
             UserId = _currentUserId
         });
-         
+
         var course2 = await _app.AddAsync(new Course
         {
             DurationInHours = 4,
@@ -240,7 +182,7 @@ public class GetCoursesTests
             Organizer = "Organizer",
             UserId = _currentUserId
         });
-         
+
         await _app.AddAsync(new Course
         {
             DurationInHours = 4,
@@ -256,9 +198,9 @@ public class GetCoursesTests
         var actual = await _app.SendAsync(command);
 
         actual.TotalCount.Should().Be(2);
-        actual.Items.Select(x => x.Id).Should().Contain(new []{ course1.Id, course2.Id});
+        actual.Items.Select(x => x.Id).Should().Contain(new[] { course1.Id, course2.Id });
     }
-     
+
     [Fact]
     public async Task CourseDetails_ShouldGetOwnedCourse()
     {
@@ -283,7 +225,7 @@ public class GetCoursesTests
 
     [Fact]
     public async Task CourseDetails_ShouldThrowEx_WhenAccessingInvalidCourse()
-    { 
+    {
         var command = new CourseDetails.Query(0);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
@@ -291,14 +233,14 @@ public class GetCoursesTests
             .ThrowAsync<NotFoundException>();
     }
 
-    [Fact] 
+    [Fact]
     public async Task CourseDetails_ShouldThrowEx_WhenAccessingNotOwnedCourse()
     {
         var owner = await _app.CreateUserAsync();
-         
+
         var course = await _app.AddAsync(new Course
         {
-            DurationInHours = 4, 
+            DurationInHours = 4,
             StartDate = DateOnly.Parse("2021-01-01"),
             EndDate = DateOnly.Parse("2021-01-04"),
             Title = "Course",
@@ -307,12 +249,9 @@ public class GetCoursesTests
         });
 
         var command = new CourseDetails.Query(course.Id);
-         
+
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<UnauthorizedAccessException>();
     }
-
-
-
 }

@@ -3,7 +3,6 @@
 using AutoMapper;
 using Domain.Entities;
 using Dtos;
-using SkorinosGimnazija.Application.Posts.Dtos;
 
 public class MenuProfiles : Profile
 {

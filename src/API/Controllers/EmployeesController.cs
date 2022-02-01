@@ -6,7 +6,7 @@ using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
- 
+
 [Authorize(Roles = Auth.Role.Admin)]
 public class EmployeesController : BaseApiController
 {

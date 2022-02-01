@@ -1,29 +1,21 @@
 ﻿namespace SkorinosGimnazija.Application.ParentAppointments;
-using AutoMapper;
-using MediatR;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Courses.Validators;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Appointments.Dtos;
+using AutoMapper;
+using Common.Interfaces;
 using Domain.Entities.Appointments;
 using Domain.Entities.Identity;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
-using FluentValidation.Results;
- 
-public  static class AppointmentCreate
+
+public static class AppointmentCreate
 {
     public record Command(AppointmentCreateDto Appointment) : IRequest<AppointmentDto>;
-     
+
     public class Validator : AbstractValidator<Command>
     {
         public Validator()
@@ -34,16 +26,16 @@ public  static class AppointmentCreate
 
     public class Handler : IRequestHandler<Command, AppointmentDto>
     {
-        private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICalendarService _calendarService;
-        private readonly IEmployeeService _employeeService;
+        private readonly IAppDbContext _context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IEmployeeService _employeeService;
+        private readonly IMapper _mapper;
 
         public Handler(
             IAppDbContext context,
-            IMapper mapper, 
-            ICalendarService calendarService, 
+            IMapper mapper,
+            ICalendarService calendarService,
             IEmployeeService employeeService,
             ICurrentUserService currentUserService)
         {
@@ -60,14 +52,14 @@ public  static class AppointmentCreate
             var date = await GetDateAsync(request.Appointment.DateId);
             var teacher = await GetTeacherAsync(request.Appointment.UserName);
             var attendee = await GetTeacherAsync(_currentUserService.UserName);
-              
+
             var transaction = await _context.BeginTransactionAsync();
 
             var entity = _context.Appointments.Add(_mapper.Map<Appointment>(request.Appointment)).Entity;
 
             entity.AttendeeEmail = attendee.Email;
             entity.AttendeeName = attendee.FullName;
-            
+
             await _context.SaveChangesAsync();
 
             var attendees = new List<string> { attendee.Email, teacher.Email };
@@ -75,7 +67,7 @@ public  static class AppointmentCreate
             {
                 attendees.Add((await _employeeService.GetPrincipalAsync()).Email);
             }
-             
+
             entity.EventId = await _calendarService.AddAppointmentAsync(
                                  date.Type.Name,
                                  $"{teacher.FullName} // {attendee.FullName}",
@@ -96,7 +88,7 @@ public  static class AppointmentCreate
             {
                 throw new ValidationException(nameof(userName), "Invalid user name");
             }
-             
+
             return teacher;
         }
 
@@ -115,6 +107,5 @@ public  static class AppointmentCreate
 
             return date;
         }
-
     }
 }

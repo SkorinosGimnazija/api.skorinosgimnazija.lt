@@ -1,19 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.CoursesTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
+using Courses;
+using Courses.Dtos;
+using Domain.Entities.Teacher;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Application.Menus;
-using SkorinosGimnazija.Domain.Entities.Teacher;
-using SkorinosGimnazija.Domain.Entities.Bullies;
 
 [Collection("App")]
 public class CreateCoursesTests
@@ -32,7 +24,7 @@ public class CreateCoursesTests
         _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
     }
 
-    [Fact] 
+    [Fact]
     public async Task CourseCreate_ShouldThrowEx_WhenInvalidData()
     {
         var course = new CourseCreateDto();
@@ -45,14 +37,14 @@ public class CreateCoursesTests
 
     [Fact]
     public async Task CourseCreate_ShouldCreateCourse_AsCurrentUser()
-    { 
+    {
         var course = new CourseCreateDto
         {
             DurationInHours = 4,
             StartDate = DateTime.Parse("2021-01-01"),
             EndDate = DateTime.Parse("2021-01-04"),
             Title = "Course",
-            Organizer = "Organizer",
+            Organizer = "Organizer"
         };
 
         var command = new CourseCreate.Command(course);
@@ -61,10 +53,8 @@ public class CreateCoursesTests
 
         var actual = await _app.FindAsync<Course>(createdCourse.Id);
 
-        actual.Should().NotBeNull();    
+        actual.Should().NotBeNull();
         actual.Title.Should().Be(course.Title);
         actual.UserId.Should().Be(_currentUserId);
     }
-
-
 }

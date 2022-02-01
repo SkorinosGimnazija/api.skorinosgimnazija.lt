@@ -1,11 +1,4 @@
 ﻿namespace SkorinosGimnazija.Domain.Entities.Appointments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Identity;
-
 
 public class AppointmentDate
 {
@@ -13,6 +6,7 @@ public class AppointmentDate
 
     public DateTime Date { get; set; }
 
-        public AppointmentType Type { get; set; } = default!;
+    public AppointmentType Type { get; set; } = default!;
+
     public int TypeId { get; set; }
 }

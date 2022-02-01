@@ -1,17 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.ParentAppointments;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
+using Common.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public  static class AppointmentTypeDelete
+public static class AppointmentTypeDelete
 {
     public record Command(int Id) : IRequest<Unit>;
 

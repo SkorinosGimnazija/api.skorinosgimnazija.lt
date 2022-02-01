@@ -1,17 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.Banners;
-using AutoMapper;
-using MediatR;
-using SkorinosGimnazija.Application.Banners.Dtos;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Application.Menus.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 public static class BannerDetails

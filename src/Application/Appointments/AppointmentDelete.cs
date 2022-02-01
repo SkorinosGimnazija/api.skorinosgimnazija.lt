@@ -1,24 +1,19 @@
 ﻿namespace SkorinosGimnazija.Application.ParentAppointments;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
+using Common.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public  static class AppointmentDelete
+public static class AppointmentDelete
 {
     public record Command(int Id) : IRequest<Unit>;
 
     public class Handler : IRequestHandler<Command, Unit>
     {
-        private readonly IAppDbContext _context;
         private readonly ICalendarService _calendarService;
+        private readonly IAppDbContext _context;
 
         public Handler(IAppDbContext context, ICalendarService calendarService)
         {
@@ -36,8 +31,8 @@ public  static class AppointmentDelete
             }
 
             _context.Appointments.Remove(entity);
-           
-            await  _calendarService.DeleteAppointmentAsync(entity.EventId);
+
+            await _calendarService.DeleteAppointmentAsync(entity.EventId);
             await _context.SaveChangesAsync();
 
             return Unit.Value;

@@ -15,10 +15,7 @@ public static class UserAuthorize
         {
             RuleFor(v => v.GoogleAuth)
                 .NotNull()
-                .DependentRules(() =>
-                {
-                    RuleFor(v => v.GoogleAuth.Token).NotEmpty();
-                });
+                .DependentRules(() => { RuleFor(v => v.GoogleAuth.Token).NotEmpty(); });
         }
     }
 

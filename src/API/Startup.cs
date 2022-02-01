@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.API;
 
+using System.Text.Json.Serialization;
 using Application;
 using Filters;
 using FluentValidation.AspNetCore;
@@ -86,8 +87,7 @@ public sealed class Startup
             .AddFluentValidation(options => { options.AutomaticValidationEnabled = false; })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.DefaultIgnoreCondition =
-                    System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
     }
 }

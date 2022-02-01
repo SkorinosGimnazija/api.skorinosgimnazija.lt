@@ -1,7 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
+using Authorization.Dtos;
 using Domain.Entities.Identity;
-using SkorinosGimnazija.Application.Authorization.Dtos;
 
 public interface IIdentityService
 {

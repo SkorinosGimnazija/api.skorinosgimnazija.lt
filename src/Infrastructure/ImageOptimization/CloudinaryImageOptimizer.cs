@@ -12,8 +12,8 @@ using Options;
 public sealed class CloudinaryImageOptimizer : IImageOptimizer
 {
     private readonly Cloudinary _cloudinary;
-    private readonly Transformation _galleryTransformation;
     private readonly Transformation _featuredImageTransformation;
+    private readonly Transformation _galleryTransformation;
     private readonly ILogger<CloudinaryImageOptimizer> _logger;
 
     public CloudinaryImageOptimizer(
@@ -36,7 +36,7 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
             .Width("500")
             .Height("500")
             .Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
-            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct") 
+            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
             .FetchFormat("jpg");
     }
 
@@ -46,7 +46,7 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
 
         var uploadParams = new ImageUploadParams
         {
-            Transformation = featuredImage ? _featuredImageTransformation : _galleryTransformation, 
+            Transformation = featuredImage ? _featuredImageTransformation : _galleryTransformation,
             File = new(image.FileName, stream),
             Tags = directoryName
         };
@@ -65,7 +65,7 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
     public async Task DeleteFilesAsync(string directoryName)
     {
         var result = await _cloudinary.DeleteResourcesByTagAsync(directoryName);
-         
+
         if (result.Error is not null)
         {
             _logger.LogWarning("Failed to delete images // {details}", result.Error.Message);

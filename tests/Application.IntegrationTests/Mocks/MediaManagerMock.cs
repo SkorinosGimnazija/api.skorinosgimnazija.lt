@@ -19,7 +19,7 @@ public class MediaManagerMock
         services.RemoveService<IMediaManager>();
         services.AddTransient(_ => _mock.Object);
     }
-     
+
     public void SetReturnFilesData(IEnumerable<string> files)
     {
         _mockData.Clear();

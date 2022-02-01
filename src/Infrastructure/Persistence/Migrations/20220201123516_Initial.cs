@@ -7,32 +7,24 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
-    public partial class Clean : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "AppointmentDates",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(type: "timestamp", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AppointmentDates", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AppointmentTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DurationInMinutes = table.Column<int>(type: "integer", nullable: false),
+                    InvitePrincipal = table.Column<bool>(type: "boolean", nullable: false),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    Start = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    End = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    RegistrationEnd = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Slug = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    IsPublic = table.Column<bool>(type: "boolean", nullable: false)
+                    Slug = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,53 +120,23 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AppointmentReservedDates",
+                name: "AppointmentDates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DateId = table.Column<int>(type: "integer", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    Date = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    TypeId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AppointmentReservedDates", x => x.Id);
+                    table.PrimaryKey("PK_AppointmentDates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AppointmentReservedDates_AppointmentDates_DateId",
-                        column: x => x.DateId,
-                        principalTable: "AppointmentDates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Appointments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    EventId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    DateId = table.Column<int>(type: "integer", nullable: false),
-                    TypeId = table.Column<int>(type: "integer", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    AttendeeName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    AttendeeEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_AppointmentDates_DateId",
-                        column: x => x.DateId,
-                        principalTable: "AppointmentDates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Appointments_AppointmentTypes_TypeId",
+                        name: "FK_AppointmentDates_AppointmentTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "AppointmentTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -289,13 +251,15 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Title = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     Organizer = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
                     EndDate = table.Column<DateOnly>(type: "date", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now()"),
                     DurationInHours = table.Column<float>(type: "real", nullable: false),
                     CertificateNr = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    IsUseful = table.Column<bool>(type: "boolean", nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -317,6 +281,8 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Url = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Width = table.Column<int>(type: "integer", nullable: false),
+                    Height = table.Column<int>(type: "integer", nullable: false),
                     IsPublished = table.Column<bool>(type: "boolean", nullable: false),
                     PictureUrl = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false),
@@ -348,7 +314,8 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     Slug = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     IntroText = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
-                    Meta = table.Column<string>(type: "text", nullable: true),
+                    FeaturedImage = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Meta = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Files = table.Column<List<string>>(type: "text[]", nullable: true),
                     Images = table.Column<List<string>>(type: "text[]", nullable: true)
@@ -362,6 +329,49 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         principalTable: "Languages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppointmentReservedDates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DateId = table.Column<int>(type: "integer", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppointmentReservedDates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AppointmentReservedDates_AppointmentDates_DateId",
+                        column: x => x.DateId,
+                        principalTable: "AppointmentDates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    EventId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    DateId = table.Column<int>(type: "integer", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    AttendeeName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    AttendeeEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AppointmentDates_DateId",
+                        column: x => x.DateId,
+                        principalTable: "AppointmentDates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -411,6 +421,11 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AppointmentDates_TypeId",
+                table: "AppointmentDates",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AppointmentReservedDates_DateId",
                 table: "AppointmentReservedDates",
                 column: "DateId");
@@ -438,14 +453,15 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_TypeId",
-                table: "Appointments",
-                column: "TypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Appointments_UserName",
                 table: "Appointments",
                 column: "UserName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AppointmentTypes_Slug",
+                table: "AppointmentTypes",
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -618,9 +634,6 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                 name: "AppointmentDates");
 
             migrationBuilder.DropTable(
-                name: "AppointmentTypes");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -631,6 +644,9 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "AppointmentTypes");
 
             migrationBuilder.DropTable(
                 name: "Languages");

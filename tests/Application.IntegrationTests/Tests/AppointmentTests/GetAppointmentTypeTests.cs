@@ -1,18 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Banners;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Appointments;
+using Common.Exceptions;
 using Domain.Entities.Appointments;
+using FluentAssertions;
+using ParentAppointments;
 using Xunit;
-using SkorinosGimnazija.Application.ParentAppointments;
 
 [Collection("App")]
 public class GetAppointmentTypeTests
@@ -25,7 +18,6 @@ public class GetAppointmentTypeTests
         _app.ResetData();
     }
 
-
     [Fact]
     public async Task AppointmentTypeDetails_ShouldThrowNotFoundException()
     {
@@ -34,7 +26,7 @@ public class GetAppointmentTypeTests
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<NotFoundException>();
-    } 
+    }
 
     [Fact]
     public async Task AppointmentTypeDetails_ShouldFindById()
@@ -78,7 +70,7 @@ public class GetAppointmentTypeTests
             .ThrowAsync<NotFoundException>();
     }
 
-    [Fact] 
+    [Fact]
     public async Task AppointmentTypePublicDetails_ShouldFindBySlug()
     {
         var entity = new AppointmentType
@@ -108,8 +100,8 @@ public class GetAppointmentTypeTests
         actual.Start.Should().BeCloseTo(entity.Start, TimeSpan.FromSeconds(5));
         actual.End.Should().BeCloseTo(entity.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
-    } 
-     
+    }
+
     [Fact]
     public async Task AppointmentTypesList_ShouldListAppointmentTypes()
     {
@@ -148,8 +140,6 @@ public class GetAppointmentTypeTests
         actual.Select(x => x.Id).Should().Contain(new[] { entity1.Id, entity2.Id });
     }
 
-
-
     [Fact]
     public async Task AppointmentTypeDetails_ShouldThrowEx_WhenInvalidId()
     {
@@ -158,10 +148,9 @@ public class GetAppointmentTypeTests
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<NotFoundException>();
-
     }
 
-    [Fact] 
+    [Fact]
     public async Task AppointmentTypeDetails_ShouldGetAppointmentType_ById()
     {
         var entity = new AppointmentType
@@ -192,8 +181,4 @@ public class GetAppointmentTypeTests
         actual.End.Should().BeCloseTo(entity.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
-
-
-     
-
 }

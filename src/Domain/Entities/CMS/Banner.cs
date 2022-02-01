@@ -9,7 +9,7 @@ public sealed class Banner
     public string Url { get; set; } = default!;
 
     public int Width { get; set; }
-    
+
     public int Height { get; set; }
 
     public bool IsPublished { get; set; }

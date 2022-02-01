@@ -1,15 +1,14 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
+using Application.Banners;
+using Application.Common.Pagination;
+using Application.Courses;
+using Application.Courses.Dtos;
+using Application.Menus;
+using Base;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.API.Controllers.Base;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Infrastructure.Identity;
-using System.Xml.Linq;
-using Application.Banners;
-using Application.Menus;
 using CourseStats = Application.Courses.CourseStats;
 
 [Authorize(Roles = Auth.Role.Teacher)]
@@ -38,7 +37,7 @@ public class CoursesController : BaseApiController
     public async Task<PaginatedList<CourseDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new CourseList.Query(pagination), ct);
-    } 
+    }
 
     [HttpGet("{id:int}", Name = "GetCourseById")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -2,30 +2,23 @@
 
 using System.Text;
 using Application.Common.Interfaces;
+using Calendar;
 using Domain.Entities.Identity;
+using Email;
 using Extensions;
 using FileManagement;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Calendar.v3;
-using Google.Apis.Calendar.v3.Data;
-using Google.Apis.Services;
 using Identity;
 using ImageOptimization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Npgsql;
 using Options;
 using Persistence;
 using Search;
 using Services;
-using SkorinosGimnazija.Infrastructure.Calendar;
-using SkorinosGimnazija.Infrastructure.Email;
 
 public static class DependencyInjection
 {
@@ -84,7 +77,7 @@ public static class DependencyInjection
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<ICalendarService, GoogleCalendar>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
-        services.AddSingleton<ICaptchaService,CaptchaService>();
+        services.AddSingleton<ICaptchaService, CaptchaService>();
         services.AddSingleton<IEmailService, EmailService>();
         services.AddSingleton<TokenService>();
 

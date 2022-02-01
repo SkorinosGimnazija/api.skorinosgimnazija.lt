@@ -1,6 +1,6 @@
 ﻿namespace SkorinosGimnazija.Domain.Entities;
 
-public  class MenuLocation
+public class MenuLocation
 {
     public int Id { get; set; }
 

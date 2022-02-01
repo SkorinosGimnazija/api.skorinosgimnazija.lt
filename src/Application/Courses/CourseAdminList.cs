@@ -2,9 +2,7 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Common.Identity;
 using Common.Interfaces;
-using Domain.Entities.Identity;
 using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 public static class CourseAdminList
 {
     public record Query(int UserId, DateTime Start, DateTime End) : IRequest<List<CourseDto>>;
-     
+
     public class Handler : IRequestHandler<Query, List<CourseDto>>
     {
         private readonly IAppDbContext _context;
@@ -32,10 +30,11 @@ public static class CourseAdminList
 
             return await _context.Courses
                        .AsNoTracking()
-                       .Where(x => 
+                       .Where(x =>
                            x.UserId == request.UserId &&
                            x.EndDate >= start &&
-                           x.EndDate <= end).OrderByDescending(x => x.EndDate)
+                           x.EndDate <= end)
+                       .OrderByDescending(x => x.EndDate)
                        .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

@@ -1,15 +1,9 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyReports;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BullyReports;
+using Common.Exceptions;
 using Domain.Entities.Bullies;
+using FluentAssertions;
 using Xunit;
 
 [Collection("App")]
@@ -22,7 +16,6 @@ public class GetBullyReportsTests
         _app = appFixture;
         _app.ResetData();
     }
-
 
     [Fact]
     public async Task BullyReportDetails_ShouldThrowNotFoundException()
@@ -43,7 +36,7 @@ public class GetBullyReportsTests
             VictimInfo = "Victim name",
             Location = "Location",
             Details = "More details",
-            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
+            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime()
         };
 
         await _app.AddAsync(entity);
@@ -80,7 +73,7 @@ public class GetBullyReportsTests
             VictimInfo = "Victim name",
             Location = "Location",
             Details = "More details",
-            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
+            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime()
         };
 
         var entity2 = new BullyReport
@@ -89,7 +82,7 @@ public class GetBullyReportsTests
             VictimInfo = "Victim name2",
             Location = "Location2",
             Details = "More details2",
-            Date = DateTime.Parse("2021-01-02 12:00:00").ToUniversalTime(),
+            Date = DateTime.Parse("2021-01-02 12:00:00").ToUniversalTime()
         };
 
         await _app.AddAsync(entity1);

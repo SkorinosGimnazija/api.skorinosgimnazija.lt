@@ -3,9 +3,8 @@
 using Common.Exceptions;
 using Domain.Entities;
 using FluentAssertions;
-using Microsoft.Extensions.Hosting;
+using Menus;
 using Posts;
-using SkorinosGimnazija.Application.Menus;
 using Xunit;
 
 [Collection("App")]
@@ -46,7 +45,7 @@ public class GetPostTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().NotBeNull();
-    } 
+    }
 
     [Fact]
     public async Task PublicPostList_ShouldThrowEx_WhenInvalidPagination()
@@ -195,7 +194,7 @@ public class GetPostTests
             .Should()
             .ThrowAsync<NotFoundException>();
     }
-     
+
     [Fact]
     public async Task PublicMenuLinkedPost_ShouldReturnPostByMenuPath()
     {
@@ -222,7 +221,7 @@ public class GetPostTests
             IsPublished = true,
             LinkedPostId = post.Id
         };
-         
+
         await _app.AddAsync(menu);
 
         var path = Uri.EscapeDataString(menu.Path);
@@ -235,9 +234,9 @@ public class GetPostTests
         actual.Id.Should().Be(post.Id);
         actual.Slug.Should().Be(post.Slug);
         actual.Title.Should().Be(post.Title);
-}
+    }
 
-[Fact]
+    [Fact]
     public async Task PublicPostDetails_ShouldNotGetPublishedInTheFuturePost()
     {
         var post = new Post

@@ -1,13 +1,7 @@
-﻿    namespace SkorinosGimnazija.Application.Banners.Validators;
+﻿namespace SkorinosGimnazija.Application.Banners.Validators;
+
+using Dtos;
 using FluentValidation;
-
-using SkorinosGimnazija.Application.Banners.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 internal class BannerValidator : AbstractValidator<BannerCreateDto>
 {

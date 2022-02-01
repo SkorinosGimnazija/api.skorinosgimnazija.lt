@@ -1,14 +1,8 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SkorinosGimnazija.Domain.Entities.Appointments;
+using Domain.Entities.Appointments;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 internal class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {

@@ -4,12 +4,11 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Application.Posts;
 
 public static class CourseList
 {
@@ -26,8 +25,8 @@ public static class CourseList
     public class Handler : IRequestHandler<Query, PaginatedList<CourseDto>>
     {
         private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
         {

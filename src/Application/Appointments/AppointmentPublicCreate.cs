@@ -1,27 +1,18 @@
 ﻿namespace SkorinosGimnazija.Application.ParentAppointments;
-using AutoMapper;
-using MediatR;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Courses.Validators;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
+using Appointments.Dtos;
+using AutoMapper;
+using Common.Interfaces;
 using Domain.Entities.Appointments;
 using Domain.Entities.Identity;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
-using FluentValidation.Results;
 
-public  static class AppointmentPublicCreate
+public static class AppointmentPublicCreate
 {
     public record Command(AppointmentPublicCreateDto Appointment) : IRequest<AppointmentDto>;
 
@@ -35,15 +26,15 @@ public  static class AppointmentPublicCreate
 
     public class Handler : IRequestHandler<Command, AppointmentDto>
     {
-        private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICalendarService _calendarService;
+        private readonly IAppDbContext _context;
         private readonly IEmployeeService _employeeService;
+        private readonly IMapper _mapper;
 
         public Handler(
             IAppDbContext context,
-            IMapper mapper, 
-            ICalendarService calendarService, 
+            IMapper mapper,
+            ICalendarService calendarService,
             IEmployeeService employeeService)
         {
             _context = context;
@@ -84,7 +75,7 @@ public  static class AppointmentPublicCreate
             {
                 throw new ValidationException(nameof(userName), "Invalid user name");
             }
-             
+
             return teacher;
         }
 
@@ -101,9 +92,8 @@ public  static class AppointmentPublicCreate
             {
                 throw new ValidationException(nameof(dateId), "Invalid date");
             }
-            
+
             return date;
         }
-
     }
 }

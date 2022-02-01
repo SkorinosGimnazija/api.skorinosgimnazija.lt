@@ -156,7 +156,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
                          },
                          null,
                          ct);
-         
+
         return new(
             result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
             result.NbHits,

@@ -1,19 +1,13 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities.Teacher;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 internal class CourseConfiguration : IEntityTypeConfiguration<Course>
 {
     public void Configure(EntityTypeBuilder<Course> builder)
-    { 
+    {
         builder.HasOne(x => x.User).WithMany().OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => x.EndDate);

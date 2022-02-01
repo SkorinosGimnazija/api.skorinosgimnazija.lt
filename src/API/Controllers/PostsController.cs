@@ -1,14 +1,13 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
 using Application.Common.Pagination;
+using Application.Menus;
 using Application.Posts;
 using Application.Posts.Dtos;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Application.Menus;
 
 [Authorize(Roles = Auth.Role.Admin)]
 public sealed class PostsController : BaseApiController
@@ -89,10 +88,10 @@ public sealed class PostsController : BaseApiController
     [HttpGet("public/{language}/{path}", Name = "GetPublicPostByMenuLanguageAndPath")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PostDetailsDto> GetPublicPost(string language, string path, CancellationToken ct)
-    { 
-        return await Mediator.Send(new PublicMenuLinkedPost.Query(language,path), ct);
+    {
+        return await Mediator.Send(new PublicMenuLinkedPost.Query(language, path), ct);
     }
-    
+
     [AllowAnonymous]
     [HttpGet("public/{language}/all", Name = "GetPublicPostsByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -110,6 +109,4 @@ public sealed class PostsController : BaseApiController
     {
         return await Mediator.Send(new PublicPostSearchList.Query(text, pagination), ct);
     }
-
- 
 }

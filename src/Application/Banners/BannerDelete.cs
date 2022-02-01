@@ -1,15 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.Banners;
+
+using System.Diagnostics.CodeAnalysis;
+using Common.Exceptions;
+using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
-
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public static class BannerDelete
 {
@@ -18,8 +13,8 @@ public static class BannerDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
-        private readonly ISearchClient _searchClient;
         private readonly IMediaManager _mediaManager;
+        private readonly ISearchClient _searchClient;
 
         public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager)
         {

@@ -5,7 +5,6 @@ using AutoMapper.QueryableExtensions;
 using Common.Exceptions;
 using Common.Interfaces;
 using Courses.Dtos;
-using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,15 +15,15 @@ public static class CourseDetails
     public class Handler : IRequestHandler<Query, CourseDto>
     {
         private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
         {
             _context = context;
             _mapper = mapper;
             _currentUser = currentUser;
-        } 
+        }
 
         public async Task<CourseDto> Handle(Query request, CancellationToken cancellationToken)
         {
@@ -37,12 +36,12 @@ public static class CourseDetails
             {
                 throw new NotFoundException();
             }
-             
+
             if (!_currentUser.IsOwnerOrAdmin(entity.UserId))
             {
                 throw new UnauthorizedAccessException();
             }
-              
+
             return entity;
         }
     }

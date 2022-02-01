@@ -8,8 +8,6 @@ using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Domain.Entities;
 using Validators;
 
 public static class CourseEdit
@@ -27,8 +25,8 @@ public static class CourseEdit
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
         {

@@ -1,6 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Menus.Dtos;
 
-using Domain.Entities;
 using Languages.Dtos;
 using Posts.Dtos;
 
@@ -11,5 +10,4 @@ public record MenuDetailsDto : MenuDto
     public MenuLocationDto MenuLocation { get; init; } = default!;
 
     public PostDetailsDto? LinkedPost { get; set; }
-
 }

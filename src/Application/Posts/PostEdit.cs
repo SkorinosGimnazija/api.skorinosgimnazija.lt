@@ -26,8 +26,8 @@ public static class PostEdit
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
-        private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
+        private readonly IMediaManager _mediaManager;
         private readonly ISearchClient _searchClient;
 
         public Handler(
@@ -66,7 +66,6 @@ public static class PostEdit
             await _searchClient.SavePostAsync(_mapper.Map<PostIndexDto>(post));
         }
 
-     
         private async Task SaveImages(Post post, Command request)
         {
             var imagesToDelete = GetFilesToDelete(post.Images, request.Post.Images);
@@ -91,7 +90,7 @@ public static class PostEdit
             {
                 _mediaManager.DeleteFiles(post.FeaturedImage);
             }
-            
+
             if (request.Post.NewFeaturedImage is not null)
             {
                 _mediaManager.DeleteFiles(post.FeaturedImage);
@@ -121,8 +120,8 @@ public static class PostEdit
                 post.Files = post.Files?.Concat(newFiles).ToList() ?? newFiles;
             }
 
-                post.IntroText = _mediaManager.GenerateFileLinks( post.IntroText, post.Files);
-                post.Text = _mediaManager.GenerateFileLinks( post.Text, post.Files);
+            post.IntroText = _mediaManager.GenerateFileLinks(post.IntroText, post.Files);
+            post.Text = _mediaManager.GenerateFileLinks(post.Text, post.Files);
         }
 
         private static ICollection<string>? GetFilesToDelete(
@@ -133,9 +132,8 @@ public static class PostEdit
             {
                 return currentFiles;
             }
-             
+
             return currentFiles.Where(x => !filesToSave.Contains(x)).ToList();
         }
-
     }
 }

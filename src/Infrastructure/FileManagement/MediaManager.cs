@@ -2,9 +2,7 @@
 
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using FluentValidation.Results;
 using ImageOptimization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -41,7 +39,7 @@ public sealed class MediaManager : IMediaManager
         {
             return await SaveFilesAsync(files);
         }
-         
+
         var randomName = Path.GetRandomFileName();
         var directory = Directory.CreateDirectory(Path.Combine(_baseUploadPath, randomName));
         var savedFiles = new ConcurrentBag<string>();
@@ -101,7 +99,6 @@ public sealed class MediaManager : IMediaManager
             return text;
         }
 
-      
         return FileUrlReplaceTemplateRegex.Replace(text, x =>
         {
             var path = files.FirstOrDefault(z => z.EndsWith(x.Groups[2].Value));

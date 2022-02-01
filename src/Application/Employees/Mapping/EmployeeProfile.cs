@@ -1,14 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Employees.Mapping;
-using AutoMapper;
-using SkorinosGimnazija.Application.Common.Identity;
-using SkorinosGimnazija.Application.Courses.Dtos;
 
-using SkorinosGimnazija.Domain.Entities.Teacher;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using Common.Identity;
 using Domain.Entities.Identity;
 
 public class EmployeeProfile : Profile

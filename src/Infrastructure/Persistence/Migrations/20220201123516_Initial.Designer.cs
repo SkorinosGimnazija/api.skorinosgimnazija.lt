@@ -13,8 +13,8 @@ using SkorinosGimnazija.Infrastructure.Persistence;
 namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220107071910_Appointments2")]
-    partial class Appointments2
+    [Migration("20220201123516_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -231,19 +231,35 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.Property<int>("DurationInMinutes")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("End")
+                        .HasColumnType("timestamp");
+
+                    b.Property<bool>("InvitePrincipal")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("RegistrationEnd")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("timestamp");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("Slug");
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("AppointmentTypes");
                 });
@@ -255,6 +271,9 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Height")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("boolean");
@@ -279,6 +298,9 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<int>("Width")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -556,6 +578,10 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("FeaturedImage")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
                     b.Property<List<string>>("Files")
                         .HasColumnType("text[]");
 
@@ -575,7 +601,8 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Meta")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
@@ -635,18 +662,24 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<bool>("IsUseful")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Organizer")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<float?>("Price")
+                        .HasColumnType("real");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

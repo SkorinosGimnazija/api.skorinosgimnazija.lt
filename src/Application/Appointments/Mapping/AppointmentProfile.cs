@@ -1,15 +1,9 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments.Mapping;
-using AutoMapper;
 
-using SkorinosGimnazija.Domain.Entities.Teacher;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using Domain.Entities.Appointments;
 using Dtos;
-using SkorinosGimnazija.Application.ParentAppointments.Dtos;
+using ParentAppointments.Dtos;
 
 internal class AppointmentProfile : Profile
 {
@@ -18,7 +12,7 @@ internal class AppointmentProfile : Profile
         CreateMap<Appointment, AppointmentDto>();
 
         CreateMap<Appointment, AppointmentDetailsDto>();
-        
+
         CreateMap<AppointmentPublicCreateDto, Appointment>();
 
         CreateMap<AppointmentCreateDto, Appointment>();

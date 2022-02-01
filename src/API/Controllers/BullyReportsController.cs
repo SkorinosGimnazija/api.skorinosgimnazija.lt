@@ -1,17 +1,14 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
+using Application.Banners;
+using Application.BullyReports;
+using Application.BullyReports.Dtos;
+using Application.Common.Pagination;
+using Base;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.API.Controllers.Base;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyReports;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Infrastructure.Identity;
-using System.Xml.Linq;
-using Application.Banners;
-using Application.BullyReports.Events;
-using Application.Menus;
- 
+
 [Authorize(Roles = Auth.Role.BullyManager)]
 public class BullyReportsController : BaseApiController
 {

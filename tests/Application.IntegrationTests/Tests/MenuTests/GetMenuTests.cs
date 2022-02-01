@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.MenuTests;
 
 using Common.Exceptions;
-using Common.Pagination;
 using Domain.Entities;
 using FluentAssertions;
 using MenuLocations;
@@ -29,7 +28,6 @@ public class GetMenuTests
             .ThrowAsync<NotFoundException>();
     }
 
-
     [Fact]
     public async Task MenuLocationsList_ShouldListMenuLocations()
     {
@@ -40,7 +38,7 @@ public class GetMenuTests
 
         var actual = await _app.SendAsync(command);
 
-        actual.Select(x=> x.Slug).Should().Contain(menuLoc1.Slug, menuLoc2.Slug);
+        actual.Select(x => x.Slug).Should().Contain(menuLoc1.Slug, menuLoc2.Slug);
     }
 
     [Fact]
@@ -93,12 +91,12 @@ public class GetMenuTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().HaveCount(expected);
-    } 
+    }
 
     [Fact]
     public async Task MenuList_ShouldThrowEx_WhenInvalidPagination()
     {
-        var command = new MenuList.Query(new(){Items = int.MaxValue, Page = int.MaxValue});
+        var command = new MenuList.Query(new() { Items = int.MaxValue, Page = int.MaxValue });
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
@@ -129,7 +127,7 @@ public class GetMenuTests
 
         await _app.AddAsync(menu1);
 
-        var command = new MenuList.Query(new ());
+        var command = new MenuList.Query(new());
 
         var actual = await _app.SendAsync(command);
 

@@ -1,18 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyReports;
 
-using SkorinosGimnazija.Application.Common.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Banners;
+using Common.Exceptions;
 using Domain.Entities.Bullies;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities;
 
 [Collection("App")]
 public class UpdateBullyReportsTests
@@ -44,7 +36,7 @@ public class UpdateBullyReportsTests
             VictimInfo = "Victim name",
             Location = "Location",
             Details = "More details",
-            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
+            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime()
         };
 
         await _app.AddAsync(entity);
@@ -57,6 +49,4 @@ public class UpdateBullyReportsTests
 
         actual.Should().BeNull();
     }
-
-
 }

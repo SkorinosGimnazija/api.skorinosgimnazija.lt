@@ -2,10 +2,8 @@
 
 using Banners;
 using Common.Exceptions;
-using Common.Pagination;
 using Domain.Entities;
 using FluentAssertions;
-using SkorinosGimnazija.Application.Menus;
 using Xunit;
 
 [Collection("App")]
@@ -84,10 +82,10 @@ public class GetBannerTests
         await _app.AddAsync(entity1);
         await _app.AddAsync(entity2);
 
-        var command = new BannerList.Query(new ());
+        var command = new BannerList.Query(new());
 
         var actual = await _app.SendAsync(command);
-         
+
         actual.Items.Should().HaveCount(2);
         actual.Items.Select(x => x.Id).Should().Contain(new[] { entity1.Id, entity2.Id });
         actual.TotalCount.Should().Be(2);

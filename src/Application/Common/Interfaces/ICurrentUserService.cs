@@ -1,7 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
-using System.Security.Claims;
-
 public interface ICurrentUserService
 {
     int UserId { get; }

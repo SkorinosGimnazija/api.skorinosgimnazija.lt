@@ -23,6 +23,7 @@ public record PostDto
     public string Title { get; init; } = default!;
 
     public string? IntroText { get; init; }
+
     public string? Meta { get; init; }
 
     public string? FeaturedImage { get; init; }

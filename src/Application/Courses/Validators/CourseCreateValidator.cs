@@ -1,13 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Courses.Validators;
-using FluentValidation;
-using SkorinosGimnazija.Application.Courses.Dtos;
 
-using SkorinosGimnazija.Application.Courses.Validators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dtos;
+using FluentValidation;
 
 internal class CourseCreateValidator : AbstractValidator<CourseCreateDto>
 {

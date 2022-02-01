@@ -1,22 +1,19 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Services;
 
-using System.Collections;
-using Application.Common.Identity;
 using Application.Common.Interfaces;
 using Calendar;
+using Domain.Entities.Identity;
 using Google.Apis.Admin.Directory.directory_v1;
-using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
 using Identity;
 using Microsoft.Extensions.Options;
 using Options;
-using SkorinosGimnazija.Domain.Entities.Identity;
 
 public sealed class EmployeeService : IEmployeeService
 {
-    private readonly IReadOnlyDictionary<string, IReadOnlyCollection<string>> _groupRoles;
     private readonly DirectoryService _directoryService;
     private readonly string _domain;
+    private readonly IReadOnlyDictionary<string, IReadOnlyCollection<string>> _groupRoles;
 
     public EmployeeService(
         IOptions<GoogleOptions> googleOptions,
@@ -50,7 +47,7 @@ public sealed class EmployeeService : IEmployeeService
 
         return response.Email;
     }
-     
+
     public async Task<ICollection<string>> GetEmployeeRolesAsync(string userName)
     {
         var userGroups = await GetEmployeeGroupsAsync(userName);
@@ -65,34 +62,6 @@ public sealed class EmployeeService : IEmployeeService
         }
 
         return userRoles;
-    }
-
-    private async Task<IEnumerable<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
-    {
-        var employes = new List<Employee>();
-        string? pageToken = null;
-
-        do
-        {
-            var request = _directoryService.Users.List();
-
-            request.Query = $"orgUnitPath={unitPath} isSuspended=false";
-            request.Domain = _domain;
-            request.PageToken = pageToken;
-
-            var response = await request.ExecuteAsync(ct);
-
-            pageToken = response.NextPageToken;
-
-            employes.AddRange(response.UsersValue.Select(x => new Employee
-            {
-                Id = x.Id,
-                FullName = x.Name.FullName,
-                Email = x.PrimaryEmail
-            }));
-        } while (!string.IsNullOrEmpty(pageToken));
-
-        return employes;
     }
 
     public Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct = default)
@@ -143,12 +112,40 @@ public sealed class EmployeeService : IEmployeeService
             {
                 Id = response.Id,
                 FullName = response.Name.FullName,
-                Email = response.PrimaryEmail,
+                Email = response.PrimaryEmail
             };
         }
         catch
         {
             return null;
         }
+    }
+
+    private async Task<IEnumerable<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
+    {
+        var employes = new List<Employee>();
+        string? pageToken = null;
+
+        do
+        {
+            var request = _directoryService.Users.List();
+
+            request.Query = $"orgUnitPath={unitPath} isSuspended=false";
+            request.Domain = _domain;
+            request.PageToken = pageToken;
+
+            var response = await request.ExecuteAsync(ct);
+
+            pageToken = response.NextPageToken;
+
+            employes.AddRange(response.UsersValue.Select(x => new Employee
+            {
+                Id = x.Id,
+                FullName = x.Name.FullName,
+                Email = x.PrimaryEmail
+            }));
+        } while (!string.IsNullOrEmpty(pageToken));
+
+        return employes;
     }
 }

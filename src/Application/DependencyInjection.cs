@@ -4,7 +4,6 @@ using System.Reflection;
 using Common.Behaviors;
 using FluentValidation;
 using MediatR;
-using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection

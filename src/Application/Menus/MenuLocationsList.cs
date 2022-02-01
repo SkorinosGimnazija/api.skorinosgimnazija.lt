@@ -2,14 +2,10 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Common.Extensions;
 using Common.Interfaces;
-using FluentValidation;
 using MediatR;
 using Menus.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Posts;
-using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class MenuLocationsList
 {
@@ -25,8 +21,8 @@ public static class MenuLocationsList
         {
             _context = context;
             _mapper = mapper;
-        } 
-         
+        }
+
         public async Task<List<MenuLocationDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.MenuLocations

@@ -1,22 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Teacher;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Appointments.Dtos;
 using Common.Exceptions;
 using Domain.Entities.Appointments;
-using Xunit;
+using FluentAssertions;
 using Moq;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Appointments;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.ParentAppointments;
+using ParentAppointments;
+using Xunit;
 
 [Collection("App")]
 public class CreateAppointmentTests
@@ -33,7 +23,7 @@ public class CreateAppointmentTests
         _currentUserName = user.UserName;
         _app.CurrentUserMock.SetCurrentUserData(user.Id, _currentUserName);
     }
-     
+
     [Fact]
     public async Task AppointmentCreate_ShouldThrowEx_WhenInvalidData()
     {
@@ -56,7 +46,7 @@ public class CreateAppointmentTests
             .ThrowAsync<ValidationException>();
     }
 
-    [Fact] 
+    [Fact]
     public async Task AppointmentPublicCreate_ShouldCreateAppointment()
     {
         var date = await _app.AddAsync(new AppointmentDate
@@ -81,7 +71,7 @@ public class CreateAppointmentTests
             AttendeeName = "name",
             UserName = _currentUserName,
             DateId = date.Id,
-            CaptchaToken = "token",
+            CaptchaToken = "token"
         };
 
         _app.EmployeeServiceMock.SetEmployeeData(_currentUserName, "employee@email");
@@ -102,13 +92,14 @@ public class CreateAppointmentTests
             .Verify(x => x.AddAppointmentAsync(
                     It.Is<string>(z => z == date.Type.Name),
                     It.IsAny<string>(),
-                    It.Is<DateTime>(z=>  z - date.Date < TimeSpan.FromSeconds(5)),
-                    It.Is<DateTime>(z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
+                    It.Is<DateTime>(z => z - date.Date < TimeSpan.FromSeconds(5)),
+                    It.Is<DateTime>(
+                        z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
                     It.Is<string[]>(z =>
                         z.Length == 2 && z.Contains(dto.AttendeeEmail) && z.Contains("employee@email"))),
                 Times.Once);
     }
-     
+
     [Fact]
     public async Task AppointmentPublicCreate_ShouldThrowEx_WhenInvalidDate()
     {
@@ -118,7 +109,7 @@ public class CreateAppointmentTests
             AttendeeName = "name",
             UserName = _currentUserName,
             DateId = 1,
-            CaptchaToken = "token",
+            CaptchaToken = "token"
         };
 
         var command = new AppointmentPublicCreate.Command(dto);
@@ -155,7 +146,7 @@ public class CreateAppointmentTests
             AttendeeName = "name",
             UserName = _currentUserName,
             DateId = date.Id,
-            CaptchaToken = "token",
+            CaptchaToken = "token"
         };
 
         var command = new AppointmentPublicCreate.Command(dto);
@@ -187,7 +178,7 @@ public class CreateAppointmentTests
         var dto = new AppointmentCreateDto
         {
             UserName = _currentUserName,
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         _app.EmployeeServiceMock.SetEmployeeData(_currentUserName, "employee@email");
@@ -205,10 +196,10 @@ public class CreateAppointmentTests
                     It.Is<string>(z => z == date.Type.Name),
                     It.IsAny<string>(),
                     It.Is<DateTime>(z => z - date.Date < TimeSpan.FromSeconds(5)),
-                    It.Is<DateTime>(z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
+                    It.Is<DateTime>(
+                        z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
                     It.Is<string[]>(z =>
                         z.Length == 3 && z.Contains("principal@email") && z.Contains("employee@email"))),
                 Times.Once);
     }
-
 }

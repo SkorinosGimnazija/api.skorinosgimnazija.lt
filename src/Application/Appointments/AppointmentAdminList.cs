@@ -1,23 +1,16 @@
 ﻿namespace SkorinosGimnazija.Application.ParentAppointments;
-using AutoMapper;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Extensions;
+using Common.Interfaces;
 using Common.Pagination;
 using Dtos;
 using FluentValidation;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Application.Common.Extensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
-public  static class AppointmentAdminList
+public static class AppointmentAdminList
 {
     public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
@@ -41,7 +34,8 @@ public  static class AppointmentAdminList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<AppointmentDetailsDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<AppointmentDetailsDto>> Handle(
+            Query request, CancellationToken cancellationToken)
         {
             return await _context.Appointments
                        .AsNoTracking()

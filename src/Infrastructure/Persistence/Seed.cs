@@ -16,7 +16,7 @@ public static class Seed
             await roleManager.CreateAsync(new(role));
         }
     }
-      
+
     public static async Task AddLanguages(AppDbContext dbContext)
     {
         if (await dbContext.Languages.AnyAsync())
@@ -55,11 +55,6 @@ public static class Seed
         dbContext.MenuLocations.AddRange(
             new()
             {
-                Name = "Header",
-                Slug = "header"
-            },
-            new()
-            {
                 Name = "Side",
                 Slug = "side"
             },
@@ -77,5 +72,4 @@ public static class Seed
 
         await dbContext.SaveChangesAsync();
     }
-     
 }

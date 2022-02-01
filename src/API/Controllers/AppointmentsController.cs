@@ -1,24 +1,14 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
+using Application.Appointments;
+using Application.Appointments.Dtos;
+using Application.Common.Pagination;
+using Application.ParentAppointments;
+using Application.ParentAppointments.Dtos;
 using Base;
-using Google.Apis.Admin.Directory.directory_v1.Data;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Appointments;
-using SkorinosGimnazija.Infrastructure.Identity;
-using System.Xml.Linq;
-using SkorinosGimnazija.Application.Banners;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Appointments;
-using SkorinosGimnazija.Application.Menus;
-using SkorinosGimnazija.Application.MenuLocations;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Application.ParentAppointments;
-using SkorinosGimnazija.Application.ParentAppointments.Dtos;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
 [Authorize(Roles = Auth.Role.Teacher)]
 public class AppointmentsController : BaseApiController
@@ -26,14 +16,16 @@ public class AppointmentsController : BaseApiController
     [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("all", Name = "GetAllAppointments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<AppointmentDetailsDto>> GetAll([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<AppointmentDetailsDto>> GetAll(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentAdminList.Query(pagination), ct);
     }
 
-    [HttpGet(Name = "GetMyAppointments")] 
+    [HttpGet(Name = "GetMyAppointments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<AppointmentDetailsDto>> GetMy([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<AppointmentDetailsDto>> GetMy(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentList.Query(pagination), ct);
     }
@@ -95,8 +87,6 @@ public class AppointmentsController : BaseApiController
         return await Mediator.Send(new AppointmentTypeDetails.Query(id), ct);
     }
 
-
-     
     [Authorize(Roles = Auth.Role.Admin)]
     [HttpPost("type", Name = "CreateAppointmentType")]
     [ProducesResponseType(StatusCodes.Status201Created)]

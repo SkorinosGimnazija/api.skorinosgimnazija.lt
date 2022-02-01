@@ -1,16 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using SkorinosGimnazija.Application.ParentAppointments;
 
-using SkorinosGimnazija.Domain.Entities.Appointments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Appointments;
 using Common.Exceptions;
+using Domain.Entities.Appointments;
 using FluentAssertions;
+using ParentAppointments;
 using Xunit;
-using SkorinosGimnazija.Application.Appointments;
 
 [Collection("App")]
 public class GetAppointmentDateTests
@@ -60,7 +55,7 @@ public class GetAppointmentDateTests
             Date = DateTime.Now.AddDays(1),
             TypeId = type1.Id
         });
-         
+
         var date2 = await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(1),
@@ -99,7 +94,7 @@ public class GetAppointmentDateTests
         await _app.AddAsync(new AppointmentReservedDate
         {
             UserName = _currentUserName,
-            Date = new ()
+            Date = new()
             {
                 Date = DateTime.Now.AddDays(3),
                 TypeId = type.Id
@@ -111,7 +106,7 @@ public class GetAppointmentDateTests
             UserName = _currentUserName,
             AttendeeEmail = "email",
             AttendeeName = "name",
-            Date = new ()
+            Date = new()
             {
                 Date = DateTime.Now.AddDays(4),
                 TypeId = type.Id
@@ -172,7 +167,6 @@ public class GetAppointmentDateTests
             .Should()
             .ThrowAsync<UnauthorizedAccessException>();
     }
-
 
     [Fact]
     public async Task AppointmentAvailableDatesList_ShouldThrowEx_WhenInvalidType()

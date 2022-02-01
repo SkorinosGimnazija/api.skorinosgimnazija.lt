@@ -5,6 +5,7 @@ public record MenuCreateDto
     public int Order { get; init; }
 
     public string Title { get; init; } = default!;
+
     public string? Url { get; init; }
 
     public bool IsPublished { get; init; }

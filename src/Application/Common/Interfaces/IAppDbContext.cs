@@ -11,18 +11,24 @@ using Microsoft.EntityFrameworkCore.Storage;
 public interface IAppDbContext
 {
     DbSet<Language> Languages { get; }
+
     DbSet<Menu> Menus { get; }
+
     DbSet<AppUser> Users { get; }
-    DbSet<Banner> Banners { get;  }
+
+    DbSet<Banner> Banners { get; }
+
     DbSet<MenuLocation> MenuLocations { get; }
+
     DbSet<Course> Courses { get; }
-        
+
     DbSet<Post> Posts { get; }
 
-    DbSet<BullyReport> BullyReports { get;  }
+    DbSet<BullyReport> BullyReports { get; }
 
-    DbSet<Appointment> Appointments { get;}
-    DbSet<AppointmentReservedDate> AppointmentReservedDates { get;  }
+    DbSet<Appointment> Appointments { get; }
+
+    DbSet<AppointmentReservedDate> AppointmentReservedDates { get; }
 
     DbSet<AppointmentDate> AppointmentDates { get; }
 

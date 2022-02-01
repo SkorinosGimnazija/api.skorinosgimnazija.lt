@@ -4,12 +4,11 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Posts;
-using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class MenuList
 {
@@ -41,7 +40,7 @@ public static class MenuList
                        .AsNoTracking()
                        .ProjectTo<MenuDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderBy(x => x.Order)
-                       .ThenBy(x=> x.Path)
+                       .ThenBy(x => x.Path)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }

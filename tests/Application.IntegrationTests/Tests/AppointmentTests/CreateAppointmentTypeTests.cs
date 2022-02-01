@@ -1,21 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using FluentAssertions;
-using Moq;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyReports.Events;
-using SkorinosGimnazija.Application.BullyReports;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Appointments;
 using Appointments.Dtos;
+using Common.Exceptions;
 using Domain.Entities.Appointments;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Appointments;
 
 [Collection("App")]
 public class CreateAppointmentTypeTests
@@ -38,7 +28,7 @@ public class CreateAppointmentTypeTests
             .Should()
             .ThrowAsync<ValidationException>();
     }
-     
+
     [Fact]
     public async Task AppointmentTypeCreate_ShouldCreateType()
     {
@@ -70,6 +60,4 @@ public class CreateAppointmentTypeTests
         actual.InvitePrincipal.Should().Be(dto.InvitePrincipal);
         actual.IsPublic.Should().Be(dto.IsPublic);
     }
-
-
 }

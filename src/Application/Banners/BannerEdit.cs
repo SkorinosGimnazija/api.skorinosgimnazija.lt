@@ -4,12 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Exceptions;
 using Common.Interfaces;
+using Domain.Entities;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Domain.Entities;
 using Validators;
 
 public static class BannerEdit
@@ -46,7 +45,7 @@ public static class BannerEdit
             if (entity is null)
             {
                 throw new NotFoundException();
-}
+            }
 
             _mapper.Map(request.Banner, entity);
 
@@ -57,7 +56,7 @@ public static class BannerEdit
 
             return Unit.Value;
         }
-         
+
         private async Task SavePictureAsync(Banner banner, BannerEditDto newBanner)
         {
             if (newBanner.Picture is null)
@@ -70,7 +69,6 @@ public static class BannerEdit
             var image = await _mediaManager.SaveFilesAsync(new[] { newBanner.Picture });
             banner.PictureUrl = image[0];
         }
-
 
         private async Task SaveSearchIndexAsync(Banner banner)
         {

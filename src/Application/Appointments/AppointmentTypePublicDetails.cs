@@ -1,18 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments;
+
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Common.Exceptions;
+using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
+using ParentAppointments.Dtos;
 
-using SkorinosGimnazija.Application.ParentAppointments.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
- 
 public static class AppointmentTypePublicDetails
 {
     public record Query(string Slug) : IRequest<AppointmentTypeDto>;
@@ -27,15 +22,15 @@ public static class AppointmentTypePublicDetails
             _context = context;
             _mapper = mapper;
         }
-         
+
         public async Task<AppointmentTypeDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var entity = await _context.AppointmentTypes
                              .AsNoTracking()
                              .ProjectTo<AppointmentTypeDto>(_mapper.ConfigurationProvider)
-                             .FirstOrDefaultAsync(x => 
-                                 x.Slug == request.Slug &&
-                                 x.IsPublic,
+                             .FirstOrDefaultAsync(x =>
+                                     x.Slug == request.Slug &&
+                                     x.IsPublic,
                                  cancellationToken);
 
             if (entity is null)

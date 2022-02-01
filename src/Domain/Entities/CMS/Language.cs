@@ -1,8 +1,5 @@
 ﻿namespace SkorinosGimnazija.Domain.Entities;
 
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 public sealed class Language
 {
     public int Id { get; set; }

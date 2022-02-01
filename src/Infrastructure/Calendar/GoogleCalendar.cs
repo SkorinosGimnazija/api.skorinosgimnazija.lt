@@ -1,9 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Calendar;
 
 using Application.Common.Interfaces;
-using Application.Common.Pagination;
 using Application.Events.Dtos;
-using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
@@ -17,14 +15,14 @@ public class GoogleCalendar : ICalendarService
     private readonly string _appointmentsCalendarId;
     private readonly CalendarService _calendarService;
     private readonly string _eventsCalendarId;
-     
+
     public GoogleCalendar(
         IOptions<GoogleOptions> googleOptions,
         IOptions<CalendarOptions> calendarOptions)
     {
         _appointmentsCalendarId = calendarOptions.Value.AppointmentsCalendarId;
         _eventsCalendarId = calendarOptions.Value.EventsCalendarId;
-         
+
         _calendarService = new(new()
         {
             HttpClientInitializer = GoogleCredential.FromJson(googleOptions.Value.Credential)
@@ -32,7 +30,7 @@ public class GoogleCalendar : ICalendarService
                 .CreateWithUser(calendarOptions.Value.User)
         });
     }
-     
+
     public async Task<List<EventDto>> GetEventsAsync(DateTime start, DateTime end, CancellationToken ct)
     {
         var request = _calendarService.Events.List(_eventsCalendarId);
@@ -49,13 +47,13 @@ public class GoogleCalendar : ICalendarService
                 Id = x.Id,
                 Title = x.Summary,
                 StartDateTime = x.Start.DateTimeRaw,
-                StartDate = x.Start.Date ,
+                StartDate = x.Start.Date,
                 EndDateTime = x.End.DateTimeRaw,
                 EndDate = x.End.Date is not null ? DateOnly.Parse(x.End.Date).AddDays(-1).ToString("yyyy-MM-dd") : null
             })
             .ToList();
     }
-     
+
     public async Task<string> AddEventAsync(string title, DateTime startDate, DateTime endDate, bool allDay)
     {
         var @event = new Event
@@ -80,7 +78,6 @@ public class GoogleCalendar : ICalendarService
 
         return response.Id;
     }
-
 
     public async Task<string> AddAppointmentAsync(
         string title,

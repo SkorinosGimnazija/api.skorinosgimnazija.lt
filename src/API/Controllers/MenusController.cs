@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
+using Application.Common.Pagination;
 using Application.MenuLocations;
 using Application.Menus;
 using Application.Menus.Dtos;
@@ -7,18 +8,14 @@ using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Application.Posts.Dtos;
-using SkorinosGimnazija.Application.Posts;
-using SkorinosGimnazija.Application.Languages.Dtos;
-using SkorinosGimnazija.Application.Languages;
 
 [Authorize(Roles = Auth.Role.Admin)]
 public sealed class MenusController : BaseApiController
 {
     [HttpGet(Name = "GetMenus")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<MenuDetailsDto>> GetMenus([FromQuery] PaginationDto pagination, CancellationToken ct)
+    public async Task<PaginatedList<MenuDetailsDto>> GetMenus(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new MenuList.Query(pagination), ct);
     }
@@ -69,7 +66,7 @@ public sealed class MenusController : BaseApiController
     [HttpGet("search/{text}", Name = "SearchMenus")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<MenuDetailsDto>> SearchMenus(
-        string text, 
+        string text,
         [FromQuery] PaginationDto pagination,
         CancellationToken ct)
     {
@@ -83,5 +80,4 @@ public sealed class MenusController : BaseApiController
     {
         return await Mediator.Send(new PublicMenuList.Query(language, location), ct);
     }
-
 }

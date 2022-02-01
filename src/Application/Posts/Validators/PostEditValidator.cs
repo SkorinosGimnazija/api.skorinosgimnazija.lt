@@ -2,7 +2,6 @@
 
 using Dtos;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 
 public class PostEditValidator : AbstractValidator<PostEditDto>
 {
@@ -11,5 +10,4 @@ public class PostEditValidator : AbstractValidator<PostEditDto>
         Include(new PostCreateValidator());
         RuleFor(x => x.Id).NotEmpty();
     }
-   
 }

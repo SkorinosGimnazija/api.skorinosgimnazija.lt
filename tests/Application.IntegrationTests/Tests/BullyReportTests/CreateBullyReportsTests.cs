@@ -1,21 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportsTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyReports;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BullyReports;
+using BullyReports.Dtos;
 using BullyReports.Events;
 using Common.Exceptions;
 using Domain.Entities.Bullies;
+using FluentAssertions;
 using Moq;
 using Xunit;
-using SkorinosGimnazija.Application.Menus;
-using SkorinosGimnazija.Domain.Entities.Teacher;
 
 [Collection("App")]
 public class CreateBullyReportsTests
@@ -39,23 +31,23 @@ public class CreateBullyReportsTests
             .ThrowAsync<ValidationException>();
     }
 
-    [Fact]  
+    [Fact]
     public async Task BullyReportPublicCreate_ShouldCreateBullyReportAndSendNotification()
     {
         var dto = new BullyReportCreateDto
         {
-           BullyInfo = "Bully name",
-           VictimInfo = "Victim name",
-           Location = "Location",
-           Details = "More details",
-           Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
-           CaptchaToken = "token",
+            BullyInfo = "Bully name",
+            VictimInfo = "Victim name",
+            Location = "Location",
+            Details = "More details",
+            Date = DateTime.Parse("2021-01-01 12:00:00").ToUniversalTime(),
+            CaptchaToken = "token"
         };
 
         var command = new BullyReportPublicCreate.Command(dto);
-        
+
         var response = await _app.SendAsync(command);
-         
+
         var actual = await _app.FindAsync<BullyReport>(response.Id);
 
         actual.Should().NotBeNull();
@@ -76,6 +68,4 @@ public class CreateBullyReportsTests
                     It.IsAny<CancellationToken>()),
                 Times.Once);
     }
-
-
 }

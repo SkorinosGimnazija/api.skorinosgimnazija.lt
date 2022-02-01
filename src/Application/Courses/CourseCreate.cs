@@ -3,13 +3,10 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Domain.Entities;
 using Domain.Entities.Teacher;
 using Dtos;
 using FluentValidation;
 using MediatR;
-using Menus.Validators;
-using SkorinosGimnazija.Application.Menus.Dtos;
 using Validators;
 
 public static class CourseCreate
@@ -27,8 +24,8 @@ public static class CourseCreate
     public class Handler : IRequestHandler<Command, CourseDto>
     {
         private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
         {
@@ -48,7 +45,5 @@ public static class CourseCreate
 
             return _mapper.Map<CourseDto>(entity);
         }
-
-       
     }
 }

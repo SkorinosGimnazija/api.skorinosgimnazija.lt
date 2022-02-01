@@ -9,7 +9,7 @@ public record PostCreateDto
     public IFormFileCollection? NewFiles { get; init; }
 
     public IFormFileCollection? NewImages { get; init; }
-     
+
     public IFormFile? NewFeaturedImage { get; init; }
 
     public DateTime PublishedAt { get; init; }
@@ -27,8 +27,9 @@ public record PostCreateDto
     public int LanguageId { get; init; }
 
     public string Slug { get; init; } = default!;
-     
+
     public string? Text { get; init; }
+
     public string? Meta { get; init; }
 
     public string Title { get; init; } = default!;

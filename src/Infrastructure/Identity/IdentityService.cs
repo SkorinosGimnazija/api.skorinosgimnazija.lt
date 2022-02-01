@@ -17,9 +17,9 @@ public sealed class IdentityService : IIdentityService
 {
     private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipal;
     private readonly string _domain;
+    private readonly IEmployeeService _employeeService;
     private readonly string _googleClientId;
     private readonly TokenService _tokenService;
-    private readonly IEmployeeService _employeeService;
     private readonly UserManager<AppUser> _userManager;
 
     public IdentityService(
@@ -44,7 +44,7 @@ public sealed class IdentityService : IIdentityService
         {
             return null;
         }
-            
+
         var user = await _userManager.FindByNameAsync(userName);
         if (user is not null)
         {
@@ -59,7 +59,7 @@ public sealed class IdentityService : IIdentityService
 
         return await CreateUserAsync(employee);
     }
-     
+
     public async Task<UserAuthDto> AuthorizeAsync(string token)
     {
         var payload = await ValidateSignatureAsync(token);
@@ -94,7 +94,7 @@ public sealed class IdentityService : IIdentityService
         await _userManager.AddToRolesAsync(user, userRoles.Except(currentRoles));
         await _userManager.RemoveFromRolesAsync(user, currentRoles.Except(userRoles));
     }
-     
+
     private async Task UpdateUserInfoAsync(AppUser user, GoogleJsonWebSignature.Payload payload)
     {
         if (string.Equals(user.DisplayName, payload.Name, StringComparison.Ordinal) &&

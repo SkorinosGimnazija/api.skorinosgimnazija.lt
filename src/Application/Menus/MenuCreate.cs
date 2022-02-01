@@ -25,8 +25,8 @@ public static class MenuCreate
     public class Handler : IRequestHandler<Command, MenuDto>
     {
         private readonly IAppDbContext _context;
-        private readonly ISearchClient _searchClient;
         private readonly IMapper _mapper;
+        private readonly ISearchClient _searchClient;
 
         public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
         {

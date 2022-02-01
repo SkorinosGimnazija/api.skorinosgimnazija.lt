@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [Authorize(Roles = Auth.Role.Admin)]
 public class LanguagesController : BaseApiController
-{ 
+{
     [AllowAnonymous]
     [HttpGet("public", Name = "GetPublicLanguages")]
     [ProducesResponseType(StatusCodes.Status200OK)]

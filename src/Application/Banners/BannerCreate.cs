@@ -7,8 +7,6 @@ using Domain.Entities;
 using Dtos;
 using FluentValidation;
 using MediatR;
-using Menus.Validators;
-using SkorinosGimnazija.Application.Menus.Dtos;
 using Validators;
 
 public static class BannerCreate
@@ -26,9 +24,9 @@ public static class BannerCreate
     public class Handler : IRequestHandler<Command, BannerDto>
     {
         private readonly IAppDbContext _context;
-        private readonly ISearchClient _searchClient;
-        private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
+        private readonly IMediaManager _mediaManager;
+        private readonly ISearchClient _searchClient;
 
         public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager, IMapper mapper)
         {
@@ -46,7 +44,7 @@ public static class BannerCreate
             var entity = _context.Banners.Add(_mapper.Map<Banner>(request.Banner)).Entity;
 
             await SavePictureAsync(entity, request.Banner);
-            
+
             await _context.SaveChangesAsync();
 
             await SaveSearchIndexAsync(entity);
@@ -61,7 +59,6 @@ public static class BannerCreate
             var image = await _mediaManager.SaveFilesAsync(new[] { newBanner.Picture });
             banner.PictureUrl = image[0];
         }
-
 
         private async Task SaveSearchIndexAsync(Banner banner)
         {

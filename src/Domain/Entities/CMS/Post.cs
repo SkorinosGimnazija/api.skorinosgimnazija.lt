@@ -11,7 +11,7 @@ public sealed class Post
     public bool ShowInFeed { get; set; }
 
     public DateTime PublishedAt { get; set; }
-     
+
     public int LanguageId { get; set; }
 
     public Language Language { get; set; } = default!;

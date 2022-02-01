@@ -25,7 +25,7 @@ public sealed class FileService : IFileService
     public void DeleteEmptyFileFolder(string filePath)
     {
         var directoryPath = Path.GetDirectoryName(filePath);
-         
+
         if (Directory.Exists(directoryPath))
         {
             try

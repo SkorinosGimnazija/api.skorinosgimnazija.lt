@@ -9,7 +9,7 @@ public class PaginatedList<T>
         PageNumber = pageNumber;
         TotalPages = (int) Math.Ceiling(totalCount / (double) pageSize);
     }
-        
+
     public List<T> Items { get; }
 
     public int PageNumber { get; }

@@ -1,19 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTypeTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Appointments;
 using Appointments.Dtos;
+using Common.Exceptions;
 using Domain.Entities.Appointments;
+using FluentAssertions;
+using ParentAppointments;
 using Xunit;
-using SkorinosGimnazija.Application.ParentAppointments;
-using SkorinosGimnazija.Application.Appointments;
-using Microsoft.AspNetCore.Http;
 
 [Collection("App")]
 public class UpdateAppointmentTypeTypeTests
@@ -24,7 +17,7 @@ public class UpdateAppointmentTypeTypeTests
     {
         _app = appFixture;
         _app.ResetData();
-    } 
+    }
 
     [Fact]
     public async Task AppointmentTypeDelete_ShouldThrowNotFound()

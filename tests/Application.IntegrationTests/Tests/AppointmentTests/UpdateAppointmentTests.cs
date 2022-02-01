@@ -1,15 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Appointments;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
 using Domain.Entities.Appointments;
+using FluentAssertions;
 using ParentAppointments;
 using Xunit;
 
@@ -60,7 +53,7 @@ public class UpdateAppointmentTests
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
             EventId = Path.GetRandomFileName(),
-            DateId = date.Id,
+            DateId = date.Id
         };
 
         await _app.AddAsync(entity);
@@ -73,6 +66,4 @@ public class UpdateAppointmentTests
 
         actual.Should().BeNull();
     }
-
-
 }

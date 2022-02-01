@@ -1,11 +1,9 @@
 namespace SkorinosGimnazija.Application.IntegrationTests;
 
 using API;
-using Common.Interfaces;
 using Domain.Entities;
 using Domain.Entities.Identity;
 using Infrastructure.Extensions;
-using Infrastructure.Identity;
 using Infrastructure.ImageOptimization;
 using Infrastructure.Persistence;
 using MediatR;
@@ -61,18 +59,24 @@ public class AppFixture
         NotificationPublisherMock = new(services);
         CalendarServiceMock = new(services);
         EmployeeServiceMock = new(services);
-         
+
         _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
         CreateDatabase();
     }
 
     public SearchClientMock SearchClientMock { get; }
+
     public PublisherMock NotificationPublisherMock { get; }
+
     public CurrentUserMock CurrentUserMock { get; }
+
     public MediaManagerMock MediaManagerMock { get; }
+
     public CaptchaServiceMock CaptchaServiceMock { get; }
+
     public CalendarServiceMock CalendarServiceMock { get; }
+
     public EmployeeServiceMock EmployeeServiceMock { get; }
 
     private void CreateDatabase()
@@ -102,7 +106,7 @@ public class AppFixture
             },
             DbAdapter = DbAdapter.Postgres
         };
-         
+
         using var conn = new NpgsqlConnection(_configuration.GetNpgsqlConnectionString("DATABASE_URL"));
         conn.Open();
         checkpoint.Reset(conn).GetAwaiter().GetResult();

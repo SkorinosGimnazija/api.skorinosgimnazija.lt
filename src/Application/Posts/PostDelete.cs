@@ -31,7 +31,7 @@ public static class PostDelete
             {
                 throw new NotFoundException();
             }
-             
+
             await _searchClient.RemovePostAsync(entity);
             _mediaManager.DeleteFiles(entity.Files);
             _mediaManager.DeleteFiles(entity.Images);

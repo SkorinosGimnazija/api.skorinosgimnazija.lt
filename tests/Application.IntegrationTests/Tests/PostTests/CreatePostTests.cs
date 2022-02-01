@@ -3,7 +3,6 @@
 using Common.Exceptions;
 using Domain.Entities;
 using FluentAssertions;
-using Infrastructure.FileManagement;
 using Microsoft.AspNetCore.Http;
 using Posts;
 using Posts.Dtos;
@@ -51,7 +50,6 @@ public class CreatePostTests
         actual.Should().NotBeNull();
     }
 
-
     [Fact]
     public async Task PostCreate_ShouldThrowValidationEx_WhenDuplicateNewFileNames()
     {
@@ -64,7 +62,7 @@ public class CreatePostTests
             NewFiles = new FormFileCollection
             {
                 new FormFile(null!, 0, 0, null!, "FileName.pdf"),
-                new FormFile(null!, 0, 0, null!, "FileName.pdf"),
+                new FormFile(null!, 0, 0, null!, "FileName.pdf")
             }
         };
 

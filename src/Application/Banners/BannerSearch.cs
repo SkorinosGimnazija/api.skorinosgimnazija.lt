@@ -3,14 +3,11 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Extensions;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using SkorinosGimnazija.Application.Posts;
 
 public static class BannerSearch
 {
@@ -28,9 +25,9 @@ public static class BannerSearch
     public class Handler : IRequestHandler<Query, PaginatedList<BannerDto>>
     {
         private readonly IAppDbContext _context;
-        private readonly ISearchClient _search;
 
         private readonly IMapper _mapper;
+        private readonly ISearchClient _search;
 
         public Handler(IAppDbContext context, ISearchClient search, IMapper mapper)
         {
@@ -41,7 +38,8 @@ public static class BannerSearch
 
         public async Task<PaginatedList<BannerDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var searchResult = await _search.SearchBannersAsync(request.SearchText, request.Pagination, cancellationToken);
+            var searchResult =
+                await _search.SearchBannersAsync(request.SearchText, request.Pagination, cancellationToken);
             var items = await _context.Banners
                             .AsNoTracking()
                             .Where(x => searchResult.Items.Contains(x.Id))
