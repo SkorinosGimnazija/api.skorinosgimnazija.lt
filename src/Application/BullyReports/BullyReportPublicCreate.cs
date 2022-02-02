@@ -6,9 +6,10 @@ using Common.Interfaces;
 using Courses.Validators;
 using Domain.Entities.Bullies;
 using Dtos;
-using Events;
 using FluentValidation;
 using MediatR;
+using Notifications;
+using Validators;
 
 public static class BullyReportPublicCreate
 {

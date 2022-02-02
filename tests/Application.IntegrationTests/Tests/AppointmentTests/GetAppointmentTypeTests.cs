@@ -4,7 +4,6 @@ using Appointments;
 using Common.Exceptions;
 using Domain.Entities.Appointments;
 using FluentAssertions;
-using ParentAppointments;
 using Xunit;
 
 [Collection("App")]

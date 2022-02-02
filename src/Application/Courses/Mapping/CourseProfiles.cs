@@ -1,7 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Courses.Mapping;
 
 using AutoMapper;
-using Domain.Entities.Teacher;
+using Domain.Entities.Courses;
 using Dtos;
 
 public class CourseProfiles : Profile

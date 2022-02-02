@@ -3,11 +3,11 @@
 using Application.Common.Exceptions;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Domain.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Options;
 
 public sealed class CloudinaryImageOptimizer : IImageOptimizer
 {

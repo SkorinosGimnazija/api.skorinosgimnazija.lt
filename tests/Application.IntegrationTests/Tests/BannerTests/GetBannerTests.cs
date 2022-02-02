@@ -3,6 +3,7 @@
 using Banners;
 using Common.Exceptions;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using FluentAssertions;
 using Xunit;
 

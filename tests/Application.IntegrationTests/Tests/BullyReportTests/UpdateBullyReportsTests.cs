@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportTests;
 
 using Banners;
+using BullyReports;
 using Common.Exceptions;
 using Domain.Entities.Bullies;
 using FluentAssertions;

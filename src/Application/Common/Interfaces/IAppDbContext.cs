@@ -3,8 +3,9 @@
 using Domain.Entities;
 using Domain.Entities.Appointments;
 using Domain.Entities.Bullies;
+using Domain.Entities.CMS;
+using Domain.Entities.Courses;
 using Domain.Entities.Identity;
-using Domain.Entities.Teacher;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

@@ -1,6 +1,6 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
 
-using Domain.Entities.Teacher;
+using Domain.Entities.Courses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

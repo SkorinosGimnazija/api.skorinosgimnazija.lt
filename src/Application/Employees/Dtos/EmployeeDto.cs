@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.Common.Identity;
+﻿namespace SkorinosGimnazija.Application.Employees.Dtos;
 
 public record EmployeeDto
 {

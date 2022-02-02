@@ -3,7 +3,7 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Domain.Entities.Teacher;
+using Domain.Entities.Courses;
 using Dtos;
 using FluentValidation;
 using MediatR;

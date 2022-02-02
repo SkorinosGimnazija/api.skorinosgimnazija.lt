@@ -1,12 +1,13 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Email;
 
+using Application.Common.Interfaces;
 using Calendar;
+using Domain.Options;
 using Extensions;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using Options;
 
 public class EmailService : IEmailService
 {

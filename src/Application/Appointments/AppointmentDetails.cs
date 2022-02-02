@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments;
+﻿namespace SkorinosGimnazija.Application.Appointments;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;

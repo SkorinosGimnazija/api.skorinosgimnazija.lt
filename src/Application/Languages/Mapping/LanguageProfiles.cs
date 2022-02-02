@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using Dtos;
 
 public class LanguageProfiles : Profile

@@ -4,9 +4,9 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Exceptions;
 using Common.Interfaces;
+using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ParentAppointments.Dtos;
 
 public static class AppointmentTypePublicDetails
 {

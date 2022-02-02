@@ -1,13 +1,13 @@
 namespace SkorinosGimnazija.Infrastructure.UnitTests;
 
 using Application.Common.Interfaces;
+using Domain.Options;
 using FileManagement;
 using FluentAssertions;
 using ImageOptimization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
-using Options;
 using Xunit;
 
 public class MediaManagerTests

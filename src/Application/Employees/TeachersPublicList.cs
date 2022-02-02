@@ -1,8 +1,8 @@
-﻿namespace SkorinosGimnazija.Application.Users;
+﻿namespace SkorinosGimnazija.Application.Employees;
 
 using AutoMapper;
-using Common.Identity;
 using Common.Interfaces;
+using Dtos;
 using MediatR;
 
 public static class TeachersPublicList

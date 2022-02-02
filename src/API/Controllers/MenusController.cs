@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
 using Application.Common.Pagination;
-using Application.MenuLocations;
 using Application.Menus;
 using Application.Menus.Dtos;
 using Base;

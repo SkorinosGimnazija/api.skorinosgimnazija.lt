@@ -1,10 +1,10 @@
-﻿namespace SkorinosGimnazija.Application.MenuLocations;
+﻿namespace SkorinosGimnazija.Application.Menus;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Interfaces;
+using Dtos;
 using MediatR;
-using Menus.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 public static class MenuLocationsList

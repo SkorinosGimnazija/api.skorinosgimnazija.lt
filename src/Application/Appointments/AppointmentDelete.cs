@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments;
+﻿namespace SkorinosGimnazija.Application.Appointments;
 
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;

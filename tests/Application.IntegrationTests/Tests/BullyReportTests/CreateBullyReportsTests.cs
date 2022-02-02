@@ -1,8 +1,8 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportsTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyReportTests;
 
 using BullyReports;
 using BullyReports.Dtos;
-using BullyReports.Events;
+using BullyReports.Notifications;
 using Common.Exceptions;
 using Domain.Entities.Bullies;
 using FluentAssertions;

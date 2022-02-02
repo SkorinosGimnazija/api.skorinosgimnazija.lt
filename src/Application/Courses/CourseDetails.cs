@@ -1,10 +1,10 @@
-﻿namespace SkorinosGimnazija.Application.Menus;
+﻿namespace SkorinosGimnazija.Application.Courses;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Exceptions;
 using Common.Interfaces;
-using Courses.Dtos;
+using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

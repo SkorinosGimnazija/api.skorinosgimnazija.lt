@@ -7,7 +7,6 @@ using Domain.Entities.Appointments;
 using Dtos;
 using FluentValidation;
 using MediatR;
-using ParentAppointments.Dtos;
 using Validators;
 
 public static class AppointmentTypeCreate

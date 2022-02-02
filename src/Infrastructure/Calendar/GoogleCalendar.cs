@@ -2,11 +2,11 @@
 
 using Application.Common.Interfaces;
 using Application.Events.Dtos;
+using Domain.Options;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Microsoft.Extensions.Options;
-using Options;
 
 public class GoogleCalendar : ICalendarService
 {

@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Email;
+﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 public interface IEmailService
 {

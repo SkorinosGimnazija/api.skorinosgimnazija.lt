@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.Common.Dtos;
+﻿namespace SkorinosGimnazija.Application.Common.Identity;
 
 public record UserDto
 {

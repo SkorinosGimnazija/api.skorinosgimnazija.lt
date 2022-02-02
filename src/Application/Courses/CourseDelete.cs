@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.Banners;
+﻿namespace SkorinosGimnazija.Application.Courses;
 
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;

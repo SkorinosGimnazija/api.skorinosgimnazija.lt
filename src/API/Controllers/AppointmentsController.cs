@@ -3,8 +3,6 @@
 using Application.Appointments;
 using Application.Appointments.Dtos;
 using Application.Common.Pagination;
-using Application.ParentAppointments;
-using Application.ParentAppointments.Dtos;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;

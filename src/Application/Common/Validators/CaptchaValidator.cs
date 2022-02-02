@@ -1,7 +1,7 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Captcha;
+﻿namespace SkorinosGimnazija.Application.Common.Validators;
 
-using Application.Common.Interfaces;
 using FluentValidation;
+using Interfaces;
 
 public class CaptchaValidator : AbstractValidator<string>
 {

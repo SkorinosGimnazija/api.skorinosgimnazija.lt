@@ -1,9 +1,9 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments.Validators;
+﻿namespace SkorinosGimnazija.Application.Appointments.Validators;
 
-using Appointments.Dtos;
 using Common.Interfaces;
+using Common.Validators;
+using Dtos;
 using FluentValidation;
-using Infrastructure.Captcha;
 
 internal class AppointmentPublicCreateValidator : AbstractValidator<AppointmentPublicCreateDto>
 {

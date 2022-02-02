@@ -2,7 +2,6 @@
 
 using AutoMapper;
 using Domain.Entities.Identity;
-using Dtos;
 
 public class AppUserProfile : Profile
 {

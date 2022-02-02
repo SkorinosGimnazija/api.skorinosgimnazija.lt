@@ -2,6 +2,7 @@
 
 using Common.Exceptions;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using FluentAssertions;
 using Posts;
 using Posts.Dtos;

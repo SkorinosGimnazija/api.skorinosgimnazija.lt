@@ -3,7 +3,6 @@
 using AutoMapper;
 using Domain.Entities.Appointments;
 using Dtos;
-using ParentAppointments.Dtos;
 
 internal class AppointmentProfile : Profile
 {

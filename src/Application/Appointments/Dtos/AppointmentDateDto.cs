@@ -1,7 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments.Dtos;
 
-using ParentAppointments.Dtos;
-
 public record AppointmentDateDto
 {
     public int Id { get; init; }

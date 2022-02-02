@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;

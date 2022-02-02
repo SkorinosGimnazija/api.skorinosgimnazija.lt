@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Calendar;
+﻿namespace SkorinosGimnazija.Domain.Options;
 
 using System.Text;
 

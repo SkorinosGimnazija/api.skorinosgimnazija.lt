@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.Menus;
+﻿namespace SkorinosGimnazija.Application.Posts;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -6,8 +6,8 @@ using Common.Exceptions;
 using Common.Interfaces;
 using Dtos;
 using MediatR;
+using Menus.Dtos;
 using Microsoft.EntityFrameworkCore;
-using Posts.Dtos;
 
 public static class PublicMenuLinkedPost
 {

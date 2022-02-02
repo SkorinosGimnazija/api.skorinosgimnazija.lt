@@ -1,6 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments.Dtos;
-
-using Appointments.Dtos;
+﻿namespace SkorinosGimnazija.Application.Appointments.Dtos;
 
 public record AppointmentDetailsDto
 {

@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Domain.Entities;
+﻿namespace SkorinosGimnazija.Domain.Entities.CMS;
 
 public sealed class Language
 {

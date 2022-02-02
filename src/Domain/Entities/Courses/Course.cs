@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Domain.Entities.Teacher;
+﻿namespace SkorinosGimnazija.Domain.Entities.Courses;
 
 using Identity;
 

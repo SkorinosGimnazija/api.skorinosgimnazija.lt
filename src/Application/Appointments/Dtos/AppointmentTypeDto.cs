@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments.Dtos;
+﻿namespace SkorinosGimnazija.Application.Appointments.Dtos;
 
 public record AppointmentTypeDto
 {

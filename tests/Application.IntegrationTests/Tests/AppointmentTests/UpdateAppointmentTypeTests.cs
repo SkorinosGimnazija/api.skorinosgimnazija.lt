@@ -1,11 +1,10 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTypeTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AppointmentTests;
 
 using Appointments;
 using Appointments.Dtos;
 using Common.Exceptions;
 using Domain.Entities.Appointments;
 using FluentAssertions;
-using ParentAppointments;
 using Xunit;
 
 [Collection("App")]

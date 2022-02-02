@@ -1,6 +1,6 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BannerTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.LanguagesTests;
 
-using Domain.Entities;
+using Domain.Entities.CMS;
 using FluentAssertions;
 using Languages;
 using Xunit;

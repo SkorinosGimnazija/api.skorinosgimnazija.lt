@@ -6,11 +6,11 @@ using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Calendar;
 using Domain.Entities.Identity;
+using Domain.Options;
 using FluentValidation.Results;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Options;
 using Services;
 
 public sealed class IdentityService : IIdentityService

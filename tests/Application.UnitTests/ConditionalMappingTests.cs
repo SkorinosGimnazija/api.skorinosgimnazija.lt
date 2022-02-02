@@ -2,6 +2,7 @@ namespace SkorinosGimnazija.Application.UnitTests;
 
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using FluentAssertions;
 using Menus.Dtos;
 using Posts.Dtos;

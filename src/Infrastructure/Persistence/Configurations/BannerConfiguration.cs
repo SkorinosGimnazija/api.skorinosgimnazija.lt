@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
 
 using Domain.Entities;
+using Domain.Entities.CMS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,9 +1,8 @@
-﻿namespace SkorinosGimnazija.Application.BullyReports.Events;
+﻿namespace SkorinosGimnazija.Application.BullyReports.Notifications;
 
 using Common.Interfaces;
 using Domain.Entities.Bullies;
-using Infrastructure.Email;
-using Infrastructure.Options;
+using Domain.Options;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

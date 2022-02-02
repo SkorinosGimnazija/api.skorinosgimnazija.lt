@@ -2,7 +2,7 @@
 
 using Common.Exceptions;
 using Courses;
-using Domain.Entities.Teacher;
+using Domain.Entities.Courses;
 using FluentAssertions;
 using Menus;
 using Xunit;

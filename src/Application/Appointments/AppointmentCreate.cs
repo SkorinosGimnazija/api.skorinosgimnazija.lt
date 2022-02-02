@@ -1,11 +1,11 @@
-﻿namespace SkorinosGimnazija.Application.ParentAppointments;
+﻿namespace SkorinosGimnazija.Application.Appointments;
 
 using System.Diagnostics.CodeAnalysis;
-using Appointments.Dtos;
 using AutoMapper;
 using Common.Interfaces;
 using Domain.Entities.Appointments;
 using Domain.Entities.Identity;
+using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

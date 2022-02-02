@@ -3,10 +3,10 @@
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using Application.Common.Interfaces;
+using Domain.Options;
 using ImageOptimization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Options;
 
 public sealed class MediaManager : IMediaManager
 {

@@ -1,9 +1,9 @@
-﻿namespace SkorinosGimnazija.Application.Courses.Validators;
+﻿namespace SkorinosGimnazija.Application.BullyReports.Validators;
 
-using BullyReports.Dtos;
 using Common.Interfaces;
+using Common.Validators;
+using Dtos;
 using FluentValidation;
-using Infrastructure.Captcha;
 
 internal class BullyReportCreateValidator : AbstractValidator<BullyReportCreateDto>
 {

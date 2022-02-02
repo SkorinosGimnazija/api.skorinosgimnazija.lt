@@ -5,6 +5,7 @@ using AutoMapper;
 using Common.Exceptions;
 using Common.Interfaces;
 using Domain.Entities;
+using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;

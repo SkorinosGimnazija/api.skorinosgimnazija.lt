@@ -1,7 +1,8 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
 using Application.Common.Identity;
-using Application.Users;
+using Application.Employees;
+using Application.Employees.Dtos;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;

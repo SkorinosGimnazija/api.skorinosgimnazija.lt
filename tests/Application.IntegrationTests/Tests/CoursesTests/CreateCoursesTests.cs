@@ -3,7 +3,7 @@
 using Common.Exceptions;
 using Courses;
 using Courses.Dtos;
-using Domain.Entities.Teacher;
+using Domain.Entities.Courses;
 using FluentAssertions;
 using Xunit;
 

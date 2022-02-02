@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Options;
+﻿namespace SkorinosGimnazija.Domain.Options;
 
 public record JwtOptions
 {

@@ -3,11 +3,11 @@
 using Application.Common.Interfaces;
 using Calendar;
 using Domain.Entities.Identity;
+using Domain.Options;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Identity;
 using Microsoft.Extensions.Options;
-using Options;
 
 public sealed class EmployeeService : IEmployeeService
 {
