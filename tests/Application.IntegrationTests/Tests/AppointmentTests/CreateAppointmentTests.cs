@@ -58,7 +58,7 @@ public class CreateAppointmentTests
                 Slug = "slug",
                 Start = DateTime.Now,
                 End = DateTime.Now.AddDays(7),
-                RegistrationEnd = DateTime.Now,
+                RegistrationEnd = DateTime.Now.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = false
@@ -131,7 +131,7 @@ public class CreateAppointmentTests
                 Slug = "slug",
                 Start = DateTime.Now,
                 End = DateTime.Now.AddDays(7),
-                RegistrationEnd = DateTime.Now,
+                RegistrationEnd = DateTime.Now.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = true
@@ -168,7 +168,7 @@ public class CreateAppointmentTests
                 Slug = "slug",
                 Start = DateTime.Now,
                 End = DateTime.Now.AddDays(7),
-                RegistrationEnd = DateTime.Now,
+                RegistrationEnd = DateTime.Now.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = true
