@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicMenuList
 {
-    public record Query(string Language, string LocationSlug) : IRequest<List<MenuDto>>;
+    public record Query(string Language) : IRequest<List<MenuDto>>;
 
     public class Handler : IRequestHandler<Query, List<MenuDto>>
     {
@@ -30,7 +30,7 @@ public static class PublicMenuList
                             .Where(x =>
                                 x.IsPublished &&
                                 x.Language.Slug == request.Language &&
-                                x.MenuLocation.Slug == request.LocationSlug)
+                                x.MenuLocation.Slug != "OFF")
                             .OrderBy(x => x.Order)
                             .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                             .ToListAsync(cancellationToken);

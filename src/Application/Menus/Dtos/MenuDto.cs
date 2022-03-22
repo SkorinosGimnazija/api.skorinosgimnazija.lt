@@ -12,6 +12,8 @@ public record MenuDto
 
     public string Slug { get; init; } = default!;
 
+    public string Position { get; init; } = default!;
+
     public string Path { get; init; } = default!;
 
     public bool IsPublished { get; init; }

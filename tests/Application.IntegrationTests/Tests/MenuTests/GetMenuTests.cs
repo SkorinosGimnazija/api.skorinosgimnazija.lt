@@ -63,13 +63,11 @@ public class GetMenuTests
     }
 
     [Theory]
-    [InlineData(1, null, null, true)]
-    [InlineData(0, null, null, false)]
-    [InlineData(0, 1, null, true)]
-    [InlineData(0, null, 1, true)]
-    [InlineData(0, 1, 1, true)]
-    public async Task PublicMenuList_ShouldListPublishedMenusByLanguageAndLocation(
-        int expected, int? langId, int? locId, bool isPublished)
+    [InlineData(1, null, true)]
+    [InlineData(0, null, false)]
+    [InlineData(0, 1, true)]
+    public async Task PublicMenuList_ShouldListPublishedMenusByLanguage(
+        int expected, int? langId, bool isPublished)
     {
         var language = await _app.AddAsync(new Language { Slug = Path.GetRandomFileName(), Name = "name" });
         var location = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
@@ -77,7 +75,7 @@ public class GetMenuTests
         var menu1 = new Menu
         {
             LanguageId = langId ?? language.Id,
-            MenuLocationId = locId ?? location.Id,
+            MenuLocationId = location.Id,
             IsPublished = isPublished,
             Title = "title",
             Slug = "slug",
@@ -86,7 +84,7 @@ public class GetMenuTests
 
         await _app.AddAsync(menu1);
 
-        var command = new PublicMenuList.Query(language.Slug, location.Slug);
+        var command = new PublicMenuList.Query(language.Slug);
 
         var actual = await _app.SendAsync(command);
 
@@ -159,7 +157,7 @@ public class GetMenuTests
             await _app.AddAsync(menu);
         }
 
-        var command = new PublicMenuList.Query(lang.Slug, loc.Slug);
+        var command = new PublicMenuList.Query(lang.Slug);
 
         var actual = await _app.SendAsync(command);
 

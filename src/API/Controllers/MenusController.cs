@@ -73,10 +73,10 @@ public sealed class MenusController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("public/{language}/{location}", Name = "GetPublicMenusByLanguageAndLocation")]
+    [HttpGet("public/{language}", Name = "GetPublicMenusByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<MenuDto>> GetMenus(string language, string location, CancellationToken ct)
+    public async Task<List<MenuDto>> GetMenus(string language, CancellationToken ct)
     {
-        return await Mediator.Send(new PublicMenuList.Query(language, location), ct);
+        return await Mediator.Send(new PublicMenuList.Query(language), ct);
     }
 }
