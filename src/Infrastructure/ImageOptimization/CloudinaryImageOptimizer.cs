@@ -33,8 +33,8 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
             .FetchFormat("jpg");
         _featuredImageTransformation = new Transformation()
             .Quality("90")
-            .Width("500")
-            .Height("500")
+            .Width("300")
+            .Height("300")
             .Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
             .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
             .FetchFormat("jpg");

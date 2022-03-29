@@ -30,7 +30,7 @@ public static class PublicMenuList
                             .Where(x =>
                                 x.IsPublished &&
                                 x.Language.Slug == request.Language &&
-                                x.MenuLocation.Slug != "OFF")
+                                x.MenuLocation.Slug != "off")
                             .OrderBy(x => x.Order)
                             .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
                             .ToListAsync(cancellationToken);

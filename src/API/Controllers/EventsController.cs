@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 [Authorize(Roles = Auth.Role.Admin)]
 public class EventsController : BaseApiController
 {
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [HttpGet("public/{week:int}", Name = "GetPublicEvents")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<EventDto>> GetAllEvents(int week, CancellationToken ct)
@@ -18,7 +18,7 @@ public class EventsController : BaseApiController
         return await Mediator.Send(new EventList.Query(week), ct);
     }
 
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [HttpGet("public/today", Name = "GetPublicDayEvents")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<EventDto>> GetTodayEvents(CancellationToken ct)
