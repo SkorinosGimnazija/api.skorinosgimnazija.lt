@@ -29,14 +29,15 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
             .AspectRatio("16:9")
             .Width("1600")
             .Crop("fill")
-            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+            //.Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
             .FetchFormat("jpg");
         _featuredImageTransformation = new Transformation()
             .Quality("90")
             .Width("300")
             .Height("300")
-            .Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
-            .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+            .Crop("lfill")
+            //.Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
+            //.Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
             .FetchFormat("jpg");
     }
 
