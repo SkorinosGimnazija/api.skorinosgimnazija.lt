@@ -40,8 +40,7 @@ public static class PostList
                        .AsNoTracking()
                        .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.PublishedAt)
-                       //.OrderByDescending(x => x.IsFeatured)
-                       //.ThenByDescending(x => x.PublishDate)
+                       .ThenByDescending(x => x.Id)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }
