@@ -18,7 +18,7 @@ public static class PostSearch
         public Validator()
         {
             RuleFor(x => x.Pagination).NotNull().SetValidator(new PaginationValidator());
-            RuleFor(x => x.SearchText).MaximumLength(50);
+            RuleFor(x => x.SearchText).MaximumLength(256);
         }
     }
 
