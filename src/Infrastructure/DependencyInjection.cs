@@ -56,6 +56,8 @@ public static class DependencyInjection
         services.AddHttpClient();
         services.AddHttpContextAccessor();
 
+        services.AddMemoryCache();
+
         services.AddOptions<AlgoliaOptions>().BindConfiguration("Algolia");
         services.AddOptions<CloudinaryOptions>().BindConfiguration("Cloudinary");
         services.AddOptions<MediaManagerOptions>().BindConfiguration("FileManager");
