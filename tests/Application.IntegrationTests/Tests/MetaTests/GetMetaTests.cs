@@ -119,6 +119,6 @@ public class GetMetaTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().HaveCount(1);
-        actual.Select(x => x.Url).Should().Contain($"/{post.Slug}");
+        actual.Select(x => x.Url).Should().Contain($"/{post.Id}/{post.Slug}");
     }
 }

@@ -1,13 +1,10 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.API.Controllers.Base;
-using SkorinosGimnazija.Application.Common.Pagination;
-using SkorinosGimnazija.Application.Menus.Dtos;
-using System.Xml.Linq;
-using SkorinosGimnazija.Application.Meta;
+using Application.Meta;
+using Application.Meta.Dtos;
+using Base;
 using Microsoft.AspNetCore.Authorization;
-using SkorinosGimnazija.Application.Meta.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 public sealed class MetaController : BaseApiController
 {
@@ -18,7 +15,7 @@ public sealed class MetaController : BaseApiController
     {
         return await Mediator.Send(new MenuMetaList.Query(), ct);
     }
-    
+
     [AllowAnonymous]
     [HttpGet("posts", Name = "GetPostsMeta")]
     [ProducesResponseType(StatusCodes.Status200OK)]
