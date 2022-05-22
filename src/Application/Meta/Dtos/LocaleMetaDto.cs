@@ -1,6 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Meta.Dtos;
 
-public class MenuMetaDto
+public class LocaleMetaDto
 {
     public string Url { get; init; } = default!;
 

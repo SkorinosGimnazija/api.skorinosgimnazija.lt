@@ -32,12 +32,14 @@ public static class PostMetaList
             if (!_cache.TryGetValue(Key, out List<PostMetaDto> cachedPosts))
             {
                 var menuPostsQuery = _context.Menus
+                    .AsNoTracking()
                     .Select(x => x.LinkedPostId);
 
                 cachedPosts = await _context.Posts
                                   .AsNoTracking()
                                   .Where(x =>
                                       x.IsPublished &&
+                                      x.ShowInFeed &&
                                       x.PublishedAt <= DateTime.UtcNow &&
                                       !menuPostsQuery.Contains(x.Id))
                                   .ProjectTo<PostMetaDto>(_mapper.ConfigurationProvider)

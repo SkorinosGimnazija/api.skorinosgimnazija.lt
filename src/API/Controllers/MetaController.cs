@@ -23,4 +23,12 @@ public sealed class MetaController : BaseApiController
     {
         return await Mediator.Send(new PostMetaList.Query(), ct);
     }
+
+    [AllowAnonymous]
+    [HttpGet("locales", Name = "GetLocalesMeta")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<LocaleMetaDto>> GetLocales(CancellationToken ct)
+    {
+        return await Mediator.Send(new LocaleMetaList.Query(), ct);
+    }
 }
