@@ -127,39 +127,39 @@ public class GetMetaTests
     [Fact]
     public async Task LocalesMetaList_ShouldListLocales()
     {
-        var post1 = new Post
+        var oldPostLt = new Post
         {
             Title = "title1",
             Slug = "slug1",
             LanguageId = 1,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.UtcNow
+            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-01 11:11"), DateTimeKind.Utc)
         };
 
-        var post2 = new Post
+        var newPostLt = new Post
         {
             Title = "title2",
             Slug = "slug2",
             LanguageId = 1,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.UtcNow
+            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-02 12:12"), DateTimeKind.Utc)
         };
 
-        var post3 = new Post
+        var newPostBy = new Post
         {
             Title = "title3",
             Slug = "slug3",
             LanguageId = 2,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.UtcNow
+            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-03 13:13"), DateTimeKind.Utc)
         };
 
-        await _app.AddAsync(post1);
-        await _app.AddAsync(post2);
-        await _app.AddAsync(post3);
+        await _app.AddAsync(oldPostLt);
+        await _app.AddAsync(newPostLt);
+        await _app.AddAsync(newPostBy);
 
         var command = new LocaleMetaList.Query();
 
@@ -167,5 +167,6 @@ public class GetMetaTests
 
         actual.Should().HaveCount(2);
         actual.Select(x => x.Ln).Should().Contain("lt", "by");
+        actual.Select(x => x.Date).Should().Contain(new [] { newPostLt.PublishedAt, newPostBy.PublishedAt });
     }
 }
