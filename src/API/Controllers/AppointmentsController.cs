@@ -104,13 +104,33 @@ public class AppointmentsController : BaseApiController
         return CreatedAtAction(nameof(Get), new { result.Id }, result);
     }
 
-    [HttpGet("time/{type}", Name = "GetAppointmentDates")]
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPost("time", Name = "CreateAppointmentDate")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AppointmentDateDto>> CreateDate(AppointmentDateCreateDto dto)
+    {
+        var result = await Mediator.Send(new AppointmentDateCreate.Command(dto));
+        return CreatedAtAction(nameof(GetDates), new { dto.TypeId }, result);
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpDelete("time/{id:int}", Name = "DeleteAppointmentDate")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteDate(int id)
+    {
+        await Mediator.Send(new AppointmentDateDelete.Command(id));
+        return NoContent();
+    }
+
+    [HttpGet("time/{typeId:int}", Name = "GetAppointmentDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<AppointmentDateDto>> GetDates(string type, CancellationToken ct)
+    public async Task<List<AppointmentDateDto>> GetDates(int typeId, CancellationToken ct)
     {
-        return await Mediator.Send(new AppointmentDatesList.Query(type), ct);
+        return await Mediator.Send(new AppointmentDatesList.Query(typeId), ct);
     }
 
     [HttpGet("time/{type}/{userName}", Name = "GetAppointmentAvailableDates")]

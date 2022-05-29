@@ -34,8 +34,6 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -54,8 +52,6 @@ public class GetAppointmentTypeTests
         actual.DurationInMinutes.Should().Be(entity.DurationInMinutes);
         actual.IsPublic.Should().Be(entity.IsPublic);
         actual.InvitePrincipal.Should().Be(entity.InvitePrincipal);
-        actual.Start.Should().BeCloseTo(entity.Start, TimeSpan.FromSeconds(5));
-        actual.End.Should().BeCloseTo(entity.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
 
@@ -76,8 +72,6 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -96,8 +90,6 @@ public class GetAppointmentTypeTests
         actual.DurationInMinutes.Should().Be(entity.DurationInMinutes);
         actual.IsPublic.Should().Be(entity.IsPublic);
         actual.InvitePrincipal.Should().Be(entity.InvitePrincipal);
-        actual.Start.Should().BeCloseTo(entity.Start, TimeSpan.FromSeconds(5));
-        actual.End.Should().BeCloseTo(entity.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
 
@@ -108,8 +100,6 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -120,8 +110,6 @@ public class GetAppointmentTypeTests
         {
             Name = "Name1",
             Slug = "slug1",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -156,8 +144,6 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -176,8 +162,6 @@ public class GetAppointmentTypeTests
         actual.DurationInMinutes.Should().Be(entity.DurationInMinutes);
         actual.IsPublic.Should().Be(entity.IsPublic);
         actual.InvitePrincipal.Should().Be(entity.InvitePrincipal);
-        actual.Start.Should().BeCloseTo(entity.Start, TimeSpan.FromSeconds(5));
-        actual.End.Should().BeCloseTo(entity.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
 }

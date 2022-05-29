@@ -35,8 +35,6 @@ public class UpdateAppointmentTypeTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -73,8 +71,6 @@ public class UpdateAppointmentTypeTypeTests
             Id = 1,
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -95,8 +91,6 @@ public class UpdateAppointmentTypeTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -110,8 +104,6 @@ public class UpdateAppointmentTypeTypeTests
             Id = entity.Id,
             Name = "Name1",
             Slug = "slug1",
-            Start = DateTime.Now.AddDays(1),
-            End = DateTime.Now.AddDays(8),
             RegistrationEnd = DateTime.Now.AddDays(1),
             DurationInMinutes = 45,
             IsPublic = false,
@@ -130,8 +122,6 @@ public class UpdateAppointmentTypeTypeTests
         actual.DurationInMinutes.Should().Be(entityDto.DurationInMinutes);
         actual.IsPublic.Should().Be(entityDto.IsPublic);
         actual.InvitePrincipal.Should().Be(entityDto.InvitePrincipal);
-        actual.Start.Should().BeCloseTo(entityDto.Start, TimeSpan.FromSeconds(5));
-        actual.End.Should().BeCloseTo(entityDto.End, TimeSpan.FromSeconds(5));
         actual.RegistrationEnd.Should().BeCloseTo(entityDto.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
 }

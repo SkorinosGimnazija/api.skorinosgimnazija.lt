@@ -2,7 +2,7 @@
 
 public record AppointmentCreateDto
 {
-    public int DateId { get; set; }
+    public int DateId { get; init; }
 
-    public string UserName { get; set; } = default!;
+    public string UserName { get; init; } = default!;
 }

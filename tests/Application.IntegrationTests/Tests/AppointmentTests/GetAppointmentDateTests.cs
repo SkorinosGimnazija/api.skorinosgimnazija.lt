@@ -23,14 +23,12 @@ public class GetAppointmentDateTests
     }
 
     [Fact]
-    public async Task AppointmentDatesList_ShouldListDates_ByAppointmentTypeSlug()
+    public async Task AppointmentDatesList_ShouldListDates_ByAppointmentTypeId()
     {
         var type1 = await _app.AddAsync(new AppointmentType
         {
             Name = "Name",
             Slug = "slug",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -41,8 +39,6 @@ public class GetAppointmentDateTests
         {
             Name = "Name1",
             Slug = "slug1",
-            Start = DateTime.Now,
-            End = DateTime.Now.AddDays(7),
             RegistrationEnd = DateTime.Now,
             DurationInMinutes = 30,
             IsPublic = true,
@@ -67,7 +63,7 @@ public class GetAppointmentDateTests
             TypeId = type2.Id
         });
 
-        var command = new AppointmentDatesList.Query(type1.Slug);
+        var command = new AppointmentDatesList.Query(type1.Id);
 
         var actual = await _app.SendAsync(command);
 
@@ -83,8 +79,6 @@ public class GetAppointmentDateTests
             Name = "Name",
             Slug = "slug",
             RegistrationEnd = DateTime.Now.AddDays(1),
-            Start = DateTime.Now.AddDays(2),
-            End = DateTime.Now.AddDays(7),
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -118,19 +112,19 @@ public class GetAppointmentDateTests
             TypeId = type.Id
         });
 
-        await _app.AddAsync(new AppointmentDate
+        var freeDate1 = await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(15),
             TypeId = type.Id
         });
 
-        var freeDate1 = await _app.AddAsync(new AppointmentDate
+        var freeDate2= await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(6),
             TypeId = type.Id
         });
 
-        var freeDate2 = await _app.AddAsync(new AppointmentDate
+        var freeDate3= await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(5),
             TypeId = type.Id
@@ -140,8 +134,8 @@ public class GetAppointmentDateTests
 
         var actual = await _app.SendAsync(command);
 
-        actual.Should().HaveCount(2);
-        actual.Select(x => x.Id).Should().Contain(new[] { freeDate1.Id, freeDate2.Id });
+        actual.Should().HaveCount(3);
+        actual.Select(x => x.Id).Should().Contain(new[] { freeDate1.Id, freeDate2.Id, freeDate3.Id });
         actual.Select(x => x.Date).Should().BeInAscendingOrder();
     }
 
@@ -153,8 +147,6 @@ public class GetAppointmentDateTests
             Name = "Name",
             Slug = "slug",
             RegistrationEnd = DateTime.Now.AddDays(1),
-            Start = DateTime.Now.AddDays(2),
-            End = DateTime.Now.AddDays(7),
             DurationInMinutes = 30,
             IsPublic = false,
             InvitePrincipal = true

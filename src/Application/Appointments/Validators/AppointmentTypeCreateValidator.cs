@@ -10,8 +10,6 @@ internal class AppointmentTypeCreateValidator : AbstractValidator<AppointmentTyp
         RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
         RuleFor(x => x.Slug).NotEmpty().MaximumLength(100);
         RuleFor(x => x.DurationInMinutes).NotNull();
-        RuleFor(x => x.Start).NotEmpty();
-        RuleFor(x => x.End).NotEmpty();
         RuleFor(x => x.RegistrationEnd).NotEmpty();
     }
 }

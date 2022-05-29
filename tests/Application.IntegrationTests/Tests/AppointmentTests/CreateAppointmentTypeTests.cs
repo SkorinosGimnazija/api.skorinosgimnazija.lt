@@ -36,8 +36,6 @@ public class CreateAppointmentTypeTests
         {
             Name = "Type name",
             Slug = "type-slug",
-            Start = DateTime.Parse("2022-01-01"),
-            End = DateTime.Parse("2022-01-10"),
             RegistrationEnd = DateTime.Parse("2022-01-01"),
             DurationInMinutes = 30,
             InvitePrincipal = true,
@@ -53,8 +51,6 @@ public class CreateAppointmentTypeTests
         actual.Should().NotBeNull();
         actual.Name.Should().Be(dto.Name);
         actual.Slug.Should().Be(dto.Slug);
-        actual.Start.Should().Be(dto.Start);
-        actual.End.Should().Be(dto.End);
         actual.RegistrationEnd.Should().Be(dto.RegistrationEnd);
         actual.DurationInMinutes.Should().Be(dto.DurationInMinutes);
         actual.InvitePrincipal.Should().Be(dto.InvitePrincipal);

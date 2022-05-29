@@ -38,8 +38,6 @@ public class UpdateAppointmentTests
                 Id = 1,
                 Name = "Name",
                 Slug = "slug",
-                Start = DateTime.Now,
-                End = DateTime.Now.AddDays(7),
                 RegistrationEnd = DateTime.Now,
                 DurationInMinutes = 30,
                 IsPublic = true,

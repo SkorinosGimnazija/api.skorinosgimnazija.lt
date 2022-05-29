@@ -4,11 +4,11 @@ public record AppointmentPublicCreateDto
 {
     public string CaptchaToken { get; init; } = default!;
 
-    public int DateId { get; set; }
+    public int DateId { get; init; }
 
-    public string UserName { get; set; } = default!;
+    public string UserName { get; init; } = default!;
 
-    public string AttendeeName { get; set; } = default!;
+    public string AttendeeName { get; init; } = default!;
 
-    public string AttendeeEmail { get; set; } = default!;
+    public string AttendeeEmail { get; init; } = default!;
 }
