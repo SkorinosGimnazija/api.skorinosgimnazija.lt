@@ -118,13 +118,13 @@ public class GetAppointmentDateTests
             TypeId = type.Id
         });
 
-        var freeDate2= await _app.AddAsync(new AppointmentDate
+        var freeDate2 = await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(6),
             TypeId = type.Id
         });
 
-        var freeDate3= await _app.AddAsync(new AppointmentDate
+        var freeDate3 = await _app.AddAsync(new AppointmentDate
         {
             Date = DateTime.Now.AddDays(5),
             TypeId = type.Id

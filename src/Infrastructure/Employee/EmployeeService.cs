@@ -1,16 +1,17 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Services;
 
 using Application.Common.Interfaces;
-using Calendar;
 using Domain.Entities.Identity;
 using Domain.Options;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Identity;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 public sealed class EmployeeService : IEmployeeService
 {
+    private readonly IMemoryCache _cache;
     private readonly DirectoryService _directoryService;
     private readonly string _domain;
     private readonly IReadOnlyDictionary<string, IReadOnlyCollection<string>> _groupRoles;
@@ -18,8 +19,10 @@ public sealed class EmployeeService : IEmployeeService
     public EmployeeService(
         IOptions<GoogleOptions> googleOptions,
         IOptions<UrlOptions> urlOptions,
-        IOptions<GroupOptions> groupOptions)
+        IOptions<GroupOptions> groupOptions,
+        IMemoryCache cache)
     {
+        _cache = cache;
         _domain = urlOptions.Value.Domain;
 
         _groupRoles = new Dictionary<string, IReadOnlyCollection<string>>
@@ -103,48 +106,64 @@ public sealed class EmployeeService : IEmployeeService
 
     public async Task<Employee?> GetEmployeeAsync(string userName)
     {
-        try
-        {
-            var request = _directoryService.Users.Get(userName);
-            var response = await request.ExecuteAsync();
+        var cacheKey = $"Employee{userName}";
 
-            return new()
-            {
-                Id = response.Id,
-                FullName = response.Name.FullName,
-                Email = response.PrimaryEmail
-            };
-        }
-        catch
+        if (!_cache.TryGetValue(cacheKey, out Employee employee))
         {
-            return null;
+            try
+            {
+                var request = _directoryService.Users.Get(userName);
+                var response = await request.ExecuteAsync();
+
+                employee = new()
+                {
+                    Id = response.Id,
+                    FullName = response.Name.FullName,
+                    Email = response.PrimaryEmail
+                };
+
+                _cache.Set(cacheKey, employee, TimeSpan.FromDays(7));
+            }
+            catch
+            {
+                return null;
+            }
         }
+
+        return employee;
     }
 
     private async Task<IEnumerable<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
     {
-        var employes = new List<Employee>();
-        string? pageToken = null;
+        var cacheKey = $"Employes{unitPath}";
 
-        do
+        if (!_cache.TryGetValue(cacheKey, out List<Employee> employes))
         {
-            var request = _directoryService.Users.List();
+            employes = new();
+            string? pageToken = null;
 
-            request.Query = $"orgUnitPath={unitPath} isSuspended=false";
-            request.Domain = _domain;
-            request.PageToken = pageToken;
-
-            var response = await request.ExecuteAsync(ct);
-
-            pageToken = response.NextPageToken;
-
-            employes.AddRange(response.UsersValue.Select(x => new Employee
+            do
             {
-                Id = x.Id,
-                FullName = x.Name.FullName,
-                Email = x.PrimaryEmail
-            }));
-        } while (!string.IsNullOrEmpty(pageToken));
+                var request = _directoryService.Users.List();
+
+                request.Query = $"orgUnitPath={unitPath} isSuspended=false";
+                request.Domain = _domain;
+                request.PageToken = pageToken;
+
+                var response = await request.ExecuteAsync(ct);
+
+                pageToken = response.NextPageToken;
+
+                employes.AddRange(response.UsersValue.Select(x => new Employee
+                {
+                    Id = x.Id,
+                    FullName = x.Name.FullName,
+                    Email = x.PrimaryEmail
+                }));
+            } while (!string.IsNullOrEmpty(pageToken));
+
+            _cache.Set(cacheKey, employes, TimeSpan.FromDays(7));
+        }
 
         return employes;
     }

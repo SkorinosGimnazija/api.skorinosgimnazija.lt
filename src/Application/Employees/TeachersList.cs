@@ -5,7 +5,7 @@ using Common.Interfaces;
 using Dtos;
 using MediatR;
 
-public static class TeachersPublicList
+public static class TeachersList
 {
     public record Query() : IRequest<List<EmployeeDto>>;
 

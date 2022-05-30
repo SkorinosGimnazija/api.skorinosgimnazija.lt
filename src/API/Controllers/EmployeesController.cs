@@ -1,6 +1,5 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Common.Identity;
 using Application.Employees;
 using Application.Employees.Dtos;
 using Base;
@@ -8,14 +7,13 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = Auth.Role.Admin)]
+[Authorize(Roles = Auth.Role.Teacher)]
 public class EmployeesController : BaseApiController
 {
-    [AllowAnonymous]
-    [HttpGet("public/teachers", Name = "GetPublicTeachers")]
+    [HttpGet("teachers", Name = "GetTeachers")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<EmployeeDto>> GetTeachers(CancellationToken ct)
     {
-        return await Mediator.Send(new TeachersPublicList.Query(), ct);
+        return await Mediator.Send(new TeachersList.Query(), ct);
     }
 }
