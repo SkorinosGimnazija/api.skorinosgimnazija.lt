@@ -13,8 +13,6 @@ using Microsoft.Extensions.Options;
 
 public class GoogleCalendar : ICalendarService
 {
-    private const string TimeZone = "Europe/Vilnius";
-
     private readonly string _appointmentsCalendarId;
     private readonly CalendarService _calendarService;
     private readonly IWebHostEnvironment _env;
@@ -68,14 +66,12 @@ public class GoogleCalendar : ICalendarService
             Start = new()
             {
                 Date = allDay ? startDate.ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? startDate : null,
-                TimeZone = TimeZone
+                DateTime = !allDay ? startDate : null
             },
             End = new()
             {
                 Date = allDay ? endDate.ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? endDate : null,
-                TimeZone = TimeZone
+                DateTime = !allDay ? endDate : null
             }
         };
 
@@ -101,8 +97,8 @@ public class GoogleCalendar : ICalendarService
         {
             Summary = title,
             Description = description,
-            Start = new() { DateTime = startDate, TimeZone = TimeZone },
-            End = new() { DateTime = endDate, TimeZone = TimeZone },
+            Start = new() { DateTime = startDate },
+            End = new() { DateTime = endDate },
             Attendees = attendeeEmails.Distinct().Select(email => new EventAttendee { Email = email }).ToArray(),
             GuestsCanInviteOthers = false,
             ConferenceData = new()
