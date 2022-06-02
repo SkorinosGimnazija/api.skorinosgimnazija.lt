@@ -1,6 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Events.Dtos;
+using Microsoft.Extensions.Logging;
+using SkorinosGimnazija.Application.Common.Models;
 
 public interface ICalendarService
 {
@@ -8,7 +10,7 @@ public interface ICalendarService
 
     Task<string> AddEventAsync(string title, DateTime startDate, DateTime endDate, bool allDay);
 
-    Task<string> AddAppointmentAsync(
+    Task<AppointmentEventResponse> AddAppointmentAsync(
         string title,
         string description,
         DateTime startDate,

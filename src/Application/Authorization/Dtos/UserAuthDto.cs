@@ -6,5 +6,7 @@ public record UserAuthDto
 
     public string DisplayName { get; init; } = default!;
 
+    public string Email { get; init; } = default!;
+
     public IEnumerable<string> Roles { get; init; } = default!;
 }

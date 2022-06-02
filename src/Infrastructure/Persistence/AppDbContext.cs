@@ -32,7 +32,9 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
         {
             var validationFailure = ie.ConstraintName switch
             {
-                //"ConstraintName" => new ("PropertyName", "Description"),
+                "IX_Appointments_UserName_AttendeeEmail" => new ("Klaida", "Jūs jau esate užsiregistravęs (-usi) pas pasirinktą mokytoją"),
+                "IX_Appointments_DateId_UserName" => new ("Klaida", "Pasirinktas laikas užimtas"),
+                "IX_Appointments_DateId_AttendeeEmail" => new ("Klaida", "Pasirinktu laiku jūs jau esate užsiregistravęs (-usi)"),
                 _ => new ValidationFailure(ie.ConstraintName ?? ie.ColumnName, "Constraint violation")
             };
 
@@ -61,6 +63,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<AppointmentDate> AppointmentDates { get; set; } = default!;
 
     public DbSet<AppointmentReservedDate> AppointmentReservedDates { get; set; } = default!;
+
+    public DbSet<AppointmentExclusiveHost> AppointmentExclusiveHosts { get; set; } = default!;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {

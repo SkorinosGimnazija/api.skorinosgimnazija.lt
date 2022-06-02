@@ -27,7 +27,7 @@ public static class BannerDelete
         public async Task<Unit> Handle(Command request, CancellationToken _)
         {
             var entity = await _context.Banners.FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (entity == null)
+            if (entity is null)
             {
                 throw new NotFoundException();
             }

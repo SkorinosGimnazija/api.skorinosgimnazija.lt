@@ -13,6 +13,7 @@ public class CreateAppointmentTests
 {
     private readonly AppFixture _app;
     private readonly string _currentUserName;
+    private readonly string _randomUserName;
 
     public CreateAppointmentTests(AppFixture appFixture)
     {
@@ -20,6 +21,9 @@ public class CreateAppointmentTests
         _app.ResetData();
 
         var user = _app.CreateUserAsync().GetAwaiter().GetResult();
+        var randomUser = _app.CreateUserAsync().GetAwaiter().GetResult();
+
+        _randomUserName = randomUser.UserName;
         _currentUserName = user.UserName;
         _app.CurrentUserMock.SetCurrentUserData(user.Id, _currentUserName);
     }
@@ -164,18 +168,18 @@ public class CreateAppointmentTests
                 Slug = "slug",
                 RegistrationEnd = DateTime.Now.AddDays(1),
                 DurationInMinutes = 30,
-                IsPublic = true,
+                IsPublic = false,
                 InvitePrincipal = true
             }
         });
 
         var dto = new AppointmentCreateDto
         {
-            UserName = _currentUserName,
+            UserName = _randomUserName,
             DateId = date.Id
         };
 
-        _app.EmployeeServiceMock.SetEmployeeData(_currentUserName, "employee@email");
+        _app.EmployeeServiceMock.SetEmployeeData(_currentUserName, "atendee@email");
 
         var command = new AppointmentCreate.Command(dto);
 
@@ -193,7 +197,7 @@ public class CreateAppointmentTests
                     It.Is<DateTime>(
                         z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
                     It.Is<string[]>(z =>
-                        z.Length == 3 && z.Contains("principal@email") && z.Contains("employee@email"))),
+                        z.Length == 3 && z.Contains("principal@email") && z.Contains("atendee@email"))),
                 Times.Once);
     }
 }

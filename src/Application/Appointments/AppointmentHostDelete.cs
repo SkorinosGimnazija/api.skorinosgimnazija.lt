@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.BullyReports;
+﻿namespace SkorinosGimnazija.Application.Appointments;
 
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
@@ -6,7 +6,7 @@ using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public static class BullyReportDelete
+public static class AppointmentHostDelete
 {
     public record Command(int Id) : IRequest<Unit>;
 
@@ -22,13 +22,13 @@ public static class BullyReportDelete
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<Unit> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.BullyReports.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var entity = await _context.AppointmentExclusiveHosts.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (entity is null)
             {
                 throw new NotFoundException();
             }
 
-            _context.BullyReports.Remove(entity);
+            _context.AppointmentExclusiveHosts.Remove(entity);
             await _context.SaveChangesAsync();
 
             return Unit.Value;

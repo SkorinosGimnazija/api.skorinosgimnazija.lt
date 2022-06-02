@@ -10,9 +10,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-public static class AppointmentList
+public static class AppointmentToUserList
 {
-    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
+    public record Query(string TypeSlug, PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -40,9 +40,13 @@ public static class AppointmentList
         {
             return await _context.Appointments
                        .AsNoTracking()
-                       .Where(x => x.UserName == _currentUser.UserName)
+                       .Where(x =>
+                           x.UserName == _currentUser.UserName &&
+                           x.Date.Type.Slug == request.TypeSlug)
                        .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider)
-                       .OrderByDescending(x => x.Date.Date)
+                       //.OrderByDescending(x => x.Date.Date > DateTime.Now.AddMinutes(10))
+                       //.ThenBy(x=> x.Date.Date)
+                       .OrderBy(x => x.Date.Date)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }

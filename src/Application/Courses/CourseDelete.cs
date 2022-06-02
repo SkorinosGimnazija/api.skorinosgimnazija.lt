@@ -25,7 +25,7 @@ public static class CourseDelete
         public async Task<Unit> Handle(Command request, CancellationToken _)
         {
             var entity = await _context.Courses.FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (entity == null)
+            if (entity is null)
             {
                 throw new NotFoundException();
             }

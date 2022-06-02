@@ -18,12 +18,12 @@ public static class AppointmentCreate
 
     public class Validator : AbstractValidator<Command>
     {
-        public Validator()
+        public Validator(ICurrentUserService currentUserService)
         {
-            RuleFor(v => v.Appointment).NotNull().SetValidator(new AppointmentCreateValidator());
+            RuleFor(v => v.Appointment).NotNull().SetValidator(new AppointmentCreateValidator(currentUserService));
         }
     }
-
+     
     public class Handler : IRequestHandler<Command, AppointmentDto>
     {
         private readonly ICalendarService _calendarService;
@@ -49,31 +49,36 @@ public static class AppointmentCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<AppointmentDto> Handle(Command request, CancellationToken _)
         {
-            var date = await GetDateAsync(request.Appointment.DateId);
-            var teacher = await GetTeacherAsync(request.Appointment.UserName);
-            var attendee = await GetTeacherAsync(_currentUserService.UserName);
+            var date = await GetDateAsync(request.Appointment.DateId, request.Appointment.UserName);
+            var host = await GetHostAsync(date.Type.Id, request.Appointment.UserName);
+            var attendee = await GetAttendeeAsync(_currentUserService.UserName);
 
             var transaction = await _context.BeginTransactionAsync();
 
             var entity = _context.Appointments.Add(_mapper.Map<Appointment>(request.Appointment)).Entity;
 
+            entity.UserDisplayName = host.FullName;
             entity.AttendeeEmail = attendee.Email;
             entity.AttendeeName = attendee.FullName;
+            entity.AttendeeUserName = attendee.Id;
 
             await _context.SaveChangesAsync();
 
-            var attendees = new List<string> { attendee.Email, teacher.Email };
+            var attendees = new List<string> { attendee.Email, host.Email };
             if (date.Type.InvitePrincipal)
             {
                 attendees.Add((await _employeeService.GetPrincipalAsync()).Email);
             }
 
-            entity.EventId = await _calendarService.AddAppointmentAsync(
-                                 date.Type.Name,
-                                 $"{teacher.FullName} // {attendee.FullName}",
-                                 date.Date,
-                                 date.Date.AddMinutes(date.Type.DurationInMinutes),
-                                 attendees.ToArray());
+            var appointment = await _calendarService.AddAppointmentAsync(
+                                  date.Type.Name,
+                                  $"{host.FullName} // {attendee.FullName}",
+                                  date.Date,
+                                  date.Date.AddMinutes(date.Type.DurationInMinutes),
+                                  attendees.ToArray());
+
+            entity.EventId = appointment.EventId;
+            entity.EventMeetingLink = appointment.EventMeetingLink;
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -81,24 +86,52 @@ public static class AppointmentCreate
             return _mapper.Map<AppointmentDto>(entity);
         }
 
-        private async Task<Employee> GetTeacherAsync(string userName)
+        private async Task<Employee> GetHostAsync(int typeId, string hostUserName)
         {
-            var teacher = await _employeeService.GetEmployeeAsync(userName);
-            if (teacher is null)
+            var host = await _employeeService.GetEmployeeAsync(hostUserName);
+            if (host is null)
             {
-                throw new ValidationException(nameof(userName), "Invalid user name");
+                throw new ValidationException(nameof(hostUserName), "Invalid host");
             }
 
-            return teacher;
+            var exclusiveHosts = await _context.AppointmentExclusiveHosts.AsNoTracking()
+                                     .Where(x => x.TypeId == typeId)
+                                     .Select(x => x.UserName)
+                                     .ToListAsync();
+
+            if (exclusiveHosts.Any() && !exclusiveHosts.Contains(hostUserName))
+            {
+                throw new ValidationException(nameof(hostUserName), "Invalid host");
+            }
+
+            return host;
         }
 
-        private async Task<AppointmentDate> GetDateAsync(int dateId)
+        private async Task<Employee> GetAttendeeAsync(string userName)
         {
+            var attendee = await _employeeService.GetEmployeeAsync(userName);
+            if (attendee is null)
+            {
+                throw new ValidationException(nameof(userName), "Invalid attendee");
+            }
+
+            return attendee;
+        }
+
+        private async Task<AppointmentDate> GetDateAsync(int dateId, string hostUserName)
+        {
+            var reservedDatesQuery = _context.AppointmentReservedDates.AsNoTracking()
+                .Where(x => x.UserName == hostUserName)
+                .Select(x => x.DateId);
+
             var date = await _context.AppointmentDates.AsNoTracking()
                            .Include(x => x.Type)
                            .FirstOrDefaultAsync(x =>
                                x.Id == dateId &&
-                               x.Type.RegistrationEnd > DateTime.Now);
+                               !x.Type.IsPublic &&
+                               x.Date > DateTime.Now.AddHours(3) &&
+                               x.Type.RegistrationEnd > DateTime.Now &&
+                               !reservedDatesQuery.Contains(x.Id));
 
             if (date is null)
             {

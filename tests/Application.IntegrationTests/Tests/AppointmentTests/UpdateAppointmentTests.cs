@@ -10,11 +10,17 @@ using Xunit;
 public class UpdateAppointmentTests
 {
     private readonly AppFixture _app;
+    private readonly string _currentUserName;
 
     public UpdateAppointmentTests(AppFixture appFixture)
     {
         _app = appFixture;
         _app.ResetData();
+
+        var user = _app.CreateUserAsync().GetAwaiter().GetResult();
+        _currentUserName = user.UserName;
+
+        _app.CurrentUserMock.SetCurrentUserData(user.Id, user.UserName);
     }
 
     [Fact]
@@ -50,6 +56,7 @@ public class UpdateAppointmentTests
             UserName = "username",
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            AttendeeUserName = _currentUserName,
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };
@@ -63,5 +70,42 @@ public class UpdateAppointmentTests
         var actual = await _app.FindAsync<Appointment>(entity.Id);
 
         actual.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task AppointmentDelete_ShouldNotDeleteAppointment_WhenNotAttendee()
+    {
+        var date = await _app.AddAsync(new AppointmentDate
+        {
+            Date = DateTime.Now.AddDays(1),
+            Type = new()
+            {
+                Id = 1,
+                Name = "Name",
+                Slug = "slug",
+                RegistrationEnd = DateTime.Now,
+                DurationInMinutes = 30,
+                IsPublic = true,
+                InvitePrincipal = true
+            }
+        });
+
+        var entity = new Appointment
+        {
+            UserName = "username",
+            AttendeeEmail = "b@gmail.com",
+            AttendeeName = "Name1",
+            AttendeeUserName = "random_user_name",
+            EventId = Path.GetRandomFileName(),
+            DateId = date.Id
+        };
+
+        await _app.AddAsync(entity);
+
+        var command = new AppointmentDelete.Command(entity.Id);
+
+        await FluentActions.Invoking(() => _app.SendAsync(command))
+            .Should()
+            .ThrowAsync<UnauthorizedAccessException>();
     }
 }

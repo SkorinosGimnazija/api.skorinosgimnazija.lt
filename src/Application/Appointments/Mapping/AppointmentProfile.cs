@@ -3,6 +3,8 @@
 using AutoMapper;
 using Domain.Entities.Appointments;
 using Dtos;
+using SkorinosGimnazija.Application.Employees.Dtos;
+using SkorinosGimnazija.Domain.Entities.Identity;
 
 internal class AppointmentProfile : Profile
 {
@@ -25,5 +27,13 @@ internal class AppointmentProfile : Profile
         CreateMap<AppointmentDateCreateDto, AppointmentDate>();
 
         CreateMap<AppointmentTypeEditDto, AppointmentType>();
+
+        CreateMap<AppointmentExclusiveHostCreateDto, AppointmentExclusiveHost>();
+
+        CreateMap<AppointmentExclusiveHost, AppointmentExclusiveHostDto>();
+
+        CreateMap<Employee, AppointmentHostDto>()
+            .ForMember(x => x.DisplayName, x => x.MapFrom(z => z.FullName))
+            .ForMember(x => x.UserName, x => x.MapFrom(z => z.Id));
     }
 }

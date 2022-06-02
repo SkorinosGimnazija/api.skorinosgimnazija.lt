@@ -1,11 +1,14 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Calendar;
 
 using Application.Common.Interfaces;
+using Application.Common.Models;
 using Application.Events.Dtos;
 using Domain.Options;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 public class GoogleCalendar : ICalendarService
@@ -14,12 +17,15 @@ public class GoogleCalendar : ICalendarService
 
     private readonly string _appointmentsCalendarId;
     private readonly CalendarService _calendarService;
+    private readonly IWebHostEnvironment _env;
     private readonly string _eventsCalendarId;
 
     public GoogleCalendar(
         IOptions<GoogleOptions> googleOptions,
-        IOptions<CalendarOptions> calendarOptions)
+        IOptions<CalendarOptions> calendarOptions,
+        IWebHostEnvironment env)
     {
+        _env = env;
         _appointmentsCalendarId = calendarOptions.Value.AppointmentsCalendarId;
         _eventsCalendarId = calendarOptions.Value.EventsCalendarId;
 
@@ -62,14 +68,14 @@ public class GoogleCalendar : ICalendarService
             Start = new()
             {
                 Date = allDay ? startDate.ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? startDate : null
-                //TimeZone = TimeZone
+                DateTime = !allDay ? startDate : null,
+                TimeZone = TimeZone
             },
             End = new()
             {
                 Date = allDay ? endDate.ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? endDate : null
-                //TimeZone = TimeZone
+                DateTime = !allDay ? endDate : null,
+                TimeZone = TimeZone
             }
         };
 
@@ -79,20 +85,25 @@ public class GoogleCalendar : ICalendarService
         return response.Id;
     }
 
-    public async Task<string> AddAppointmentAsync(
+    public async Task<AppointmentEventResponse> AddAppointmentAsync(
         string title,
         string description,
         DateTime startDate,
         DateTime endDate,
         params string[] attendeeEmails)
     {
+        if (_env.IsDevelopment())
+        {
+            return new() { EventId = Guid.NewGuid().ToString(), EventMeetingLink = Guid.NewGuid().ToString() };
+        }
+
         var @event = new Event
         {
             Summary = title,
             Description = description,
-            Start = new() { DateTime = startDate },
-            End = new() { DateTime = endDate },
-            Attendees = attendeeEmails.Select(email => new EventAttendee { Email = email }).ToArray(),
+            Start = new() { DateTime = startDate, TimeZone = TimeZone },
+            End = new() { DateTime = endDate, TimeZone = TimeZone },
+            Attendees = attendeeEmails.Distinct().Select(email => new EventAttendee { Email = email }).ToArray(),
             GuestsCanInviteOthers = false,
             ConferenceData = new()
             {
@@ -114,7 +125,7 @@ public class GoogleCalendar : ICalendarService
 
         var response = await request.ExecuteAsync();
 
-        return response.Id;
+        return new() { EventId = response.Id, EventMeetingLink = response.HangoutLink };
     }
 
     public async Task DeleteEventAsync(string eventId)

@@ -13,5 +13,6 @@ internal class AppointmentReservedDateConfiguration : IEntityTypeConfiguration<A
         builder.Property(x => x.UserName).HasMaxLength(100);
 
         builder.HasIndex(x => x.UserName);
+        builder.HasIndex(x => new { x.UserName, x.DateId }).IsUnique();
     }
 }

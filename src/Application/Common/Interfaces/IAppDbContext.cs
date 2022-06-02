@@ -33,7 +33,9 @@ public interface IAppDbContext
 
     DbSet<AppointmentDate> AppointmentDates { get; }
 
-    DbSet<AppointmentType> AppointmentTypes { get; set; }
+    DbSet<AppointmentType> AppointmentTypes { get; }
+
+    DbSet<AppointmentExclusiveHost> AppointmentExclusiveHosts { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

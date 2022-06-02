@@ -46,21 +46,27 @@ public static class AppointmentPublicCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<AppointmentDto> Handle(Command request, CancellationToken _)
         {
-            var date = await GetDateAsync(request.Appointment.DateId);
-            var teacher = await GetTeacherAsync(request.Appointment.UserName);
+            var date = await GetDateAsync(request.Appointment.DateId, request.Appointment.UserName);
+            var teacher = await GetHostAsync(date.Type.Id, request.Appointment.UserName);
 
             var transaction = await _context.BeginTransactionAsync();
 
             var entity = _context.Appointments.Add(_mapper.Map<Appointment>(request.Appointment)).Entity;
+
+            entity.UserDisplayName = teacher.FullName;
+
             await _context.SaveChangesAsync();
 
-            entity.EventId = await _calendarService.AddAppointmentAsync(
-                                 date.Type.Name,
-                                 $"{teacher.FullName} // {request.Appointment.AttendeeName}",
-                                 date.Date,
-                                 date.Date.AddMinutes(date.Type.DurationInMinutes),
-                                 request.Appointment.AttendeeEmail,
-                                 teacher.Email);
+            var appointment = await _calendarService.AddAppointmentAsync(
+                                  date.Type.Name,
+                                  $"{teacher.FullName} // {request.Appointment.AttendeeName}",
+                                  date.Date,
+                                  date.Date.AddMinutes(date.Type.DurationInMinutes),
+                                  request.Appointment.AttendeeEmail,
+                                  teacher.Email);
+
+            entity.EventId = appointment.EventId;
+            entity.EventMeetingLink = appointment.EventMeetingLink;
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
@@ -68,25 +74,41 @@ public static class AppointmentPublicCreate
             return _mapper.Map<AppointmentDto>(entity);
         }
 
-        private async Task<Employee> GetTeacherAsync(string userName)
+        private async Task<Employee> GetHostAsync(int typeId, string hostUserName)
         {
-            var teacher = await _employeeService.GetEmployeeAsync(userName);
-            if (teacher is null)
+            var employee = await _employeeService.GetEmployeeAsync(hostUserName);
+            if (employee is null)
             {
-                throw new ValidationException(nameof(userName), "Invalid user name");
+                throw new ValidationException(nameof(hostUserName), "Invalid user name");
             }
 
-            return teacher;
+            var exclusiveHosts = await _context.AppointmentExclusiveHosts.AsNoTracking()
+                                     .Where(x => x.TypeId == typeId)
+                                     .Select(x => x.UserName)
+                                     .ToListAsync();
+
+            if (exclusiveHosts.Any() && !exclusiveHosts.Contains(hostUserName))
+            {
+                throw new ValidationException(nameof(hostUserName), "Invalid host");
+            }
+
+            return employee;
         }
 
-        private async Task<AppointmentDate> GetDateAsync(int dateId)
+        private async Task<AppointmentDate> GetDateAsync(int dateId, string hostUserName)
         {
+            var reservedDatesQuery = _context.AppointmentReservedDates.AsNoTracking()
+                .Where(x => x.UserName == hostUserName)
+                .Select(x => x.DateId);
+
             var date = await _context.AppointmentDates.AsNoTracking()
                            .Include(x => x.Type)
                            .FirstOrDefaultAsync(x =>
                                x.Id == dateId &&
+                               x.Type.IsPublic &&
+                               x.Date > DateTime.Now.AddHours(3) &&
                                x.Type.RegistrationEnd > DateTime.Now &&
-                               x.Type.IsPublic);
+                               !reservedDatesQuery.Contains(x.Id));
 
             if (date is null)
             {

@@ -23,7 +23,7 @@ public static class AppointmentTypeDelete
         public async Task<Unit> Handle(Command request, CancellationToken _)
         {
             var entity = await _context.AppointmentTypes.FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (entity == null)
+            if (entity is null)
             {
                 throw new NotFoundException();
             }

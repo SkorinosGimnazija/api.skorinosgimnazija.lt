@@ -6,7 +6,7 @@ public interface IEmployeeService
 {
     Task<ICollection<string>> GetEmployeeRolesAsync(string userName);
 
-    Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct = default);
+    Task<List<Employee>> GetTeachersAsync(CancellationToken ct = default);
 
     Task<IEnumerable<string>> GetEmployeeGroupsAsync(string userName);
 
@@ -14,7 +14,7 @@ public interface IEmployeeService
 
     Task<Employee?> GetEmployeeAsync(string userName);
 
-    Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct = default);
+    Task<List<Employee>> GetHeadTeachersAsync(CancellationToken ct = default);
 
     Task<Employee> GetPrincipalAsync(CancellationToken ct = default);
 }

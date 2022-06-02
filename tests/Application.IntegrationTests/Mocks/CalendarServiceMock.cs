@@ -4,6 +4,7 @@ using Common.Interfaces;
 using Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using SkorinosGimnazija.Application.Common.Models;
 
 public class CalendarServiceMock
 {
@@ -21,7 +22,8 @@ public class CalendarServiceMock
                     It.IsAny<string[]>()
                 )
             )
-            .ReturnsAsync(Guid.NewGuid().ToString());
+            .ReturnsAsync(new AppointmentEventResponse()
+                { EventId = Guid.NewGuid().ToString(), EventMeetingLink = Guid.NewGuid().ToString() });
 
         Mock.Setup(x =>
                 x.AddEventAsync(

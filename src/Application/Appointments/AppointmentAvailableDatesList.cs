@@ -42,17 +42,17 @@ public static class AppointmentAvailableDatesList
                 return new();
             }
 
-            var reservedDatesQuery = _context.AppointmentReservedDates
+            var reservedDatesQuery = _context.AppointmentReservedDates.AsNoTracking()
                 .Where(x => x.UserName == request.UserName)
                 .Select(x => x.DateId);
 
-            var registeredDatesQuery = _context.Appointments
+            var registeredDatesQuery = _context.Appointments.AsNoTracking()
                 .Where(x => x.UserName == request.UserName)
                 .Select(x => x.DateId);
 
             return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
-                           x.Date > DateTime.Now &&
+                           x.Date > DateTime.Now.AddHours(4) &&
                            x.TypeId == appointmentType.Id &&
                            !registeredDatesQuery.Contains(x.Id) &&
                            !reservedDatesQuery.Contains(x.Id))
@@ -70,7 +70,7 @@ public static class AppointmentAvailableDatesList
                 throw new NotFoundException();
             }
 
-            if (isPublicRequest && !type.IsPublic)
+            if (isPublicRequest != type.IsPublic)
             {
                 throw new UnauthorizedAccessException();
             }

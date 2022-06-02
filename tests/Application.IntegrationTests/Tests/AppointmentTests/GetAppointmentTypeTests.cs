@@ -58,39 +58,11 @@ public class GetAppointmentTypeTests
     [Fact]
     public async Task AppointmentTypePublicDetails_ShouldThrowNotFoundException()
     {
-        var command = new AppointmentTypePublicDetails.Query("slug");
+        var command = new AppointmentAvailableHostsList.Query("slug", false);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
             .ThrowAsync<NotFoundException>();
-    }
-
-    [Fact]
-    public async Task AppointmentTypePublicDetails_ShouldFindBySlug()
-    {
-        var entity = new AppointmentType
-        {
-            Name = "Name",
-            Slug = "slug",
-            RegistrationEnd = DateTime.Now,
-            DurationInMinutes = 30,
-            IsPublic = true,
-            InvitePrincipal = true
-        };
-
-        await _app.AddAsync(entity);
-
-        var command = new AppointmentTypePublicDetails.Query(entity.Slug);
-
-        var actual = await _app.SendAsync(command);
-
-        actual.Should().NotBeNull();
-        actual.Id.Should().Be(entity.Id);
-        actual.Name.Should().Be(entity.Name);
-        actual.DurationInMinutes.Should().Be(entity.DurationInMinutes);
-        actual.IsPublic.Should().Be(entity.IsPublic);
-        actual.InvitePrincipal.Should().Be(entity.InvitePrincipal);
-        actual.RegistrationEnd.Should().BeCloseTo(entity.RegistrationEnd, TimeSpan.FromSeconds(5));
     }
 
     [Fact]

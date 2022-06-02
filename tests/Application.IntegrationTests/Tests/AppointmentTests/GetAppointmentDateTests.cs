@@ -130,7 +130,7 @@ public class GetAppointmentDateTests
             TypeId = type.Id
         });
 
-        var command = new AppointmentAvailableDatesList.Query(type.Slug, _currentUserName, false);
+        var command = new AppointmentAvailableDatesList.Query(type.Slug, _currentUserName, true);
 
         var actual = await _app.SendAsync(command);
 

@@ -67,7 +67,7 @@ public sealed class EmployeeService : IEmployeeService
         return userRoles;
     }
 
-    public Task<IEnumerable<Employee>> GetHeadTeachersAsync(CancellationToken ct = default)
+    public Task<List<Employee>> GetHeadTeachersAsync(CancellationToken ct = default)
     {
         const string Path = "/Teachers/HeadTeachers";
         return GetEmployesAsync(Path, ct);
@@ -79,7 +79,7 @@ public sealed class EmployeeService : IEmployeeService
         return (await GetEmployesAsync(Path, ct)).First();
     }
 
-    public Task<IEnumerable<Employee>> GetTeachersAsync(CancellationToken ct = default)
+    public Task<List<Employee>> GetTeachersAsync(CancellationToken ct = default)
     {
         const string Path = "/Teachers";
         return GetEmployesAsync(Path, ct);
@@ -133,7 +133,7 @@ public sealed class EmployeeService : IEmployeeService
         return employee;
     }
 
-    private async Task<IEnumerable<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
+    private async Task<List<Employee>> GetEmployesAsync(string unitPath, CancellationToken ct)
     {
         var cacheKey = $"Employes{unitPath}";
 

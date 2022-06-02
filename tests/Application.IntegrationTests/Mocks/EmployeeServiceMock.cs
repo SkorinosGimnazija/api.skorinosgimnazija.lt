@@ -20,6 +20,14 @@ public class EmployeeServiceMock
                 Email = "principal@email",
                 FullName = "Principal Name"
             });
+
+        Mock.Setup(x => x.GetEmployeeAsync(It.IsAny<string>()))
+            .ReturnsAsync(new Employee
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = "employee@email",
+                FullName = "Employee name"
+            });
     }
 
     public Mock<IEmployeeService> Mock { get; } = new();

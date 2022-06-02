@@ -6,9 +6,13 @@ public record AppointmentDetailsDto
 
     public string EventId { get; init; } = default!;
 
+    public string EventMeetingLink { get; init; } = default!;
+
     public int DateId { get; init; }
 
     public string UserName { get; init; } = default!;
+
+    public string UserDisplayName { get; init; } = default!;
 
     public string AttendeeName { get; init; } = default!;
 
