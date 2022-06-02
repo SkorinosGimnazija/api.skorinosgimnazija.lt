@@ -55,12 +55,12 @@ public class CreateAppointmentTests
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
                 Name = "Name",
                 Slug = "slug",
-                RegistrationEnd = DateTime.Now.AddDays(1),
+                RegistrationEnd = DateTime.UtcNow.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = false
@@ -126,12 +126,12 @@ public class CreateAppointmentTests
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
                 Name = "Name",
                 Slug = "slug",
-                RegistrationEnd = DateTime.Now.AddDays(1),
+                RegistrationEnd = DateTime.UtcNow.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = true
@@ -161,12 +161,12 @@ public class CreateAppointmentTests
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
                 Name = "Name",
                 Slug = "slug",
-                RegistrationEnd = DateTime.Now.AddDays(1),
+                RegistrationEnd = DateTime.UtcNow.AddDays(1),
                 DurationInMinutes = 30,
                 IsPublic = false,
                 InvitePrincipal = true

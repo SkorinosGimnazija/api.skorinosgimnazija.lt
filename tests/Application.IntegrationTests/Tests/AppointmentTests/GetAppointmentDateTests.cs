@@ -29,7 +29,7 @@ public class GetAppointmentDateTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -39,7 +39,7 @@ public class GetAppointmentDateTests
         {
             Name = "Name1",
             Slug = "slug1",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -47,19 +47,19 @@ public class GetAppointmentDateTests
 
         var date1 = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             TypeId = type1.Id
         });
 
         var date2 = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             TypeId = type1.Id
         });
 
         await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             TypeId = type2.Id
         });
 
@@ -78,7 +78,7 @@ public class GetAppointmentDateTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now.AddDays(1),
+            RegistrationEnd = DateTime.UtcNow.AddDays(1),
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -89,7 +89,7 @@ public class GetAppointmentDateTests
             UserName = _currentUserName,
             Date = new()
             {
-                Date = DateTime.Now.AddDays(3),
+                Date = DateTime.UtcNow.AddDays(3),
                 TypeId = type.Id
             }
         });
@@ -101,32 +101,32 @@ public class GetAppointmentDateTests
             AttendeeName = "name",
             Date = new()
             {
-                Date = DateTime.Now.AddDays(4),
+                Date = DateTime.UtcNow.AddDays(4),
                 TypeId = type.Id
             }
         });
 
         await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(-5),
+            Date = DateTime.UtcNow.AddDays(-5),
             TypeId = type.Id
         });
 
         var freeDate1 = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(15),
+            Date = DateTime.UtcNow.AddDays(15),
             TypeId = type.Id
         });
 
         var freeDate2 = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(6),
+            Date = DateTime.UtcNow.AddDays(6),
             TypeId = type.Id
         });
 
         var freeDate3 = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(5),
+            Date = DateTime.UtcNow.AddDays(5),
             TypeId = type.Id
         });
 
@@ -146,7 +146,7 @@ public class GetAppointmentDateTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now.AddDays(1),
+            RegistrationEnd = DateTime.UtcNow.AddDays(1),
             DurationInMinutes = 30,
             IsPublic = false,
             InvitePrincipal = true

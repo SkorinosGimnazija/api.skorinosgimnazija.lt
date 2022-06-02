@@ -34,7 +34,7 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -72,7 +72,7 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -82,7 +82,7 @@ public class GetAppointmentTypeTests
         {
             Name = "Name1",
             Slug = "slug1",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -116,7 +116,7 @@ public class GetAppointmentTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true

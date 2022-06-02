@@ -31,13 +31,13 @@ public static class EventList
 
                 if (request.Week is not null)
                 {
-                    start = DateTime.Now.AddDays(request.Week.Value * 7).Date;
-                    end = DateTime.Now.AddDays((request.Week.Value + 1) * 7).Date;
+                    start = DateTime.UtcNow.AddDays(request.Week.Value * 7).Date;
+                    end = DateTime.UtcNow.AddDays((request.Week.Value + 1) * 7).Date;
                 }
                 else
                 {
-                    start = DateTime.Now.Date;
-                    end = DateTime.Now.AddDays(1).Date;
+                    start = DateTime.UtcNow.Date;
+                    end = DateTime.UtcNow.AddDays(1).Date;
                 }
 
                 cached = await _calendarService.GetEventsAsync(start, end, cancellationToken);

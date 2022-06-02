@@ -37,7 +37,7 @@ public static class AppointmentAvailableDatesList
         public async Task<List<AppointmentDateDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var appointmentType = await GetTypeAsync(request.TypeSlug, request.IsPublic, cancellationToken);
-            if (DateTime.Now >= appointmentType.RegistrationEnd)
+            if (DateTime.UtcNow >= appointmentType.RegistrationEnd)
             {
                 return new();
             }
@@ -52,7 +52,7 @@ public static class AppointmentAvailableDatesList
 
             return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
-                           x.Date > DateTime.Now.AddHours(4) &&
+                           x.Date > DateTime.UtcNow.AddHours(4) &&
                            x.TypeId == appointmentType.Id &&
                            !registeredDatesQuery.Contains(x.Id) &&
                            !reservedDatesQuery.Contains(x.Id))

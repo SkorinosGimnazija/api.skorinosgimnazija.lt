@@ -38,13 +38,13 @@ public class UpdateAppointmentTests
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
                 Id = 1,
                 Name = "Name",
                 Slug = "slug",
-                RegistrationEnd = DateTime.Now,
+                RegistrationEnd = DateTime.UtcNow,
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = true
@@ -77,13 +77,13 @@ public class UpdateAppointmentTests
     {
         var date = await _app.AddAsync(new AppointmentDate
         {
-            Date = DateTime.Now.AddDays(1),
+            Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
                 Id = 1,
                 Name = "Name",
                 Slug = "slug",
-                RegistrationEnd = DateTime.Now,
+                RegistrationEnd = DateTime.UtcNow,
                 DurationInMinutes = 30,
                 IsPublic = true,
                 InvitePrincipal = true

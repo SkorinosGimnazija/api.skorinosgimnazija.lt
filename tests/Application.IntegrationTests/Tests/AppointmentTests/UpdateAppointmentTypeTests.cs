@@ -35,7 +35,7 @@ public class UpdateAppointmentTypeTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -71,7 +71,7 @@ public class UpdateAppointmentTypeTypeTests
             Id = 1,
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -91,7 +91,7 @@ public class UpdateAppointmentTypeTypeTests
         {
             Name = "Name",
             Slug = "slug",
-            RegistrationEnd = DateTime.Now,
+            RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
             InvitePrincipal = true
@@ -104,7 +104,7 @@ public class UpdateAppointmentTypeTypeTests
             Id = entity.Id,
             Name = "Name1",
             Slug = "slug1",
-            RegistrationEnd = DateTime.Now.AddDays(1),
+            RegistrationEnd = DateTime.UtcNow.AddDays(1),
             DurationInMinutes = 45,
             IsPublic = false,
             InvitePrincipal = false

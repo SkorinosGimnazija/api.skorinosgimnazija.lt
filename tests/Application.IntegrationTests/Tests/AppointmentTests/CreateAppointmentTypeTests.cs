@@ -36,7 +36,7 @@ public class CreateAppointmentTypeTests
         {
             Name = "Type name",
             Slug = "type-slug",
-            RegistrationEnd = DateTime.Parse("2022-01-01"),
+            RegistrationEnd = DateTime.Parse("2022-01-01").ToUniversalTime(),
             DurationInMinutes = 30,
             InvitePrincipal = true,
             IsPublic = true

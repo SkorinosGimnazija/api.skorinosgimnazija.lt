@@ -134,7 +134,7 @@ public class GetMetaTests
             LanguageId = 1,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-01 11:11"), DateTimeKind.Utc)
+            PublishedAt = DateTime.Parse("2022-01-01 11:11").ToUniversalTime()
         };
 
         var newPostLt = new Post
@@ -144,7 +144,7 @@ public class GetMetaTests
             LanguageId = 1,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-02 12:12"), DateTimeKind.Utc)
+            PublishedAt = DateTime.Parse("2022-01-02 12:12").ToUniversalTime()
         };
 
         var newPostBy = new Post
@@ -154,7 +154,7 @@ public class GetMetaTests
             LanguageId = 2,
             IsPublished = true,
             ShowInFeed = true,
-            PublishedAt = DateTime.SpecifyKind(DateTime.Parse("2022-01-03 13:13"), DateTimeKind.Utc)
+            PublishedAt = DateTime.Parse("2022-01-03 13:13").ToUniversalTime()
         };
 
         await _app.AddAsync(oldPostLt);

@@ -10,7 +10,7 @@ internal class AppointmentDateConfiguration : IEntityTypeConfiguration<Appointme
     {
         builder.HasOne(x => x.Type).WithMany().OnDelete(DeleteBehavior.Restrict);
 
-        builder.Property(x => x.Date).HasColumnType("timestamp");
+        builder.Property(x => x.Date);
 
         builder.HasIndex(x => x.Date);
     }

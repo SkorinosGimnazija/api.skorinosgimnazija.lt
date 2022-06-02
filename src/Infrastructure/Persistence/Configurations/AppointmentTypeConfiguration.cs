@@ -12,6 +12,6 @@ internal class AppointmentTypeConfiguration : IEntityTypeConfiguration<Appointme
 
         builder.Property(x => x.Slug).HasMaxLength(100);
         builder.Property(x => x.Name).HasMaxLength(100);
-        builder.Property(x => x.RegistrationEnd).HasColumnType("timestamp");
+        builder.Property(x => x.RegistrationEnd);
     }
 }
