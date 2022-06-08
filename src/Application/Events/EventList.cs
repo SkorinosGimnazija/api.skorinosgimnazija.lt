@@ -41,7 +41,7 @@ public static class EventList
                 }
 
                 cached = await _calendarService.GetEventsAsync(start, end, cancellationToken);
-                _cache.Set(key, cached, TimeSpan.FromHours(6));
+                _cache.Set(key, cached, TimeSpan.FromHours(1));
             }
 
             return cached;
