@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicPostList
 {
-    public record Query(string LanguageSlug, PaginationDto Pagination) : IRequest<List<PostDto>>;
+    public record Query(string LanguageSlug, PaginationDto Pagination) : IRequest<List<PostPublicDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -22,7 +22,7 @@ public static class PublicPostList
         }
     }
 
-    public class Handler : IRequestHandler<Query, List<PostDto>>
+    public class Handler : IRequestHandler<Query, List<PostPublicDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -34,7 +34,7 @@ public static class PublicPostList
             _mapper = mapper;
         }
 
-        public async Task<List<PostDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<PostPublicDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Posts
                        .AsNoTracking()
@@ -43,10 +43,10 @@ public static class PublicPostList
                            x.ShowInFeed &&
                            x.PublishedAt <= DateTime.UtcNow &&
                            x.Language.Slug == request.LanguageSlug)
-                       .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.IsFeatured)
                        .ThenByDescending(x => x.PublishedAt)
                        .Paginate(request.Pagination)
+                       .ProjectTo<PostPublicDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }
     }

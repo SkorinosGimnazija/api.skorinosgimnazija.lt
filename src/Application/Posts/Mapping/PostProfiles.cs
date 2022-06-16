@@ -11,7 +11,11 @@ public class PostProfiles : Profile
     {
         CreateMap<Post, PostDto>();
 
+        CreateMap<Post, PostPublicDto>();
+
         CreateMap<Post, PostDetailsDto>();
+
+        CreateMap<Post, PostPublicDetailsDto>();
 
         CreateMap<PostEditDto, Post>()
             .ForMember(x => x.Images, x => x.Ignore())

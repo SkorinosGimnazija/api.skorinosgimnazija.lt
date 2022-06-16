@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicMenuList
 {
-    public record Query(string Language) : IRequest<List<MenuDto>>;
+    public record Query(string Language) : IRequest<List<MenuPublicDto>>;
 
-    public class Handler : IRequestHandler<Query, List<MenuDto>>
+    public class Handler : IRequestHandler<Query, List<MenuPublicDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -23,7 +23,7 @@ public static class PublicMenuList
             _mapper = mapper;
         }
 
-        public async Task<List<MenuDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<MenuPublicDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var menus = await _context.Menus
                             .AsNoTracking()
@@ -32,7 +32,7 @@ public static class PublicMenuList
                                 x.Language.Slug == request.Language &&
                                 x.MenuLocation.Slug != "off")
                             .OrderBy(x => x.Order)
-                            .ProjectTo<MenuDto>(_mapper.ConfigurationProvider)
+                            .ProjectTo<MenuPublicDto>(_mapper.ConfigurationProvider)
                             .ToListAsync(cancellationToken);
 
             foreach (var childMenu in menus.Where(x => x.ParentMenuId is not null))

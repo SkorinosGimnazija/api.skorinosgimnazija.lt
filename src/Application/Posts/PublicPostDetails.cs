@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicPostDetails
 {
-    public record Query(int Id) : IRequest<PostDetailsDto>;
+    public record Query(int Id) : IRequest<PostPublicDetailsDto>;
 
-    public class Handler : IRequestHandler<Query, PostDetailsDto>
+    public class Handler : IRequestHandler<Query, PostPublicDetailsDto>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -23,16 +23,13 @@ public static class PublicPostDetails
             _mapper = mapper;
         }
 
-        public async Task<PostDetailsDto> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PostPublicDetailsDto> Handle(Query request, CancellationToken cancellationToken)
         {
             var entity = await _context.Posts
                              .AsNoTracking()
-                             .ProjectTo<PostDetailsDto>(_mapper.ConfigurationProvider)
-                             .FirstOrDefaultAsync(x =>
-                                     x.Id == request.Id &&
-                                     x.IsPublished &&
-                                     x.PublishedAt <= DateTime.UtcNow,
-                                 cancellationToken);
+                             .Where(x => x.IsPublished && x.PublishedAt <= DateTime.UtcNow)
+                             .ProjectTo<PostPublicDetailsDto>(_mapper.ConfigurationProvider)
+                             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (entity is null)
             {

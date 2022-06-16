@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicPostSearchList
 {
-    public record Query(string SearchText, PaginationDto Pagination) : IRequest<PaginatedList<PostDto>>;
+    public record Query(string SearchText, PaginationDto Pagination) : IRequest<PaginatedList<PostPublicDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -22,7 +22,7 @@ public static class PublicPostSearchList
         }
     }
 
-    public class Handler : IRequestHandler<Query, PaginatedList<PostDto>>
+    public class Handler : IRequestHandler<Query, PaginatedList<PostPublicDto>>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
@@ -35,7 +35,7 @@ public static class PublicPostSearchList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<PostDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<PostPublicDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var searchResult = await _search.SearchPostAsync(request.SearchText, request.Pagination, cancellationToken);
             var items = await _context.Posts
@@ -44,7 +44,7 @@ public static class PublicPostSearchList
                                 x.IsPublished &&
                                 x.PublishedAt <= DateTime.UtcNow &&
                                 searchResult.Items.Contains(x.Id))
-                            .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                            .ProjectTo<PostPublicDto>(_mapper.ConfigurationProvider)
                             .OrderBy(x => searchResult.Items.IndexOf(x.Id))
                             .ToListAsync(cancellationToken);
 
@@ -61,7 +61,7 @@ public static class PublicPostSearchList
             //               x.IsPublished &&
             //               x.PublishDate <= DateTime.UtcNow &&
             //               postIds.Contains(x.Id))
-            //           .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+            //           .ProjectTo<PostPublicDto>(_mapper.ConfigurationProvider)
             //           .OrderBy(x => postIds.IndexOf(x.Id))
             //           .ToListAsync(cancellationToken);
 
@@ -71,7 +71,7 @@ public static class PublicPostSearchList
             //        x.IsPublished &&
             //        x.PublishDate <= DateTime.UtcNow &&
             //        EF.Functions.ILike(x.Title, $"%{request.SearchText}%"))
-            //    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+            //    .ProjectTo<PostPublicDto>(_mapper.ConfigurationProvider)
             //    .OrderByDescending(x => x.PublishDate)
             //    .Paginate(request.Pagination)
             //    .ToListAsync(cancellationToken);

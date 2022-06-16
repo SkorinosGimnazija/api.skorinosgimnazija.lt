@@ -79,7 +79,7 @@ public sealed class PostsController : BaseApiController
     [HttpGet("public/{id:int}", Name = "GetPublicPostById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PostDetailsDto>> GetPublicPost(int id, CancellationToken ct)
+    public async Task<ActionResult<PostPublicDetailsDto>> GetPublicPost(int id, CancellationToken ct)
     {
         return await Mediator.Send(new PublicPostDetails.Query(id), ct);
     }
@@ -95,7 +95,7 @@ public sealed class PostsController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/{language}/all", Name = "GetPublicPostsByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<PostDto>> GetPublicPosts(
+    public async Task<List<PostPublicDto>> GetPublicPosts(
         string language, [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new PublicPostList.Query(language, pagination), ct);
@@ -104,7 +104,7 @@ public sealed class PostsController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/search/{text}", Name = "SearchPublicPosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<PostDto>> SearchPublicPosts(
+    public async Task<PaginatedList<PostPublicDto>> SearchPublicPosts(
         string text, [FromQuery] PaginationDto pagination, CancellationToken ct)
     {
         return await Mediator.Send(new PublicPostSearchList.Query(text, pagination), ct);

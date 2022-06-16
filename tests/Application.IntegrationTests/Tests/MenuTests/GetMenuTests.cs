@@ -140,6 +140,7 @@ public class GetMenuTests
         var loc = await _app.AddAsync(new MenuLocation { Slug = Path.GetRandomFileName(), Name = "name" });
 
         var rng = new Random();
+        var menuList = new List<Menu>();
 
         for (var i = 0; i < 5; i++)
         {
@@ -154,6 +155,7 @@ public class GetMenuTests
                 Order = rng.Next(100)
             };
 
+            menuList.Add(menu);
             await _app.AddAsync(menu);
         }
 
@@ -162,6 +164,6 @@ public class GetMenuTests
         var actual = await _app.SendAsync(command);
 
         actual.Should().HaveCount(5);
-        actual.Select(x => x.Order).Should().BeInAscendingOrder();
+        actual.Select(x => x.Id).Should().ContainInOrder(menuList.OrderBy(x => x.Order).Select(x => x.Id));
     }
 }

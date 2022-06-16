@@ -2,7 +2,6 @@
 
 using Banners;
 using Common.Exceptions;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using FluentAssertions;
 using Xunit;
@@ -128,6 +127,7 @@ public class GetBannerTests
         var lang = await _app.AddAsync(new Language { Slug = Path.GetRandomFileName(), Name = "name" });
 
         var rng = new Random();
+        var bannerList = new List<Banner>();
 
         for (var i = 0; i < 5; i++)
         {
@@ -141,14 +141,14 @@ public class GetBannerTests
                 Order = rng.Next(100)
             };
 
+            bannerList.Add(entity);
             await _app.AddAsync(entity);
         }
 
         var command = new PublicBannerList.Query(lang.Slug);
 
         var actual = await _app.SendAsync(command);
-
         actual.Should().HaveCount(5);
-        actual.Select(x => x.Order).Should().BeInAscendingOrder();
+        actual.Select(x => x.Id).Should().ContainInOrder(bannerList.OrderBy(x => x.Order).Select(x => x.Id));
     }
 }

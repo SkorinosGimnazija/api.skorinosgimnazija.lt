@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 public static class PublicBannerList
 {
-    public record Query(string LanguageSlug) : IRequest<List<BannerDto>>;
+    public record Query(string LanguageSlug) : IRequest<List<BannerPublicDto>>;
 
-    public class Handler : IRequestHandler<Query, List<BannerDto>>
+    public class Handler : IRequestHandler<Query, List<BannerPublicDto>>
     {
         private readonly IAppDbContext _context;
 
@@ -23,15 +23,15 @@ public static class PublicBannerList
             _mapper = mapper;
         }
 
-        public async Task<List<BannerDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<BannerPublicDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await _context.Banners
                        .AsNoTracking()
                        .Where(x =>
                            x.IsPublished &&
                            x.Language.Slug == request.LanguageSlug)
-                       .ProjectTo<BannerDto>(_mapper.ConfigurationProvider)
                        .OrderBy(x => x.Order)
+                       .ProjectTo<BannerPublicDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }
     }

@@ -67,7 +67,7 @@ public class BannersController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/{language}", Name = "GetPublicBannersByLanguage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<BannerDto>> GetAllPublic(string language, CancellationToken ct)
+    public async Task<List<BannerPublicDto>> GetAllPublic(string language, CancellationToken ct)
     {
         return await Mediator.Send(new PublicBannerList.Query(language), ct);
     }

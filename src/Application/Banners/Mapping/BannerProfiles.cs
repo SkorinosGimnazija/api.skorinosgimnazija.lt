@@ -11,6 +11,8 @@ public class BannerProfiles : Profile
     {
         CreateMap<Banner, BannerDto>();
 
+        CreateMap<Banner, BannerPublicDto>();
+
         CreateMap<BannerEditDto, Banner>();
 
         CreateMap<BannerCreateDto, Banner>();

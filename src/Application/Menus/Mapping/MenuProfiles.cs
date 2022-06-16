@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Menus.Mapping;
 
 using AutoMapper;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Dtos;
 
@@ -12,6 +11,8 @@ public class MenuProfiles : Profile
         CreateMap<MenuLocation, MenuLocationDto>();
 
         CreateMap<Menu, MenuDetailsDto>();
+
+        CreateMap<Menu, MenuPublicDto>();
 
         CreateMap<Menu, MenuDto>()
             .ForMember(x => x.Position, x => x.MapFrom(m => m.MenuLocation.Slug))
