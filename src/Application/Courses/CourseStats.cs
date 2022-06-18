@@ -55,11 +55,11 @@ public static class CourseStats
                            {
                                UserId = user.Id,
                                UserDisplayName = user.DisplayName,
-                               Price = courses.Price ?? 0,
+                               Price = (float)Math.Round(courses.Price ?? 0, 2),
+                               Hours = (float)Math.Round(courses.Hours, 2),
                                Count = courses.Count,
                                UsefulCount = courses.UsefulCount,
-                               LastUpdate = courses.LastUpdate,
-                               Hours = courses.Hours
+                               LastUpdate = courses.LastUpdate
                            })
                        .ToListAsync(cancellationToken);
         }
