@@ -27,7 +27,11 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseNpgsql(config.GetNpgsqlConnectionString("DATABASE_URL"),
-                x => { x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName); });
+                x =>
+                {
+                    x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+                    x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                });
         });
 
         services.AddIdentityCore<AppUser>()
