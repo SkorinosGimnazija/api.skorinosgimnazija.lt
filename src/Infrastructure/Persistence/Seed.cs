@@ -72,4 +72,22 @@ public static class Seed
 
         await dbContext.SaveChangesAsync();
     }
+
+    public static async Task AddAccomplishmentScales(AppDbContext dbContext)
+    {
+        if (await dbContext.AccomplishmentScales.AnyAsync())
+        {
+            return;
+        }
+
+        dbContext.AccomplishmentScales.AddRange(
+            new() { Name = "Gimnazijos" },
+            new() { Name = "Miesto" },
+            new() { Name = "Regioninis" },
+            new() { Name = "Respublikinis" },
+            new() { Name = "Tarptautinis" }
+        );
+
+        await dbContext.SaveChangesAsync();
+    }
 }

@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
+using SkorinosGimnazija.Domain.Entities.Accomplishments;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
 {
@@ -65,6 +66,14 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<AppointmentReservedDate> AppointmentReservedDates { get; set; } = default!;
 
     public DbSet<AppointmentExclusiveHost> AppointmentExclusiveHosts { get; set; } = default!;
+
+    public DbSet<Accomplishment> Accomplishments { get; set; } = default!;
+
+    public DbSet<AccomplishmentScale> AccomplishmentScales { get; set; } = default!;
+
+    public DbSet<AccomplishmentStudent> AccomplishmentStudents { get; set; } = default!;
+
+    public DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get; set; } = default!;
 
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {

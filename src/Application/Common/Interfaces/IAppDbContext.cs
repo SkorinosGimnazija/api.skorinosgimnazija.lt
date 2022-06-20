@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Domain.Entities;
+using Domain.Entities.Accomplishments;
 using Domain.Entities.Appointments;
 using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
@@ -36,6 +37,14 @@ public interface IAppDbContext
     DbSet<AppointmentType> AppointmentTypes { get; }
 
     DbSet<AppointmentExclusiveHost> AppointmentExclusiveHosts { get; }
+
+    DbSet<Accomplishment> Accomplishments { get; }
+
+    DbSet<AccomplishmentScale> AccomplishmentScales { get;  }
+
+    DbSet<AccomplishmentStudent> AccomplishmentStudents { get; }
+
+    DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get;  }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
