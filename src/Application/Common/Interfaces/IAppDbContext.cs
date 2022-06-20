@@ -46,6 +46,8 @@ public interface IAppDbContext
 
     DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get;  }
 
+    DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; set; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);

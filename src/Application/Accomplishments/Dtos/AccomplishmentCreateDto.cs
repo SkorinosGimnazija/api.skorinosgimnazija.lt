@@ -1,5 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
 
+using SkorinosGimnazija.Domain.Entities.Accomplishments;
+
 public record AccomplishmentCreateDto
 {
     public string Name { get; init; } = default!;
@@ -10,7 +12,7 @@ public record AccomplishmentCreateDto
 
     public int ScaleId { get; init; }
 
-    public ICollection<string> AdditionalTeachers { get; init; } = new List<string>();
+    public ICollection<AccomplishmentCreateTeacherDto> AdditionalTeachers { get; init; } = default!;
 
-    public ICollection<string> Students { get; init; } = new List<string>();
+    public ICollection<AccomplishmentCreateStudentDto> Students { get; init; } = default!;
 }

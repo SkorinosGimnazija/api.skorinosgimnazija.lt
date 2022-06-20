@@ -44,8 +44,16 @@ public class CreateAccomplishmentsTests
             Achievement = "Achievement1",
             Date = DateTime.Parse("2021-02-01"),
             ScaleId = 1,
-            AdditionalTeachers = new[] { "teacher1", "teacher2" },
-            Students = new[] { "student1", "student2" }
+            AdditionalTeachers = new List<AccomplishmentCreateTeacherDto>
+            {
+                new() { Name = "teacher1" },
+                new() { Name = "teacher2" }
+            },
+            Students = new List<AccomplishmentCreateStudentDto>
+            {
+                new() { Name = "student1", ClassroomId = 1 },
+                new() { Name = "student2", ClassroomId = 1 }
+            }
         };
 
         var command = new AccomplishmentCreate.Command(accomplishment);

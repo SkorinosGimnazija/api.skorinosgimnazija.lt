@@ -73,9 +73,9 @@ public class UpdateAccomplishmentsTests
             },
             Students = new List<AccomplishmentStudent>
             {
-                new() { Name = "student1" },
-                new() { Name = "student2" },
-                new() { Name = "student3" }
+                new() { Name = "student1", ClassroomId = 1 },
+                new() { Name = "student2", ClassroomId = 1 },
+                new() { Name = "student3", ClassroomId = 1 }
             },
             UserId = _currentUserId
         });
@@ -87,8 +87,14 @@ public class UpdateAccomplishmentsTests
             Achievement = "Achievement2",
             Date = DateTime.Parse("2022-01-01T00:00"),
             ScaleId = 2,
-            AdditionalTeachers = new[] {"teacher"},
-            Students = new[] {"student"} 
+            AdditionalTeachers = new List<AccomplishmentCreateTeacherDto>
+            {
+                new() { Name = "teacher" }
+            },
+            Students = new List<AccomplishmentCreateStudentDto>
+            {
+                new() { Name = "student", ClassroomId = 2 }
+            }
         };
         
         var command = new AccomplishmentEdit.Command(expected);

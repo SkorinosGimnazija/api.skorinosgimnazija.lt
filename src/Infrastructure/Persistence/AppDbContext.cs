@@ -75,6 +75,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get; set; } = default!;
 
+    public DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; set; } = default!;
+
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         return Database.BeginTransactionAsync(cancellationToken);

@@ -90,4 +90,29 @@ public static class Seed
 
         await dbContext.SaveChangesAsync();
     }
+
+    public static async Task AddAccomplishmentClassrooms(AppDbContext dbContext)
+    {
+        if (await dbContext.AccomplishmentClassrooms.AnyAsync())
+        {
+            return;
+        }
+
+        dbContext.AccomplishmentClassrooms.AddRange(
+            new() { Name = "1 klasė" },
+            new() { Name = "2 klasė" },
+            new() { Name = "3 klasė" },
+            new() { Name = "4 klasė" },
+            new() { Name = "5 klasė" },
+            new() { Name = "6 klasė" },
+            new() { Name = "7 klasė" },
+            new() { Name = "8 klasė" },
+            new() { Name = "I g klasė" },
+            new() { Name = "II g klasė" },
+            new() { Name = "III g klasė" },
+            new() { Name = "IV g klasė" }
+        );
+
+        await dbContext.SaveChangesAsync();
+    }
 }

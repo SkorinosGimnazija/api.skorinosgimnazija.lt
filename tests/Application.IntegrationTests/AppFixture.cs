@@ -1,7 +1,6 @@
 namespace SkorinosGimnazija.Application.IntegrationTests;
 
 using API;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Domain.Entities.Identity;
 using Infrastructure.Extensions;
@@ -92,6 +91,7 @@ public class AppFixture
         Seed.AddLanguages(context).GetAwaiter().GetResult();
         Seed.AddMenuLocations(context).GetAwaiter().GetResult();
         Seed.AddAccomplishmentScales(context).GetAwaiter().GetResult();
+        Seed.AddAccomplishmentClassrooms(context).GetAwaiter().GetResult();
     }
 
     public void ResetData()
@@ -105,7 +105,8 @@ public class AppFixture
                 nameof(AppDbContext.Roles),
                 nameof(AppDbContext.Languages),
                 nameof(AppDbContext.MenuLocations),
-                nameof(AppDbContext.AccomplishmentScales)
+                nameof(AppDbContext.AccomplishmentScales),
+                nameof(AppDbContext.AccomplishmentClassrooms)
             },
             DbAdapter = DbAdapter.Postgres
         };
