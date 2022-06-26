@@ -46,7 +46,9 @@ public interface IAppDbContext
 
     DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get;  }
 
-    DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; set; }
+    DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; }
+
+    DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 

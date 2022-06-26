@@ -54,6 +54,7 @@ public static class Program
             await Seed.AddMenuLocations(context);
             await Seed.AddAccomplishmentScales(context);
             await Seed.AddAccomplishmentClassrooms(context);
+            await Seed.AddAccomplishmentAchievements(context);
         }
 
         await host.RunAsync();

@@ -115,4 +115,23 @@ public static class Seed
 
         await dbContext.SaveChangesAsync();
     }
+
+    public static async Task AddAccomplishmentAchievements(AppDbContext dbContext)
+    {
+        if (await dbContext.AccomplishmentAchievements.AnyAsync())
+        {
+            return;
+        }
+
+        dbContext.AccomplishmentAchievements.AddRange(
+            new() { Name = "Dalyvavimas" },
+            new() { Name = "Padėka" },
+            new() { Name = "Laureatas" },
+            new() { Name = "I vieta" },
+            new() { Name = "II vieta" },
+            new() { Name = "III vieta" }
+        );
+
+        await dbContext.SaveChangesAsync();
+    }
 }

@@ -92,6 +92,7 @@ public class AppFixture
         Seed.AddMenuLocations(context).GetAwaiter().GetResult();
         Seed.AddAccomplishmentScales(context).GetAwaiter().GetResult();
         Seed.AddAccomplishmentClassrooms(context).GetAwaiter().GetResult();
+        Seed.AddAccomplishmentAchievements(context).GetAwaiter().GetResult();
     }
 
     public void ResetData()
@@ -106,7 +107,8 @@ public class AppFixture
                 nameof(AppDbContext.Languages),
                 nameof(AppDbContext.MenuLocations),
                 nameof(AppDbContext.AccomplishmentScales),
-                nameof(AppDbContext.AccomplishmentClassrooms)
+                nameof(AppDbContext.AccomplishmentClassrooms),
+                nameof(AppDbContext.AccomplishmentAchievements)
             },
             DbAdapter = DbAdapter.Postgres
         };
