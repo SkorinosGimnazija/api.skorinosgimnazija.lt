@@ -13,8 +13,6 @@ public class Accomplishment
 
     public string Name { get; set; } = default!;
      
-    public string Achievement { get; set; } = default!;
-
     public DateOnly Date { get; set; }
 
     public int UserId { get; set; }

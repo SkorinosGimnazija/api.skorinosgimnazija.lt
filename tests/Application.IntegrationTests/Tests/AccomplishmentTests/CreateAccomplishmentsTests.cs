@@ -41,7 +41,6 @@ public class CreateAccomplishmentsTests
         var accomplishment = new AccomplishmentCreateDto
         {
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateTime.Parse("2021-02-01"),
             ScaleId = 1,
             AdditionalTeachers = new List<AccomplishmentCreateTeacherDto>
@@ -51,8 +50,8 @@ public class CreateAccomplishmentsTests
             },
             Students = new List<AccomplishmentCreateStudentDto>
             {
-                new() { Name = "student1", ClassroomId = 1 },
-                new() { Name = "student2", ClassroomId = 1 }
+                new() { Name = "student1", ClassroomId = 1, AchievementId = 1 },
+                new() { Name = "student2", ClassroomId = 1, AchievementId = 1 }
             }
         };
 
@@ -66,7 +65,6 @@ public class CreateAccomplishmentsTests
 
         actual.Should().NotBeNull();
         actual.Name.Should().Be(accomplishment.Name);
-        actual.Achievement.Should().Be(accomplishment.Achievement);
         actual.UserId.Should().Be(_currentUserId);
         actualTeachersCount.Should().Be(accomplishment.AdditionalTeachers.Count);
         actualStudentsCount.Should().Be(accomplishment.Students.Count);

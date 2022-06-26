@@ -6,8 +6,6 @@ public record AccomplishmentDetailsDto
 
     public string Name { get; init; } = default!;
 
-    public string Achievement { get; init; } = default!;
-
     public DateTime Date { get; init; }
 
     public int UserId { get; init; } = default!;

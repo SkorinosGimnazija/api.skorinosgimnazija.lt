@@ -41,5 +41,7 @@ public class AccomplishmentProfiles : Profile
         CreateMap<AccomplishmentScale, AccomplishmentScaleDto>();
 
         CreateMap<AccomplishmentClassroom, AccomplishmentClassroomDto>();
+
+        CreateMap<AccomplishmentAchievement, AccomplishmentAchievementDto>();
     }
 }

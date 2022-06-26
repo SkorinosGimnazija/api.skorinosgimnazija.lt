@@ -2,6 +2,7 @@
 
 using Common.Interfaces;
 using Extensions;
+using Google.Apis.Admin.Directory.directory_v1.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
@@ -21,5 +22,6 @@ public class CurrentUserMock
         _mock.Setup(x => x.UserName).Returns(userName);
         _mock.Setup(x => x.IsResourceOwner(It.Is<int>(id => id == userId))).Returns(true);
         _mock.Setup(x => x.IsOwnerOrAdmin(It.Is<int>(id => id == userId))).Returns(true);
+        _mock.Setup(x => x.IsOwnerOrManager(It.Is<int>(id => id == userId))).Returns(true);
     }
 }

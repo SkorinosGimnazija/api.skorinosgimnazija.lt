@@ -13,4 +13,8 @@ public interface ICurrentUserService
     bool IsAdmin();
 
     bool HasRole(string role);
+
+    bool IsOwnerOrManager(int resourceOwnerId);
+
+    bool IsManager();
 }

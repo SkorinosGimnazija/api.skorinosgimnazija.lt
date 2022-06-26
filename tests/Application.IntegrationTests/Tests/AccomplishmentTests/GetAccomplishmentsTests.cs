@@ -41,7 +41,6 @@ public class GetAccomplishmentsTests
         var accomplishment1 = await _app.AddAsync(new Accomplishment
         {
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateOnly.Parse("2021-02-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -50,7 +49,6 @@ public class GetAccomplishmentsTests
         var accomplishment2 = await _app.AddAsync(new Accomplishment
         {
             Name = "Name2",
-            Achievement = "Achievement2",
             Date = DateOnly.Parse("2021-03-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -59,7 +57,6 @@ public class GetAccomplishmentsTests
         await _app.AddAsync(new Accomplishment
         {
             Name = "Name3",
-            Achievement = "Achievement3",
             Date = DateOnly.Parse("2020-04-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -85,7 +82,6 @@ public class GetAccomplishmentsTests
         var accomplishment1 = await _app.AddAsync(new Accomplishment
         {
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateOnly.Parse("2021-02-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -94,7 +90,6 @@ public class GetAccomplishmentsTests
         var accomplishment2 = await _app.AddAsync(new Accomplishment
         {
             Name = "Name2",
-            Achievement = "Achievement2",
             Date = DateOnly.Parse("2021-03-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -103,7 +98,6 @@ public class GetAccomplishmentsTests
         await _app.AddAsync(new Accomplishment
         {
             Name = "Name3",
-            Achievement = "Achievement3",
             Date = DateOnly.Parse("2020-04-01"),
             ScaleId = 1,
             UserId = randomUser.Id
@@ -123,7 +117,6 @@ public class GetAccomplishmentsTests
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
             Name = "Name3",
-            Achievement = "Achievement3",
             Date = DateOnly.Parse("2020-04-01"),
             ScaleId = 1,
             UserId = _currentUserId
@@ -136,7 +129,6 @@ public class GetAccomplishmentsTests
         actual.Should().NotBeNull();
         actual.Id.Should().Be(accomplishment.Id);
         actual.Name.Should().Be(accomplishment.Name);
-        actual.Achievement.Should().Be(accomplishment.Achievement);
         actual.UserId.Should().Be(_currentUserId);
     }
 
@@ -158,7 +150,6 @@ public class GetAccomplishmentsTests
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
             Name = "Name3",
-            Achievement = "Achievement3",
             Date = DateOnly.Parse("2020-04-01"),
             ScaleId = 1,
             UserId = owner.Id

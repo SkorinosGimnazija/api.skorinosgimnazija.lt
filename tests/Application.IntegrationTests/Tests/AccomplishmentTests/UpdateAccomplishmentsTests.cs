@@ -43,7 +43,6 @@ public class UpdateAccomplishmentsTests
         {
             Id = 1,
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateTime.Parse("2021-02-01"),
             ScaleId = 1,
         };
@@ -62,7 +61,6 @@ public class UpdateAccomplishmentsTests
         {
             Id = 1,
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateOnly.Parse("2021-01-01"),
             ScaleId = 1,
             AdditionalTeachers = new List<AccomplishmentTeacher>
@@ -73,9 +71,9 @@ public class UpdateAccomplishmentsTests
             },
             Students = new List<AccomplishmentStudent>
             {
-                new() { Name = "student1", ClassroomId = 1 },
-                new() { Name = "student2", ClassroomId = 1 },
-                new() { Name = "student3", ClassroomId = 1 }
+                new() { Name = "student1", ClassroomId = 1, AchievementId = 1 },
+                new() { Name = "student2", ClassroomId = 1, AchievementId = 1 },
+                new() { Name = "student3", ClassroomId = 1, AchievementId = 1 }
             },
             UserId = _currentUserId
         });
@@ -84,7 +82,6 @@ public class UpdateAccomplishmentsTests
         {
             Id = accomplishment.Id,
             Name = "Name2",
-            Achievement = "Achievement2",
             Date = DateTime.Parse("2022-01-01T00:00"),
             ScaleId = 2,
             AdditionalTeachers = new List<AccomplishmentCreateTeacherDto>
@@ -93,7 +90,7 @@ public class UpdateAccomplishmentsTests
             },
             Students = new List<AccomplishmentCreateStudentDto>
             {
-                new() { Name = "student", ClassroomId = 2 }
+                new() { Name = "student", ClassroomId = 2, AchievementId = 2 }
             }
         };
         
@@ -107,7 +104,6 @@ public class UpdateAccomplishmentsTests
 
         actual.Should().NotBeNull();
         actual.Name.Should().Be(expected.Name);
-        actual.Achievement.Should().Be(expected.Achievement);
         actual.Date.Should().Be(DateOnly.FromDateTime(expected.Date));
         actual.Id.Should().Be(expected.Id);
         actual.ScaleId.Should().Be(expected.ScaleId);
@@ -124,7 +120,6 @@ public class UpdateAccomplishmentsTests
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
             Name = "Name1",
-            Achievement = "Achievement1",
             Date = DateOnly.Parse("2021-01-01"),
             ScaleId = 1,
             UserId = owner.Id
@@ -134,7 +129,6 @@ public class UpdateAccomplishmentsTests
         {
             Id = accomplishment.Id,
             Name = "Name2",
-            Achievement = "Achievement2",
             Date = DateTime.Parse("2022-01-01T00:00"),
             ScaleId = 1,
         };
@@ -162,7 +156,6 @@ public class UpdateAccomplishmentsTests
         var course = await _app.AddAsync(new Accomplishment
         {
             Name= "Name",
-            Achievement = "Achievement",
             Date = DateOnly.FromDateTime(DateTime.UtcNow),
             ScaleId = 1,
             UserId = _currentUserId
@@ -185,7 +178,6 @@ public class UpdateAccomplishmentsTests
         var course = await _app.AddAsync(new Accomplishment
         {
             Name = "Name",
-            Achievement = "Achievement",
             Date = DateOnly.FromDateTime(DateTime.UtcNow),
             ScaleId = 1,
             UserId = owner.Id

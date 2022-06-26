@@ -42,9 +42,19 @@ public sealed class CurrentUserService : ICurrentUserService
         return IsResourceOwner(resourceOwnerId) || IsAdmin();
     }
 
+    public bool IsOwnerOrManager(int resourceOwnerId)
+    {
+        return IsResourceOwner(resourceOwnerId) || IsAdmin() || IsManager();
+    }
+
     public bool IsResourceOwner(int resourceOwnerId)
     {
         return UserId == resourceOwnerId;
+    }
+
+    public bool IsManager()
+    {
+        return HasRole(Auth.Role.Manager);
     }
 
     public bool IsAdmin()

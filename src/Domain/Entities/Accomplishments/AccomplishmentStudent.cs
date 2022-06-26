@@ -15,6 +15,10 @@ public class AccomplishmentStudent
 
     public Accomplishment Accomplishment { get; set; } = default!;
 
+    public int AchievementId { get; set; }
+
+    public AccomplishmentAchievement Achievement { get; set; } = default!;
+
     public int ClassroomId { get; set; }
 
     public AccomplishmentClassroom Classroom { get; set; } = default!;

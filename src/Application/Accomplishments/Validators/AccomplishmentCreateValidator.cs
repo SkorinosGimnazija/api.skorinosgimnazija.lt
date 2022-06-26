@@ -8,7 +8,6 @@ internal class AccomplishmentCreateValidator : AbstractValidator<AccomplishmentC
     public AccomplishmentCreateValidator()
     {
         RuleFor(x => x.Name).NotEmpty().MaximumLength(256);
-        RuleFor(x => x.Achievement).NotEmpty().MaximumLength(512);
         RuleFor(x => x.Date).NotEmpty();
         RuleFor(x => x.ScaleId).GreaterThan(0);
         RuleForEach(x => x.Students)
@@ -16,6 +15,7 @@ internal class AccomplishmentCreateValidator : AbstractValidator<AccomplishmentC
             {
                 s.RuleFor(x => x.Name).MaximumLength(128);
                 s.RuleFor(x => x.ClassroomId).GreaterThan(0);
+                s.RuleFor(x => x.AchievementId).GreaterThan(0);
             });
         RuleForEach(x => x.AdditionalTeachers)
             .ChildRules(s =>

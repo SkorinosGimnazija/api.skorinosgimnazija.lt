@@ -48,7 +48,7 @@ public static class AccomplishmentEdit
                 throw new NotFoundException();
             }
 
-            if (!_currentUser.IsOwnerOrAdmin(entity.UserId))
+            if (!_currentUser.IsOwnerOrManager(entity.UserId))
             {
                 throw new UnauthorizedAccessException();
             }

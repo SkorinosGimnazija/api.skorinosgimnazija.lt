@@ -9,6 +9,7 @@ internal class AccomplishmentStudentConfiguration : IEntityTypeConfiguration<Acc
     public void Configure(EntityTypeBuilder<AccomplishmentStudent> builder)
     {
         builder.HasOne(x => x.Classroom).WithMany().OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Achievement).WithMany().OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(x => x.Name).HasMaxLength(128);
     }

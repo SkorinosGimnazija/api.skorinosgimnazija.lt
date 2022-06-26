@@ -27,6 +27,13 @@ public class AccomplishmentController : BaseApiController
         return await Mediator.Send(new AccomplishmentScalesList.Query(), ct);
     }
 
+    [HttpGet("achievements", Name = "GetAccomplishmentAchievements")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<AccomplishmentAchievementDto>> GetAchievements(CancellationToken ct)
+    {
+        return await Mediator.Send(new AccomplishmentAchievementsList.Query(), ct);
+    }
+
     [HttpGet("classrooms", Name = "GetAccomplishmentClassrooms")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AccomplishmentClassroomDto>> GetClassrooms(CancellationToken ct)

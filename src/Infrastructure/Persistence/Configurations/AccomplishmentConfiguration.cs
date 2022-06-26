@@ -21,7 +21,6 @@ internal class AccomplishmentConfiguration : IEntityTypeConfiguration<Accomplish
         builder.HasMany(x => x.Students).WithOne(x => x.Accomplishment).OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(x => x.Name).HasMaxLength(256);
-        builder.Property(x => x.Achievement).HasMaxLength(512);
 
         builder.HasIndex(x => x.Date);
     }
