@@ -7,6 +7,8 @@ using Common.Interfaces;
 using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Domain.Entities.CMS;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class PostPatch
 {
@@ -16,13 +18,18 @@ public static class PostPatch
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
+        public Handler(IAppDbContext context,
+                       ISearchClient searchClient, 
+                       IMapper mapper,
+                       IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mapper = mapper;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -39,7 +46,15 @@ public static class PostPatch
             await _searchClient.SavePostAsync(_mapper.Map<PostIndexDto>(entity));
             await _context.SaveChangesAsync();
 
+            await RevalidatePost(entity);
+
             return Unit.Value;
+        }
+
+        private async Task RevalidatePost(Post entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug, entity.Slug, entity.Id);
         }
     }
 }

@@ -9,6 +9,7 @@ using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 
 public static class MenuCreate
@@ -27,13 +28,18 @@ public static class MenuCreate
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient, IMapper mapper)
+        public Handler(IAppDbContext context, 
+                       ISearchClient searchClient,
+                       IMapper mapper,
+                       IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mapper = mapper;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -51,7 +57,15 @@ public static class MenuCreate
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
+            await RevalidatePost(entity);
+
             return _mapper.Map<MenuDto>(entity);
+        }
+
+        private async Task RevalidatePost(Menu entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
         }
 
         private async Task SaveSearchIndex(Menu menu)

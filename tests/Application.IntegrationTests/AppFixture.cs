@@ -59,6 +59,7 @@ public class AppFixture
         NotificationPublisherMock = new(services);
         CalendarServiceMock = new(services);
         EmployeeServiceMock = new(services);
+        RevalidationServiceMock = new(services);
 
         _scopeFactory = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
@@ -68,6 +69,8 @@ public class AppFixture
     public SearchClientMock SearchClientMock { get; }
 
     public PublisherMock NotificationPublisherMock { get; }
+
+    public RevalidationServiceMock RevalidationServiceMock { get; }
 
     public CurrentUserMock CurrentUserMock { get; }
 

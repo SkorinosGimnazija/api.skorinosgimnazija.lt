@@ -3,8 +3,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
 using Common.Interfaces;
+using Infrastructure.Revalidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Domain.Entities.CMS;
 
 public static class PostDelete
 {
@@ -14,13 +16,19 @@ public static class PostDelete
     {
         private readonly IAppDbContext _context;
         private readonly IMediaManager _mediaManager;
+        private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IMediaManager mediaManager,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mediaManager = mediaManager;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -40,7 +48,15 @@ public static class PostDelete
             _context.Posts.Remove(entity);
             await _context.SaveChangesAsync();
 
+            await RevalidatePost(entity);
+
             return Unit.Value;
+        }
+
+        private async Task RevalidatePost(Post entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
         }
     }
 }

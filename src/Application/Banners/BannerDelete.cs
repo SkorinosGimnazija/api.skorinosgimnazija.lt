@@ -5,6 +5,8 @@ using Common.Exceptions;
 using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Domain.Entities.CMS;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class BannerDelete
 {
@@ -14,13 +16,18 @@ public static class BannerDelete
     {
         private readonly IAppDbContext _context;
         private readonly IMediaManager _mediaManager;
+        private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager)
+        public Handler(IAppDbContext context,
+                       ISearchClient searchClient,
+                       IMediaManager mediaManager,
+                       IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mediaManager = mediaManager;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -40,7 +47,15 @@ public static class BannerDelete
 
             await _context.SaveChangesAsync();
 
+            await RevalidatePost(entity);
+
             return Unit.Value;
+        }
+
+        private async Task RevalidatePost(Banner entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
         }
     }
 }

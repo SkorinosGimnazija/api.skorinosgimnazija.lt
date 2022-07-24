@@ -5,6 +5,8 @@ using Common.Exceptions;
 using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Domain.Entities.CMS;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class MenuDelete
 {
@@ -14,11 +16,15 @@ public static class MenuDelete
     {
         private readonly IAppDbContext _context;
         private readonly ISearchClient _searchClient;
+        private readonly IRevalidationService _revalidation;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient)
+        public Handler(IAppDbContext context,
+                       ISearchClient searchClient,
+                       IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -34,7 +40,15 @@ public static class MenuDelete
             _context.Menus.Remove(entity);
             await _context.SaveChangesAsync();
 
+            await RevalidatePost(entity);
+
             return Unit.Value;
+        }
+
+        private async Task RevalidatePost(Menu entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
         }
     }
 }

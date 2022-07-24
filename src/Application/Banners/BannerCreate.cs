@@ -8,6 +8,8 @@ using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 
 public static class BannerCreate
@@ -26,15 +28,21 @@ public static class BannerCreate
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IRevalidationService _revalidation;
         private readonly IMediaManager _mediaManager;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, ISearchClient searchClient, IMediaManager mediaManager, IMapper mapper)
+        public Handler(IAppDbContext context,
+                       ISearchClient searchClient,
+                       IMediaManager mediaManager,
+                       IMapper mapper,
+                       IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mediaManager = mediaManager;
             _mapper = mapper;
+            _revalidation = revalidation;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -52,7 +60,15 @@ public static class BannerCreate
 
             await transaction.CommitAsync();
 
+            await RevalidatePost(entity);
+
             return _mapper.Map<BannerDto>(entity);
+        }
+
+        private async Task RevalidatePost(Banner entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
         }
 
         private async Task SavePictureAsync(Banner banner, BannerCreateDto newBanner)

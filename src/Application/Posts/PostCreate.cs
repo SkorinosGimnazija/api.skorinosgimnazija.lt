@@ -8,6 +8,8 @@ using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 
 public static class PostCreate
@@ -27,17 +29,20 @@ public static class PostCreate
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
         private readonly IMediaManager _mediaManager;
+        private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
         public Handler(
             IAppDbContext context,
             ISearchClient searchClient,
             IMediaManager mediaManager,
-            IMapper mapper)
+            IMapper mapper,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;
             _mediaManager = mediaManager;
+            _revalidation = revalidation;
             _mapper = mapper;
         }
 
@@ -57,15 +62,23 @@ public static class PostCreate
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
 
+            await RevalidatePost(entity);
+
             return _mapper.Map<PostDetailsDto>(entity);
         }
 
-        public async Task SaveSearchIndex(Post entity)
+        private async Task RevalidatePost(Post entity)
+        {
+            var language = await _context.Languages.FirstAsync(x => x.Id == entity.LanguageId);
+            await _revalidation.RevalidateAsync(language.Slug);
+        }
+
+        private async Task SaveSearchIndex(Post entity)
         {
             await _searchClient.SavePostAsync(_mapper.Map<PostIndexDto>(entity));
         }
 
-        public async Task SaveImages(Post entity, Command request)
+        private async Task SaveImages(Post entity, Command request)
         {
             if (request.Post.NewImages?.Any() != true)
             {
@@ -84,7 +97,7 @@ public static class PostCreate
             }
         }
 
-        public async Task SaveFeaturedImage(Post entity, Command request)
+        private async Task SaveFeaturedImage(Post entity, Command request)
         {
             if (request.Post.NewFeaturedImage is null)
             {
@@ -104,7 +117,7 @@ public static class PostCreate
             }
         }
 
-        public async Task SaveFiles(Post entity, Command request)
+        private async Task SaveFiles(Post entity, Command request)
         {
             if (request.Post.NewFiles?.Any() != true)
             {
