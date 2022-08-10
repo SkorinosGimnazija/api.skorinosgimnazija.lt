@@ -83,8 +83,9 @@ public sealed class Startup
 
         services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
+        services.AddFluentValidationClientsideAdapters();
+
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilter>(); })
-            .AddFluentValidation(options => { options.AutomaticValidationEnabled = false; })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
