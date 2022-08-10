@@ -45,6 +45,7 @@ public static class PublicPostList
                            x.Language.Slug == request.LanguageSlug)
                        .OrderByDescending(x => x.IsFeatured)
                        .ThenByDescending(x => x.PublishedAt)
+                       .ThenByDescending(x => x.Id)
                        .Paginate(request.Pagination)
                        .ProjectTo<PostPublicDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
