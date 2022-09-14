@@ -4,12 +4,14 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Events.Dtos;
 using Domain.Options;
+using Google;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System.Net;
 
 public class GoogleCalendar : ICalendarService
 {
@@ -70,9 +72,10 @@ public class GoogleCalendar : ICalendarService
             },
             End = new()
             {
-                Date = allDay ? endDate.ToString("yyyy-MM-dd") : null,
+                Date = allDay ? endDate.AddDays(1).ToString("yyyy-MM-dd") : null,
                 DateTime = !allDay ? endDate : null
-            }
+            },
+            Transparency = allDay ? "transparent" : "opaque"
         };
 
         var request = _calendarService.Events.Insert(@event, _eventsCalendarId);
@@ -124,10 +127,19 @@ public class GoogleCalendar : ICalendarService
         return new() { EventId = response.Id, EventMeetingLink = response.HangoutLink };
     }
 
-    public async Task DeleteEventAsync(string eventId)
+    public async Task<bool> DeleteEventAsync(string eventId)
     {
-        var request = _calendarService.Events.Delete(_eventsCalendarId, eventId);
-        await request.ExecuteAsync();
+        try
+        {
+            var request = _calendarService.Events.Delete(_eventsCalendarId, eventId);
+            await request.ExecuteAsync();
+        }
+        catch (GoogleApiException e) when (e.HttpStatusCode == HttpStatusCode.NotFound)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public async Task DeleteAppointmentAsync(string eventId)

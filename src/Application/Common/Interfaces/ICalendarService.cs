@@ -19,5 +19,5 @@ public interface ICalendarService
 
     Task DeleteAppointmentAsync(string eventId);
 
-    Task DeleteEventAsync(string eventId);
+    Task<bool> DeleteEventAsync(string eventId);
 }
