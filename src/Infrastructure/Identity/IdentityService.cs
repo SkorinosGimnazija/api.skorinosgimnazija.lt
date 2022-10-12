@@ -82,8 +82,9 @@ public sealed class IdentityService : IIdentityService
         {
             Token = _tokenService.CreateToken(principal.Claims),
             Roles = principal.FindAll(ClaimTypes.Role).Select(x => x.Value),
-            DisplayName = user.DisplayName ?? user.Email,
-            Email = user.Email
+            DisplayName = user.DisplayName,
+            Email = user.Email,
+            Id = user.Id
         };
     }
 
