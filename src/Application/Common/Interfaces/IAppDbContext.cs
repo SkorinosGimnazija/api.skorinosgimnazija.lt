@@ -28,6 +28,8 @@ public interface IAppDbContext
 
     DbSet<BullyReport> BullyReports { get; }
 
+    DbSet<BullyJournalReport> BullyJournalReports { get; }
+
     DbSet<Appointment> Appointments { get; }
 
     DbSet<AppointmentReservedDate> AppointmentReservedDates { get; }

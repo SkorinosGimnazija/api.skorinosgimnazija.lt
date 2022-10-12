@@ -2,6 +2,8 @@
 
 public record UserAuthDto
 {
+    public int Id { get; init; }
+
     public string Token { get; init; } = default!;
 
     public string DisplayName { get; init; } = default!;

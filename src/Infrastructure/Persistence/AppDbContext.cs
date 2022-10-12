@@ -49,6 +49,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<BullyReport> BullyReports { get; set; } = default!;
 
+    public DbSet<BullyJournalReport> BullyJournalReports { get; set; } = default!;
+
     public DbSet<Menu> Menus { get; set; } = default!;
 
     public DbSet<Course> Courses { get; set; } = default!;
