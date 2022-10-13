@@ -101,7 +101,7 @@ public class AppFixture
     public void ResetData()
     {
         using var scope = _scopeFactory.CreateScope();
-        var checkpoint = new Checkpoint
+        var options = new RespawnerOptions
         {
             TablesToIgnore = new Table[]
             {
@@ -118,7 +118,9 @@ public class AppFixture
 
         using var conn = new NpgsqlConnection(_configuration.GetNpgsqlConnectionString("DATABASE_URL"));
         conn.Open();
-        checkpoint.Reset(conn).GetAwaiter().GetResult();
+
+        var checkpoint = Respawner.CreateAsync(conn, options).GetAwaiter().GetResult();
+        checkpoint.ResetAsync(conn).GetAwaiter().GetResult();
 
         CaptchaServiceMock.Reset();
     }

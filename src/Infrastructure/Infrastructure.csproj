@@ -8,12 +8,12 @@
   <ItemGroup>
     <PackageReference Include="Algolia.Search" Version="6.13.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
-    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.57.0.2818" />
+    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.57.0.2826" />
     <PackageReference Include="Google.Apis.Auth" Version="1.57.0" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.57.0.2759" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.57.0.2650" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="MimeKit" Version="3.4.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
   </ItemGroup>
