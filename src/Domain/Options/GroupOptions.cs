@@ -9,4 +9,6 @@ public record GroupOptions
     public string Teachers { get; init; } = default!;
 
     public string BullyManagers { get; init; } = default!;
+
+    public string TechManagers { get; init; } = default!;
 }

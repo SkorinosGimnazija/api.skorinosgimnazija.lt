@@ -22,6 +22,8 @@ public static class Auth
 
         public const string BullyManager = "Bully";
 
+        public const string TechManager = "Tech";
+
         public const string Manager = "Manager";
     }
 }

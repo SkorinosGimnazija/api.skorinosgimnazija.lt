@@ -30,6 +30,7 @@ public sealed class EmployeeService : IEmployeeService
             { groupOptions.Value.Teachers, new[] { Auth.Role.Teacher } },
             { groupOptions.Value.BullyManagers, new[] { Auth.Role.BullyManager } },
             { groupOptions.Value.Managers, new[] { Auth.Role.Manager, Auth.Role.BullyManager } },
+            { groupOptions.Value.TechManagers, new[] { Auth.Role.TechManager } },
             { groupOptions.Value.Service, Auth.AllRoles.ToArray() }
         };
 
