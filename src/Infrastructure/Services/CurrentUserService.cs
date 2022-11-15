@@ -57,6 +57,11 @@ public sealed class CurrentUserService : ICurrentUserService
         return HasRole(Auth.Role.Manager);
     }
 
+    public bool IsTechManager()
+    {
+        return HasRole(Auth.Role.TechManager);
+    }
+
     public bool IsAdmin()
     {
         return HasRole(Auth.Role.Admin);

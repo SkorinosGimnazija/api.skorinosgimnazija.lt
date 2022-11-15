@@ -24,4 +24,9 @@ public class CurrentUserMock
         _mock.Setup(x => x.IsOwnerOrAdmin(It.Is<int>(id => id == userId))).Returns(true);
         _mock.Setup(x => x.IsOwnerOrManager(It.Is<int>(id => id == userId))).Returns(true);
     }
+
+    public void SetCurrentUserTechManager()
+    {
+        _mock.Setup(x => x.IsTechManager()).Returns(true);
+    }
 }

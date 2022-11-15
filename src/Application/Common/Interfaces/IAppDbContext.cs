@@ -9,6 +9,7 @@ using Domain.Entities.Courses;
 using Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public interface IAppDbContext
 {
@@ -29,6 +30,8 @@ public interface IAppDbContext
     DbSet<BullyReport> BullyReports { get; }
 
     DbSet<BullyJournalReport> BullyJournalReports { get; }
+
+    DbSet<TechJournalReport> TechJournalReports { get; }
 
     DbSet<Appointment> Appointments { get; }
 

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using SkorinosGimnazija.Domain.Entities.Accomplishments;
+using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
 {
@@ -50,6 +51,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<BullyReport> BullyReports { get; set; } = default!;
 
     public DbSet<BullyJournalReport> BullyJournalReports { get; set; } = default!;
+
+    public DbSet<TechJournalReport> TechJournalReports { get; set; } = default!;
 
     public DbSet<Menu> Menus { get; set; } = default!;
 

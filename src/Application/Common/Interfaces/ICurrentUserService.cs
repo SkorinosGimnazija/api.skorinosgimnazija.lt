@@ -17,4 +17,6 @@ public interface ICurrentUserService
     bool IsOwnerOrManager(int resourceOwnerId);
 
     bool IsManager();
+
+    bool IsTechManager();
 }
