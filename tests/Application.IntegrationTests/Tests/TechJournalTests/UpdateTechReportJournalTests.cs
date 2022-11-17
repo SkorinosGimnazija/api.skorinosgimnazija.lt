@@ -95,7 +95,7 @@ public class UpdateTechReportJournalTests
     }
 
     [Fact]
-    public async Task TechJournalReportEdit_ShouldResetStatus_WhenEditingFixed()
+    public async Task TechJournalReportEdit_ShouldNotResetStatus_WhenEditingFixed()
     {
         var report = await _app.AddAsync(new TechJournalReport
         {
@@ -125,10 +125,10 @@ public class UpdateTechReportJournalTests
         actual.Id.Should().Be(expected.Id);
         actual.Place.Should().Be(expected.Place);
         actual.Details.Should().Be(expected.Details);
-        actual.ReportDate.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        actual.Notes.Should().Be(null);
-        actual.FixDate.Should().Be(null);
-        actual.IsFixed.Should().Be(null);
+        actual.ReportDate.Should().BeCloseTo(report.ReportDate, TimeSpan.FromSeconds(5));
+        actual.FixDate.Should().BeCloseTo(report.FixDate!.Value, TimeSpan.FromSeconds(5));
+        actual.Notes.Should().Be(report.Notes);
+        actual.IsFixed.Should().Be(report.IsFixed);
         actual.UserId.Should().Be(_currentUserId);
     }
 

@@ -21,11 +21,7 @@ public class TechJournalReportProfiles : Profile
         CreateMap<TechJournalReportCreateDto, TechJournalReport>()
             .ForMember(x => x.ReportDate, x => x.MapFrom(_ => DateTime.UtcNow));
 
-        CreateMap<TechJournalReportEditDto, TechJournalReport>()
-            .ForMember(x => x.ReportDate, x => x.MapFrom(_ => DateTime.UtcNow))
-            .ForMember(x => x.IsFixed, x => x.MapFrom<bool?>(_ => null))
-            .ForMember(x => x.Notes, x => x.MapFrom<string?>(_ => null))
-            .ForMember(x => x.FixDate, x => x.MapFrom<DateOnly?>(_ => null));
+        CreateMap<TechJournalReportEditDto, TechJournalReport>();
 
         CreateMap<TechJournalReportPatchDto, TechJournalReport>()
             .ForMember(x => x.FixDate, x => x.MapFrom(_ => DateTime.UtcNow));
