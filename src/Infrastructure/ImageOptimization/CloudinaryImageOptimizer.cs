@@ -56,7 +56,7 @@ public sealed class CloudinaryImageOptimizer : IImageOptimizer
 
         if (result.Error is not null)
         {
-            Console.WriteLine(result.Error.Message);
+            _logger.LogError("Failed to optimize images // {details}", result.Error.Message);
             throw new ImageOptimizationException(result.Error.Message);
         }
 
