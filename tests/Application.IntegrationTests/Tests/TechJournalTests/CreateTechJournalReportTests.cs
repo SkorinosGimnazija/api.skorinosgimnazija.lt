@@ -9,12 +9,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BullyReports.Notifications;
 using TechJournal;
 using Common.Exceptions;
 using Domain.Entities.TechReports;
+using Moq;
 using Xunit;
 using SkorinosGimnazija.Domain.Entities.Bullies;
 using TechJournal.Dtos;
+using TechJournal.Notifications;
 
 [Collection("App")]
 public class CreateTechJournalReportTests
@@ -66,5 +69,11 @@ public class CreateTechJournalReportTests
         actual.IsFixed.Should().Be(null);
         actual.FixDate.Should().Be(null);
         actual.UserId.Should().Be(_currentUserId);
+
+        _app.NotificationPublisherMock.Mock
+            .Verify(x => x.Publish(
+                    It.Is<TechJournalReportCreatedNotification>(r => r.Report.Id == actual.Id),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
     }
 }

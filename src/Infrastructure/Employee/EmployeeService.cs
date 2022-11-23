@@ -4,6 +4,7 @@ using Application.Common.Interfaces;
 using Domain.Entities.Identity;
 using Domain.Options;
 using Google.Apis.Admin.Directory.directory_v1;
+using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
 using Identity;
 using Microsoft.Extensions.Caching.Memory;
@@ -46,10 +47,19 @@ public sealed class EmployeeService : IEmployeeService
 
     public async Task<string> GetGroupEmailAsync(string groupId)
     {
-        var request = _directoryService.Groups.Get(groupId);
-        var response = await request.ExecuteAsync();
+        var cacheKey = $"GroupEmail{groupId}";
 
-        return response.Email;
+        if (!_cache.TryGetValue(cacheKey, out string email))
+        {
+            var request = _directoryService.Groups.Get(groupId);
+            var response = await request.ExecuteAsync();
+
+            email = response.Email;
+
+            _cache.Set(cacheKey, email);
+        }
+
+        return email;
     }
 
     public async Task<ICollection<string>> GetEmployeeRolesAsync(string userName)

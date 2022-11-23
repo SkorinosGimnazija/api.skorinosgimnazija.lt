@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities.TechReports;
 using Dtos;
+using Notifications;
 
 public static class TechJournalReportCreate
 {
@@ -32,13 +33,15 @@ public static class TechJournalReportCreate
     {
         private readonly IAppDbContext _context;
         private readonly ICurrentUserService _currentUser;
+        private readonly IPublisher _publisher;
         private readonly IMapper _mapper;
 
-        public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
+        public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser, IPublisher publisher)
         {
             _context = context;
             _mapper = mapper;
             _currentUser = currentUser;
+            _publisher = publisher;
         }
 
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
@@ -49,6 +52,8 @@ public static class TechJournalReportCreate
             entity.UserId = _currentUser.UserId;
 
             await _context.SaveChangesAsync();
+
+            await _publisher.Publish(new TechJournalReportCreatedNotification(entity));
 
             return _mapper.Map<TechJournalReportDto>(entity);
         }
