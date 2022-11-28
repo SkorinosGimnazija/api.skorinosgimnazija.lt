@@ -6,6 +6,7 @@ using Common.Exceptions;
 using Domain.Entities.Appointments;
 using FluentAssertions;
 using Moq;
+using SkorinosGimnazija.Application.Common.Models;
 using Xunit;
 
 [Collection("App")]
@@ -58,7 +59,7 @@ public class CreateAppointmentTests
             Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
-                Name = "Name",
+                Name = "Public Name",
                 Slug = "slug",
                 RegistrationEnd = DateTime.UtcNow.AddDays(1),
                 DurationInMinutes = 30,
@@ -92,13 +93,7 @@ public class CreateAppointmentTests
 
         _app.CalendarServiceMock.Mock
             .Verify(x => x.AddAppointmentAsync(
-                    It.Is<string>(z => z == date.Type.Name),
-                    It.IsAny<string>(),
-                    It.Is<DateTime>(z => z - date.Date < TimeSpan.FromSeconds(5)),
-                    It.Is<DateTime>(
-                        z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
-                    It.Is<string[]>(z =>
-                        z.Length == 2 && z.Contains(dto.AttendeeEmail) && z.Contains("employee@email"))),
+                    It.Is<AppointmentEvent>(z => z.Title == date.Type.Name)),
                 Times.Once);
     }
 
@@ -164,7 +159,7 @@ public class CreateAppointmentTests
             Date = DateTime.UtcNow.AddDays(1),
             Type = new()
             {
-                Name = "Name",
+                Name = "Private Name",
                 Slug = "slug",
                 RegistrationEnd = DateTime.UtcNow.AddDays(1),
                 DurationInMinutes = 30,
@@ -191,13 +186,7 @@ public class CreateAppointmentTests
 
         _app.CalendarServiceMock.Mock
             .Verify(x => x.AddAppointmentAsync(
-                    It.Is<string>(z => z == date.Type.Name),
-                    It.IsAny<string>(),
-                    It.Is<DateTime>(z => z - date.Date < TimeSpan.FromSeconds(5)),
-                    It.Is<DateTime>(
-                        z => z - date.Date.AddMinutes(date.Type.DurationInMinutes) < TimeSpan.FromSeconds(5)),
-                    It.Is<string[]>(z =>
-                        z.Length == 3 && z.Contains("principal@email") && z.Contains("atendee@email"))),
+                    It.Is<AppointmentEvent>(z => z.Title == date.Type.Name)),
                 Times.Once);
     }
 }

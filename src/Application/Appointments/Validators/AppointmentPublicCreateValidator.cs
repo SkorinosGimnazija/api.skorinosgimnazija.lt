@@ -9,7 +9,7 @@ internal class AppointmentPublicCreateValidator : AbstractValidator<AppointmentP
 {
     public AppointmentPublicCreateValidator(ICaptchaService captchaService)
     {
-        RuleFor(x => x.AttendeeEmail).EmailAddress().MaximumLength(256).Must(BeGmail).WithMessage("Only @gmail.com");
+        RuleFor(x => x.AttendeeEmail).EmailAddress().MaximumLength(256).Must(BeGmail).WithMessage("Tik @gmail.com");
         RuleFor(x => x.AttendeeName).NotEmpty().MaximumLength(256);
         RuleFor(x => x.UserName).NotEmpty().MaximumLength(100);
         RuleFor(x => x.DateId).NotNull();

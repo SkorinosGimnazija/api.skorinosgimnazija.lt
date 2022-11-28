@@ -9,6 +9,7 @@ using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Application.Common.Models;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
 
@@ -57,16 +58,17 @@ public static class AppointmentPublicCreate
 
             await _context.SaveChangesAsync();
 
-            var appointment = await _calendarService.AddAppointmentAsync(
-                                  date.Type.Name,
-                                  $"{teacher.FullName} // {request.Appointment.AttendeeName}",
-                                  date.Date,
-                                  date.Date.AddMinutes(date.Type.DurationInMinutes),
-                                  request.Appointment.AttendeeEmail,
-                                  teacher.Email);
+            var appointment = await _calendarService.AddAppointmentAsync(new()
+            {
+                Title = date.Type.Name,
+                Description = $"{teacher.FullName} // {request.Appointment.AttendeeName}",
+                IsOnline = date.Type.IsOnline,
+                StartDate = date.Date,
+                EndDate = date.Date.AddMinutes(date.Type.DurationInMinutes),
+                AttendeeEmails = new[] { request.Appointment.AttendeeEmail, teacher.Email }
+            });
 
-            entity.EventId = appointment.EventId;
-            entity.EventMeetingLink = appointment.EventMeetingLink;
+            _mapper.Map(appointment, entity);
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();

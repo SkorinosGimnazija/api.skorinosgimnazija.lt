@@ -74,6 +74,7 @@ public class UpdateAppointmentTypeTypeTests
             RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
+            IsOnline = true,
             InvitePrincipal = true
         };
 
@@ -94,6 +95,7 @@ public class UpdateAppointmentTypeTypeTests
             RegistrationEnd = DateTime.UtcNow,
             DurationInMinutes = 30,
             IsPublic = true,
+            IsOnline = true,
             InvitePrincipal = true
         };
 
@@ -107,6 +109,7 @@ public class UpdateAppointmentTypeTypeTests
             RegistrationEnd = DateTime.UtcNow.AddDays(1),
             DurationInMinutes = 45,
             IsPublic = false,
+            IsOnline = false,
             InvitePrincipal = false
         };
 
@@ -121,6 +124,7 @@ public class UpdateAppointmentTypeTypeTests
         actual.Slug.Should().Be(entityDto.Slug);
         actual.DurationInMinutes.Should().Be(entityDto.DurationInMinutes);
         actual.IsPublic.Should().Be(entityDto.IsPublic);
+        actual.IsOnline.Should().Be(entityDto.IsOnline);
         actual.InvitePrincipal.Should().Be(entityDto.InvitePrincipal);
         actual.RegistrationEnd.Should().BeCloseTo(entityDto.RegistrationEnd, TimeSpan.FromSeconds(5));
     }

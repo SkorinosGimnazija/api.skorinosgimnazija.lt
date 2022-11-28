@@ -18,5 +18,5 @@ public record AppointmentDetailsDto
 
     public string AttendeeEmail { get; init; } = default!;
 
-    public AppointmentDateDto Date { get; init; } = default!;
+    public AppointmentDateDetailsDto Date { get; init; } = default!;
 }

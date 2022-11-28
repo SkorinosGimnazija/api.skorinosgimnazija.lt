@@ -10,12 +10,7 @@ public interface ICalendarService
 
     Task<string> AddEventAsync(string title, DateTime startDate, DateTime endDate, bool allDay);
 
-    Task<AppointmentEventResponse> AddAppointmentAsync(
-        string title,
-        string description,
-        DateTime startDate,
-        DateTime endDate,
-        params string[] attendeeEmails);
+    Task<AppointmentEventResponse> AddAppointmentAsync(AppointmentEvent appointment);
 
     Task DeleteAppointmentAsync(string eventId);
 

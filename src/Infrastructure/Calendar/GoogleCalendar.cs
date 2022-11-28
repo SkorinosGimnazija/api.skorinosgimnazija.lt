@@ -83,13 +83,8 @@ public class GoogleCalendar : ICalendarService
 
         return response.Id;
     }
-
-    public async Task<AppointmentEventResponse> AddAppointmentAsync(
-        string title,
-        string description,
-        DateTime startDate,
-        DateTime endDate,
-        params string[] attendeeEmails)
+     
+    public async Task<AppointmentEventResponse> AddAppointmentAsync(AppointmentEvent appointment)
     {
         if (_env.IsDevelopment())
         {
@@ -98,11 +93,14 @@ public class GoogleCalendar : ICalendarService
 
         var @event = new Event
         {
-            Summary = title,
-            Description = description,
-            Start = new() { DateTime = startDate },
-            End = new() { DateTime = endDate },
-            Attendees = attendeeEmails.Distinct().Select(email => new EventAttendee { Email = email }).ToArray(),
+            Summary = appointment.Title,
+            Description = appointment.Description,
+            Start = new() { DateTime = appointment.StartDate },
+            End = new() { DateTime = appointment.EndDate },
+            Location = "Vilniaus Pranciškaus Skorinos gimnazija",
+            Attendees = appointment.AttendeeEmails.Distinct()
+                .Select(email => new EventAttendee { Email = email })
+                .ToArray(),
             GuestsCanInviteOthers = false,
             ConferenceData = new()
             {
@@ -120,7 +118,12 @@ public class GoogleCalendar : ICalendarService
         var request = _calendarService.Events.Insert(@event, _appointmentsCalendarId);
 
         request.SendUpdates = EventsResource.InsertRequest.SendUpdatesEnum.All;
-        request.ConferenceDataVersion = 1;
+
+        if (appointment.IsOnline)
+        {
+            request.ConferenceDataVersion = 1;
+            @event.Location = null;
+        }
 
         var response = await request.ExecuteAsync();
 

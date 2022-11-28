@@ -12,5 +12,7 @@ public record AppointmentTypeCreateDto
 
     public bool IsPublic { get; init; }
 
+    public bool IsOnline { get; init; }
+
     public DateTime RegistrationEnd { get; init; }
 }

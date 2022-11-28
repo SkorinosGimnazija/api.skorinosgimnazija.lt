@@ -39,7 +39,8 @@ public class CreateAppointmentTypeTests
             RegistrationEnd = DateTime.Parse("2022-01-01").ToUniversalTime(),
             DurationInMinutes = 30,
             InvitePrincipal = true,
-            IsPublic = true
+            IsPublic = true,
+            IsOnline = true
         };
 
         var command = new AppointmentTypeCreate.Command(dto);
@@ -55,5 +56,6 @@ public class CreateAppointmentTypeTests
         actual.DurationInMinutes.Should().Be(dto.DurationInMinutes);
         actual.InvitePrincipal.Should().Be(dto.InvitePrincipal);
         actual.IsPublic.Should().Be(dto.IsPublic);
+        actual.IsOnline.Should().Be(dto.IsOnline);
     }
 }

@@ -10,6 +10,8 @@ public class AppointmentType
 
     public bool IsPublic { get; set; }
 
+    public bool IsOnline { get; set; }
+
     public DateTime RegistrationEnd { get; set; }
 
     public string Name { get; set; } = default!;

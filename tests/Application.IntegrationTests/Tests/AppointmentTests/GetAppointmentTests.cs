@@ -55,6 +55,7 @@ public class GetAppointmentTests
             UserName = "username",
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
+            UserDisplayName= "User Name",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };
@@ -64,6 +65,7 @@ public class GetAppointmentTests
             UserName = "username1",
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            UserDisplayName = "User Name 1",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };
@@ -117,6 +119,7 @@ public class GetAppointmentTests
             UserName = randomUser.UserName,
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
+            UserDisplayName = "User Name",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };
@@ -126,6 +129,7 @@ public class GetAppointmentTests
             UserName = _currentUserName,
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            UserDisplayName = "User Name 1",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };
@@ -177,6 +181,7 @@ public class GetAppointmentTests
             UserName = _currentUserName,
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            UserDisplayName = "User Name 1",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };

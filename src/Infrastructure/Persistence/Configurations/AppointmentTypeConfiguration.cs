@@ -8,7 +8,7 @@ internal class AppointmentTypeConfiguration : IEntityTypeConfiguration<Appointme
 {
     public void Configure(EntityTypeBuilder<AppointmentType> builder)
     {
-        builder.HasIndex(x => x.Slug).IsUnique();
+        builder.HasIndex(x => x.Slug);
 
         builder.Property(x => x.Slug).HasMaxLength(100);
         builder.Property(x => x.Name).HasMaxLength(100);

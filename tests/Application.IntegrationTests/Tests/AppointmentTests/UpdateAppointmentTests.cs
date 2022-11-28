@@ -56,6 +56,7 @@ public class UpdateAppointmentTests
             UserName = "username",
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            UserDisplayName = "User Name 1",
             AttendeeUserName = _currentUserName,
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
@@ -95,6 +96,7 @@ public class UpdateAppointmentTests
             UserName = "username",
             AttendeeEmail = "b@gmail.com",
             AttendeeName = "Name1",
+            UserDisplayName = "User Name",
             AttendeeUserName = "random_user_name",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id

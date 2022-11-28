@@ -6,7 +6,7 @@ public class Appointment
 
     public string EventId { get; set; } = string.Empty;
 
-    public string EventMeetingLink { get; set; } = string.Empty;
+    public string? EventMeetingLink { get; set; }
 
     public int DateId { get; set; }
 
@@ -14,7 +14,7 @@ public class Appointment
 
     public string UserName { get; set; } = default!;
 
-    public string UserDisplayName { get; set; } = string.Empty;
+    public string UserDisplayName { get; set; } = default!;
 
     public string AttendeeName { get; set; } = default!;
 

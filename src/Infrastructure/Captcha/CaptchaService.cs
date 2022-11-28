@@ -34,6 +34,6 @@ public class CaptchaService : ICaptchaService
         var request = await _httpClientFactory.CreateClient().SendAsync(message);
         var response = await request.Content.ReadFromJsonAsync<CaptchaResponse>();
 
-        return response?.Success == true && response.Score > 0;
+        return response is { Success: true, Score: > 0 };
     }
 }

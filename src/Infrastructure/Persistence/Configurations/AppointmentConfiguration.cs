@@ -8,7 +8,7 @@ internal class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
 {
     public void Configure(EntityTypeBuilder<Appointment> builder)
     {
-        builder.HasOne(x => x.Date).WithMany().OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Date).WithMany().OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(x => x.UserName).HasMaxLength(100);
         builder.Property(x => x.UserDisplayName).HasMaxLength(100);

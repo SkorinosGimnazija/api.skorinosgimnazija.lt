@@ -3,6 +3,7 @@
 using AutoMapper;
 using Domain.Entities.Appointments;
 using Dtos;
+using SkorinosGimnazija.Application.Common.Models;
 using SkorinosGimnazija.Application.Employees.Dtos;
 using SkorinosGimnazija.Domain.Entities.Identity;
 
@@ -12,6 +13,8 @@ internal class AppointmentProfile : Profile
     {
         CreateMap<Appointment, AppointmentDto>();
 
+        CreateMap<AppointmentEventResponse, Appointment > ();
+
         CreateMap<Appointment, AppointmentDetailsDto>();
 
         CreateMap<AppointmentPublicCreateDto, Appointment>();
@@ -19,6 +22,8 @@ internal class AppointmentProfile : Profile
         CreateMap<AppointmentCreateDto, Appointment>();
 
         CreateMap<AppointmentDate, AppointmentDateDto>();
+
+        CreateMap<AppointmentDate, AppointmentDateDetailsDto>();
 
         CreateMap<AppointmentType, AppointmentTypeDto>();
 

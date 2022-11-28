@@ -13,16 +13,8 @@ public class CalendarServiceMock
         services.RemoveService<ICalendarService>();
         services.AddTransient(_ => Mock.Object);
 
-        Mock.Setup(x =>
-                x.AddAppointmentAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<DateTime>(),
-                    It.IsAny<DateTime>(),
-                    It.IsAny<string[]>()
-                )
-            )
-            .ReturnsAsync(new AppointmentEventResponse()
+        Mock.Setup(x => x.AddAppointmentAsync(It.IsAny<AppointmentEvent>()))
+            .ReturnsAsync(new AppointmentEventResponse
                 { EventId = Guid.NewGuid().ToString(), EventMeetingLink = Guid.NewGuid().ToString() });
 
         Mock.Setup(x =>

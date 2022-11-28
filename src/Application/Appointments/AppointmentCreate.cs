@@ -70,15 +70,17 @@ public static class AppointmentCreate
                 attendees.Add((await _employeeService.GetPrincipalAsync()).Email);
             }
 
-            var appointment = await _calendarService.AddAppointmentAsync(
-                                  date.Type.Name,
-                                  $"{host.FullName} // {attendee.FullName}",
-                                  date.Date,
-                                  date.Date.AddMinutes(date.Type.DurationInMinutes),
-                                  attendees.ToArray());
+            var appointment = await _calendarService.AddAppointmentAsync(new()
+            {
+                Title = date.Type.Name,
+                Description = $"{host.FullName} // {attendee.FullName}",
+                IsOnline = date.Type.IsOnline,
+                StartDate = date.Date,
+                EndDate = date.Date.AddMinutes(date.Type.DurationInMinutes),
+                AttendeeEmails = attendees
+            });
 
-            entity.EventId = appointment.EventId;
-            entity.EventMeetingLink = appointment.EventMeetingLink;
+            _mapper.Map(appointment, entity);
 
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();

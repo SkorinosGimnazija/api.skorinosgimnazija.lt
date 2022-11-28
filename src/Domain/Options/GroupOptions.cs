@@ -13,4 +13,6 @@ public record GroupOptions
     public string TechManagers { get; init; } = default!;
 
     public string TechNotifications { get; init; } = default!;
+
+    public string TechStatusNotifications { get; init; } = default!;
 }
