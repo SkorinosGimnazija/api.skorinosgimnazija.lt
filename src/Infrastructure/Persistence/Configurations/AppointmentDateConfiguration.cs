@@ -10,8 +10,7 @@ internal class AppointmentDateConfiguration : IEntityTypeConfiguration<Appointme
     {
         builder.HasOne(x => x.Type).WithMany().OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.Date);
-
         builder.HasIndex(x => x.Date);
+        builder.HasIndex(x => new { x.Date, x.TypeId }).IsUnique();
     }
 }

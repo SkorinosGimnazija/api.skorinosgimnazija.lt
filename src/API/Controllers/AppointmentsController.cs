@@ -71,7 +71,7 @@ public class AppointmentsController : BaseApiController
         return await Mediator.Send(new AppointmentAdminList.Query(pagination), ct);
     }
 
-    [Authorize(Roles = Auth.Role.Admin)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("{id:int}", Name = "GetAppointmentById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,7 +101,7 @@ public class AppointmentsController : BaseApiController
         return Ok();
     }
 
-    [Authorize(Roles = Auth.Role.Admin)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("types", Name = "GetAppointmentTypes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AppointmentTypeDto>> GetTypes(CancellationToken ct)
@@ -109,7 +109,7 @@ public class AppointmentsController : BaseApiController
         return await Mediator.Send(new AppointmentTypesList.Query(), ct);
     }
 
-    [Authorize(Roles = Auth.Role.Admin)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("types/{id:int}", Name = "GetAppointmentTypeById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -148,7 +148,7 @@ public class AppointmentsController : BaseApiController
         return NoContent();
     }
 
-    [Authorize(Roles = Auth.Role.Admin)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("hosts/{typeId:int}", Name = "GetAppointmentHosts")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AppointmentExclusiveHostDto>> GetHosts(int typeId, CancellationToken ct)
@@ -176,12 +176,40 @@ public class AppointmentsController : BaseApiController
         return NoContent();
     }
 
-    [Authorize(Roles = Auth.Role.Admin)]
+    [Authorize(Roles = Auth.Role.Manager)]
     [HttpGet("dates/{typeId:int}", Name = "GetAppointmentDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<AppointmentDateDto>> GetDates(int typeId, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentDatesList.Query(typeId), ct);
+    }
+
+    [Authorize(Roles = Auth.Role.Manager)]
+    [HttpGet("dates/reserved/{userName}", Name = "GetAppointmentReservedDates")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<AppointmentReservedDateDto>> GetReservedDates(string userName, CancellationToken ct)
+    {
+        return await Mediator.Send(new AppointmentReservedDatesList.Query(userName), ct);
+    }
+
+    [Authorize(Roles = Auth.Role.Manager)]
+    [HttpPost("dates/reserved", Name = "CreateAppointmentReservedDate")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AppointmentReservedDateDto>> CreateReservedDate(AppointmentReservedDateCreateDto dto)
+    {
+        var result = await Mediator.Send(new AppointmentReservedDateCreate.Command(dto));
+        return CreatedAtAction(nameof(GetReservedDates), new { dto.UserName }, result);
+    }
+
+    [Authorize(Roles = Auth.Role.Manager)]
+    [HttpDelete("dates/reserved/{id:int}", Name = "DeleteAppointmentReservedDate")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteReservedDate(int id)
+    {
+        await Mediator.Send(new AppointmentReservedDateDelete.Command(id));
+        return NoContent();
     }
 
     [AllowAnonymous]
