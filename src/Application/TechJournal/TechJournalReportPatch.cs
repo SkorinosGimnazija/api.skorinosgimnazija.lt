@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Dtos;
 using Microsoft.EntityFrameworkCore;
 using Validators;
+using SkorinosGimnazija.Application.TechJournal.Notifications;
 
 public static class TechJournalReportPatch
 {
@@ -33,11 +34,13 @@ public static class TechJournalReportPatch
         private readonly IAppDbContext _context;
         private readonly ICurrentUserService _currentUser;
         private readonly IMapper _mapper;
+        private readonly IPublisher _publisher;
 
-        public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser)
+        public Handler(IAppDbContext context, IMapper mapper, IPublisher publisher, ICurrentUserService currentUser)
         {
             _context = context;
             _mapper = mapper;
+            _publisher = publisher;
             _currentUser = currentUser;
         }
 
@@ -57,9 +60,13 @@ public static class TechJournalReportPatch
                 throw new UnauthorizedAccessException();
             }
 
+            var oldState = entity.IsFixed;
+
             _mapper.Map(request.TechJournalReport, entity);
 
             await _context.SaveChangesAsync();
+
+            await _publisher.Publish(new TechJournalReportPatchedNotification(entity, oldState));
 
             return Unit.Value;
         }
