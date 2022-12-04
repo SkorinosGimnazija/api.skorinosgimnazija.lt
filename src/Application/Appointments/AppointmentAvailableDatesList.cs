@@ -52,7 +52,7 @@ public static class AppointmentAvailableDatesList
 
             return await _context.AppointmentDates.AsNoTracking()
                        .Where(x =>
-                           x.Date > DateTime.UtcNow.AddHours(16) &&
+                           x.Date > DateTime.UtcNow.AddHours(20) &&
                            x.TypeId == appointmentType.Id &&
                            !registeredDatesQuery.Contains(x.Id) &&
                            !reservedDatesQuery.Contains(x.Id))

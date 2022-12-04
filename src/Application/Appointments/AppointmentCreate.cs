@@ -131,7 +131,7 @@ public static class AppointmentCreate
                            .FirstOrDefaultAsync(x =>
                                x.Id == dateId &&
                                !x.Type.IsPublic &&
-                               x.Date > DateTime.UtcNow.AddHours(9) &&
+                               x.Date > DateTime.UtcNow.AddHours(19) &&
                                x.Type.RegistrationEnd > DateTime.UtcNow &&
                                !reservedDatesQuery.Contains(x.Id));
 
