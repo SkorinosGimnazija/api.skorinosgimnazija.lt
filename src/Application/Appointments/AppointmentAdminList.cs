@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class AppointmentAdminList
 {
-    public record Query(PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
+    public record Query(PaginationDto Pagination, string? SearchQuery) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -37,10 +37,17 @@ public static class AppointmentAdminList
         public async Task<PaginatedList<AppointmentDetailsDto>> Handle(
             Query request, CancellationToken cancellationToken)
         {
-            return await _context.Appointments
-                       .AsNoTracking()
-                       .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider)
-                       .OrderByDescending(x => x.Date.Date)
+            var list = _context.Appointments
+                .AsNoTracking()
+                .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider);
+
+            if (!string.IsNullOrWhiteSpace(request.SearchQuery))
+            {
+                list = list.Where(x => x.UserDisplayName.ToLower().Contains(request.SearchQuery.ToLower()));
+                //list = list.Where(x => EF.Functions.Like(x.UserDisplayName, $"%{request.SearchQuery}%"));
+            }
+
+            return await list.OrderByDescending(x => x.Date.Date)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }

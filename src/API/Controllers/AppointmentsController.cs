@@ -66,9 +66,9 @@ public class AppointmentsController : BaseApiController
     [HttpGet(Name = "GetAllAppointments")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<AppointmentDetailsDto>> GetAll(
-        [FromQuery] PaginationDto pagination, CancellationToken ct)
+        [FromQuery] PaginationDto pagination, [FromQuery] string? query, CancellationToken ct)
     {
-        return await Mediator.Send(new AppointmentAdminList.Query(pagination), ct);
+        return await Mediator.Send(new AppointmentAdminList.Query(pagination, query), ct);
     }
 
     [Authorize(Roles = Auth.Role.Manager)]
