@@ -25,7 +25,7 @@ public class GetAppointmentTests
     [Fact]
     public async Task AppointmentAdminList_ShouldThrowEx_WhenInvalidPagination()
     {
-        var command = new AppointmentAdminList.Query(new() { Items = int.MaxValue, Page = int.MaxValue });
+        var command = new AppointmentAdminList.Query(new() { Items = int.MaxValue, Page = int.MaxValue }, null);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
@@ -73,7 +73,7 @@ public class GetAppointmentTests
         await _app.AddAsync(entity1);
         await _app.AddAsync(entity2);
 
-        var command = new AppointmentAdminList.Query(new());
+        var command = new AppointmentAdminList.Query(new(), null);
 
         var actual = await _app.SendAsync(command);
 
