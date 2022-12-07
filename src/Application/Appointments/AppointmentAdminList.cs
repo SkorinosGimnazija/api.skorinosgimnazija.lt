@@ -43,8 +43,14 @@ public static class AppointmentAdminList
 
             if (!string.IsNullOrWhiteSpace(request.SearchQuery))
             {
-                list = list.Where(x => x.UserDisplayName.ToLower().Contains(request.SearchQuery.ToLower()));
-                //list = list.Where(x => EF.Functions.Like(x.UserDisplayName, $"%{request.SearchQuery}%"));
+                var usersList = _context.Users
+                    .AsNoTracking()
+                    .Where(x =>
+                        EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%") ||
+                        EF.Functions.ILike(x.NormalizedEmail, $"%{request.SearchQuery}%"))
+                    .Select(x => x.NormalizedUserName);
+
+                list = list.Where(x => usersList.Contains(x.UserName));
             }
 
             return await list.OrderByDescending(x => x.Date.Date)
