@@ -13,7 +13,7 @@ public static class Seed
 
         foreach (var role in Auth.AllRoles.Except(currentRoles))
         {
-            await roleManager.CreateAsync(new(role));
+            await roleManager.CreateAsync(new(role!));
         }
     }
 

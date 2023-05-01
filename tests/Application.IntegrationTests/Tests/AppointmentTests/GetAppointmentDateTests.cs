@@ -18,7 +18,7 @@ public class GetAppointmentDateTests
         _app.ResetData();
 
         var user = _app.CreateUserAsync().GetAwaiter().GetResult();
-        _currentUserName = user.UserName;
+        _currentUserName = user.UserName!;
         _app.CurrentUserMock.SetCurrentUserData(user.Id, _currentUserName);
     }
 

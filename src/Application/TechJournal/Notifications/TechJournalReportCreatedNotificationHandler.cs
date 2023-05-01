@@ -42,7 +42,7 @@ public class TechJournalReportCreatedNotificationHandler : INotificationHandler<
             var groupEmail = await _employeeService.GetGroupEmailAsync(_groupId);
             var teacher = await _context.Users.FirstAsync(x => x.Id == notification.Report.UserId);
 
-            var reportLink = $"{_baseUrl}/teacher/failures/{notification.Report.Id}";
+            var reportLink = $"{_baseUrl}/teacher/failures/{notification.Report.Id}/fix";
             var body = @$"
                     <p>Gautas naujas pranešimas apie <a href=""{reportLink}"">gedimą</a>.</p>
                     <ul style=""margin-top:20px"">

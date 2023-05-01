@@ -30,7 +30,7 @@ public class UpdateBullyReportJournalTests
         var user = _app.CreateUserAsync().GetAwaiter().GetResult();
         _currentUserId = user.Id;
 
-        _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName);
+        _app.CurrentUserMock.SetCurrentUserData(_currentUserId, user.UserName!);
     }
 
     [Fact]

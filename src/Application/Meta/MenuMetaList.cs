@@ -29,7 +29,7 @@ public static class MenuMetaList
         {
             const string Key = "MetaMenus";
 
-            if (!_cache.TryGetValue(Key, out List<MenuMetaDto> cachedMenus))
+            if (!_cache.TryGetValue(Key, out List<MenuMetaDto>? cachedMenus))
             {
                 cachedMenus = await _context.Menus
                                   .AsNoTracking()
@@ -43,7 +43,7 @@ public static class MenuMetaList
                 _cache.Set(Key, cachedMenus, TimeSpan.FromDays(1));
             }
 
-            return cachedMenus;
+            return cachedMenus!;
         }
     }
 }

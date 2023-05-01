@@ -7,7 +7,7 @@ public static class ConfigurationExtensions
 {
     public static string GetNpgsqlConnectionString(this IConfiguration config, string key)
     {
-        var uri = new Uri(config[key]);
+        var uri = new Uri(config[key]!);
 
         var builder = new NpgsqlConnectionStringBuilder
         {

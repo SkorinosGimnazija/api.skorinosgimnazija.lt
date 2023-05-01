@@ -29,7 +29,7 @@ public static class LocaleMetaList
         {
             const string Key = "MetaLocales";
 
-            if (!_cache.TryGetValue(Key, out List<LocaleMetaDto> cachedLocales))
+            if (!_cache.TryGetValue(Key, out List<LocaleMetaDto>? cachedLocales))
             {
                 var menuPostsQuery = _context.Menus
                     .AsNoTracking()
@@ -56,7 +56,7 @@ public static class LocaleMetaList
                 _cache.Set(Key, cachedLocales, TimeSpan.FromDays(1));
             }
 
-            return cachedLocales;
+            return cachedLocales!;
         }
     }
 }

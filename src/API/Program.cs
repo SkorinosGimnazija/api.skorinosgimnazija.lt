@@ -24,7 +24,7 @@ public static class Program
                         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                         .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
                         .WriteTo.MicrosoftTeams(
-                            context.Configuration["Teams:WebHook"],
+                            context.Configuration["Teams:WebHook"]!,
                             restrictedToMinimumLevel: LogEventLevel.Warning
                         );
                 }

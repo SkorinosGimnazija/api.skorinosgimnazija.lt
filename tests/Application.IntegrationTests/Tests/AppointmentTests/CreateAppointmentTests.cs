@@ -24,8 +24,8 @@ public class CreateAppointmentTests
         var user = _app.CreateUserAsync().GetAwaiter().GetResult();
         var randomUser = _app.CreateUserAsync().GetAwaiter().GetResult();
 
-        _randomUserName = randomUser.UserName;
-        _currentUserName = user.UserName;
+        _randomUserName = randomUser.UserName!;
+        _currentUserName = user.UserName!;
         _app.CurrentUserMock.SetCurrentUserData(user.Id, _currentUserName);
     }
 

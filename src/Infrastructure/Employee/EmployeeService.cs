@@ -49,7 +49,7 @@ public sealed class EmployeeService : IEmployeeService
     {
         var cacheKey = $"GroupEmail{groupId}";
 
-        if (!_cache.TryGetValue(cacheKey, out string email))
+        if (!_cache.TryGetValue(cacheKey, out string? email))
         {
             var request = _directoryService.Groups.Get(groupId);
             var response = await request.ExecuteAsync();
@@ -59,7 +59,7 @@ public sealed class EmployeeService : IEmployeeService
             _cache.Set(cacheKey, email);
         }
 
-        return email;
+        return email!;
     }
 
     public async Task<ICollection<string>> GetEmployeeRolesAsync(string userName)
@@ -119,7 +119,7 @@ public sealed class EmployeeService : IEmployeeService
     {
         var cacheKey = $"Employee{userName}";
 
-        if (!_cache.TryGetValue(cacheKey, out Employee employee))
+        if (!_cache.TryGetValue(cacheKey, out Employee? employee))
         {
             try
             {
@@ -148,7 +148,7 @@ public sealed class EmployeeService : IEmployeeService
     {
         var cacheKey = $"Employes{unitPath}";
 
-        if (!_cache.TryGetValue(cacheKey, out List<Employee> employes))
+        if (!_cache.TryGetValue(cacheKey, out List<Employee>? employes))
         {
             employes = new();
             string? pageToken = null;
@@ -176,6 +176,6 @@ public sealed class EmployeeService : IEmployeeService
             _cache.Set(cacheKey, employes, TimeSpan.FromDays(7));
         }
 
-        return employes;
+        return employes!;
     }
 }

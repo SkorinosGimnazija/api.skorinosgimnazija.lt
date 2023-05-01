@@ -18,7 +18,7 @@ public class GetAppointmentTests
         _app.ResetData();
 
         var user = _app.CreateUserAsync().GetAwaiter().GetResult();
-        _currentUserName = user.UserName;
+        _currentUserName = user.UserName!;
         _app.CurrentUserMock.SetCurrentUserData(user.Id, _currentUserName);
     }
 
@@ -116,7 +116,7 @@ public class GetAppointmentTests
 
         var entity1 = new Appointment
         {
-            UserName = randomUser.UserName,
+            UserName = randomUser.UserName!,
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
             UserDisplayName = "User Name",

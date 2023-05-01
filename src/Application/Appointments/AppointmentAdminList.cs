@@ -47,7 +47,7 @@ public static class AppointmentAdminList
                     .AsNoTracking()
                     .Where(x =>
                         EF.Functions.ILike(x.DisplayName, $"%{request.SearchQuery}%") ||
-                        EF.Functions.ILike(x.NormalizedEmail, $"%{request.SearchQuery}%"))
+                        EF.Functions.ILike(x.NormalizedEmail!, $"%{request.SearchQuery}%"))
                     .Select(x => x.NormalizedUserName);
 
                 list = list.Where(x => usersList.Contains(x.UserName));

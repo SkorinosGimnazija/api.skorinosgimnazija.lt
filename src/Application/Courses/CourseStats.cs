@@ -54,7 +54,7 @@ public static class CourseStats
                            (user, courses) => new CourseStatsDto
                            {
                                UserId = user.Id,
-                               UserDisplayName = user.DisplayName,
+                               UserDisplayName = user.DisplayName!,
                                Price = (float)Math.Round(courses.Price ?? 0, 2),
                                Hours = (float)Math.Round(courses.Hours, 2),
                                Count = courses.Count,

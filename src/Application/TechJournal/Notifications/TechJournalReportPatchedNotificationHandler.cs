@@ -42,7 +42,7 @@ public class TechJournalReportPatchedNotificationHandler : INotificationHandler<
         {
             var groupEmail = await _employeeService.GetGroupEmailAsync(_groupId);
 
-            var reportLink = $"{_baseUrl}/teacher/failures/{notification.Report.Id}";
+            var reportLink = $"{_baseUrl}/teacher/failures/{notification.Report.Id}/fix";
             var body = @$"
                     <p><a href=""{reportLink}"">Gedimas</a> negali būti sutvarkytas.</p>
                     <ul style=""margin-top:20px"">

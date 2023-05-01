@@ -29,7 +29,7 @@ public static class PostMetaList
         {
             const string Key = "MetaPosts";
 
-            if (!_cache.TryGetValue(Key, out List<PostMetaDto> cachedPosts))
+            if (!_cache.TryGetValue(Key, out List<PostMetaDto>? cachedPosts))
             {
                 var menuPostsQuery = _context.Menus
                     .AsNoTracking()
@@ -48,7 +48,7 @@ public static class PostMetaList
                 _cache.Set(Key, cachedPosts, TimeSpan.FromDays(1));
             }
 
-            return cachedPosts;
+            return cachedPosts!;
         }
     }
 }

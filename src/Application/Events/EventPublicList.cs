@@ -24,7 +24,7 @@ public static class EventPublicList
         {
             var key = $"EventsW{request.Week}";
 
-            if (!_cache.TryGetValue(key, out List<EventDto> cached))
+            if (!_cache.TryGetValue(key, out List<EventDto>? cached))
             {
                 DateTime start;
                 DateTime end;
@@ -44,7 +44,7 @@ public static class EventPublicList
                 _cache.Set(key, cached, TimeSpan.FromHours(1));
             }
 
-            return cached;
+            return cached!;
         }
     }
 }

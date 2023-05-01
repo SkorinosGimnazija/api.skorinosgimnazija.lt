@@ -83,14 +83,14 @@ public sealed class IdentityService : IIdentityService
             Token = _tokenService.CreateToken(principal.Claims),
             Roles = principal.FindAll(ClaimTypes.Role).Select(x => x.Value),
             DisplayName = user.DisplayName,
-            Email = user.Email,
+            Email = user.Email!,
             Id = user.Id
         };
     }
 
     private async Task UpdateUserRolesAsync(AppUser user)
     {
-        var userRoles = await _employeeService.GetEmployeeRolesAsync(user.UserName);
+        var userRoles = await _employeeService.GetEmployeeRolesAsync(user.UserName!);
         var currentRoles = await _userManager.GetRolesAsync(user);
 
         await _userManager.AddToRolesAsync(user, userRoles.Except(currentRoles));

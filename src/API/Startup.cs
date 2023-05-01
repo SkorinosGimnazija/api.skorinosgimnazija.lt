@@ -69,7 +69,7 @@ public sealed class Startup
                 x.AllowAnyHeader();
                 x.AllowAnyMethod();
                 x.SetPreflightMaxAge(TimeSpan.FromHours(1));
-                x.WithOrigins(_config.GetSection("CORS:Origins").Get<string[]>());
+                x.WithOrigins(_config.GetSection("CORS:Origins").Get<string[]>()!);
             });
         });
 

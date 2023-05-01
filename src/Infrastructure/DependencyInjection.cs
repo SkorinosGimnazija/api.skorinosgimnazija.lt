@@ -44,7 +44,7 @@ public static class DependencyInjection
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(x =>
             {
-                var jwt = config.GetSection("Jwt").Get<JwtOptions>();
+                var jwt = config.GetSection("Jwt").Get<JwtOptions>()!;
 
                 x.TokenValidationParameters = new()
                 {
