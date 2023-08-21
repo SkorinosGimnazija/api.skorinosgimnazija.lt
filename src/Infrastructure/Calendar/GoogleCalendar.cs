@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Calendar;
 
+using System.Net;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Events.Dtos;
@@ -11,7 +12,6 @@ using Google.Apis.Calendar.v3.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using System.Net;
 
 public class GoogleCalendar : ICalendarService
 {
@@ -68,12 +68,12 @@ public class GoogleCalendar : ICalendarService
             Start = new()
             {
                 Date = allDay ? startDate.ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? startDate : null
+                DateTimeDateTimeOffset = !allDay ? startDate : null
             },
             End = new()
             {
                 Date = allDay ? endDate.AddDays(1).ToString("yyyy-MM-dd") : null,
-                DateTime = !allDay ? endDate : null
+                DateTimeDateTimeOffset = !allDay ? endDate : null
             },
             Transparency = allDay ? "transparent" : "opaque"
         };
@@ -83,7 +83,7 @@ public class GoogleCalendar : ICalendarService
 
         return response.Id;
     }
-     
+
     public async Task<AppointmentEventResponse> AddAppointmentAsync(AppointmentEvent appointment)
     {
         if (_env.IsDevelopment())
@@ -95,8 +95,8 @@ public class GoogleCalendar : ICalendarService
         {
             Summary = appointment.Title,
             Description = appointment.Description,
-            Start = new() { DateTime = appointment.StartDate },
-            End = new() { DateTime = appointment.EndDate },
+            Start = new() { DateTimeDateTimeOffset = appointment.StartDate },
+            End = new() { DateTimeDateTimeOffset = appointment.EndDate },
             Location = "Vilniaus Pranciškaus Skorinos gimnazija",
             Attendees = appointment.AttendeeEmails.Distinct()
                 .Select(email => new EventAttendee { Email = email })
