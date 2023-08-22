@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 using SkorinosGimnazija.Domain.Entities.Accomplishments;
+using SkorinosGimnazija.Domain.Entities.School;
 using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
@@ -80,7 +81,9 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get; set; } = default!;
 
-    public DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; set; } = default!;
+    public DbSet<Classroom> Classrooms { get; set; } = default!;
+
+    public DbSet<Classtime> Classtimes { get; set; } = default!;
 
     public DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; set; } = default!;
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkorinosGimnazija.Infrastructure.Persistence;
@@ -12,9 +13,11 @@ using SkorinosGimnazija.Infrastructure.Persistence;
 namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230821172041_ClassroomRename")]
+    partial class ClassroomRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +159,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Accomplishments", (string)null);
+                    b.ToTable("Accomplishments");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Accomplishments.AccomplishmentAchievement", b =>
@@ -174,7 +177,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccomplishmentAchievements", (string)null);
+                    b.ToTable("AccomplishmentAchievements");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Accomplishments.AccomplishmentScale", b =>
@@ -192,7 +195,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccomplishmentScales", (string)null);
+                    b.ToTable("AccomplishmentScales");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Accomplishments.AccomplishmentStudent", b =>
@@ -225,7 +228,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ClassroomId");
 
-                    b.ToTable("AccomplishmentStudents", (string)null);
+                    b.ToTable("AccomplishmentStudents");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Accomplishments.AccomplishmentTeacher", b =>
@@ -248,7 +251,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("AccomplishmentId");
 
-                    b.ToTable("AccomplishmentAdditionalTeachers", (string)null);
+                    b.ToTable("AccomplishmentAdditionalTeachers");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.Appointment", b =>
@@ -310,7 +313,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserName", "AttendeeEmail")
                         .IsUnique();
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentDate", b =>
@@ -336,7 +339,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("Date", "TypeId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentDates", (string)null);
+                    b.ToTable("AppointmentDates");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentExclusiveHost", b =>
@@ -364,7 +367,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserName", "TypeId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentExclusiveHosts", (string)null);
+                    b.ToTable("AppointmentExclusiveHosts");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentReservedDate", b =>
@@ -392,7 +395,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserName", "DateId")
                         .IsUnique();
 
-                    b.ToTable("AppointmentReservedDates", (string)null);
+                    b.ToTable("AppointmentReservedDates");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Appointments.AppointmentType", b =>
@@ -432,7 +435,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Slug");
 
-                    b.ToTable("AppointmentTypes", (string)null);
+                    b.ToTable("AppointmentTypes");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Bullies.BullyJournalReport", b =>
@@ -475,7 +478,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BullyJournalReports", (string)null);
+                    b.ToTable("BullyJournalReports");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Bullies.BullyReport", b =>
@@ -515,7 +518,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BullyReports", (string)null);
+                    b.ToTable("BullyReports");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.CMS.Banner", b =>
@@ -564,7 +567,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Order");
 
-                    b.ToTable("Banners", (string)null);
+                    b.ToTable("Banners");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.CMS.Language", b =>
@@ -590,7 +593,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.CMS.Menu", b =>
@@ -656,7 +659,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("Slug", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.CMS.MenuLocation", b =>
@@ -682,7 +685,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
                     b.HasIndex("Slug")
                         .IsUnique();
 
-                    b.ToTable("MenuLocations", (string)null);
+                    b.ToTable("MenuLocations");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.CMS.Post", b =>
@@ -751,7 +754,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("PublishedAt");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Courses.Course", b =>
@@ -805,7 +808,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("SkorinosGimnazija.Domain.Entities.Identity.AppUser", b =>
@@ -974,7 +977,7 @@ namespace SkorinosGimnazija.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TechJournalReports", (string)null);
+                    b.ToTable("TechJournalReports");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

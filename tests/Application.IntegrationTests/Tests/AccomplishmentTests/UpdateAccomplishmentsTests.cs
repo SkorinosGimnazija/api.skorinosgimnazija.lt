@@ -7,6 +7,7 @@ using Accomplishments.Dtos;
 using Domain.Entities.Accomplishments;
 using FluentAssertions;
 using Xunit;
+using SkorinosGimnazija.Domain.Entities.School;
 
 [Collection("App")]
 public class UpdateAccomplishmentsTests
@@ -57,6 +58,8 @@ public class UpdateAccomplishmentsTests
     [Fact]
     public async Task AccomplishmentEdit_ShouldEditAccomplishment_WhenEditingOwned()
     {
+        var classroom = await _app.AddAsync(new Classroom { Name = "C1" });
+
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
             Id = 1,
@@ -71,9 +74,9 @@ public class UpdateAccomplishmentsTests
             },
             Students = new List<AccomplishmentStudent>
             {
-                new() { Name = "student1", ClassroomId = 1, AchievementId = 1 },
-                new() { Name = "student2", ClassroomId = 1, AchievementId = 1 },
-                new() { Name = "student3", ClassroomId = 1, AchievementId = 1 }
+                new() { Name = "student1", ClassroomId = classroom.Id, AchievementId = 1 },
+                new() { Name = "student2", ClassroomId = classroom.Id, AchievementId = 1 },
+                new() { Name = "student3", ClassroomId = classroom.Id, AchievementId = 1 }
             },
             UserId = _currentUserId
         });

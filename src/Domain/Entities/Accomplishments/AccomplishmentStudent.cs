@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SkorinosGimnazija.Domain.Entities.School;
 
 public class AccomplishmentStudent
 {
@@ -21,5 +22,5 @@ public class AccomplishmentStudent
 
     public int ClassroomId { get; set; }
 
-    public AccomplishmentClassroom Classroom { get; set; } = default!;
+    public Classroom Classroom { get; set; } = default!;
 }

@@ -9,6 +9,7 @@ using Domain.Entities.Courses;
 using Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using SkorinosGimnazija.Domain.Entities.School;
 using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public interface IAppDbContext
@@ -51,7 +52,9 @@ public interface IAppDbContext
 
     DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get;  }
 
-    DbSet<AccomplishmentClassroom> AccomplishmentClassrooms { get; }
+    DbSet<Classroom> Classrooms { get; }
+
+    DbSet<Classtime> Classtimes { get; }
 
     DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; }
 

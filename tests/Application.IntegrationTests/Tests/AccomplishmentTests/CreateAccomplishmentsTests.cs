@@ -4,8 +4,10 @@ using Common.Exceptions;
 using Accomplishments;
 using Accomplishments.Dtos;
 using Domain.Entities.Accomplishments;
+using Domain.Entities.School;
 using FluentAssertions;
 using Xunit;
+using SkorinosGimnazija.Domain.Entities.Bullies;
 
 [Collection("App")]
 public class CreateAccomplishmentsTests
@@ -38,6 +40,8 @@ public class CreateAccomplishmentsTests
     [Fact]
     public async Task AccomplishmentCreate_ShouldCreateAccomplishment_AsCurrentUser()
     {
+        var classroom = await _app.AddAsync(new Classroom { Name = "C1" });
+
         var accomplishment = new AccomplishmentCreateDto
         {
             Name = "Name1",
@@ -50,8 +54,8 @@ public class CreateAccomplishmentsTests
             },
             Students = new List<AccomplishmentCreateStudentDto>
             {
-                new() { Name = "student1", ClassroomId = 1, AchievementId = 1 },
-                new() { Name = "student2", ClassroomId = 1, AchievementId = 1 }
+                new() { Name = "student1", ClassroomId = classroom.Id, AchievementId = 1 },
+                new() { Name = "student2", ClassroomId = classroom.Id, AchievementId = 1 }
             }
         };
 

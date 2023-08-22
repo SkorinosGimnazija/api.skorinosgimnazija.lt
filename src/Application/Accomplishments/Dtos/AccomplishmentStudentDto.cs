@@ -1,4 +1,6 @@
-﻿namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
+﻿using SkorinosGimnazija.Application.School.Dtos;
+
+namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
 
 public record AccomplishmentStudentDto
 {
@@ -6,7 +8,7 @@ public record AccomplishmentStudentDto
 
     public string Name { get; init; } = default!;
 
-    public AccomplishmentClassroomDto Classroom { get; init; } = default!;
+    public ClassroomDto Classroom { get; init; } = default!;
 
     public AccomplishmentAchievementDto Achievement { get; init; } = default!;
 }

@@ -110,7 +110,6 @@ public class AppFixture
                 nameof(AppDbContext.Languages),
                 nameof(AppDbContext.MenuLocations),
                 nameof(AppDbContext.AccomplishmentScales),
-                nameof(AppDbContext.AccomplishmentClassrooms),
                 nameof(AppDbContext.AccomplishmentAchievements)
             },
             DbAdapter = DbAdapter.Postgres
