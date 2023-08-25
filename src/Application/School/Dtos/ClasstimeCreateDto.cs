@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public record ClasstimeCreateDto
 {
-    public string Name { get; init; } = default!;
+    public int Number { get; init; }
 
     public TimeOnly StartTime { get; init; }
 

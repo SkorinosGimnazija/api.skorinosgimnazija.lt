@@ -58,7 +58,7 @@ public class UpdateAccomplishmentsTests
     [Fact]
     public async Task AccomplishmentEdit_ShouldEditAccomplishment_WhenEditingOwned()
     {
-        var classroom = await _app.AddAsync(new Classroom { Name = "C1" });
+        var classroom = await _app.AddAsync(new Classroom { Name = "C1", Number = 1});
 
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
@@ -93,7 +93,7 @@ public class UpdateAccomplishmentsTests
             },
             Students = new List<AccomplishmentCreateStudentDto>
             {
-                new() { Name = "student", ClassroomId = 2, AchievementId = 2 }
+                new() { Name = "student", ClassroomId = classroom.Id, AchievementId = 2 }
             }
         };
         

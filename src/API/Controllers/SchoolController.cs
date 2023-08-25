@@ -35,7 +35,7 @@ public class SchoolController : BaseApiController
     [HttpPost("classrooms", Name = "CreateClassroom")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AccomplishmentDto>> CreateClassroom(ClassroomCreateDto dto)
+    public async Task<ActionResult<ClassroomDto>> CreateClassroom(ClassroomCreateDto dto)
     {
         var result = await Mediator.Send(new ClassroomCreate.Command(dto));
         return CreatedAtAction(nameof(GetClassroom), new { result.Id }, result);
@@ -69,42 +69,42 @@ public class SchoolController : BaseApiController
         return await Mediator.Send(new ClasstimeList.Query(), ct);
     }
 
-    //[HttpGet("classtimes/{id:int}", Name = "GetClasstimeById")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<ActionResult<ClasstimeDetailsDto>> GetClasstime(int id, CancellationToken ct)
-    //{
-    //    return await Mediator.Send(new ClasstimeDetails.Query(id), ct);
-    //}
+    [HttpGet("classtimes/{id:int}", Name = "GetClasstimeById")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ClasstimeDto>> GetClasstime(int id, CancellationToken ct)
+    {
+        return await Mediator.Send(new ClasstimeDetails.Query(id), ct);
+    }
 
-    //[Authorize(Roles = Auth.Role.Admin)]
-    //[HttpPost("classtimes", Name = "CreateClasstime")]
-    //[ProducesResponseType(StatusCodes.Status201Created)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<ActionResult<AccomplishmentDto>> CreateClasstime(ClasstimeCreateDto dto)
-    //{
-    //    var result = await Mediator.Send(new ClasstimeCreate.Command(dto));
-    //    return CreatedAtAction(nameof(GetClasstime), new { result.Id }, result);
-    //}
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPost("classtimes", Name = "CreateClasstime")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ClasstimeDto>> CreateClasstime(ClasstimeCreateDto dto)
+    {
+        var result = await Mediator.Send(new ClasstimeCreate.Command(dto));
+        return CreatedAtAction(nameof(GetClasstime), new { result.Id }, result);
+    }
 
-    //[Authorize(Roles = Auth.Role.Admin)]
-    //[HttpPut("classtime", Name = "EditClasstime")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> EditClasstime(ClasstimeEditDto dto)
-    //{
-    //    await Mediator.Send(new ClasstimeEdit.Command(dto));
-    //    return Ok();
-    //}
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPut("classtime", Name = "EditClasstime")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> EditClasstime(ClasstimeEditDto dto)
+    {
+        await Mediator.Send(new ClasstimeEdit.Command(dto));
+        return Ok();
+    }
 
-    //[Authorize(Roles = Auth.Role.Admin)]
-    //[HttpDelete("classtimes/{id:int}", Name = "DeleteClasstime")]
-    //[ProducesResponseType(StatusCodes.Status204NoContent)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> DeleteClasstime(int id)
-    //{
-    //    await Mediator.Send(new ClasstimeDelete.Command(id));
-    //    return NoContent();
-    //}
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpDelete("classtimes/{id:int}", Name = "DeleteClasstime")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteClasstime(int id)
+    {
+        await Mediator.Send(new ClasstimeDelete.Command(id));
+        return NoContent();
+    }
 }

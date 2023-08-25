@@ -11,6 +11,6 @@ internal class ClassroomConfiguration : IEntityTypeConfiguration<Classroom>
     {
         builder.ToTable("AccomplishmentClassrooms");
         builder.Property(x => x.Name).HasMaxLength(48);
-        builder.HasIndex(x => x.Number);
+        builder.HasIndex(x => x.Number); //.IsUnique();
     }
 }

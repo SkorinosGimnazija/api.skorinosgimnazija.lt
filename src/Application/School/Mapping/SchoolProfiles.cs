@@ -22,7 +22,7 @@ public class SchoolProfiles : Profile
         CreateMap<Classtime, ClasstimeDto>();
 
         CreateMap<ClasstimeCreateDto, Classtime>();
-
+         
         CreateMap<ClasstimeEditDto, Classtime>();
     }
 }

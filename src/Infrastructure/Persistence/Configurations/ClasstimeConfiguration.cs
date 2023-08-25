@@ -9,6 +9,6 @@ internal class ClasstimeConfiguration : IEntityTypeConfiguration<Classtime>
 {
     public void Configure(EntityTypeBuilder<Classtime> builder)
     {
-        builder.HasIndex(x => x.Number);
+        builder.HasIndex(x => x.Number).IsUnique();
     }
 }
