@@ -1,15 +1,19 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
 
-using Domain.Entities.Accomplishments;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities.Timetable;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SkorinosGimnazija.Domain.Entities.School;
 
-internal class ClassroomConfiguration : IEntityTypeConfiguration<Classroom>
+internal class ClassdayConfiguration : IEntityTypeConfiguration<Classday>
 {
-    public void Configure(EntityTypeBuilder<Classroom> builder)
+    public void Configure(EntityTypeBuilder<Classday> builder)
     {
-        builder.ToTable("AccomplishmentClassrooms");
         builder.Property(x => x.Name).HasMaxLength(48);
         builder.HasIndex(x => x.Number).IsUnique();
     }

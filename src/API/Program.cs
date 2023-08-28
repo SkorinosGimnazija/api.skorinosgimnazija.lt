@@ -53,7 +53,7 @@ public static class Program
             await Seed.AddLanguages(context);
             await Seed.AddMenuLocations(context);
             await Seed.AddAccomplishmentScales(context);
-            await Seed.AddAccomplishmentClassrooms(context);
+            await Seed.AddDays(context);
             await Seed.AddAccomplishmentAchievements(context);
         }
 

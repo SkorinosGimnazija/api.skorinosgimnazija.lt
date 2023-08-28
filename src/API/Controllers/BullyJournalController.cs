@@ -36,7 +36,7 @@ public class BullyJournalController : BaseApiController
     [HttpPost(Name = "CreateBullyJournalReport")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AccomplishmentDto>> Create(BullyJournalReportCreateDto dto)
+    public async Task<ActionResult<BullyJournalReportDetailsDto>> Create(BullyJournalReportCreateDto dto)
     {
         var result = await Mediator.Send(new BullyJournalReportCreate.Command(dto));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);

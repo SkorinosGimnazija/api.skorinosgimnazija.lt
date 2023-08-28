@@ -31,7 +31,7 @@ public class TechJournalController : BaseApiController
     [HttpPost(Name = "CreateTechJournalReport")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AccomplishmentDto>> Create(TechJournalReportCreateDto dto)
+    public async Task<ActionResult<TechJournalReportDto>> Create(TechJournalReportCreateDto dto)
     {
         var result = await Mediator.Send(new TechJournalReportCreate.Command(dto));
         return CreatedAtAction(nameof(Get), new { result.Id }, result);

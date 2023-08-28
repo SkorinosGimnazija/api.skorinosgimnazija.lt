@@ -94,7 +94,7 @@ public class AppFixture
         Seed.AddLanguages(context).GetAwaiter().GetResult();
         Seed.AddMenuLocations(context).GetAwaiter().GetResult();
         Seed.AddAccomplishmentScales(context).GetAwaiter().GetResult();
-        Seed.AddAccomplishmentClassrooms(context).GetAwaiter().GetResult();
+        Seed.AddDays(context).GetAwaiter().GetResult();
         Seed.AddAccomplishmentAchievements(context).GetAwaiter().GetResult();
     }
 
@@ -109,6 +109,7 @@ public class AppFixture
                 nameof(AppDbContext.Roles),
                 nameof(AppDbContext.Languages),
                 nameof(AppDbContext.MenuLocations),
+                nameof(AppDbContext.Classdays),
                 nameof(AppDbContext.AccomplishmentScales),
                 nameof(AppDbContext.AccomplishmentAchievements)
             },

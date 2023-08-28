@@ -24,5 +24,7 @@ public class SchoolProfiles : Profile
         CreateMap<ClasstimeCreateDto, Classtime>();
          
         CreateMap<ClasstimeEditDto, Classtime>();
+
+        CreateMap<Classday, ClassdayDto>();
     }
 }

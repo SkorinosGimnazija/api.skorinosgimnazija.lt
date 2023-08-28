@@ -9,6 +9,7 @@ using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.Timetable;
 using Extensions;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -38,6 +39,7 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
                 "IX_Appointments_UserName_AttendeeEmail" => new ("Klaida", "Jūs jau esate užsiregistravęs (-usi) pas pasirinktą mokytoją"),
                 "IX_Appointments_DateId_UserName" => new ("Klaida", "Pasirinktas laikas užimtas"),
                 "IX_Appointments_DateId_AttendeeEmail" => new ("Klaida", "Pasirinktu laiku jūs jau esate užsiregistravęs (-usi)"),
+                "IX_Timetable_DayId_RoomId_TimeId" => new ("Klaida", "Pasirinktu laiku klasė jau turi pamoką"),
                 _ => new ValidationFailure(ie.ConstraintName ?? ie.ColumnName, "Constraint violation")
             };
 
@@ -84,6 +86,10 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
     public DbSet<Classroom> Classrooms { get; set; } = default!;
 
     public DbSet<Classtime> Classtimes { get; set; } = default!;
+
+    public DbSet<Classday> Classdays { get; set; } = default!;
+
+    public DbSet<Timetable> Timetable { get; set; } = default!;
 
     public DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; set; } = default!;
 

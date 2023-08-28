@@ -13,7 +13,7 @@ using FluentAssertions;
 using Xunit;
 using SkorinosGimnazija.Application.School;
 
-[Collection("App")]
+[Collection("App")] 
 public class GetClassroomTests
 {
     private readonly AppFixture _app;

@@ -13,7 +13,7 @@ using SkorinosGimnazija.Application.TechJournal.Dtos;
 using SkorinosGimnazija.Application.TechJournal;
 using SkorinosGimnazija.Application.Courses;
 
-[Authorize(Roles = Auth.Role.Teacher)]
+[Authorize(Roles = Auth.Role.Manager)]
 public class SchoolController : BaseApiController
 {
     [HttpGet("classrooms", Name = "GetClassrooms")]
@@ -106,5 +106,12 @@ public class SchoolController : BaseApiController
     {
         await Mediator.Send(new ClasstimeDelete.Command(id));
         return NoContent();
+    }
+
+    [HttpGet("classdays", Name = "GetClassdays")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<ClassdayDto>> GetClassdays(CancellationToken ct)
+    {
+        return await Mediator.Send(new ClassdayList.Query(), ct);
     }
 }

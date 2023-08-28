@@ -91,29 +91,22 @@ public static class Seed
         await dbContext.SaveChangesAsync();
     }
 
-    public static async Task AddAccomplishmentClassrooms(AppDbContext dbContext)
+    public static async Task AddDays(AppDbContext dbContext)
     {
-        //if (await dbContext.Classrooms.AnyAsync())
-        //{
-        //    return;
-        //}
+        if (await dbContext.Classdays.AnyAsync())
+        {
+            return;
+        }
+        
+        dbContext.Classdays.AddRange(
+            new() { Name = "Pirmadienis", Number = 1 },
+            new() { Name = "Antradienis", Number = 2 },
+            new() { Name = "Trečiadienis", Number = 3 },
+            new() { Name = "Ketvirtadienis", Number = 4 },
+            new() { Name = "Penktadienis", Number = 5 }
+        );
 
-        //dbContext.Classrooms.AddRange(
-        //    new() { Name = "1 klasė", Number = 1},
-        //    new() { Name = "2 klasė", Number = 2 },
-        //    new() { Name = "3 klasė", Number = 3 },
-        //    new() { Name = "4 klasė", Number = 4 },
-        //    new() { Name = "5 klasė", Number = 5 },
-        //    new() { Name = "6 klasė", Number = 6 },
-        //    new() { Name = "7 klasė", Number = 7 },
-        //    new() { Name = "8 klasė", Number = 8 },
-        //    new() { Name = "I g klasė", Number = 9 },
-        //    new() { Name = "II g klasė", Number = 10 },
-        //    new() { Name = "III g klasė", Number = 11 },
-        //    new() { Name = "IV g klasė", Number = 12 }
-        //);
-
-        //await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     public static async Task AddAccomplishmentAchievements(AppDbContext dbContext)

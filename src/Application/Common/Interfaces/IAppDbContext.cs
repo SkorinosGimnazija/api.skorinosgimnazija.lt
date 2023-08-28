@@ -7,6 +7,7 @@ using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.Timetable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using SkorinosGimnazija.Domain.Entities.School;
@@ -57,6 +58,10 @@ public interface IAppDbContext
     DbSet<Classtime> Classtimes { get; }
 
     DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; }
+
+    DbSet<Classday> Classdays { get; }
+
+    DbSet<Timetable> Timetable { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
