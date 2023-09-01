@@ -28,7 +28,8 @@ public class GetTechJournalReportTests
     [Fact]
     public async Task TechJournalReportList_ShouldThrowEx_WhenInvalidPagination()
     {
-        var command = new TechJournalReportList.Query(new() { Page = int.MaxValue, Items = int.MaxValue });
+        var command = new TechJournalReportList.Query(new() { Page = int.MaxValue, Items = int.MaxValue },
+            DateOnly.MinValue, DateOnly.MaxValue);
 
         await FluentActions.Invoking(() => _app.SendAsync(command))
             .Should()
@@ -45,22 +46,56 @@ public class GetTechJournalReportTests
         {
             Place = "Place 1",
             Details = "Details 1",
-            UserId = teacher1.Id
+            UserId = teacher1.Id,
+            ReportDate = DateTime.UtcNow
         });
 
         var report2 = await _app.AddAsync(new TechJournalReport
         {
             Place = "Place 2",
             Details = "Details 2",
-            UserId = teacher2.Id
+            UserId = teacher2.Id,
+            ReportDate = DateTime.UtcNow
         });
 
-        var command = new TechJournalReportList.Query(new() { Items = 10, Page = 0 });
+        var command = new TechJournalReportList.Query(new() { Items = 10, Page = 0 },
+            DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1)),
+            DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)));
 
         var actual = await _app.SendAsync(command);
 
         actual.TotalCount.Should().Be(2);
         actual.Items.Select(x => x.UserId).Should().Contain(new[] { teacher1.Id, teacher2.Id });
+    }
+
+    [Fact]
+    public async Task TechJournalReportList_ShouldListReports_ByDate()
+    {
+        var teacher1 = await _app.CreateUserAsync();
+
+        var report1 = await _app.AddAsync(new TechJournalReport
+        {
+            Place = "Place 1",
+            Details = "Details 1",
+            UserId = teacher1.Id,
+            ReportDate = DateTime.Parse("2023-01-01T09:00:00Z").ToUniversalTime()
+        });
+
+        var report2 = await _app.AddAsync(new TechJournalReport
+        {
+            Place = "Place 2",
+            Details = "Details 2",
+            UserId = teacher1.Id,
+            ReportDate = DateTime.Parse("2024-01-01T09:00:00Z").ToUniversalTime()
+        });
+
+        var command = new TechJournalReportList.Query(new() { Items = 10, Page = 0 },
+            DateOnly.Parse("2023-01-01"), DateOnly.Parse("2023-12-31"));
+
+        var actual = await _app.SendAsync(command);
+
+        actual.TotalCount.Should().Be(1);
+        actual.Items.Select(x => x.Id).Should().Contain(new[] { report1.Id });
     }
 
     [Fact]

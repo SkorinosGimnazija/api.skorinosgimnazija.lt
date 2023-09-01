@@ -15,9 +15,12 @@ public class TechJournalController : BaseApiController
     [HttpGet(Name = "GetTechJournalReports")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<TechJournalReportDto>> GetAll(
-        [FromQuery] PaginationDto pagination, CancellationToken ct)
+        [FromQuery] PaginationDto pagination,
+        [FromQuery] DateOnly start,
+        [FromQuery] DateOnly end,
+        CancellationToken ct)
     {
-        return await Mediator.Send(new TechJournalReportList.Query(pagination), ct);
+        return await Mediator.Send(new TechJournalReportList.Query(pagination, start, end), ct);
     }
 
     [HttpGet("{id:int}", Name = "GetTechJournalReportById")]
