@@ -11,7 +11,7 @@
     <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.61.0.3162" />
     <PackageReference Include="Google.Apis.Auth" Version="1.61.0" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.61.0.3137" />
-    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.61.0.3105" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.62.0.3105" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="MimeKit" Version="4.2.0" />
