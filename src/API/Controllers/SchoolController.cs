@@ -144,19 +144,8 @@ public class SchoolController : BaseApiController
     [AllowAnonymous]
     [HttpGet("public/random-image", Name = "GetPublicRandomImage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<string> GetPublicRandomImage(CancellationToken ct)
+    public async Task<string?> GetPublicRandomImage(CancellationToken ct)
     {
-        return null;
-        //TODO
-        //var list = new List<string>
-        //{
-        //    "iaxs1pwy.4mq/glz3av19mguyginiyjpt.jpg",
-        //    "iaxs1pwy.4mq/g0aglgbhwdy8pkdsvaiw.jpg",
-        //    "iaxs1pwy.4mq/izhw23xbxcfp2j3iei66.jpg",
-        //    "iaxs1pwy.4mq/i8nsmk8yn9bj1vkxtyhq.jpg",
-        //};
-
-        //return list[new Random().Next(list.Count)];
+        return await Mediator.Send(new RandomImage.Query(), ct);
     }
-
 }
