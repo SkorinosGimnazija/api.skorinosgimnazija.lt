@@ -12,6 +12,8 @@ using SkorinosGimnazija.Application.School.Dtos;
 using SkorinosGimnazija.Application.TechJournal.Dtos;
 using SkorinosGimnazija.Application.TechJournal;
 using SkorinosGimnazija.Application.Courses;
+using SkorinosGimnazija.Application.Timetable.Dtos;
+using SkorinosGimnazija.Application.Timetable;
 
 [Authorize(Roles = Auth.Role.Manager)]
 public class SchoolController : BaseApiController
@@ -114,4 +116,45 @@ public class SchoolController : BaseApiController
     {
         return await Mediator.Send(new ClassdayList.Query(), ct);
     }
+
+    [AllowAnonymous]
+    [HttpGet("public/announcements", Name = "GetPublicAnnouncements")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<List<dynamic>> GetPublicAnnouncements(CancellationToken ct)
+    {
+        var list = new List<dynamic>
+        {
+            new
+            {
+                Id = 1,
+                Announcement = "1. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+            },
+            new
+            {
+                Id = 2,
+                Announcement = "2. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+            },
+        };
+
+        return list;
+    }
+
+    [AllowAnonymous]
+    [HttpGet("public/random-image", Name = "GetPublicRandomImage")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<string> GetPublicRandomImage(CancellationToken ct)
+    {
+        //return "3wcl2w5m.cru/hero.jpg";
+
+        var list = new List<string>
+        {
+            "iaxs1pwy.4mq/glz3av19mguyginiyjpt.jpg",
+            "iaxs1pwy.4mq/g0aglgbhwdy8pkdsvaiw.jpg",
+            "iaxs1pwy.4mq/izhw23xbxcfp2j3iei66.jpg",
+            "iaxs1pwy.4mq/i8nsmk8yn9bj1vkxtyhq.jpg",
+        };
+
+        return list[new Random().Next(list.Count)];
+    }
+
 }
