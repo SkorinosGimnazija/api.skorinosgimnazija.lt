@@ -7,15 +7,11 @@ using System.Threading.Tasks;
 using Domain.Entities.School;
 using School.Dtos;
 
-public record TimetableDto
+public record TimetableSimpleDto
 {
     public int Id { get; init; }
 
-    public ClassdayDto Day { get; init; } = default!;
-
-    public ClassroomDto Room { get; init; } = default!;
-
-    public ClasstimeDto Time { get; init; } = default!;
+    public string ClassRoom { get; init; } = default!;
 
     public string ClassName { get; init; } = default!;
 }

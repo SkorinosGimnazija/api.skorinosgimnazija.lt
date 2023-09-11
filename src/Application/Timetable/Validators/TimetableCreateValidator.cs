@@ -16,6 +16,6 @@ internal class TimetableCreateValidator : AbstractValidator<TimetableCreateDto>
         RuleFor(x => x.RoomId).NotEmpty();
         RuleFor(x => x.DayId).NotEmpty();
         RuleFor(x => x.TimeId).NotEmpty();
-        RuleFor(x => x.ClassName).MaximumLength(128);
+        RuleFor(x => x.ClassName).NotNull().MaximumLength(128);
     }
 }

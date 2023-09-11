@@ -13,5 +13,5 @@ public record TimetableCreateDto
 
     public int RoomId { get; set; }
 
-    public string? ClassName { get; set; }
+    public string ClassName { get; set; } = default!;
 }

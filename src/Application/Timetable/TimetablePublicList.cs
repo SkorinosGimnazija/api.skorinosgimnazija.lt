@@ -6,46 +6,55 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Caching.Memory;
+using School.Dtos;
 using SkorinosGimnazija.Application.Common.Interfaces;
 using SkorinosGimnazija.Application.Events.Dtos;
 using SkorinosGimnazija.Application.Timetable.Dtos;
 
 public static class TimetablePublicList
 {
-    public record Query() : IRequest<List<TimetableDto>>;
+    public record Query() : IRequest<TimetablePublicDto?>;
 
-    public class Handler : IRequestHandler<Query, List<TimetableDto>>
+    public class Handler : IRequestHandler<Query, TimetablePublicDto?>
     {
         private readonly IAppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IMemoryCache _cache;
 
-        public Handler(IAppDbContext context, IMapper mapper, IMemoryCache cache)
+        public Handler(IAppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _cache = cache;
         }
 
-        public async Task<List<TimetableDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<TimetablePublicDto?> Handle(Query request, CancellationToken cancellationToken)
         {
-            var day = (int)DateTime.Now.DayOfWeek;
-            var key = "timetable" + day;
+            //var time = TimeOnly.FromDateTime(DateTime.Now);
+            var day = 1;
+            var time = TimeOnly.Parse("9:50");
 
-            if (!_cache.TryGetValue(key, out List<TimetableDto>? cached))
+            var classTime = await _context.Classtimes
+                                .AsNoTracking()
+                                .OrderBy(x => x.Number)
+                                .FirstOrDefaultAsync(x => x.EndTime > time, cancellationToken);
+
+            if (classTime is null)
             {
-                cached = await _context.Timetable
-                             .AsNoTracking()
-                             .ProjectTo<TimetableDto>(_mapper.ConfigurationProvider)
-                             .Where(x => x.Day.Number == day)
-                             .OrderBy(x => x.Room.Number)
-                             .ToListAsync(cancellationToken);
-
-                //todo invalidate cache on new record
-                //_cache.Set(key, cached, TimeSpan.FromHours(1));
+                return null;
             }
 
-            return cached!;
+            //var day = (int)DateTime.Now.DayOfWeek;
+            var timetable = await _context.Timetable
+                             .AsNoTracking()
+                             .Where(x => x.Day.Number == day && x.Time.Number == classTime.Number)
+                             .OrderBy(x => x.Room.Number)
+                             .ProjectTo<TimetableSimpleDto>(_mapper.ConfigurationProvider)
+                             .ToListAsync(cancellationToken);
+
+            return new()
+            {
+                Timetable = timetable,
+                Classtime = _mapper.Map<ClasstimeSimpleDto>(classTime)
+            };
         }
     }
 }

@@ -20,6 +20,9 @@ public class SchoolProfiles : Profile
         CreateMap<ClassroomEditDto, Classroom>();
 
         CreateMap<Classtime, ClasstimeDto>();
+        CreateMap<Classtime, ClasstimeSimpleDto>()
+            .ForMember(x => x.StartTime, x => x.MapFrom(z => z.StartTime.ToString("H:mm")))
+            .ForMember(x => x.EndTime, x => x.MapFrom(z => z.EndTime.ToString("H:mm")));
 
         CreateMap<ClasstimeCreateDto, Classtime>();
          

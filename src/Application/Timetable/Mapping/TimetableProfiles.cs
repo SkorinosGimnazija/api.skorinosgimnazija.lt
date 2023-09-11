@@ -14,9 +14,8 @@ public class TimetableProfiles : Profile
     {
         CreateMap<Timetable, TimetableDto>();
 
-            //.ForMember(x => x.ClassRoom, x => x.MapFrom(z => z.Room.Name))
-            //.ForMember(x => x.ClassNumber, x => x.MapFrom(z => z.Time.Number))
-            //.ForMember(x => x.DayName, x => x.MapFrom(z => z.Day.Name));
+        CreateMap<Timetable, TimetableSimpleDto>()
+            .ForMember(x => x.ClassRoom, x => x.MapFrom(z => z.Room.Name));
 
         CreateMap<TimetableCreateDto, Timetable>();
         CreateMap<TimetableEditDto, Timetable>();
