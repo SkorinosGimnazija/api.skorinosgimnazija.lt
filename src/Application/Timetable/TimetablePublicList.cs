@@ -28,9 +28,7 @@ public static class TimetablePublicList
 
         public async Task<TimetablePublicDto?> Handle(Query request, CancellationToken cancellationToken)
         {
-            //var time = TimeOnly.FromDateTime(DateTime.Now);
-            var day = 1;
-            var time = TimeOnly.Parse("9:50");
+            var time = TimeOnly.FromDateTime(DateTime.Now);
 
             var classTime = await _context.Classtimes
                                 .AsNoTracking()
@@ -42,7 +40,7 @@ public static class TimetablePublicList
                 return null;
             }
 
-            //var day = (int)DateTime.Now.DayOfWeek;
+            var day = (int)DateTime.Now.DayOfWeek;
             var timetable = await _context.Timetable
                              .AsNoTracking()
                              .Where(x => x.Day.Number == day && x.Time.Number == classTime.Number)

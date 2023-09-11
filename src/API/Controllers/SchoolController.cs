@@ -122,21 +122,23 @@ public class SchoolController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<dynamic>> GetPublicAnnouncements(CancellationToken ct)
     {
-        var list = new List<dynamic>
-        {
-            new
-            {
-                Id = 1,
-                Announcement = "1. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            },
-            new
-            {
-                Id = 2,
-                Announcement = "2. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            },
-        };
+        return new();
+        // TODO
+        //var list = new List<dynamic>
+        //{
+        //    new
+        //    {
+        //        Id = 1,
+        //        Announcement = "1. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        //    },
+        //    new
+        //    {
+        //        Id = 2,
+        //        Announcement = "2. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+        //    },
+        //};
 
-        return list;
+        //return list;
     }
 
     [AllowAnonymous]
@@ -144,17 +146,17 @@ public class SchoolController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<string> GetPublicRandomImage(CancellationToken ct)
     {
-        //return "3wcl2w5m.cru/hero.jpg";
+        return null;
+        //TODO
+        //var list = new List<string>
+        //{
+        //    "iaxs1pwy.4mq/glz3av19mguyginiyjpt.jpg",
+        //    "iaxs1pwy.4mq/g0aglgbhwdy8pkdsvaiw.jpg",
+        //    "iaxs1pwy.4mq/izhw23xbxcfp2j3iei66.jpg",
+        //    "iaxs1pwy.4mq/i8nsmk8yn9bj1vkxtyhq.jpg",
+        //};
 
-        var list = new List<string>
-        {
-            "iaxs1pwy.4mq/glz3av19mguyginiyjpt.jpg",
-            "iaxs1pwy.4mq/g0aglgbhwdy8pkdsvaiw.jpg",
-            "iaxs1pwy.4mq/izhw23xbxcfp2j3iei66.jpg",
-            "iaxs1pwy.4mq/i8nsmk8yn9bj1vkxtyhq.jpg",
-        };
-
-        return list[new Random().Next(list.Count)];
+        //return list[new Random().Next(list.Count)];
     }
 
 }
