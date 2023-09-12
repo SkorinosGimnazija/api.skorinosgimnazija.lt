@@ -51,7 +51,7 @@ public static class RandomImage
 
                 var images = randomPost.Images!;
                 image = images[Random.Next(images.Count)];
-                _cache.Set(CacheKey, image, TimeSpan.FromMinutes(5));
+                _cache.Set(CacheKey, image, TimeSpan.FromMinutes(1));
             }
 
             return image;
