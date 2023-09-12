@@ -28,8 +28,8 @@ public static class TimetablePublicList
 
         public async Task<TimetablePublicDto?> Handle(Query request, CancellationToken cancellationToken)
         {
-            //var time = TimeOnly.FromDateTime(DateTime.Now);
-            var time = TimeOnly.Parse("8:52");
+            //todo change class times to utc...
+            var time = TimeOnly.FromDateTime(DateTime.UtcNow.AddHours(3));
 
             var classTime = await _context.Classtimes
                                 .AsNoTracking()
@@ -53,7 +53,7 @@ public static class TimetablePublicList
             {
                 Timetable = timetable,
                 Classtime = _mapper.Map<ClasstimeSimpleDto>(classTime),
-                CurrentTime = TimeOnly.FromDateTime(DateTime.Now).ToShortTimeString()
+                CurrentTime = time.ToShortTimeString()
             };
         }
     }
