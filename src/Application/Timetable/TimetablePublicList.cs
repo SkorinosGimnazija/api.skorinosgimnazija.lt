@@ -29,7 +29,8 @@ public static class TimetablePublicList
         public async Task<TimetablePublicDto?> Handle(Query request, CancellationToken cancellationToken)
         {
             //todo change class times to utc...
-            var time = TimeOnly.FromDateTime(DateTime.UtcNow.AddHours(3));
+            var time = TimeOnly.FromDateTime(TimeZoneInfo.ConvertTimeBySystemTimeZoneId(
+                DateTime.UtcNow, "FLE Standard Time"));
 
             var classTime = await _context.Classtimes
                                 .AsNoTracking()
