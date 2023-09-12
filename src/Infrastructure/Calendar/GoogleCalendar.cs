@@ -45,6 +45,7 @@ public class GoogleCalendar : ICalendarService
         request.SingleEvents = true;
         request.TimeMin = start;
         request.TimeMax = end;
+        request.TimeZone = "UTC";
 
         var response = await request.ExecuteAsync(ct);
 
