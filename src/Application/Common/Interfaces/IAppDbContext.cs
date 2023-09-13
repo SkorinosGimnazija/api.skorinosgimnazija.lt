@@ -63,6 +63,8 @@ public interface IAppDbContext
 
     DbSet<Timetable> Timetable { get; }
 
+    DbSet<Announcement> Announcements { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);

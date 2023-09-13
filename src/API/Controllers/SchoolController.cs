@@ -14,6 +14,7 @@ using SkorinosGimnazija.Application.TechJournal;
 using SkorinosGimnazija.Application.Courses;
 using SkorinosGimnazija.Application.Timetable.Dtos;
 using SkorinosGimnazija.Application.Timetable;
+using SkorinosGimnazija.Domain.Entities.School;
 
 [Authorize(Roles = Auth.Role.Manager)]
 public class SchoolController : BaseApiController
@@ -117,34 +118,63 @@ public class SchoolController : BaseApiController
         return await Mediator.Send(new ClassdayList.Query(), ct);
     }
 
+    [HttpGet("announcements/{id:int}", Name = "GetAnnouncementById")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AnnouncementDto>> GetAnnouncement(int id, CancellationToken ct)
+    {
+        return await Mediator.Send(new AnnouncementDetails.Query(id), ct);
+    }
+
+    [HttpPost("announcements", Name = "CreateAnnouncement")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<AnnouncementDto>> CreateAnnouncement(AnnouncementCreateDto dto)
+    {
+        var result = await Mediator.Send(new AnnouncementCreate.Command(dto));
+        return CreatedAtAction(nameof(GetAnnouncement), new { result.Id }, result);
+    }
+
+    [HttpPut("announcements", Name = "EditAnnouncement")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> EditAnnouncement(AnnouncementEditDto dto)
+    {
+        await Mediator.Send(new AnnouncementEdit.Command(dto));
+        return Ok();
+    }
+
+    [HttpDelete("announcements/{id:int}", Name = "DeleteAnnouncement")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAnnouncement(int id)
+    {
+        await Mediator.Send(new AnnouncementDelete.Command(id));
+        return NoContent();
+    }
+
+    [HttpGet("announcements", Name = "GetAnnouncements")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<PaginatedList<AnnouncementDto>> GetAnnouncements(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
+    {
+        return await Mediator.Send(new AnnouncementList.Query(pagination), ct);
+    }
+
     [AllowAnonymous]
     [HttpGet("public/announcements", Name = "GetPublicAnnouncements")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<List<dynamic>> GetPublicAnnouncements(CancellationToken ct)
+    public async Task<List<AnnouncementDto>> GetPublicAnnouncements(CancellationToken ct)
     {
-        return new();
-        // TODO
-        //var list = new List<dynamic>
-        //{
-        //    new
-        //    {
-        //        Id = 1,
-        //        Announcement = "1. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        //    },
-        //    new
-        //    {
-        //        Id = 2,
-        //        Announcement = "2. Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-        //    },
-        //};
-
-        //return list;
+        return await Mediator.Send(new AnnouncementsPublicList.Query(), ct);
     }
 
     [AllowAnonymous]
     [HttpGet("public/random-image", Name = "GetPublicRandomImage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<string?> GetPublicRandomImage(CancellationToken ct)
+    public async Task<RandomImageDto?> GetPublicRandomImage(CancellationToken ct)
     {
         return await Mediator.Send(new RandomImage.Query(), ct);
     }

@@ -93,6 +93,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; set; } = default!;
 
+    public DbSet<Announcement> Announcements { get; set; } = default!;
+
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         return Database.BeginTransactionAsync(cancellationToken);

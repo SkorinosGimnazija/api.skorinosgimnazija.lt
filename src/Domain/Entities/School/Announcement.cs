@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Classtime
+public class Announcement
 {
     public int Id { get; set; }
 
-    public int Number { get; set; }
+    public string Title { get; set; } = default!;
 
-    public TimeOnly StartTime { get; set; }
+    public DateOnly StartTime { get; set; }
 
-    public TimeOnly EndTime { get; set; }
+    public DateOnly EndTime { get; set; }
 }

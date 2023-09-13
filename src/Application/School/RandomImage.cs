@@ -17,9 +17,9 @@ using Microsoft.Extensions.Caching.Memory;
 
 public static class RandomImage
 {
-    public record Query() : IRequest<string?>;
+    public record Query() : IRequest<RandomImageDto?>;
 
-    public class Handler : IRequestHandler<Query, string?>
+    public class Handler : IRequestHandler<Query, RandomImageDto?>
     {
         private static readonly Random Random = new();
         private readonly IAppDbContext _context;
@@ -31,11 +31,11 @@ public static class RandomImage
             _cache = cache;
         }
 
-        public async Task<string?> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<RandomImageDto?> Handle(Query request, CancellationToken cancellationToken)
         {
             const string CacheKey = "RandomImage";
 
-            if (!_cache.TryGetValue<string>(CacheKey, out var image))
+            if (!_cache.TryGetValue<RandomImageDto>(CacheKey, out var image))
             {
                 var randomPost = await _context.Posts
                                      .AsNoTracking()
@@ -50,7 +50,11 @@ public static class RandomImage
                 }
 
                 var images = randomPost.Images!;
-                image = images[Random.Next(images.Count)];
+                image = new()
+                {
+                    Url = images[Random.Next(images.Count)]
+                };
+
                 _cache.Set(CacheKey, image, TimeSpan.FromMinutes(1));
             }
 

@@ -29,5 +29,11 @@ public class SchoolProfiles : Profile
         CreateMap<ClasstimeEditDto, Classtime>();
 
         CreateMap<Classday, ClassdayDto>();
+
+        CreateMap<Announcement, AnnouncementDto>();
+
+        CreateMap<AnnouncementCreateDto, Announcement>();
+
+        CreateMap<AnnouncementEditDto, Announcement>();
     }
 }
