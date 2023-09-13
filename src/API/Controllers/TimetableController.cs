@@ -61,6 +61,15 @@ public class TimetableController : BaseApiController
         return NoContent();
     }
 
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpDelete("days", Name = "DeleteTimetableDay")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteDay(TimetableDeleteDayDto dto)
+    {
+        await Mediator.Send(new TimetableDeleteDay.Command(dto));
+        return NoContent();
+    }
+
     [AllowAnonymous]
     [HttpGet("public/today", Name = "GetPublicTimetable")]
     [ProducesResponseType(StatusCodes.Status200OK)]
