@@ -42,6 +42,16 @@ public class TimetableController : BaseApiController
         return CreatedAtAction(nameof(GetById), new { result.Id }, result);
     }
 
+
+    [HttpPost("import", Name = "ImportTimetable")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Import(TimetableImportDto dto)
+    {
+       await Mediator.Send(new TimetableImport.Command(dto));
+        return Ok();
+    }
+
     [HttpPut(Name = "EditTimetable")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
