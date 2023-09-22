@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Algolia.Search" Version="6.15.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.22.0" />
-    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.62.0.3178" />
+    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.62.0.3182" />
     <PackageReference Include="Google.Apis.Auth" Version="1.62.0" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.62.0.3137" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.62.0.3175" />
