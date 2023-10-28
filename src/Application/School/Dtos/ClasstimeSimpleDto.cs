@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public record ClasstimeDto
+public record ClasstimeSimpleDto
 {
-    public int Id { get; init; }
-
     public int Number { get; init; }
 
-    public TimeOnly StartTime { get; init; }
+    public string StartTime { get; init; } = default!;
 
-    public TimeOnly EndTime { get; init; }
+    public string EndTime { get; init; } = default!;
 }

@@ -11,5 +11,9 @@ public record ClasstimeCreateDto
 
     public TimeOnly StartTime { get; init; }
 
+    public TimeOnly StartTimeShort { get; init; }
+
     public TimeOnly EndTime { get; init; }
+
+    public TimeOnly EndTimeShort { get; init; }
 }

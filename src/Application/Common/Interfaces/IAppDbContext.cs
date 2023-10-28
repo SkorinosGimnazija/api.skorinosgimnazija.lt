@@ -51,11 +51,13 @@ public interface IAppDbContext
 
     DbSet<AccomplishmentStudent> AccomplishmentStudents { get; }
 
-    DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get;  }
+    DbSet<AccomplishmentTeacher> AccomplishmentAdditionalTeachers { get; }
 
     DbSet<Classroom> Classrooms { get; }
 
     DbSet<Classtime> Classtimes { get; }
+
+    DbSet<ClasstimeShortDay> ClasstimeShortDays { get; }
 
     DbSet<AccomplishmentAchievement> AccomplishmentAchievements { get; }
 

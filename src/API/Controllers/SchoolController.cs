@@ -111,6 +111,53 @@ public class SchoolController : BaseApiController
         return NoContent();
     }
 
+    [HttpGet("classtimesshort", Name = "GetClasstimesShortDays")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PaginatedList<ClasstimeShortDayDto>> GetClassTimesShortDays(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
+    {
+        return await Mediator.Send(new ClasstimeShortDaysList.Query(pagination), ct);
+    }
+
+    [HttpGet("classtimesshort/{id:int}", Name = "GetClasstimeShortDayById")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ClasstimeShortDayDto>> GetClasstimeShortDay(int id, CancellationToken ct)
+    {
+        return await Mediator.Send(new ClasstimeShortDayDetails.Query(id), ct);
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPost("classtimesshort", Name = "CreateClasstimeShortDay")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ClasstimeShortDayDto>> CreateClasstimeShortDay(ClasstimeShortDayCreateDto dto)
+    {
+        var result = await Mediator.Send(new ClasstimeShortDayCreate.Command(dto));
+        return CreatedAtAction(nameof(GetClasstimeShortDay), new { result.Id }, result);
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPut("classtimesshort", Name = "EditClasstimeShortDay")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> EditClasstimeShortDay(ClasstimeShortDayEditDto dto)
+    {
+        await Mediator.Send(new ClasstimeShortDayEdit.Command(dto));
+        return Ok();
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
+    [HttpDelete("classtimesshort/{id:int}", Name = "DeleteClasstimeShortDay")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteClasstimeShortDay(int id)
+    {
+        await Mediator.Send(new ClasstimeShortDayDelete.Command(id));
+        return NoContent();
+    }
+
     [HttpGet("classdays", Name = "GetClassdays")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<List<ClassdayDto>> GetClassdays(CancellationToken ct)

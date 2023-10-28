@@ -87,6 +87,8 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<Classtime> Classtimes { get; set; } = default!;
 
+    public DbSet<ClasstimeShortDay> ClasstimeShortDays { get; set; } = default!;
+
     public DbSet<Classday> Classdays { get; set; } = default!;
 
     public DbSet<Timetable> Timetable { get; set; } = default!;

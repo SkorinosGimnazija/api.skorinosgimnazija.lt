@@ -13,5 +13,9 @@ public class Classtime
 
     public TimeOnly StartTime { get; set; }
 
+    public TimeOnly StartTimeShort { get; set; }
+
     public TimeOnly EndTime { get; set; }
+
+    public TimeOnly EndTimeShort { get; set; }
 }
