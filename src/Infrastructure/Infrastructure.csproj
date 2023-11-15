@@ -9,7 +9,7 @@
     <PackageReference Include="Algolia.Search" Version="6.15.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.23.0" />
     <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.63.0.3232" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.63.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
     <PackageReference Include="Google.Apis.Calendar.v3" Version="1.63.0.3171" />
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.63.0.3231" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
