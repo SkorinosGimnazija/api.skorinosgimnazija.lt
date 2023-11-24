@@ -43,8 +43,8 @@ public class GoogleCalendar : ICalendarService
 
         request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
         request.SingleEvents = true;
-        request.TimeMin = start;
-        request.TimeMax = end;
+        request.TimeMinDateTimeOffset = new DateTimeOffset(start, TimeSpan.Zero);
+        request.TimeMaxDateTimeOffset = new DateTimeOffset(end, TimeSpan.Zero);
         request.TimeZone = "UTC";
 
         var response = await request.ExecuteAsync(ct);
