@@ -92,6 +92,16 @@ public class AppointmentsController : BaseApiController
     }
 
     [Authorize(Roles = Auth.Role.Admin)]
+    [HttpPost("types/reset/{id:int}", Name = "ResetAppointmentType")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ResetType(int id)
+    {
+        await Mediator.Send(new AppointmentTypeReset.Command(id));
+        return NoContent();
+    }
+
+    [Authorize(Roles = Auth.Role.Admin)]
     [HttpPut("types", Name = "EditAppointmentType")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
