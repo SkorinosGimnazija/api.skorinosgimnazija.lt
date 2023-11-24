@@ -1,14 +1,13 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Services;
+﻿namespace SkorinosGimnazija.Infrastructure.Employee;
 
 using Application.Common.Interfaces;
-using Domain.Entities.Identity;
-using Domain.Options;
 using Google.Apis.Admin.Directory.directory_v1;
-using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
-using Identity;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using SkorinosGimnazija.Domain.Entities.Identity;
+using SkorinosGimnazija.Domain.Options;
+using SkorinosGimnazija.Infrastructure.Identity;
 
 public sealed class EmployeeService : IEmployeeService
 {

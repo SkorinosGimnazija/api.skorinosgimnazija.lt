@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Employees.Mapping;
 
 using AutoMapper;
-using Common.Identity;
 using Domain.Entities.Identity;
 using Dtos;
 

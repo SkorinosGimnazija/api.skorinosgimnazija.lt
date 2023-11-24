@@ -2,14 +2,11 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Interfaces;
+using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Caching.Memory;
 using School.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Events.Dtos;
-using SkorinosGimnazija.Application.Timetable.Dtos;
 
 public static class TimetablePublicList
 {
@@ -54,13 +51,13 @@ public static class TimetablePublicList
                 return null;
             }
 
-            var day = (int)date.DayOfWeek;
+            var day = (int) date.DayOfWeek;
             var timetable = await _context.Timetable
-                             .AsNoTracking()
-                             .Where(x => x.Day.Number == day && x.Time.Number == classTime.Number)
-                             .OrderBy(x => x.Room.Number)
-                             .ProjectTo<TimetableSimpleDto>(_mapper.ConfigurationProvider)
-                             .ToListAsync(cancellationToken);
+                                .AsNoTracking()
+                                .Where(x => x.Day.Number == day && x.Time.Number == classTime.Number)
+                                .OrderBy(x => x.Room.Number)
+                                .ProjectTo<TimetableSimpleDto>(_mapper.ConfigurationProvider)
+                                .ToListAsync(cancellationToken);
 
             return new()
             {

@@ -1,21 +1,15 @@
 ﻿namespace SkorinosGimnazija.Application.TechJournal;
+
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
 using FluentValidation;
 using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-
-using SkorinosGimnazija.Application.TechJournal.Mapping;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dtos;
 using Microsoft.EntityFrameworkCore;
+using Notifications;
 using Validators;
-using SkorinosGimnazija.Application.TechJournal.Notifications;
 
 public static class TechJournalReportPatch
 {

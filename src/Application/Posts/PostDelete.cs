@@ -3,10 +3,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
 using Common.Interfaces;
-using Infrastructure.Revalidation;
+using Domain.Entities.CMS;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Domain.Entities.CMS;
 
 public static class PostDelete
 {

@@ -100,7 +100,7 @@ public class GetAppointmentDateTests
             AttendeeEmail = "email",
             AttendeeName = "name",
             EventId = "eventId",
-            UserDisplayName= "display name",
+            UserDisplayName = "display name",
             Date = new()
             {
                 Date = DateTime.UtcNow.AddDays(4),

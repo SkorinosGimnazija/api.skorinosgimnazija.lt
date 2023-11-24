@@ -1,12 +1,10 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentsTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentTests;
 
-using Common.Exceptions;
-using Accomplishments;
-using Domain.Entities.Accomplishments;
 using FluentAssertions;
-using Menus;
+using SkorinosGimnazija.Application.Accomplishments;
+using SkorinosGimnazija.Application.Common.Exceptions;
+using SkorinosGimnazija.Domain.Entities.Accomplishments;
 using Xunit;
-using SkorinosGimnazija.Infrastructure.Persistence.Migrations;
 
 [Collection("App")]
 public class GetAccomplishmentsTests
@@ -53,7 +51,7 @@ public class GetAccomplishmentsTests
             ScaleId = 1,
             UserId = _currentUserId
         });
- 
+
         await _app.AddAsync(new Accomplishment
         {
             Name = "Name3",
@@ -162,7 +160,6 @@ public class GetAccomplishmentsTests
             .ThrowAsync<UnauthorizedAccessException>();
     }
 
-    
     [Fact]
     public async Task AccomplishmentScalesList_ShouldListAccomplishmentScales()
     {

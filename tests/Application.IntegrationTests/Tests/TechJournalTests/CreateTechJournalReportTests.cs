@@ -1,23 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TechJournalTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BullyReports.Notifications;
-using TechJournal;
 using Common.Exceptions;
 using Domain.Entities.TechReports;
+using FluentAssertions;
 using Moq;
-using Xunit;
-using SkorinosGimnazija.Domain.Entities.Bullies;
+using TechJournal;
 using TechJournal.Dtos;
 using TechJournal.Notifications;
+using Xunit;
 
 [Collection("App")]
 public class CreateTechJournalReportTests
@@ -53,7 +43,7 @@ public class CreateTechJournalReportTests
         var dto = new TechJournalReportCreateDto
         {
             Place = "Place",
-            Details = "Details",
+            Details = "Details"
         };
 
         var command = new TechJournalReportCreate.Command(dto);

@@ -2,17 +2,19 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Extensions;
+using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Extensions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class TechJournalReportList
 {
-    public record Query(PaginationDto Pagination, DateOnly StartDate, DateOnly EndDate) : IRequest<PaginatedList<TechJournalReportDto>>;
+    public record Query
+    (
+        PaginationDto Pagination, DateOnly StartDate, DateOnly EndDate) : IRequest<PaginatedList<TechJournalReportDto>>;
 
     public class Validator : AbstractValidator<Query>
     {
@@ -33,7 +35,8 @@ public static class TechJournalReportList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<TechJournalReportDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<TechJournalReportDto>> Handle(
+            Query request, CancellationToken cancellationToken)
         {
             var startDate = request.StartDate.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
             var endDate = request.EndDate.ToDateTime(TimeOnly.MaxValue, DateTimeKind.Utc);

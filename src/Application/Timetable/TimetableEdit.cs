@@ -1,19 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable;
+
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
 using FluentValidation;
 using MediatR;
-using SkorinosGimnazija.Application.Accomplishments.Validators;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.Common.Exceptions;
-
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dtos;
 using Microsoft.EntityFrameworkCore;
 using Validators;
 

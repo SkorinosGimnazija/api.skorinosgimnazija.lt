@@ -1,18 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TechJournalTests;
-using FluentAssertions;
 
-using SkorinosGimnazija.Application.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.TechReports;
+using FluentAssertions;
+using TechJournal;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.Courses;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.TechJournal;
 
 [Collection("App")]
 public class GetTechJournalReportTests
@@ -108,7 +100,7 @@ public class GetTechJournalReportTests
             Details = "Details 1",
             ReportDate = DateTime.UtcNow,
             IsFixed = null,
-            UserId = teacher.Id,
+            UserId = teacher.Id
         });
 
         var command = new TechJournalReportDetails.Query(report.Id);
@@ -134,9 +126,9 @@ public class GetTechJournalReportTests
             Details = "Details 1",
             ReportDate = DateTime.UtcNow,
             FixDate = DateTime.UtcNow.AddHours(1),
-            IsFixed  = false,
+            IsFixed = false,
             Notes = "Notes",
-            UserId = teacher.Id,
+            UserId = teacher.Id
         });
 
         var command = new TechJournalReportDetails.Query(report.Id);

@@ -3,7 +3,6 @@
 using Banners;
 using Banners.Dtos;
 using Common.Exceptions;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

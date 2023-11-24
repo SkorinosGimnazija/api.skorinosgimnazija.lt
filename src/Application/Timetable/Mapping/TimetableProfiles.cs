@@ -1,9 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable.Mapping;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using AutoMapper;
 using Domain.Entities.Timetable;
 using Dtos;

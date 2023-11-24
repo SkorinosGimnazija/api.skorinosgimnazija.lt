@@ -1,16 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.TechJournal;
+
+using System.Diagnostics.CodeAnalysis;
+using Common.Exceptions;
+using Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
-
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 public static class TechJournalReportDelete
 {

@@ -1,13 +1,12 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentsTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentTests;
 
-using Common.Exceptions;
-using Accomplishments;
-using Accomplishments.Dtos;
-using Domain.Entities.Accomplishments;
-using Domain.Entities.School;
 using FluentAssertions;
+using SkorinosGimnazija.Application.Accomplishments;
+using SkorinosGimnazija.Application.Accomplishments.Dtos;
+using SkorinosGimnazija.Application.Common.Exceptions;
+using SkorinosGimnazija.Domain.Entities.Accomplishments;
+using SkorinosGimnazija.Domain.Entities.School;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.Bullies;
 
 [Collection("App")]
 public class CreateAccomplishmentsTests

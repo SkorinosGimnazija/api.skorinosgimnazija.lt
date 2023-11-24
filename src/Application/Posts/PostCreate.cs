@@ -3,13 +3,11 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 
 public static class PostCreate

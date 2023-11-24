@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.MenuTests;
 
 using Common.Exceptions;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using FluentAssertions;
 using Menus;

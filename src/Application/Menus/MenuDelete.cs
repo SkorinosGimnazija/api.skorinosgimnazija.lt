@@ -3,10 +3,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
 using Common.Interfaces;
+using Domain.Entities.CMS;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Domain.Entities.CMS;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class MenuDelete
 {
@@ -15,12 +14,13 @@ public static class MenuDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly IAppDbContext _context;
-        private readonly ISearchClient _searchClient;
         private readonly IRevalidationService _revalidation;
+        private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context,
-                       ISearchClient searchClient,
-                       IRevalidationService revalidation)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;

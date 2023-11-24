@@ -1,20 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyJournalTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
 
-using SkorinosGimnazija.Application.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BullyJournal;
+using BullyJournal.Dtos;
+using BullyReports.Dtos;
 using Common.Exceptions;
+using Domain.Entities.Bullies;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyJournalReports;
-using SkorinosGimnazija.Domain.Entities.Courses;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.BullyJournal;
 
 [Collection("App")]
 public class UpdateBullyReportJournalTests
@@ -84,7 +76,7 @@ public class UpdateBullyReportJournalTests
             VictimInfo = "Name2",
             Actions = "Actions2",
             Details = "Details2",
-            Date = DateTime.Parse("2022-01-02T11:11").ToUniversalTime(),
+            Date = DateTime.Parse("2022-01-02T11:11").ToUniversalTime()
         };
 
         var command = new BullyJournalReportEdit.Command(expected);
@@ -125,7 +117,7 @@ public class UpdateBullyReportJournalTests
             VictimInfo = "Name2",
             Actions = "Actions2",
             Details = "Details2",
-            Date = DateTime.Parse("2022-01-02T11:11").ToUniversalTime(),
+            Date = DateTime.Parse("2022-01-02T11:11").ToUniversalTime()
         };
 
         var command = new BullyJournalReportEdit.Command(dto);

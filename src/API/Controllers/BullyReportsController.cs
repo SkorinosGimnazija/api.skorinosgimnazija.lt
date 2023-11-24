@@ -1,6 +1,5 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Banners;
 using Application.BullyReports;
 using Application.BullyReports.Dtos;
 using Application.Common.Pagination;

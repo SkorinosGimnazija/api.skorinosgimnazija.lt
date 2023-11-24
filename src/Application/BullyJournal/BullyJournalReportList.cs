@@ -1,14 +1,14 @@
-﻿namespace SkorinosGimnazija.Application.BullyJournalReports;
+﻿namespace SkorinosGimnazija.Application.BullyJournal;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using BullyReports.Dtos;
-using Common.Extensions;
 using Common.Interfaces;
-using Common.Pagination;
+using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Application.Common.Extensions;
+using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class BullyJournalReportList
 {
@@ -33,7 +33,8 @@ public static class BullyJournalReportList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<BullyJournalReportDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<BullyJournalReportDto>> Handle(
+            Query request, CancellationToken cancellationToken)
         {
             return await _context.BullyJournalReports
                        .AsNoTracking()

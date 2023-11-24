@@ -2,10 +2,10 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Interfaces;
+using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.School.Dtos;
 
 public static class AnnouncementsPublicList
 {

@@ -23,7 +23,7 @@ public static class AppointmentCreate
             RuleFor(v => v.Appointment).NotNull().SetValidator(new AppointmentCreateValidator(currentUserService));
         }
     }
-     
+
     public class Handler : IRequestHandler<Command, AppointmentDto>
     {
         private readonly ICalendarService _calendarService;

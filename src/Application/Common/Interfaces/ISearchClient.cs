@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Banners.Dtos;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Menus.Dtos;
 using Pagination;

@@ -4,14 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Exceptions;
 using Common.Interfaces;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
 
@@ -34,10 +32,11 @@ public static class MenuEdit
         private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, 
-                       ISearchClient searchClient, 
-                       IMapper mapper,
-                       IRevalidationService revalidation)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IMapper mapper,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;

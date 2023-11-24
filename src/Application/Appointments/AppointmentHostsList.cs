@@ -4,7 +4,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Interfaces;
 using Dtos;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

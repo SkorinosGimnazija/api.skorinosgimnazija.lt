@@ -1,19 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyJournalTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BullyJournal;
+using BullyJournal.Dtos;
 using BullyReports.Dtos;
 using Common.Exceptions;
+using Domain.Entities.Bullies;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.Bullies;
 
 [Collection("App")]
 public class CreateBullyJournalReportTests
@@ -49,7 +42,7 @@ public class CreateBullyJournalReportTests
         var dto = new BullyJournalReportCreateDto
         {
             BullyInfo = "Name",
-            VictimInfo ="Name",
+            VictimInfo = "Name",
             Actions = "Actions",
             Details = "Details",
             Date = DateTime.Parse("2022-01-01T12:12").ToUniversalTime()

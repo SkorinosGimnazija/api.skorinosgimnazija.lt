@@ -1,18 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TimetableTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyJournal;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
+using Domain.Entities.School;
 using Domain.Entities.Timetable;
+using FluentAssertions;
 using Timetable;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.School;
 
 [Collection("App")]
 public class GetTimetableTests
@@ -25,7 +18,6 @@ public class GetTimetableTests
         _app.ResetData();
     }
 
-
     [Fact]
     public async Task TimetableList_ShouldThrowEx_WhenInvalidPagination()
     {
@@ -36,7 +28,7 @@ public class GetTimetableTests
             .ThrowAsync<ValidationException>();
     }
 
-    [Fact] 
+    [Fact]
     public async Task TimetableList_ShouldListTimetable()
     {
         var room = await _app.AddAsync(new Classroom

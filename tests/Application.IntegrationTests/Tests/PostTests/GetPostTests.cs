@@ -1,10 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.PostTests;
 
 using Common.Exceptions;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using FluentAssertions;
-using Menus;
 using Posts;
 using Xunit;
 

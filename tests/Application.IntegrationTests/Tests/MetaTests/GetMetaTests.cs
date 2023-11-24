@@ -167,6 +167,6 @@ public class GetMetaTests
 
         actual.Should().HaveCount(2);
         actual.Select(x => x.Ln).Should().Contain("lt", "by");
-        actual.Select(x => x.Date).Should().Contain(new [] { newPostLt.PublishedAt, newPostBy.PublishedAt });
+        actual.Select(x => x.Date).Should().Contain(new[] { newPostLt.PublishedAt, newPostBy.PublishedAt });
     }
 }

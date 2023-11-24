@@ -1,13 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal.Validators;
-using FluentValidation;
 
-using SkorinosGimnazija.Application.Accomplishments.Dtos;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BullyReports.Dtos;
+using Dtos;
+using FluentValidation;
 
 internal class BullyJournalReportCreateValidator : AbstractValidator<BullyJournalReportCreateDto>
 {

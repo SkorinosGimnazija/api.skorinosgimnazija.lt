@@ -1,18 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.BullyJournalTests;
-using FluentAssertions;
 
-using SkorinosGimnazija.Application.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BullyJournalReports;
+using BullyJournal;
 using Common.Exceptions;
+using Domain.Entities.Bullies;
+using FluentAssertions;
 using Xunit;
-using SkorinosGimnazija.Domain.Entities.Courses;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.BullyJournal;
 
 [Collection("App")]
 public class GetBullyJournalReportTests
@@ -50,7 +42,7 @@ public class GetBullyJournalReportTests
             Date = DateOnly.Parse("2022-01-01"),
             UserId = teacher1.Id
         });
-         
+
         var report2 = await _app.AddAsync(new BullyJournalReport
         {
             BullyInfo = "Name2",
@@ -61,7 +53,7 @@ public class GetBullyJournalReportTests
             UserId = teacher2.Id
         });
 
-        var command = new BullyJournalReportList.Query(new () { Items = 10, Page = 0 });
+        var command = new BullyJournalReportList.Query(new() { Items = 10, Page = 0 });
 
         var actual = await _app.SendAsync(command);
 

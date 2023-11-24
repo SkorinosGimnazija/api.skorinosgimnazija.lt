@@ -1,10 +1,8 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Banners;
 using Application.Common.Pagination;
 using Application.Courses;
 using Application.Courses.Dtos;
-using Application.Menus;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;

@@ -1,19 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.School;
 using FluentAssertions;
+using School;
 using Xunit;
-using SkorinosGimnazija.Application.School;
 
-[Collection("App")] 
+[Collection("App")]
 public class GetClassroomTests
 {
     private readonly AppFixture _app;
@@ -29,8 +22,8 @@ public class GetClassroomTests
     {
         var class1 = await _app.AddAsync(new Classroom
         {
-           Number = 2,
-           Name = "Name2"
+            Number = 2,
+            Name = "Name2"
         });
 
         var class2 = await _app.AddAsync(new Classroom

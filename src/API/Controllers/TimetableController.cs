@@ -3,15 +3,10 @@
 using Application.Common.Pagination;
 using Application.Timetable;
 using Application.Timetable.Dtos;
+using Base;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.API.Controllers.Base;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Infrastructure.Identity;
-using SkorinosGimnazija.Application.Accomplishments.Dtos;
-using SkorinosGimnazija.Application.BullyJournal;
-using System.Xml.Linq;
-using Application.School.Dtos;
 
 [Authorize(Roles = Auth.Role.Manager)]
 public class TimetableController : BaseApiController
@@ -23,7 +18,7 @@ public class TimetableController : BaseApiController
     {
         return await Mediator.Send(new TimetableList.Query(pagination), ct);
     }
-    
+
     [HttpGet("{id:int}", Name = "GetTimetableById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -31,7 +26,6 @@ public class TimetableController : BaseApiController
     {
         return await Mediator.Send(new TimetableDetails.Query(id), ct);
     }
-
 
     [HttpPost(Name = "CreateTimetable")]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -42,13 +36,12 @@ public class TimetableController : BaseApiController
         return CreatedAtAction(nameof(GetById), new { result.Id }, result);
     }
 
-
     [HttpPost("import", Name = "ImportTimetable")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Import(TimetableImportDto dto)
     {
-       await Mediator.Send(new TimetableImport.Command(dto));
+        await Mediator.Send(new TimetableImport.Command(dto));
         return Ok();
     }
 

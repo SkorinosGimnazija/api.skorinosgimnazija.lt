@@ -11,13 +11,16 @@ using Validators;
 
 public static class AppointmentHostCreate
 {
-    public record Command(AppointmentExclusiveHostCreateDto AppointmentExclusiveHost) : IRequest<AppointmentExclusiveHostDto>;
+    public record Command
+        (AppointmentExclusiveHostCreateDto AppointmentExclusiveHost) : IRequest<AppointmentExclusiveHostDto>;
 
     public class Validator : AbstractValidator<Command>
     {
         public Validator(IEmployeeService employeeService)
         {
-            RuleFor(v => v.AppointmentExclusiveHost).NotNull().SetValidator(new AppointmentHostCreateValidator(employeeService));
+            RuleFor(v => v.AppointmentExclusiveHost)
+                .NotNull()
+                .SetValidator(new AppointmentHostCreateValidator(employeeService));
         }
     }
 

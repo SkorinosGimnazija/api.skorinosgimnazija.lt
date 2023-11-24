@@ -1,17 +1,9 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TimetableTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyJournal;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.School;
 using Domain.Entities.Timetable;
+using FluentAssertions;
 using Timetable;
 using Timetable.Dtos;
 using Xunit;
@@ -43,8 +35,8 @@ public class CreateTimetableTests
     {
         var room = await _app.AddAsync(new Classroom
         {
-           Name = "Room1",
-           Number = 1
+            Name = "Room1",
+            Number = 1
         });
 
         var time = await _app.AddAsync(new Classtime

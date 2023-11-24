@@ -1,14 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments;
 
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Common.Exceptions;
 using Common.Interfaces;
+using Domain.Entities.Appointments;
 using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Employees.Dtos;
-using SkorinosGimnazija.Domain.Entities.Appointments;
 
 public static class AppointmentAvailableHostsList
 {
@@ -17,8 +15,8 @@ public static class AppointmentAvailableHostsList
     public class Handler : IRequestHandler<Query, List<AppointmentHostDto>>
     {
         private readonly IAppDbContext _context;
-        private readonly IMapper _mapper;
         private readonly IEmployeeService _employeeService;
+        private readonly IMapper _mapper;
 
         public Handler(IAppDbContext context, IMapper mapper, IEmployeeService employeeService)
         {

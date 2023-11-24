@@ -1,17 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.School;
 
-using AutoMapper;
-using MediatR;
-
-using SkorinosGimnazija.Application.School.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
-using AutoMapper.QueryableExtensions;
 using Common.Interfaces;
+using Dtos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -22,8 +13,8 @@ public static class RandomImage
     public class Handler : IRequestHandler<Query, RandomImageDto?>
     {
         private static readonly Random Random = new();
-        private readonly IAppDbContext _context;
         private readonly IMemoryCache _cache;
+        private readonly IAppDbContext _context;
 
         public Handler(IAppDbContext context, IMemoryCache cache)
         {

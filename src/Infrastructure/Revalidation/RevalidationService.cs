@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Revalidation;
 
 using System.Net.Http.Json;
+using Application.Common.Interfaces;
 using Domain.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

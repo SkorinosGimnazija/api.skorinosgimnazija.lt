@@ -1,16 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal;
+
 using AutoMapper;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
-using BullyReports.Dtos;
+using Common.Exceptions;
+using Common.Interfaces;
 using Dtos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 public static class BullyJournalReportDetails

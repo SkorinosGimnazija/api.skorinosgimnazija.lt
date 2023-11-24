@@ -1,14 +1,14 @@
-﻿namespace SkorinosGimnazija.Application.BullyJournalReports;
+﻿namespace SkorinosGimnazija.Application.BullyJournal;
 
 using System.Diagnostics.CodeAnalysis;
-using Accomplishments.Validators;
 using AutoMapper;
-using BullyReports.Dtos;
-using Common.Exceptions;
 using Common.Interfaces;
+using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SkorinosGimnazija.Application.Common.Exceptions;
+using Validators;
 
 public static class BullyJournalReportEdit
 {

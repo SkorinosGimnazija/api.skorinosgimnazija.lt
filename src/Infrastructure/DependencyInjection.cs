@@ -3,9 +3,11 @@
 using System.Text;
 using Application.Common.Interfaces;
 using Calendar;
+using Captcha;
 using Domain.Entities.Identity;
 using Domain.Options;
 using Email;
+using Employee;
 using Extensions;
 using FileManagement;
 using Identity;
@@ -17,9 +19,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using Revalidation;
 using Search;
 using Services;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class DependencyInjection
 {

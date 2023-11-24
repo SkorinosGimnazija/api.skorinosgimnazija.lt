@@ -1,18 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable;
-using AutoMapper;
-using FluentValidation;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Application.Common.Pagination;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
+using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 public static class TimetableList

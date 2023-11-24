@@ -16,7 +16,7 @@ public class AppointmentsController : BaseApiController
     public async Task<PaginatedList<AppointmentDetailsDto>> GetAppointments(
         [FromQuery] PaginationDto pagination, string typeSlug, CancellationToken ct)
     {
-        return await Mediator.Send(new AppointmentToUserList.Query(typeSlug,pagination), ct);
+        return await Mediator.Send(new AppointmentToUserList.Query(typeSlug, pagination), ct);
     }
 
     [HttpGet("my/registrations/{typeSlug}", Name = "GetMyRegistrations")]
@@ -24,7 +24,7 @@ public class AppointmentsController : BaseApiController
     public async Task<PaginatedList<AppointmentDetailsDto>> GetRegistrations(
         [FromQuery] PaginationDto pagination, string typeSlug, CancellationToken ct)
     {
-        return await Mediator.Send(new AppointmentFromUserList.Query(typeSlug,pagination), ct);
+        return await Mediator.Send(new AppointmentFromUserList.Query(typeSlug, pagination), ct);
     }
 
     [HttpPost("create", Name = "CreateAppointment")]
@@ -57,7 +57,8 @@ public class AppointmentsController : BaseApiController
     [HttpGet("dates/available/{typeSlug}/{userName}", Name = "GetAppointmentAvailableDates")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<AppointmentDateDto>> GetAvailableDates(string typeSlug, string userName, CancellationToken ct)
+    public async Task<List<AppointmentDateDto>> GetAvailableDates(
+        string typeSlug, string userName, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentAvailableDatesList.Query(typeSlug, userName, false), ct);
     }
@@ -226,7 +227,8 @@ public class AppointmentsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<AppointmentDateDto>> GetPublicAvailableDates(string typeSlug, string userName, CancellationToken ct)
+    public async Task<List<AppointmentDateDto>> GetPublicAvailableDates(
+        string typeSlug, string userName, CancellationToken ct)
     {
         return await Mediator.Send(new AppointmentAvailableDatesList.Query(typeSlug, userName, true), ct);
     }

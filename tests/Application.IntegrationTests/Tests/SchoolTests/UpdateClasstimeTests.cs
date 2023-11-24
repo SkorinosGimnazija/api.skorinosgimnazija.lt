@@ -1,15 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Common.Exceptions;
 using Domain.Entities.School;
+using FluentAssertions;
 using School;
 using School.Dtos;
 using Xunit;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
 [Collection("App")]
 public class UpdateClasstimeTests
@@ -41,7 +37,7 @@ public class UpdateClasstimeTests
             Id = 1,
             Number = 1,
             StartTime = TimeOnly.Parse("7:00"),
-            EndTime = TimeOnly.Parse("8:00"),
+            EndTime = TimeOnly.Parse("8:00")
         };
 
         var command = new ClasstimeEdit.Command(entity);
@@ -58,14 +54,14 @@ public class UpdateClasstimeTests
         {
             Number = 1,
             StartTime = TimeOnly.Parse("7:00"),
-            EndTime = TimeOnly.Parse("8:00"),
+            EndTime = TimeOnly.Parse("8:00")
         });
 
         var expected = new ClasstimeEditDto
         {
             Id = classtime.Id,
             StartTime = TimeOnly.Parse("9:00"),
-            EndTime = TimeOnly.Parse("10:00"),
+            EndTime = TimeOnly.Parse("10:00")
         };
 
         var command = new ClasstimeEdit.Command(expected);

@@ -1,4 +1,4 @@
-﻿namespace SkorinosGimnazija.Application.BullyReports.Dtos;
+﻿namespace SkorinosGimnazija.Application.BullyJournal.Dtos;
 
 public record BullyJournalReportEditDto : BullyJournalReportCreateDto
 {

@@ -1,5 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Mocks;
 
+using Common.Interfaces;
 using Extensions;
 using Infrastructure.Revalidation;
 using Microsoft.Extensions.DependencyInjection;

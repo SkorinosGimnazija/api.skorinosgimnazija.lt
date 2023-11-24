@@ -1,13 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using SkorinosGimnazija.Application.School;
 
-using SkorinosGimnazija.Domain.Entities.School;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
+using School;
 using Xunit;
 
 [Collection("App")]
@@ -25,7 +19,7 @@ public class GetClassdayTests
     public async Task ClassdayList_ShouldListClassdays_ByNumber()
     {
         // days are auto seeded
-        
+
         var command = new ClassdayList.Query();
 
         var actual = await _app.SendAsync(command);

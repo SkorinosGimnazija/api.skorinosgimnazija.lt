@@ -55,7 +55,7 @@ public class GetAppointmentTests
             UserName = "username",
             AttendeeEmail = "a@gmail.com",
             AttendeeName = "Name",
-            UserDisplayName= "User Name",
+            UserDisplayName = "User Name",
             EventId = Path.GetRandomFileName(),
             DateId = date.Id
         };

@@ -1,20 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
-using Common.Pagination;
 using Domain.Entities.School;
 using FluentAssertions;
+using School;
 using Xunit;
-using SkorinosGimnazija.Application.School;
 
-[Collection("App")] 
+[Collection("App")]
 public class GetAnnouncementTests
 {
     private readonly AppFixture _app;
@@ -30,9 +22,9 @@ public class GetAnnouncementTests
     {
         var ann1 = await _app.AddAsync(new Announcement
         {
-           Title = "Title1",
-           StartTime = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)),
-           EndTime = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5))
+            Title = "Title1",
+            StartTime = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(3)),
+            EndTime = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(5))
         });
 
         var ann2 = await _app.AddAsync(new Announcement
@@ -71,7 +63,6 @@ public class GetAnnouncementTests
         actual.StartTime.Should().Be(ann1.StartTime);
         actual.EndTime.Should().Be(ann1.EndTime);
     }
-
 
     [Fact]
     public async Task AnnouncementDetails_ShouldGetPublicAnnouncement_ByCurrentDate()

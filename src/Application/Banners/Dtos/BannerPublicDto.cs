@@ -1,7 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Banners.Dtos;
 
-using Languages.Dtos;
-
 public record BannerPublicDto
 {
     public int Id { get; init; }

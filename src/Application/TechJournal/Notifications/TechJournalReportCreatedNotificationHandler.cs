@@ -13,11 +13,11 @@ public record TechJournalReportCreatedNotification(TechJournalReport Report) : I
 public class TechJournalReportCreatedNotificationHandler : INotificationHandler<TechJournalReportCreatedNotification>
 {
     private readonly string _baseUrl;
+    private readonly IAppDbContext _context;
     private readonly IEmailService _emailService;
     private readonly IEmployeeService _employeeService;
     private readonly string _groupId;
     private readonly ILogger<TechJournalReportCreatedNotificationHandler> _logger;
-    private readonly IAppDbContext _context;
 
     public TechJournalReportCreatedNotificationHandler(
         ILogger<TechJournalReportCreatedNotificationHandler> logger,

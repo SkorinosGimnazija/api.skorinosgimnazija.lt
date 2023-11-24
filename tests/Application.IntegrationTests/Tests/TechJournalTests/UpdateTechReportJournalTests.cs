@@ -1,21 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TechJournalTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
 
-using SkorinosGimnazija.Application.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.TechReports;
-using Infrastructure.Identity;
-using Xunit;
-using SkorinosGimnazija.Domain.Entities.Courses;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Application.TechJournal;
+using FluentAssertions;
+using TechJournal;
 using TechJournal.Dtos;
+using Xunit;
 
 [Collection("App")]
 public class UpdateTechReportJournalTests
@@ -52,7 +42,7 @@ public class UpdateTechReportJournalTests
         {
             Id = 1,
             Place = "Place",
-            Details = "Details",
+            Details = "Details"
         };
 
         var command = new TechJournalReportEdit.Command(entity);
@@ -77,7 +67,7 @@ public class UpdateTechReportJournalTests
         {
             Id = report.Id,
             Place = "Place 2",
-            Details = "Details 2",
+            Details = "Details 2"
         };
 
         var command = new TechJournalReportEdit.Command(expected);
@@ -112,7 +102,7 @@ public class UpdateTechReportJournalTests
         {
             Id = report.Id,
             Place = "Place 2",
-            Details = "Details 2",
+            Details = "Details 2"
         };
 
         var command = new TechJournalReportEdit.Command(expected);

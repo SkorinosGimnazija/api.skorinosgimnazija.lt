@@ -1,13 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable.Validators;
-using FluentValidation;
 
-using SkorinosGimnazija.Application.Events.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dtos;
+using FluentValidation;
 
 internal class TimetableImportValidator : AbstractValidator<TimetableImportDto>
 {

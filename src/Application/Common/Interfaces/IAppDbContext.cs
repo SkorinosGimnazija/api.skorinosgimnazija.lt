@@ -1,17 +1,16 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
-using Domain.Entities;
 using Domain.Entities.Accomplishments;
 using Domain.Entities.Appointments;
 using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.School;
+using Domain.Entities.TechReports;
 using Domain.Entities.Timetable;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using SkorinosGimnazija.Domain.Entities.School;
-using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public interface IAppDbContext
 {
@@ -47,7 +46,7 @@ public interface IAppDbContext
 
     DbSet<Accomplishment> Accomplishments { get; }
 
-    DbSet<AccomplishmentScale> AccomplishmentScales { get;  }
+    DbSet<AccomplishmentScale> AccomplishmentScales { get; }
 
     DbSet<AccomplishmentStudent> AccomplishmentStudents { get; }
 

@@ -4,11 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Exceptions;
 using Common.Interfaces;
+using Domain.Entities.CMS;
 using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Domain.Entities.CMS;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class PostPatch
 {
@@ -21,10 +20,11 @@ public static class PostPatch
         private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context,
-                       ISearchClient searchClient, 
-                       IMapper mapper,
-                       IRevalidationService revalidation)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IMapper mapper,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;

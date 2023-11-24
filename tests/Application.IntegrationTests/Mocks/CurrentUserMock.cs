@@ -2,7 +2,6 @@
 
 using Common.Interfaces;
 using Extensions;
-using Google.Apis.Admin.Directory.directory_v1.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 

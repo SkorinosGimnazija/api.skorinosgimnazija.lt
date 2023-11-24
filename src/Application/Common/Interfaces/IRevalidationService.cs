@@ -1,9 +1,4 @@
-﻿namespace SkorinosGimnazija.Infrastructure.Revalidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 public interface IRevalidationService
 {

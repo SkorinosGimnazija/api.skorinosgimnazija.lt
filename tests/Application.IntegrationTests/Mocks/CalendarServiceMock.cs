@@ -1,10 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Mocks;
 
 using Common.Interfaces;
+using Common.Models;
 using Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using SkorinosGimnazija.Application.Common.Models;
 
 public class CalendarServiceMock
 {

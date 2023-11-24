@@ -1,17 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using SkorinosGimnazija.Application.Courses;
 
-using SkorinosGimnazija.Domain.Entities.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.School;
 using FluentAssertions;
+using School;
 using Xunit;
-using SkorinosGimnazija.Application.School;
 
 [Collection("App")]
 public class GetClasstimeTests
@@ -29,17 +22,17 @@ public class GetClasstimeTests
     {
         var time1 = await _app.AddAsync(new Classtime
         {
-           Number = 2,
+            Number = 2
         });
 
         var time2 = await _app.AddAsync(new Classtime
         {
-            Number = 1,
+            Number = 1
         });
 
         var class3 = await _app.AddAsync(new Classtime
         {
-            Number = 3,
+            Number = 3
         });
 
         var command = new ClasstimeList.Query();
@@ -57,7 +50,7 @@ public class GetClasstimeTests
         {
             Number = 2,
             StartTime = TimeOnly.Parse("7:00"),
-            EndTime = TimeOnly.Parse("8:00"),
+            EndTime = TimeOnly.Parse("8:00")
         });
 
         var command = new ClasstimeDetails.Query(time.Id);

@@ -97,7 +97,7 @@ public static class Seed
         {
             return;
         }
-        
+
         dbContext.Classdays.AddRange(
             new() { Name = "Pirmadienis", Number = 1 },
             new() { Name = "Antradienis", Number = 2 },

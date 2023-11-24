@@ -1,18 +1,13 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Banners;
 using Application.BullyJournal;
 using Application.BullyJournal.Dtos;
-using Application.BullyJournalReports;
-using Application.BullyReports;
+using Application.BullyReports.Dtos;
 using Application.Common.Pagination;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.Application.Accomplishments.Dtos;
-using SkorinosGimnazija.Application.Accomplishments;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
 
 [Authorize(Roles = Auth.Role.Teacher)]
 public class BullyJournalController : BaseApiController

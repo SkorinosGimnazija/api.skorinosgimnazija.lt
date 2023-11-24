@@ -1,16 +1,9 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal.Mapping;
 
 using AutoMapper;
-using SkorinosGimnazija.Application.Accomplishments.Dtos;
-using SkorinosGimnazija.Domain.Entities.Accomplishments;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BullyReports.Dtos;
-using SkorinosGimnazija.Application.BullyJournal.Dtos;
+using Domain.Entities.Bullies;
+using Dtos;
 
 public class BullyJournalReportProfiles : Profile
 {

@@ -1,6 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.CoursesTests;
 
-using Banners;
 using Common.Exceptions;
 using Courses;
 using Courses.Dtos;

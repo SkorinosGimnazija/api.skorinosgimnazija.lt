@@ -6,7 +6,6 @@ using Application.Common.Exceptions;
 using Application.Common.Pagination;
 using Application.Menus.Dtos;
 using Application.Posts.Dtos;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Domain.Options;
 using Microsoft.Extensions.Hosting;

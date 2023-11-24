@@ -1,13 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments.Validators;
-using FluentValidation;
 
-using SkorinosGimnazija.Application.Appointments.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Interfaces;
+using Dtos;
+using FluentValidation;
 
 internal class AppointmentHostCreateValidator : AbstractValidator<AppointmentExclusiveHostCreateDto>
 {

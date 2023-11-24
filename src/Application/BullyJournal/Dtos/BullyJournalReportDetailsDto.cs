@@ -1,11 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal.Dtos;
 
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BullyReports.Dtos;
 
 public record BullyJournalReportDetailsDto : BullyJournalReportDto
 {

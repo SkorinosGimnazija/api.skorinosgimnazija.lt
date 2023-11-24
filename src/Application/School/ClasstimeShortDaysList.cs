@@ -4,11 +4,11 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.Extensions;
 using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class ClasstimeShortDaysList
 {
@@ -33,7 +33,8 @@ public static class ClasstimeShortDaysList
             _mapper = mapper;
         }
 
-        public async Task<PaginatedList<ClasstimeShortDayDto>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<ClasstimeShortDayDto>> Handle(
+            Query request, CancellationToken cancellationToken)
         {
             return await _context.ClasstimeShortDays
                        .AsNoTracking()

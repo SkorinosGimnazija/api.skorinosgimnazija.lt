@@ -1,21 +1,14 @@
 ﻿namespace SkorinosGimnazija.Application.TechJournal;
-using AutoMapper;
-using FluentValidation;
-using MediatR;
-using SkorinosGimnazija.Application.TechJournal.Validators;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using Common.Interfaces;
 using Domain.Entities.TechReports;
 using Dtos;
+using FluentValidation;
+using MediatR;
 using Notifications;
+using Validators;
 
 public static class TechJournalReportCreate
 {
@@ -33,8 +26,8 @@ public static class TechJournalReportCreate
     {
         private readonly IAppDbContext _context;
         private readonly ICurrentUserService _currentUser;
-        private readonly IPublisher _publisher;
         private readonly IMapper _mapper;
+        private readonly IPublisher _publisher;
 
         public Handler(IAppDbContext context, IMapper mapper, ICurrentUserService currentUser, IPublisher publisher)
         {
@@ -47,7 +40,8 @@ public static class TechJournalReportCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<TechJournalReportDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _context.TechJournalReports.Add(_mapper.Map<TechJournalReport>(request.TechJournalReport)).Entity;
+            var entity = _context.TechJournalReports.Add(_mapper.Map<TechJournalReport>(request.TechJournalReport))
+                .Entity;
 
             entity.UserId = _currentUser.UserId;
 

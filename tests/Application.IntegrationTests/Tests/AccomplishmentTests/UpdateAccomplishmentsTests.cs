@@ -1,13 +1,12 @@
-﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentsTests;
+﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.AccomplishmentTests;
 
-using Banners;
-using Common.Exceptions;
-using Accomplishments;
-using Accomplishments.Dtos;
-using Domain.Entities.Accomplishments;
 using FluentAssertions;
-using Xunit;
+using SkorinosGimnazija.Application.Accomplishments;
+using SkorinosGimnazija.Application.Accomplishments.Dtos;
+using SkorinosGimnazija.Application.Common.Exceptions;
+using SkorinosGimnazija.Domain.Entities.Accomplishments;
 using SkorinosGimnazija.Domain.Entities.School;
+using Xunit;
 
 [Collection("App")]
 public class UpdateAccomplishmentsTests
@@ -45,7 +44,7 @@ public class UpdateAccomplishmentsTests
             Id = 1,
             Name = "Name1",
             Date = DateTime.Parse("2021-02-01"),
-            ScaleId = 1,
+            ScaleId = 1
         };
 
         var command = new AccomplishmentEdit.Command(entity);
@@ -58,7 +57,7 @@ public class UpdateAccomplishmentsTests
     [Fact]
     public async Task AccomplishmentEdit_ShouldEditAccomplishment_WhenEditingOwned()
     {
-        var classroom = await _app.AddAsync(new Classroom { Name = "C1", Number = 1});
+        var classroom = await _app.AddAsync(new Classroom { Name = "C1", Number = 1 });
 
         var accomplishment = await _app.AddAsync(new Accomplishment
         {
@@ -96,7 +95,7 @@ public class UpdateAccomplishmentsTests
                 new() { Name = "student", ClassroomId = classroom.Id, AchievementId = 2 }
             }
         };
-        
+
         var command = new AccomplishmentEdit.Command(expected);
 
         await _app.SendAsync(command);
@@ -133,7 +132,7 @@ public class UpdateAccomplishmentsTests
             Id = accomplishment.Id,
             Name = "Name2",
             Date = DateTime.Parse("2022-01-01T00:00"),
-            ScaleId = 1,
+            ScaleId = 1
         };
 
         var command = new AccomplishmentEdit.Command(dto);
@@ -158,7 +157,7 @@ public class UpdateAccomplishmentsTests
     {
         var course = await _app.AddAsync(new Accomplishment
         {
-            Name= "Name",
+            Name = "Name",
             Date = DateOnly.FromDateTime(DateTime.UtcNow),
             ScaleId = 1,
             UserId = _currentUserId

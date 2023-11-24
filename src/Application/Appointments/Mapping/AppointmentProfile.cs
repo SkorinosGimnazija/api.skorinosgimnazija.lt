@@ -1,11 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.Appointments.Mapping;
 
 using AutoMapper;
+using Common.Models;
 using Domain.Entities.Appointments;
+using Domain.Entities.Identity;
 using Dtos;
-using SkorinosGimnazija.Application.Common.Models;
-using SkorinosGimnazija.Application.Employees.Dtos;
-using SkorinosGimnazija.Domain.Entities.Identity;
 
 internal class AppointmentProfile : Profile
 {
@@ -13,7 +12,7 @@ internal class AppointmentProfile : Profile
     {
         CreateMap<Appointment, AppointmentDto>();
 
-        CreateMap<AppointmentEventResponse, Appointment > ();
+        CreateMap<AppointmentEventResponse, Appointment>();
 
         CreateMap<Appointment, AppointmentDetailsDto>();
 

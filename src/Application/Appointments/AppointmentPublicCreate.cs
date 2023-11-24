@@ -9,7 +9,6 @@ using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Models;
 using Validators;
 using ValidationException = Common.Exceptions.ValidationException;
 

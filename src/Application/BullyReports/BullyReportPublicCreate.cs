@@ -3,7 +3,6 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Courses.Validators;
 using Domain.Entities.Bullies;
 using Dtos;
 using FluentValidation;

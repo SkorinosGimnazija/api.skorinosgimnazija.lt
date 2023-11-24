@@ -1,14 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal;
-using System;
-using System.Collections.Generic;
+
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using BullyReports.Dtos;
 using Common.Interfaces;
 using Domain.Entities.Bullies;
+using Dtos;
 using FluentValidation;
 using MediatR;
 using Validators;
@@ -41,7 +38,8 @@ public static class BullyJournalReportCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<BullyJournalReportDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _context.BullyJournalReports.Add(_mapper.Map<BullyJournalReport>(request.BullyJournalReport)).Entity;
+            var entity = _context.BullyJournalReports.Add(_mapper.Map<BullyJournalReport>(request.BullyJournalReport))
+                .Entity;
 
             entity.UserId = _currentUser.UserId;
 

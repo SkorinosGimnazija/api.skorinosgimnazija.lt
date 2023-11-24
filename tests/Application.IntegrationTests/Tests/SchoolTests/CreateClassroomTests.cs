@@ -1,19 +1,11 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.SchoolTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.Courses.Dtos;
 
-using SkorinosGimnazija.Application.Courses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Exceptions;
 using Domain.Entities.School;
+using FluentAssertions;
+using School;
 using School.Dtos;
 using Xunit;
-using SkorinosGimnazija.Application.School;
-using SkorinosGimnazija.Domain.Entities.Courses;
 
 [Collection("App")]
 public class CreateClassroomTests
@@ -25,7 +17,6 @@ public class CreateClassroomTests
         _app = appFixture;
         _app.ResetData();
     }
-
 
     [Fact]
     public async Task ClassroomCreate_ShouldThrowEx_WhenInvalidData()
@@ -57,6 +48,4 @@ public class CreateClassroomTests
         actual.Name.Should().Be(classroom.Name);
         actual.Number.Should().Be(classroom.Number);
     }
-
-
 }

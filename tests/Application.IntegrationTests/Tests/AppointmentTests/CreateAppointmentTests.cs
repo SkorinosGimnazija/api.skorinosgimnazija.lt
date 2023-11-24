@@ -3,10 +3,10 @@
 using Appointments;
 using Appointments.Dtos;
 using Common.Exceptions;
+using Common.Models;
 using Domain.Entities.Appointments;
 using FluentAssertions;
 using Moq;
-using SkorinosGimnazija.Application.Common.Models;
 using Xunit;
 
 [Collection("App")]

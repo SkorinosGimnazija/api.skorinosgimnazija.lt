@@ -1,9 +1,8 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Persistence.Configurations;
 
-using Domain.Entities.Accomplishments;
+using Domain.Entities.School;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SkorinosGimnazija.Domain.Entities.School;
 
 internal class ClassroomConfiguration : IEntityTypeConfiguration<Classroom>
 {

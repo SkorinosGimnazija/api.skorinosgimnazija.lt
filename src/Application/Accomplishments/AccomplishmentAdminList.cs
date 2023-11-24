@@ -34,7 +34,7 @@ public static class AccomplishmentAdminList
                            x.Date >= start &&
                            x.Date <= end)
                        .OrderByDescending(x => x.Date)
-                       .ThenByDescending(x=> x.Id)
+                       .ThenByDescending(x => x.Id)
                        .ProjectTo<AccomplishmentDto>(_mapper.ConfigurationProvider)
                        .ToListAsync(cancellationToken);
         }

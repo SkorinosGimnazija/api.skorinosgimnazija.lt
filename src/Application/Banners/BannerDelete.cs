@@ -3,10 +3,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
 using Common.Interfaces;
+using Domain.Entities.CMS;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Domain.Entities.CMS;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 
 public static class BannerDelete
 {
@@ -19,10 +18,11 @@ public static class BannerDelete
         private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context,
-                       ISearchClient searchClient,
-                       IMediaManager mediaManager,
-                       IRevalidationService revalidation)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IMediaManager mediaManager,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;

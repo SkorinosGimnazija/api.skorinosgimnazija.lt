@@ -1,7 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
 
-using SkorinosGimnazija.Domain.Entities.Accomplishments;
-
 public record AccomplishmentCreateDto
 {
     public string Name { get; init; } = default!;

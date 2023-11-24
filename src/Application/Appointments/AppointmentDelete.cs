@@ -13,8 +13,8 @@ public static class AppointmentDelete
     public class Handler : IRequestHandler<Command, Unit>
     {
         private readonly ICalendarService _calendarService;
-        private readonly ICurrentUserService _currentUser;
         private readonly IAppDbContext _context;
+        private readonly ICurrentUserService _currentUser;
 
         public Handler(IAppDbContext context, ICalendarService calendarService, ICurrentUserService currentUserService)
         {

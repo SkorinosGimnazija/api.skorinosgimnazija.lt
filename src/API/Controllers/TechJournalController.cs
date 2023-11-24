@@ -1,13 +1,12 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Accomplishments.Dtos;
+using Application.Common.Pagination;
 using Application.TechJournal;
 using Application.TechJournal.Dtos;
-using Application.Common.Pagination;
+using Base;
+using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.API.Controllers.Base;
-using SkorinosGimnazija.Infrastructure.Identity;
 
 [Authorize(Roles = Auth.Role.Teacher)]
 public class TechJournalController : BaseApiController

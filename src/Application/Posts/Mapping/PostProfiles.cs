@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.Posts.Mapping;
 
 using AutoMapper;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Dtos;
 

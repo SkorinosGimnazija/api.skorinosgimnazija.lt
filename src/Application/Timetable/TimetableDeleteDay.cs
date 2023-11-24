@@ -1,11 +1,10 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable;
 
 using System.Diagnostics.CodeAnalysis;
+using Common.Interfaces;
+using Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using SkorinosGimnazija.Application.Timetable.Dtos;
 
 public static class TimetableDeleteDay
 {

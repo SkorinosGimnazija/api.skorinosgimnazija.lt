@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using Common.Exceptions;
 using Common.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 public static class EventDelete
 {

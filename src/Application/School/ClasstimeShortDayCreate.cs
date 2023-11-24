@@ -1,17 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.School;
-using AutoMapper;
-using FluentValidation;
-using MediatR;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using Common.Interfaces;
 using Domain.Entities.School;
 using Dtos;
+using FluentValidation;
+using MediatR;
 using Validators;
 
 public static class ClasstimeShortDayCreate
@@ -40,7 +35,8 @@ public static class ClasstimeShortDayCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<ClasstimeShortDayDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _context.ClasstimeShortDays.Add(_mapper.Map<ClasstimeShortDay>(request.ClasstimeShortDay)).Entity;
+            var entity = _context.ClasstimeShortDays.Add(_mapper.Map<ClasstimeShortDay>(request.ClasstimeShortDay))
+                .Entity;
 
             await _context.SaveChangesAsync();
 

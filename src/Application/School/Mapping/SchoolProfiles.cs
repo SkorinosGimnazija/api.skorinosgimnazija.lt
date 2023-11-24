@@ -1,11 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.School.Mapping;
 
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain.Entities.School;
 using Dtos;
 
@@ -32,7 +27,7 @@ public class SchoolProfiles : Profile
         CreateMap<Announcement, AnnouncementDto>();
         CreateMap<AnnouncementCreateDto, Announcement>();
         CreateMap<AnnouncementEditDto, Announcement>();
-        
+
         CreateMap<Classday, ClassdayDto>();
     }
 }

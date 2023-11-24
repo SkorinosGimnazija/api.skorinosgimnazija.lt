@@ -36,13 +36,13 @@ public static class LocaleMetaList
                     .Select(x => x.LinkedPostId);
 
                 var allPosts = await _context.Posts.AsNoTracking()
-                                  .Where(x =>
-                                      x.IsPublished &&
-                                      x.ShowInFeed &&
-                                      x.PublishedAt <= DateTime.UtcNow &&
-                                      !menuPostsQuery.Contains(x.Id))
-                                  .ProjectTo<LocaleMetaDto>(_mapper.ConfigurationProvider)
-                                  .ToListAsync(cancellationToken);
+                                   .Where(x =>
+                                       x.IsPublished &&
+                                       x.ShowInFeed &&
+                                       x.PublishedAt <= DateTime.UtcNow &&
+                                       !menuPostsQuery.Contains(x.Id))
+                                   .ProjectTo<LocaleMetaDto>(_mapper.ConfigurationProvider)
+                                   .ToListAsync(cancellationToken);
 
                 cachedLocales = allPosts.GroupBy(x => x.Ln)
                     .Select(group => new LocaleMetaDto

@@ -1,6 +1,6 @@
-﻿using SkorinosGimnazija.Application.School.Dtos;
+﻿namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
 
-namespace SkorinosGimnazija.Application.Accomplishments.Dtos;
+using School.Dtos;
 
 public record AccomplishmentStudentDto
 {

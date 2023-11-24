@@ -1,15 +1,8 @@
 ﻿namespace SkorinosGimnazija.Application.TechJournal.Mapping;
 
 using AutoMapper;
-using SkorinosGimnazija.Application.TechJournal.Dtos;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SkorinosGimnazija.Domain.Entities.TechReports;
+using Domain.Entities.TechReports;
+using Dtos;
 
 public class TechJournalReportProfiles : Profile
 {

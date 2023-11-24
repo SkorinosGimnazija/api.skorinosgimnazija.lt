@@ -1,17 +1,13 @@
 ﻿namespace SkorinosGimnazija.Application.School;
+
+using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
+using Common.Exceptions;
+using Common.Interfaces;
+using Dtos;
 using FluentValidation;
 using MediatR;
-using SkorinosGimnazija.Application.Common.Exceptions;
-using SkorinosGimnazija.Application.Common.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.School.Dtos;
 using Validators;
 
 public static class ClasstimeShortDayEdit
@@ -40,7 +36,8 @@ public static class ClasstimeShortDayEdit
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<Unit> Handle(Command request, CancellationToken _)
         {
-            var entity = await _context.ClasstimeShortDays.FirstOrDefaultAsync(x => x.Id == request.ClasstimeShortDay.Id);
+            var entity =
+                await _context.ClasstimeShortDays.FirstOrDefaultAsync(x => x.Id == request.ClasstimeShortDay.Id);
             if (entity is null)
             {
                 throw new NotFoundException();

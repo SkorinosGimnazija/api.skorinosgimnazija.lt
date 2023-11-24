@@ -3,12 +3,14 @@
 using System.Reflection;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entities;
+using Domain.Entities.Accomplishments;
 using Domain.Entities.Appointments;
 using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.School;
+using Domain.Entities.TechReports;
 using Domain.Entities.Timetable;
 using Extensions;
 using FluentValidation.Results;
@@ -16,9 +18,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
-using SkorinosGimnazija.Domain.Entities.Accomplishments;
-using SkorinosGimnazija.Domain.Entities.School;
-using SkorinosGimnazija.Domain.Entities.TechReports;
 
 public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
 {
@@ -36,10 +35,12 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
         {
             var validationFailure = ie.ConstraintName switch
             {
-                "IX_Appointments_UserName_AttendeeEmail" => new ("Klaida", "Jūs jau esate užsiregistravęs (-usi) pas pasirinktą mokytoją"),
-                "IX_Appointments_DateId_UserName" => new ("Klaida", "Pasirinktas laikas užimtas"),
-                "IX_Appointments_DateId_AttendeeEmail" => new ("Klaida", "Pasirinktu laiku jūs jau esate užsiregistravęs (-usi)"),
-                "IX_Timetable_DayId_RoomId_TimeId" => new ("Klaida", "Pasirinktu laiku klasė jau turi pamoką"),
+                "IX_Appointments_UserName_AttendeeEmail" => new("Klaida",
+                    "Jūs jau esate užsiregistravęs (-usi) pas pasirinktą mokytoją"),
+                "IX_Appointments_DateId_UserName" => new("Klaida", "Pasirinktas laikas užimtas"),
+                "IX_Appointments_DateId_AttendeeEmail" => new("Klaida",
+                    "Pasirinktu laiku jūs jau esate užsiregistravęs (-usi)"),
+                "IX_Timetable_DayId_RoomId_TimeId" => new("Klaida", "Pasirinktu laiku klasė jau turi pamoką"),
                 _ => new ValidationFailure(ie.ConstraintName ?? ie.ColumnName, "Constraint violation")
             };
 

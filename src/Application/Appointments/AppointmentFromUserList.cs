@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 public static class AppointmentFromUserList
 {
-    public record Query(string TypeSlug,  PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
+    public record Query(string TypeSlug, PaginationDto Pagination) : IRequest<PaginatedList<AppointmentDetailsDto>>;
 
     public class Validator : AbstractValidator<Query>
     {

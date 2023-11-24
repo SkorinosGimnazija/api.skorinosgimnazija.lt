@@ -1,20 +1,12 @@
 ﻿namespace SkorinosGimnazija.Application.Timetable;
-using AutoMapper;
-using FluentValidation;
-using MediatR;
-using SkorinosGimnazija.Application.BullyJournal.Validators;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.Common.Interfaces;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AutoMapper;
+using Common.Interfaces;
 using Domain.Entities.Timetable;
 using Dtos;
+using FluentValidation;
+using MediatR;
 using Validators;
 
 public static class TimetableImport

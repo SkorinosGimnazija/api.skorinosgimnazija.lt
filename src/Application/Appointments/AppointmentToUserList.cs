@@ -45,7 +45,7 @@ public static class AppointmentToUserList
                            x.Date.Type.Slug == request.TypeSlug)
                        .ProjectTo<AppointmentDetailsDto>(_mapper.ConfigurationProvider)
                        .OrderByDescending(x => x.Date.Date > DateTime.UtcNow.AddMinutes(30))
-                       .ThenBy(x=> x.Date.Date)
+                       .ThenBy(x => x.Date.Date)
                        .ToPaginatedListAsync(request.Pagination, cancellationToken);
         }
     }

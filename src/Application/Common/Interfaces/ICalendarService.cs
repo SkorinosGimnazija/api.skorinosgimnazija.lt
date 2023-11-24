@@ -1,8 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.Common.Interfaces;
 
 using Events.Dtos;
-using Microsoft.Extensions.Logging;
-using SkorinosGimnazija.Application.Common.Models;
+using Models;
 
 public interface ICalendarService
 {

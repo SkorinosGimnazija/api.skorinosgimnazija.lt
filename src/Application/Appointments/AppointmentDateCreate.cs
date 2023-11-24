@@ -4,13 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
 using Domain.Entities.Appointments;
-using Domain.Entities.Identity;
 using Dtos;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Validators;
-using ValidationException = Common.Exceptions.ValidationException;
 
 public static class AppointmentDateCreate
 {
@@ -44,6 +40,5 @@ public static class AppointmentDateCreate
 
             return _mapper.Map<AppointmentDateDto>(entity);
         }
-
     }
 }

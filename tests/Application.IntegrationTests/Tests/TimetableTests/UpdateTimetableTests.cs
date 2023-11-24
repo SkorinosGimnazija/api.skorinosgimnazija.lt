@@ -1,25 +1,18 @@
 ﻿namespace SkorinosGimnazija.Application.IntegrationTests.Tests.TimetableTests;
-using FluentAssertions;
-using SkorinosGimnazija.Application.BullyJournal;
-using SkorinosGimnazija.Application.BullyReports.Dtos;
-using SkorinosGimnazija.Application.Common.Exceptions;
 
-using SkorinosGimnazija.Domain.Entities.Bullies;
-using SkorinosGimnazija.Domain.Entities.School;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Exceptions;
+using Domain.Entities.School;
 using Domain.Entities.Timetable;
+using FluentAssertions;
 using Timetable;
 using Timetable.Dtos;
 using Xunit;
+
 [Collection("App")]
 public class UpdateTimetableTests
 {
     private readonly AppFixture _app;
-    
+
     public UpdateTimetableTests(AppFixture appFixture)
     {
         _app = appFixture;

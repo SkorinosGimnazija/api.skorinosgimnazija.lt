@@ -3,13 +3,11 @@
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
-using Domain.Entities;
 using Domain.Entities.CMS;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Infrastructure.Revalidation;
 using Validators;
 
 public static class MenuCreate
@@ -31,10 +29,11 @@ public static class MenuCreate
         private readonly IRevalidationService _revalidation;
         private readonly ISearchClient _searchClient;
 
-        public Handler(IAppDbContext context, 
-                       ISearchClient searchClient,
-                       IMapper mapper,
-                       IRevalidationService revalidation)
+        public Handler(
+            IAppDbContext context,
+            ISearchClient searchClient,
+            IMapper mapper,
+            IRevalidationService revalidation)
         {
             _context = context;
             _searchClient = searchClient;

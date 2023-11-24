@@ -4,13 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
 using Common.Interfaces;
 using Domain.Entities.Appointments;
-using Domain.Entities.Identity;
 using Dtos;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Validators;
-using ValidationException = Common.Exceptions.ValidationException;
 
 public static class AppointmentReservedDateCreate
 {
@@ -38,12 +34,13 @@ public static class AppointmentReservedDateCreate
         [SuppressMessage("ReSharper", "MethodSupportsCancellation")]
         public async Task<AppointmentReservedDateDto> Handle(Command request, CancellationToken _)
         {
-            var entity = _context.AppointmentReservedDates.Add(_mapper.Map<AppointmentReservedDate>(request.AppointmentDate)).Entity;
+            var entity = _context.AppointmentReservedDates
+                .Add(_mapper.Map<AppointmentReservedDate>(request.AppointmentDate))
+                .Entity;
 
             await _context.SaveChangesAsync();
 
             return _mapper.Map<AppointmentReservedDateDto>(entity);
         }
-
     }
 }

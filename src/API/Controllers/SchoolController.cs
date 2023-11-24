@@ -1,20 +1,12 @@
 ﻿namespace SkorinosGimnazija.API.Controllers;
 
-using Application.Accomplishments;
-using Application.Accomplishments.Dtos;
 using Application.Common.Pagination;
+using Application.School;
+using Application.School.Dtos;
 using Base;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SkorinosGimnazija.Application.School;
-using SkorinosGimnazija.Application.School.Dtos;
-using SkorinosGimnazija.Application.TechJournal.Dtos;
-using SkorinosGimnazija.Application.TechJournal;
-using SkorinosGimnazija.Application.Courses;
-using SkorinosGimnazija.Application.Timetable.Dtos;
-using SkorinosGimnazija.Application.Timetable;
-using SkorinosGimnazija.Domain.Entities.School;
 
 [Authorize(Roles = Auth.Role.Manager)]
 public class SchoolController : BaseApiController

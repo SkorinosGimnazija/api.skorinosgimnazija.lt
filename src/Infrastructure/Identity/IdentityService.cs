@@ -4,7 +4,6 @@ using System.Security.Claims;
 using Application.Authorization.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Calendar;
 using Domain.Entities.Identity;
 using Domain.Options;
 using FluentValidation.Results;

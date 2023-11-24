@@ -4,7 +4,6 @@ using Common.Exceptions;
 using Courses;
 using Domain.Entities.Courses;
 using FluentAssertions;
-using Menus;
 using Xunit;
 
 [Collection("App")]
