@@ -8,12 +8,12 @@
   <ItemGroup>
     <PackageReference Include="Algolia.Search" Version="6.16.0" />
     <PackageReference Include="CloudinaryDotNet" Version="1.25.0" />
-    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.64.0.3288" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.64.0" />
-    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.64.0.3270" />
-    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.64.0.3287" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.65.0.3288" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.65.0" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.65.0.3270" />
+    <PackageReference Include="Google.Apis.Gmail.v1" Version="1.65.0.3287" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="MimeKit" Version="4.3.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
