@@ -215,12 +215,6 @@ public class SchoolController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<RandomImageDto?> GetPublicRandomImage(CancellationToken ct)
     {
-        var images = new[] { "eorh4gw0.ase/1.jpeg", "eorh4gw0.ase/2.png", "eorh4gw0.ase/3.jpg", "eorh4gw0.ase/4.png" };
-        var random = new Random();
-        var image = images[random.Next(images.Length)];
-
-        return new() { Url = image };
-
-        //return await Mediator.Send(new RandomImage.Query(), ct);
+        return await Mediator.Send(new RandomImage.Query(), ct);
     }
 }
