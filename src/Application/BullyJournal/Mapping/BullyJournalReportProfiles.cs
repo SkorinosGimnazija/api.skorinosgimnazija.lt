@@ -1,7 +1,6 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal.Mapping;
 
 using AutoMapper;
-using BullyReports.Dtos;
 using Domain.Entities.Bullies;
 using Dtos;
 

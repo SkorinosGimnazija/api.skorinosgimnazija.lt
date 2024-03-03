@@ -2,7 +2,6 @@
 
 using BullyJournal;
 using BullyJournal.Dtos;
-using BullyReports.Dtos;
 using Common.Exceptions;
 using Domain.Entities.Bullies;
 using FluentAssertions;

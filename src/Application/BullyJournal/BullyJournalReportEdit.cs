@@ -2,12 +2,12 @@
 
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
+using Common.Exceptions;
 using Common.Interfaces;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Exceptions;
 using Validators;
 
 public static class BullyJournalReportEdit

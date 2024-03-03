@@ -2,7 +2,6 @@
 
 using Application.BullyJournal;
 using Application.BullyJournal.Dtos;
-using Application.BullyReports.Dtos;
 using Application.Common.Pagination;
 using Base;
 using Infrastructure.Identity;

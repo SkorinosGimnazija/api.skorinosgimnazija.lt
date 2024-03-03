@@ -2,13 +2,13 @@
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Common.Extensions;
 using Common.Interfaces;
+using Common.Pagination;
 using Dtos;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SkorinosGimnazija.Application.Common.Extensions;
-using SkorinosGimnazija.Application.Common.Pagination;
 
 public static class BullyJournalReportList
 {

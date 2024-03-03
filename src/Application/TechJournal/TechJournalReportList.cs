@@ -12,9 +12,10 @@ using Microsoft.EntityFrameworkCore;
 
 public static class TechJournalReportList
 {
-    public record Query
-    (
-        PaginationDto Pagination, DateOnly StartDate, DateOnly EndDate) : IRequest<PaginatedList<TechJournalReportDto>>;
+    public record Query(
+        PaginationDto Pagination,
+        DateOnly StartDate,
+        DateOnly EndDate) : IRequest<PaginatedList<TechJournalReportDto>>;
 
     public class Validator : AbstractValidator<Query>
     {

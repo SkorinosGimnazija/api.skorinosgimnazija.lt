@@ -2,8 +2,8 @@
 
 using System.Net.Http.Json;
 using Application.Common.Interfaces;
+using Domain.Options;
 using Microsoft.Extensions.Options;
-using SkorinosGimnazija.Domain.Options;
 
 public class CaptchaService : ICaptchaService
 {

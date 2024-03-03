@@ -1,7 +1,7 @@
 ﻿namespace SkorinosGimnazija.Application.TechJournal.Validators;
 
+using Dtos;
 using FluentValidation;
-using SkorinosGimnazija.Application.TechJournal.Dtos;
 
 internal class TechJournalReportEditValidator : AbstractValidator<TechJournalReportEditDto>
 {

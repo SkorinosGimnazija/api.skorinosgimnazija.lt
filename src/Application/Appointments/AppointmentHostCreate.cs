@@ -11,8 +11,8 @@ using Validators;
 
 public static class AppointmentHostCreate
 {
-    public record Command
-        (AppointmentExclusiveHostCreateDto AppointmentExclusiveHost) : IRequest<AppointmentExclusiveHostDto>;
+    public record Command(AppointmentExclusiveHostCreateDto AppointmentExclusiveHost)
+        : IRequest<AppointmentExclusiveHostDto>;
 
     public class Validator : AbstractValidator<Command>
     {

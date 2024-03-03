@@ -2,7 +2,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
-using BullyReports.Dtos;
 using Common.Interfaces;
 using Domain.Entities.Bullies;
 using Dtos;

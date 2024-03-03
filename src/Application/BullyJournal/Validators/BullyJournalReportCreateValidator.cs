@@ -1,6 +1,5 @@
 ﻿namespace SkorinosGimnazija.Application.BullyJournal.Validators;
 
-using BullyReports.Dtos;
 using Dtos;
 using FluentValidation;
 
