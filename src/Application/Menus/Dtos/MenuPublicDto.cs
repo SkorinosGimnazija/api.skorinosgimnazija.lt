@@ -15,6 +15,4 @@ public record MenuPublicDto
     public string Path { get; init; } = default!;
 
     public int? ParentMenuId { get; init; }
-
-    public List<MenuPublicDto> ChildMenus { get; init; } = new();
 }

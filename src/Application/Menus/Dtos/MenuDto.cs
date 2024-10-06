@@ -19,6 +19,4 @@ public record MenuDto
     public bool IsPublished { get; init; }
 
     public int? ParentMenuId { get; init; }
-
-    public List<MenuDto> ChildMenus { get; init; } = new();
 }
