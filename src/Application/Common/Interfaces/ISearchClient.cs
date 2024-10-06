@@ -14,7 +14,7 @@ public interface ISearchClient
 
     Task<PaginatedList<int>> SearchPostAsync(string query, PaginationDto pagination, CancellationToken ct);
 
-    Task SaveMenuAsync(MenuIndexDto post);
+    Task SaveMenuAsync(MenuIndexDto menu);
 
     Task RemoveMenuAsync(Menu menu);
 

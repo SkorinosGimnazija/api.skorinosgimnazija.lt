@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Search;
 
 using Algolia.Search.Clients;
+using Algolia.Search.Models.Search;
 using Application.Banners.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Pagination;
@@ -14,18 +15,19 @@ using ISearchClient = Application.Common.Interfaces.ISearchClient;
 
 public sealed class AlgoliaSearchClient : ISearchClient
 {
-    private readonly SearchIndex _bannersIndex;
-    private readonly SearchIndex _menusIndex;
-    private readonly SearchIndex _postsIndex;
+    private readonly string _bannersIndexName;
+    private readonly SearchClient _client;
+    private readonly string _menusIndexName;
+    private readonly string _postsIndexName;
 
     public AlgoliaSearchClient(IOptions<AlgoliaOptions> options, IHostEnvironment env)
     {
-        var client = new SearchClient(options.Value.AppId, options.Value.ApiKey);
+        _client = new(options.Value.AppId, options.Value.ApiKey);
         var prefix = env.IsDevelopment() ? "dev_" : "prod_";
 
-        _postsIndex = client.InitIndex(prefix + "posts");
-        _menusIndex = client.InitIndex(prefix + "menus");
-        _bannersIndex = client.InitIndex(prefix + "banners");
+        _postsIndexName = prefix + "posts";
+        _menusIndexName = prefix + "menus";
+        _bannersIndexName = prefix + "banners";
     }
 
     public async Task<PaginatedList<int>> SearchBannersAsync(
@@ -33,7 +35,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            return await SearchAsync(query, pagination, _bannersIndex, ct);
+            return await SearchAsync(query, pagination, _bannersIndexName, ct);
         }
         catch (Exception e)
         {
@@ -45,7 +47,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            return await SearchAsync(query, pagination, _menusIndex, ct);
+            return await SearchAsync(query, pagination, _menusIndexName, ct);
         }
         catch (Exception e)
         {
@@ -57,7 +59,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            return await SearchAsync(query, pagination, _postsIndex, ct);
+            return await SearchAsync(query, pagination, _postsIndexName, ct);
         }
         catch (Exception e)
         {
@@ -65,11 +67,11 @@ public sealed class AlgoliaSearchClient : ISearchClient
         }
     }
 
-    public async Task SaveMenuAsync(MenuIndexDto post)
+    public async Task SaveMenuAsync(MenuIndexDto menu)
     {
         try
         {
-            await _menusIndex.SaveObjectAsync(post);
+            await _client.SaveObjectAsync(_menusIndexName, menu);
         }
         catch (Exception e)
         {
@@ -81,7 +83,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _menusIndex.DeleteObjectAsync(menu.Id.ToString());
+            await _client.DeleteObjectAsync(_menusIndexName, menu.Id.ToString());
         }
         catch (Exception e)
         {
@@ -93,7 +95,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _postsIndex.SaveObjectAsync(post);
+            await _client.SaveObjectAsync(_postsIndexName, post);
         }
         catch (Exception e)
         {
@@ -105,7 +107,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _postsIndex.DeleteObjectAsync(post.Id.ToString());
+            await _client.DeleteObjectAsync(_postsIndexName, post.Id.ToString());
         }
         catch (Exception e)
         {
@@ -117,7 +119,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _bannersIndex.SaveObjectAsync(banner);
+            await _client.SaveObjectAsync(_bannersIndexName, banner);
         }
         catch (Exception e)
         {
@@ -129,7 +131,7 @@ public sealed class AlgoliaSearchClient : ISearchClient
     {
         try
         {
-            await _bannersIndex.DeleteObjectAsync(banner.Id.ToString());
+            await _client.DeleteObjectAsync(_bannersIndexName, banner.Id.ToString());
         }
         catch (Exception e)
         {
@@ -137,30 +139,31 @@ public sealed class AlgoliaSearchClient : ISearchClient
         }
     }
 
-    private static async Task<PaginatedList<int>> SearchAsync(
+    private async Task<PaginatedList<int>> SearchAsync(
         string query,
         PaginationDto pagination,
-        ISearchIndex index,
+        string index,
         CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
-            return new(new(), 0, pagination.Page, pagination.Items);
+            return new([], 0, pagination.Page, pagination.Items);
         }
 
-        var result = await index.SearchAsync<SearchObject>(
-                         new(Uri.UnescapeDataString(query))
-                         {
-                             HitsPerPage = pagination.Items,
-                             Page = pagination.Page
-                         },
+        var result = await _client.SearchSingleIndexAsync<Hit>(index, new(
+                             new SearchParamsObject
+                             {
+                                 Query = Uri.UnescapeDataString(query),
+                                 HitsPerPage = pagination.Items,
+                                 Page = pagination.Page
+                             }),
                          null,
                          ct);
 
         return new(
             result.Hits.ConvertAll(x => int.Parse(x.ObjectID)),
-            result.NbHits,
-            result.Page,
-            result.HitsPerPage);
+            result.NbHits ?? 0,
+            result.Page ?? 0,
+            result.HitsPerPage ?? 0);
     }
 }
