@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 public sealed class ApiExceptionFilter : ExceptionFilterAttribute
 {
-    private static readonly IDictionary<Type, MethodInfo> ExceptionHandlers =
+    private static readonly Dictionary<Type, MethodInfo> ExceptionHandlers =
         typeof(ApiExceptionFilter).GetMethods(BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance)
             .Where(x => x.GetCustomAttribute<HandleExceptionAttribute>() is not null)
             .ToDictionary(x => x.GetCustomAttribute<HandleExceptionAttribute>()!.Exception, x => x);

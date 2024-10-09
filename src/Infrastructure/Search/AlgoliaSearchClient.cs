@@ -11,6 +11,7 @@ using Domain.Entities.CMS;
 using Domain.Options;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Banner = Domain.Entities.CMS.Banner;
 using ISearchClient = Application.Common.Interfaces.ISearchClient;
 
 public sealed class AlgoliaSearchClient : ISearchClient
