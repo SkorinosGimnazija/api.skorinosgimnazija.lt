@@ -19,7 +19,6 @@ public static class ObservationLessonList
                        .AsNoTracking()
                        .ProjectTo<ObservationLessonDto>(mapper.ConfigurationProvider)
                        .OrderBy(x => x.Name)
-                       .ThenByDescending(x => x.Id)
                        .ToListAsync(cancellationToken);
         }
     }
