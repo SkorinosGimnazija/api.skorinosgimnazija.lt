@@ -9,6 +9,7 @@ using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.Observation;
 using Domain.Entities.School;
 using Domain.Entities.TechReports;
 using Domain.Entities.Timetable;
@@ -19,12 +20,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Npgsql;
 
-public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>, IAppDbContext
+public sealed class AppDbContext(DbContextOptions options)
+    : IdentityDbContext<AppUser, AppUserRole, int>(options), IAppDbContext
 {
-    public AppDbContext(DbContextOptions options) : base(options)
-    {
-    }
-
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -98,6 +96,14 @@ public sealed class AppDbContext : IdentityDbContext<AppUser, AppUserRole, int>,
 
     public DbSet<Announcement> Announcements { get; set; } = default!;
 
+    public DbSet<StudentObservation> StudentObservations { get; set; } = default!;
+    
+    public DbSet<ObservationLesson> ObservationLessons { get; set; } = default!;
+    
+    public DbSet<ObservationType> ObservationTypes { get; set; } = default!;
+    
+    public DbSet<ObservationTarget> ObservationTargets { get; set; } = default!;
+    
     public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         return Database.BeginTransactionAsync(cancellationToken);

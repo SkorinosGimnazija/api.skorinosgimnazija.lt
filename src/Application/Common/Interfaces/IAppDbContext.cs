@@ -6,6 +6,7 @@ using Domain.Entities.Bullies;
 using Domain.Entities.CMS;
 using Domain.Entities.Courses;
 using Domain.Entities.Identity;
+using Domain.Entities.Observation;
 using Domain.Entities.School;
 using Domain.Entities.TechReports;
 using Domain.Entities.Timetable;
@@ -65,6 +66,14 @@ public interface IAppDbContext
     DbSet<Timetable> Timetable { get; }
 
     DbSet<Announcement> Announcements { get; }
+
+    DbSet<StudentObservation> StudentObservations { get; set; }
+
+    DbSet<ObservationLesson> ObservationLessons { get; set; }
+
+    DbSet<ObservationType> ObservationTypes { get; set; }
+
+    DbSet<ObservationTarget> ObservationTargets { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
