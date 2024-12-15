@@ -83,6 +83,8 @@ public sealed class Startup
 
         services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
 
+        services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
+
         services.AddFluentValidationClientsideAdapters();
 
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilter>(); })
