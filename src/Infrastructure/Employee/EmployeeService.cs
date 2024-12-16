@@ -27,10 +27,10 @@ public sealed class EmployeeService : IEmployeeService
 
         _groupRoles = new Dictionary<string, IReadOnlyCollection<string>>
         {
-            { groupOptions.Value.Teachers, new[] { Auth.Role.Teacher } },
-            { groupOptions.Value.BullyManagers, new[] { Auth.Role.BullyManager } },
-            { groupOptions.Value.Managers, new[] { Auth.Role.Teacher, Auth.Role.Manager, Auth.Role.BullyManager } },
-            { groupOptions.Value.TechManagers, new[] { Auth.Role.TechManager } },
+            { groupOptions.Value.Teachers, [Auth.Role.Teacher] },
+            { groupOptions.Value.SocialManagers, [Auth.Role.SocialManager] },
+            { groupOptions.Value.TechManagers, [Auth.Role.TechManager] },
+            { groupOptions.Value.Managers, [Auth.Role.Manager, Auth.Role.SocialManager, Auth.Role.Teacher] },
             { groupOptions.Value.Service, Auth.AllRoles.ToArray() }
         };
 
@@ -99,18 +99,29 @@ public sealed class EmployeeService : IEmployeeService
     {
         try
         {
-            var request = _directoryService.Groups.List();
+            var groups = new List<string>();
+            string? pageToken = null;
 
-            request.UserKey = userName;
-            request.Domain = _domain;
+            do
+            {
+                var request = _directoryService.Groups.List();
 
-            var response = await request.ExecuteAsync();
+                request.UserKey = userName;
+                request.Domain = _domain;
+                request.PageToken = pageToken;
 
-            return response.GroupsValue.Select(x => x.Id);
+                var response = await request.ExecuteAsync();
+
+                pageToken = response.NextPageToken;
+
+                groups.AddRange(response.GroupsValue.Select(x => x.Id));
+            } while (!string.IsNullOrEmpty(pageToken));
+
+            return groups;
         }
         catch
         {
-            return Enumerable.Empty<string>();
+            return [];
         }
     }
 
@@ -149,7 +160,7 @@ public sealed class EmployeeService : IEmployeeService
 
         if (!_cache.TryGetValue(cacheKey, out List<Employee>? employes))
         {
-            employes = new();
+            employes = [];
             string? pageToken = null;
 
             do

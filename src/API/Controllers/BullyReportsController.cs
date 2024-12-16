@@ -8,7 +8,7 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = Auth.Role.BullyManager)]
+[Authorize(Roles = Auth.Role.SocialManager)]
 public class BullyReportsController : BaseApiController
 {
     [HttpGet(Name = "GetBullyReports")]
@@ -36,7 +36,7 @@ public class BullyReportsController : BaseApiController
         return NoContent();
     }
 
-    [AllowAnonymous]
+    // [AllowAnonymous]
     [HttpPost("public", Name = "CreatePublicBullyReport")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

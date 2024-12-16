@@ -1,6 +1,7 @@
 ﻿namespace SkorinosGimnazija.Infrastructure.Identity;
 
 using System.Reflection;
+using System.Runtime.Serialization;
 
 public static class Auth
 {
@@ -9,7 +10,7 @@ public static class Auth
         get
         {
             return typeof(Role).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                .Where(x => x.IsLiteral)
+                .Where(x => x.IsLiteral && x.GetCustomAttribute<IgnoreDataMemberAttribute>() is null)
                 .Select(x => (string) x.GetRawConstantValue()!);
         }
     }
@@ -20,10 +21,16 @@ public static class Auth
 
         public const string Teacher = "Teacher";
 
-        public const string BullyManager = "Bully";
+        public const string SocialManager = "Social";
 
         public const string TechManager = "Tech";
 
         public const string Manager = "Manager";
+
+        [IgnoreDataMember]
+        public const string TeacherOrTechManager = Teacher + "," + TechManager;
+
+        [IgnoreDataMember]
+        public const string TeacherOrSocialManager = Teacher + "," + SocialManager;
     }
 }

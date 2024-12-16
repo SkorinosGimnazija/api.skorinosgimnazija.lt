@@ -5,18 +5,11 @@ using Application.Common.Interfaces;
 using Identity;
 using Microsoft.AspNetCore.Http;
 
-public sealed class CurrentUserService : ICurrentUserService
+public sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    private ClaimsPrincipal? User
     {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public ClaimsPrincipal? User
-    {
-        get { return _httpContextAccessor.HttpContext?.User; }
+        get { return httpContextAccessor.HttpContext?.User; }
     }
 
     public int UserId
@@ -44,7 +37,17 @@ public sealed class CurrentUserService : ICurrentUserService
 
     public bool IsOwnerOrManager(int resourceOwnerId)
     {
-        return IsResourceOwner(resourceOwnerId) || IsAdmin() || IsManager();
+        return IsResourceOwner(resourceOwnerId) || IsManager();
+    }
+
+    public bool IsOwnerOrSocialManager(int resourceOwnerId)
+    {
+        return IsResourceOwner(resourceOwnerId) || IsSocialManager();
+    }
+
+    public bool IsOwnerOrTechManager(int resourceOwnerId)
+    {
+        return IsResourceOwner(resourceOwnerId) || IsTechManager();
     }
 
     public bool IsResourceOwner(int resourceOwnerId)
@@ -52,14 +55,19 @@ public sealed class CurrentUserService : ICurrentUserService
         return UserId == resourceOwnerId;
     }
 
-    public bool IsManager()
+    public bool IsSocialManager()
     {
-        return HasRole(Auth.Role.Manager);
+        return HasRole(Auth.Role.SocialManager);
     }
 
     public bool IsTechManager()
     {
         return HasRole(Auth.Role.TechManager);
+    }
+
+    public bool IsManager()
+    {
+        return HasRole(Auth.Role.Manager);
     }
 
     public bool IsAdmin()

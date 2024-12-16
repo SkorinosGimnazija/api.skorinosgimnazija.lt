@@ -168,7 +168,7 @@ public class StudentObservationController : BaseApiController
         return NoContent();
     }
 
-    [Authorize(Roles = Auth.Role.Manager)]
+    [Authorize(Roles = Auth.Role.SocialManager)]
     [HttpGet(Name = "GetStudentObservations")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<PaginatedList<StudentObservationDto>> GetStudentObservations(
@@ -177,20 +177,21 @@ public class StudentObservationController : BaseApiController
         return await Mediator.Send(new StudentObservationList.Query(pagination), ct);
     }
 
-    [HttpGet("my", Name = "GetMyStudentObservations")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<PaginatedList<StudentObservationDto>> GetMyStudentObservations(
-        [FromQuery] PaginationDto pagination, CancellationToken ct)
-    {
-        return await Mediator.Send(new StudentObservationMyList.Query(pagination), ct);
-    }
-
+    [Authorize(Roles = Auth.Role.SocialManager)]
     [HttpGet("{id:int}", Name = "GetStudentObservationById")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<StudentObservationDto>> GetStudentObservation(int id, CancellationToken ct)
     {
         return await Mediator.Send(new StudentObservationDetails.Query(id), ct);
+    }
+
+    [HttpGet("my", Name = "GetMyStudentObservations")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<PaginatedList<StudentObservationDto>> GetMyStudentObservations(
+        [FromQuery] PaginationDto pagination, CancellationToken ct)
+    {
+        return await Mediator.Send(new StudentObservationMyList.Query(pagination), ct);
     }
 
     [HttpPost(Name = "CreateStudentObservation")]

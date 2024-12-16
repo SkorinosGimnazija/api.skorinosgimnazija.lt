@@ -8,7 +8,7 @@ using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = Auth.Role.Teacher)]
+[Authorize(Roles = Auth.Role.TeacherOrTechManager)]
 public class TechJournalController : BaseApiController
 {
     [HttpGet(Name = "GetTechJournalReports")]

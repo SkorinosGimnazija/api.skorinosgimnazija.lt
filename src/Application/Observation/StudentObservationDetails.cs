@@ -26,7 +26,7 @@ public static class StudentObservationDetails
                 throw new NotFoundException();
             }
 
-            if (!currentUser.IsOwnerOrManager(entity.Teacher.Id))
+            if (!currentUser.IsOwnerOrSocialManager(entity.Teacher.Id))
             {
                 throw new UnauthorizedAccessException();
             }

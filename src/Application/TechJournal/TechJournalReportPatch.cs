@@ -49,11 +49,6 @@ public static class TechJournalReportPatch
                 throw new NotFoundException();
             }
 
-            if (!_currentUser.IsAdmin() && !_currentUser.IsTechManager())
-            {
-                throw new UnauthorizedAccessException();
-            }
-
             var oldState = entity.IsFixed;
 
             _mapper.Map(request.TechJournalReport, entity);

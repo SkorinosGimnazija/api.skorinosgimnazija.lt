@@ -30,6 +30,7 @@ public sealed class TokenService
             SigningCredentials = cred
         };
 
+        //TODO JsonWebTokenHandler?
         var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
 

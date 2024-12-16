@@ -27,7 +27,7 @@ public class BullyReportCreatedNotificationHandler : INotificationHandler<BullyR
         _logger = logger;
         _emailService = emailService;
         _employeeService = employeeService;
-        _groupId = groupOptions.Value.BullyManagers;
+        _groupId = groupOptions.Value.SocialNotifications;
         _baseUrl = urlOptions.Value.Admin;
     }
 

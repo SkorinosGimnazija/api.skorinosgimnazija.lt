@@ -19,4 +19,10 @@ public interface ICurrentUserService
     bool IsManager();
 
     bool IsTechManager();
+
+    bool IsOwnerOrSocialManager(int resourceOwnerId);
+
+    bool IsSocialManager();
+
+    bool IsOwnerOrTechManager(int resourceOwnerId);
 }

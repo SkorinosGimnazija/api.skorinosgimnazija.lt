@@ -8,11 +8,13 @@ public record GroupOptions
 
     public string Teachers { get; init; } = default!;
 
-    public string BullyManagers { get; init; } = default!;
+    public string SocialManagers { get; init; } = default!;
 
     public string TechManagers { get; init; } = default!;
 
     public string TechNotifications { get; init; } = default!;
+
+    public string SocialNotifications { get; init; } = default!;
 
     public string TechStatusNotifications { get; init; } = default!;
 }
