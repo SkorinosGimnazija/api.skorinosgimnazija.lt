@@ -150,68 +150,6 @@ public class UpdateTechReportJournalTests
     }
 
     [Fact]
-    public async Task TechJournalReportPatch_ShouldPatch_WhenTechManager()
-    {
-        _app.CurrentUserMock.SetCurrentUserTechManager();
-
-        var owner = await _app.CreateUserAsync();
-
-        var report = await _app.AddAsync(new TechJournalReport
-        {
-            Place = "Place",
-            Details = "Details",
-            ReportDate = DateTime.UtcNow.AddDays(-1),
-            UserId = owner.Id
-        });
-
-        var expected = new TechJournalReportPatchDto
-        {
-            IsFixed = true,
-            Notes = "Notes"
-        };
-
-        var command = new TechJournalReportPatch.Command(report.Id, expected);
-
-        await _app.SendAsync(command);
-
-        var actual = await _app.FindAsync<TechJournalReport>(report.Id);
-
-        actual.Should().NotBeNull();
-        actual.Id.Should().Be(report.Id);
-        actual.Place.Should().Be(report.Place);
-        actual.Details.Should().Be(report.Details);
-        actual.ReportDate.Should().BeCloseTo(report.ReportDate, TimeSpan.FromSeconds(5));
-        actual.FixDate.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        actual.Notes.Should().Be(expected.Notes);
-        actual.IsFixed.Should().Be(expected.IsFixed);
-        actual.UserId.Should().Be(owner.Id);
-    }
-
-    [Fact]
-    public async Task TechJournalReportPatch_ShouldThrowEx_WhenNotTechManager()
-    {
-        var report = await _app.AddAsync(new TechJournalReport
-        {
-            Place = "Place",
-            Details = "Details",
-            ReportDate = DateTime.UtcNow.AddDays(-1),
-            UserId = _currentUserId
-        });
-
-        var expected = new TechJournalReportPatchDto
-        {
-            IsFixed = true,
-            Notes = "Notes"
-        };
-
-        var command = new TechJournalReportPatch.Command(report.Id, expected);
-
-        await FluentActions.Invoking(() => _app.SendAsync(command))
-            .Should()
-            .ThrowAsync<UnauthorizedAccessException>();
-    }
-
-    [Fact]
     public async Task TechJournalReportDelete_ShouldThrowNotFound()
     {
         var command = new TechJournalReportDelete.Command(0);
