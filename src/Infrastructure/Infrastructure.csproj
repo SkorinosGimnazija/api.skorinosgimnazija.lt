@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Algolia.Search" Version="7.11.2" />
+    <PackageReference Include="Algolia.Search" Version="7.13.4" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.1" />
     <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.68.0.3631" />
     <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
