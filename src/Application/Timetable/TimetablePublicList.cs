@@ -26,7 +26,8 @@ public static class TimetablePublicList
         public async Task<TimetablePublicDto?> Handle(Query request, CancellationToken cancellationToken)
         {
             //todo change class times to utc...
-            var datetime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "FLE Standard Time");
+            var tz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius");
+            var datetime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz);
             var time = TimeOnly.FromDateTime(datetime);
             var date = DateOnly.FromDateTime(datetime);
 
