@@ -36,6 +36,9 @@
         <Content Update="@(Content)">
             <Visible Condition="'%(NuGetItemType)' == 'Content'">false</Visible>
         </Content>
+        <Content Include="..\Dockerfile">
+          <Link>Dockerfile</Link>
+        </Content>
     </ItemGroup>
 
 </Project>
