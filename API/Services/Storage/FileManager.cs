@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using API.Services.ImageOptimization;
 using API.Services.Options;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 
@@ -12,7 +13,8 @@ public partial class FileManager(
     ILogger<FileManager> logger,
     IImageOptimizer imageOptimizer,
     IHttpClientFactory httpClientFactory,
-    IStorageService storageService)
+    IStorageService storageService,
+    IMemoryCache cache)
 {
     private static readonly Regex FileUrlReplaceTemplateRegex = FileLinkRegex();
 
@@ -119,7 +121,39 @@ public partial class FileManager(
 
     public async Task<StorageFile?> GetFileAsync(string fileId)
     {
-        return await storageService.GetFileAsync(fileId);
+        var key = $"lf-{fileId}";
+        var localFilePath = Path.Combine(Path.GetTempPath(), key);
+        var metadata = await cache.GetOrCreateAsync(key, async entry =>
+        {
+            var file = await storageService.GetFileAsync(fileId);
+            if (file is null)
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60);
+                return null;
+            }
+
+            await File.WriteAllBytesAsync(localFilePath, file.Data);
+
+            return new FileMetadata
+            {
+                Id = file.Id,
+                Name = file.Name,
+                ContentType = file.ContentType
+            };
+        });
+
+        if (metadata is null)
+        {
+            return null;
+        }
+
+        return new()
+        {
+            Id = metadata.Id,
+            Name = metadata.Name,
+            ContentType = metadata.ContentType,
+            Data = await File.ReadAllBytesAsync(localFilePath)
+        };
     }
 
     public async Task<bool> DeleteFileAsync(string fileId)
