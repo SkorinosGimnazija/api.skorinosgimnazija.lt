@@ -85,6 +85,7 @@ public sealed class MenuMapper : Mapper<CreateMenuRequest, MenuResponse, Menu>
 
     public bool IsExternal(string? url)
     {
-        return Uri.TryCreate(url, UriKind.Absolute, out _);
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+               (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
     }
 }
