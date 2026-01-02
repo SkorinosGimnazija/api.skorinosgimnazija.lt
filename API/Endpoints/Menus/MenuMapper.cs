@@ -80,7 +80,12 @@ public sealed class MenuMapper : Mapper<CreateMenuRequest, MenuResponse, Menu>
             return null;
         }
 
-        return $"/{url.Trim().TrimStart('/')}";
+        if (IsExternal(url))
+        {
+            return url;
+        }
+
+        return $"/{url.Trim(' ', '/')}";
     }
 
     public bool IsExternal(string? url)
