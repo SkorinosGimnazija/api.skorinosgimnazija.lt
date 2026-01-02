@@ -24,7 +24,7 @@ public sealed class CloudinaryImageOptimizer(
         .Quality("95")
         .AspectRatio("16:9")
         .Width("1920")
-        .Crop(env.IsDevelopment() ? "fill" : "imagga_crop")
+        .Crop(env.IsDevelopment() ? "fill" : "imagga_scale")
         .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
         .FetchFormat("jpg");
 
