@@ -8,6 +8,7 @@ public sealed class SentryIgnoredExceptions : IExceptionFilter
     private static readonly HashSet<Type> IgnoredExceptionTypes =
     [
         typeof(OperationCanceledException),
+        typeof(TaskCanceledException),
         typeof(UniqueConstraintException),
         typeof(ReferenceConstraintException)
     ];
