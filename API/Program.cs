@@ -30,8 +30,8 @@ if (builder.Environment.IsProduction())
     builder.WebHost.UseSentry(o =>
     {
         o.EnableLogs = true;
-        o.SampleRate = 0.1f;
-        o.TracesSampleRate = 0.1f;
+        o.SampleRate = 1.0f;
+        o.TracesSampleRate = 0.35f;
         o.Dsn = config["Sentry:Dsn"]!;
         o.AddExceptionFilter(new SentryIgnoredExceptions());
     });
