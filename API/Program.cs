@@ -108,6 +108,7 @@ services.AddSingleton<IStorageService, GoogleDriveService>();
 
 if (builder.Environment.IsProduction())
 {
+    services.AddHostedService<RecentFilesCacheService>();
     services.AddHostedService<UserSyncService>();
     services.AddSingleton<ICalendarService, GoogleCalendarService>();
     services.AddSingleton<IEmailService, GoogleEmailService>();
