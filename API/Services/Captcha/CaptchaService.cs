@@ -13,7 +13,7 @@ public class CaptchaService(
     {
         using var client = httpClientFactory.CreateClient();
 
-        var content = new FormUrlEncodedContent([
+        using var content = new FormUrlEncodedContent([
             // new("remoteip", ip),
             new("secret", captchaOptions.Value.Secret),
             new("response", token)

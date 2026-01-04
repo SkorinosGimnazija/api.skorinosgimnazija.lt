@@ -31,7 +31,7 @@ public sealed class ListObservationsEndpoint(AppDbContext dbContext)
         if (req.CreatorId is not null)
         {
             query = query
-                .Where(x => x.CreatorId == req.CreatorId.Value)
+                .Where(x => x.CreatorId == req.CreatorId)
                 .OrderByDescending(x => x.Id);
         }
         else

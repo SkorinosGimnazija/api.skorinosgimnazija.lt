@@ -55,25 +55,24 @@ public sealed class PatchFailureReportCommandHandler(
             return;
         }
 
-        var message = new MimeMessage
+        using var message = new MimeMessage();
+
+        message.Subject = "Gedimų žurnalas";
+        message.To.Add(new MailboxAddress(report.CreatorName, report.CreatorEmail));
+        message.ReplyTo.Add(new MailboxAddress(fixer.Name, fixer.Email));
+        message.Body = new TextPart(TextFormat.Html)
         {
-            Subject = "Gedimų žurnalas",
-            To = { new MailboxAddress(report.CreatorName, report.CreatorEmail) },
-            ReplyTo = { new MailboxAddress(fixer.Name, fixer.Email) },
-            Body = new TextPart(TextFormat.Html)
-            {
-                Text =
-                    $"""
-                     <p>Atnaujinta informacija apie jūsų praneštą gedimą.</p>
-                     <ul>
-                        <li><b>Būsena:</b> Gedimas {report.IsFixed switch { true => "sutvarkytas", false => "nesutvarkytas", null => "tvarkomas" }}</li>
-                        {(!string.IsNullOrWhiteSpace(command.Note) ? $"<li><b>Pastaba:</b> {WebUtility.HtmlEncode(command.Note.Trim())}</li>" : string.Empty)}
-                        <li style="margin-top:1rem;"><b>Vieta:</b> {WebUtility.HtmlEncode(report.Location)}</li>
-                        <li><b>Apibūdinimas:</b> {WebUtility.HtmlEncode(report.Details)}</li>
-                     </ul>
-                     <p style="margin-top:2.5rem;"><i>Jei turite klausimų, galite "atsakyti" tiesiai į šį el. laišką.</i></p>
-                     """
-            }
+            Text =
+                $"""
+                 <p>Atnaujinta informacija apie jūsų praneštą gedimą.</p>
+                 <ul>
+                    <li><b>Būsena:</b> Gedimas {report.IsFixed switch { true => "sutvarkytas", false => "nesutvarkytas", null => "tvarkomas" }}</li>
+                    {(!string.IsNullOrWhiteSpace(command.Note) ? $"<li><b>Pastaba:</b> {WebUtility.HtmlEncode(command.Note.Trim())}</li>" : string.Empty)}
+                    <li style="margin-top:1rem;"><b>Vieta:</b> {WebUtility.HtmlEncode(report.Location)}</li>
+                    <li><b>Apibūdinimas:</b> {WebUtility.HtmlEncode(report.Details)}</li>
+                 </ul>
+                 <p style="margin-top:2.5rem;"><i>Jei turite klausimų, galite "atsakyti" tiesiai į šį el. laišką.</i></p>
+                 """
         };
 
         await emailService.SendAsync(message);

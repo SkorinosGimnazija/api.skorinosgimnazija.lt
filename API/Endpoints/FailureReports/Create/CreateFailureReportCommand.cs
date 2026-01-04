@@ -43,24 +43,23 @@ public sealed class CreateFailureReportCommandHandler(
             return;
         }
 
-        var message = new MimeMessage
+        using var message = new MimeMessage();
+
+        message.Subject = "Gedimų žurnalas";
+        message.To.Add(new MailboxAddress(null, notificationOptions.Value.TechEmail));
+        message.ReplyTo.Add(new MailboxAddress(report.CreatorName, report.CreatorEmail));
+        message.Body = new TextPart(TextFormat.Html)
         {
-            Subject = "Gedimų žurnalas",
-            To = { new MailboxAddress(null, notificationOptions.Value.TechEmail) },
-            ReplyTo = { new MailboxAddress(report.CreatorName, report.CreatorEmail) },
-            Body = new TextPart(TextFormat.Html)
-            {
-                Text =
-                    $"""
-                     <p>Gautas naujas pranešimas apie <a href="{urlOptions.Value.Admin}/teacher/failures/{command.ReportId}/fix">gedimą</a>.</p>
-                     <ul>
-                        <li><b>Mokytojas:</b> {report.CreatorName}</li>
-                        <li><b>Vieta:</b> {WebUtility.HtmlEncode(report.Location)}</li>
-                        <li><b>Apibūdinimas:</b> {WebUtility.HtmlEncode(report.Details)}</li>
-                     </ul>
-                     <p style="margin-top:2.5rem;"><i>Jei turite klausimų, galite "atsakyti" tiesiai į šį el. laišką.</i></p>
-                     """
-            }
+            Text =
+                $"""
+                 <p>Gautas naujas pranešimas apie <a href="{urlOptions.Value.Admin}/teacher/failures/{command.ReportId}/fix">gedimą</a>.</p>
+                 <ul>
+                    <li><b>Mokytojas:</b> {report.CreatorName}</li>
+                    <li><b>Vieta:</b> {WebUtility.HtmlEncode(report.Location)}</li>
+                    <li><b>Apibūdinimas:</b> {WebUtility.HtmlEncode(report.Details)}</li>
+                 </ul>
+                 <p style="margin-top:2.5rem;"><i>Jei turite klausimų, galite "atsakyti" tiesiai į šį el. laišką.</i></p>
+                 """
         };
 
         await emailService.SendAsync(message);

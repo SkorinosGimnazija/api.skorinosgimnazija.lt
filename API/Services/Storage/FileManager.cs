@@ -122,7 +122,7 @@ public partial class FileManager(
     public async Task<StorageFile?> GetFileAsync(string fileId)
     {
         var key = $"lf-{fileId}";
-        var localFilePath = Path.Combine(Path.GetTempPath(), key);
+        var localFilePath = Path.Join(Path.GetTempPath(), key);
         var metadata = await cache.GetOrCreateAsync(key, async entry =>
         {
             var file = await storageService.GetFileAsync(fileId);

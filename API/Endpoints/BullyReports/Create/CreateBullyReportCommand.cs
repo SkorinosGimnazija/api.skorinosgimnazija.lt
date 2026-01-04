@@ -43,22 +43,21 @@ public sealed class CreateBullyReportCommandHandler(
             return;
         }
 
-        var message = new MimeMessage
+        using var message = new MimeMessage();
+
+        message.Subject = report.IsPublicReport ? "Patyčių dėžutė" : "Patyčių žurnalas";
+        message.To.Add(new MailboxAddress(null, notificationOptions.Value.SocialEmail));
+        message.Body = new TextPart(TextFormat.Html)
         {
-            Subject = report.IsPublicReport ? "Patyčių dėžutė" : "Patyčių žurnalas",
-            To = { new MailboxAddress(null, notificationOptions.Value.SocialEmail) },
-            Body = new TextPart(TextFormat.Html)
-            {
-                Text =
-                    $"""
-                     <p>Gautas naujas pranešimas apie <a href="{urlOptions.Value.Admin}/admin/bullies/{command.ReportId}/resolve">patyčias</a>.</p>
-                     <ul>
-                        <li><b>Auka:</b> {WebUtility.HtmlEncode(report.VictimName)}</li>
-                        <li><b>Skriaudėjas:</b> {WebUtility.HtmlEncode(report.BullyName)}</li>
-                        <li><b>Patyčios:</b> {WebUtility.HtmlEncode(report.Details)}</li>
-                     </ul>
-                     """
-            }
+            Text =
+                $"""
+                 <p>Gautas naujas pranešimas apie <a href="{urlOptions.Value.Admin}/admin/bullies/{command.ReportId}/resolve">patyčias</a>.</p>
+                 <ul>
+                    <li><b>Auka:</b> {WebUtility.HtmlEncode(report.VictimName)}</li>
+                    <li><b>Skriaudėjas:</b> {WebUtility.HtmlEncode(report.BullyName)}</li>
+                    <li><b>Patyčios:</b> {WebUtility.HtmlEncode(report.Details)}</li>
+                 </ul>
+                 """
         };
 
         await emailService.SendAsync(message);
