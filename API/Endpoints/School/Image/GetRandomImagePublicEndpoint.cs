@@ -1,7 +1,7 @@
 ﻿namespace API.Endpoints.School.Image;
 
 public sealed class GetRandomImagePublicEndpoint(AppDbContext dbContext)
-    : EndpointWithoutRequest<ImageResponse>
+    : EndpointWithoutRequest<PostRandomImageResponse>
 {
     public override void Configure()
     {
@@ -12,24 +12,29 @@ public sealed class GetRandomImagePublicEndpoint(AppDbContext dbContext)
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var images = await dbContext.Posts.AsNoTracking()
-                         .Where(x =>
-                             x.IsPublished &&
-                             x.ShowInFeed &&
-                             x.Images != null)
-                         .OrderBy(x => EF.Functions.Random())
-                         .Select(x => x.Images)
-                         .FirstOrDefaultAsync(ct);
+        var post = await dbContext.Posts.AsNoTracking()
+                       .Where(x =>
+                           x.IsPublished &&
+                           x.ShowInFeed &&
+                           x.Images != null)
+                       .OrderBy(x => EF.Functions.Random())
+                       .FirstOrDefaultAsync(ct);
 
-        if (images is null || images.Count == 0)
+        if (post is null || post.Images!.Count == 0)
         {
             await Send.NoContentAsync(ct);
             return;
         }
 
-        var imageIndex = Random.Shared.Next(images.Count);
-        var imageUrl = images[imageIndex];
+        var imageIndex = Random.Shared.Next(post.Images.Count);
+        var imageUrl = post.Images[imageIndex];
 
-        await Send.OkAsync(new() { Url = imageUrl }, ct);
+        await Send.OkAsync(new()
+        {
+            Url = imageUrl,
+            PostId = post.Id,
+            PostTitle = post.Title,
+            PostDate = post.PublishedAt
+        }, ct);
     }
 }
