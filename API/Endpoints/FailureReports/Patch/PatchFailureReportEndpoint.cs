@@ -19,15 +19,20 @@ public sealed class PatchFailureReportEndpoint(AppDbContext dbContext)
         }
 
         Map.UpdateEntity(req, entity);
+        var fixStatusModified = dbContext.Entry(entity).Property(x => x.IsFixed).IsModified;
+
         await dbContext.SaveChangesAsync(ct);
 
-        await new PatchFailureReportCommand
-            {
-                ReportId = entity.Id,
-                FixerId = req.FixerId,
-                Note = req.Note?.Trim()
-            }
-            .QueueJobAsync(ct: ct);
+        if (!string.IsNullOrWhiteSpace(req.Note) || fixStatusModified)
+        {
+            await new PatchFailureReportCommand
+                {
+                    ReportId = entity.Id,
+                    FixerId = req.FixerId,
+                    Note = req.Note
+                }
+                .QueueJobAsync(ct: ct);
+        }
 
         await Send.NoContentAsync(ct);
     }
