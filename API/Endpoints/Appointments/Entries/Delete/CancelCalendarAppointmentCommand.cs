@@ -16,6 +16,10 @@ public sealed class CancelCalendarAppointmentCommandHandler(
 {
     public async Task ExecuteAsync(CancelCalendarAppointmentCommand command, CancellationToken ct)
     {
-        await calendarService.CancelAppointmentAsync(command.AppointmentId);
+        var deleted = await calendarService.CancelAppointmentAsync(command.AppointmentId);
+        if (!deleted)
+        {
+            logger.LogWarning("Appointment '{AppointmentId}' not found", command.AppointmentId);
+        }
     }
 }
