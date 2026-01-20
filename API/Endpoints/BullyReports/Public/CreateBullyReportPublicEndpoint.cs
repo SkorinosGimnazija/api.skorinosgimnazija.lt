@@ -3,7 +3,7 @@
 using API.Endpoints.BullyReports.Create;
 
 public sealed class CreateBullyReportPublicEndpoint(AppDbContext dbContext)
-    : Endpoint<CreateBullyReportPublicRequest, BullyReportResponse, BullyReportMapper>
+    : Endpoint<CreateBullyReportPublicRequest, EmptyResponse, BullyReportMapper>
 {
     public override void Configure()
     {
@@ -21,6 +21,7 @@ public sealed class CreateBullyReportPublicEndpoint(AppDbContext dbContext)
         await new CreateBullyReportCommand { ReportId = entity.Id }
             .QueueJobAsync(DateTime.UtcNow.AddMinutes(5), ct: ct);
 
-        await Send.StatusCodeAsync(StatusCodes.Status201Created, ct);
+        // dont sent created entity ?
+        await Send.ResponseAsync(new(), StatusCodes.Status201Created, ct);
     }
 }

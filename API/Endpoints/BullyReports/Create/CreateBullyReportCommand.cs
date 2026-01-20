@@ -53,8 +53,8 @@ public sealed class CreateBullyReportCommandHandler(
                 $"""
                  <p>Gautas naujas pranešimas apie <a href="{urlOptions.Value.Admin}/admin/bullies/{command.ReportId}/resolve">patyčias</a>.</p>
                  <ul>
-                    <li><b>Auka:</b> {WebUtility.HtmlEncode(report.VictimName)}</li>
                     <li><b>Skriaudėjas:</b> {WebUtility.HtmlEncode(report.BullyName)}</li>
+                    <li><b>Auka:</b> {WebUtility.HtmlEncode(report.VictimName)}</li>
                     <li><b>Patyčios:</b> {WebUtility.HtmlEncode(report.Details)}</li>
                  </ul>
                  """
