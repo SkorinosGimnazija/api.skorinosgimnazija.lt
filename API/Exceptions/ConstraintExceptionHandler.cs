@@ -7,8 +7,6 @@ using Npgsql;
 internal sealed class ConstraintExceptionHandler(IProblemDetailsService problemDetails)
     : IExceptionHandler
 {
-    private const int ExceptionStatusCode = StatusCodes.Status409Conflict;
-
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -17,7 +15,18 @@ internal sealed class ConstraintExceptionHandler(IProblemDetailsService problemD
             return false;
         }
 
-        httpContext.Response.StatusCode = ExceptionStatusCode;
+        if (exception.InnerException is not PostgresException pgException)
+        {
+            return false;
+        }
+
+        httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
+
+        var errorDetails = new
+        {
+            Name = pgException.ConstraintName,
+            Reason = exception.Data[nameof(pgException.MessageText)] ?? pgException.MessageText
+        };
 
         return await problemDetails.TryWriteAsync(new()
         {
@@ -25,9 +34,9 @@ internal sealed class ConstraintExceptionHandler(IProblemDetailsService problemD
             Exception = exception,
             ProblemDetails =
             {
-                Status = ExceptionStatusCode,
-                Title = exception.Message,
-                Detail = (exception.InnerException as PostgresException)?.ConstraintName
+                Status = httpContext.Response.StatusCode,
+                Detail = exception.Message,
+                Extensions = { ["errors"] = new[] { errorDetails } }
             }
         });
     }
