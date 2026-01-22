@@ -12,7 +12,7 @@ public sealed class ListAppointmentTypesPublicEndpoint(AppDbContext dbContext)
     public override async Task HandleAsync(CancellationToken ct)
     {
         var entities = await dbContext.AppointmentTypes.AsNoTracking()
-                           .Where(x => x.IsPublic)
+                           .Where(x => x.IsPublic && x.RegistrationEndsAt > DateTime.UtcNow)
                            .OrderByDescending(x => x.Id)
                            .ToListAsync(ct);
 

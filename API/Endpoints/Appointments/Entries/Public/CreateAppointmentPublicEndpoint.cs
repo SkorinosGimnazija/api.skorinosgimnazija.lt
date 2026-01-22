@@ -1,6 +1,9 @@
 ﻿namespace API.Endpoints.Appointments.Entries.Public;
 
+using API.Database.Entities.Appointments;
 using API.Endpoints.Appointments.Entries.Create;
+using EntityFramework.Exceptions.Common;
+using Npgsql;
 
 public sealed class CreateAppointmentPublicEndpoint(AppDbContext dbContext)
     : Endpoint<CreateAppointmentPublicRequest, AppointmentResponse, AppointmentMapper>
@@ -13,20 +16,29 @@ public sealed class CreateAppointmentPublicEndpoint(AppDbContext dbContext)
 
     public override async Task HandleAsync(CreateAppointmentPublicRequest req, CancellationToken ct)
     {
-        var appointment = Map.ToEntity(req);
+        try
+        {
+            var appointment = Map.ToEntity(req);
 
-        dbContext.Appointments.Add(appointment);
-        await dbContext.SaveChangesAsync(ct);
+            dbContext.Appointments.Add(appointment);
+            await dbContext.SaveChangesAsync(ct);
 
-        await new CreateCalendarAppointmentCommand { AppointmentId = appointment.Id }
-            .QueueJobAsync(ct: ct);
+            await new CreateCalendarAppointmentCommand { AppointmentId = appointment.Id }
+                .QueueJobAsync(ct: ct);
 
-        appointment = await dbContext.Appointments
-                          .Include(x => x.Host)
-                          .Include(x => x.AppointmentDate)
-                          .Include(x => x.AppointmentDate.Type)
-                          .FirstAsync(x => x.Id == appointment.Id, ct);
+            appointment = await dbContext.Appointments
+                              .Include(x => x.Host)
+                              .Include(x => x.AppointmentDate)
+                              .Include(x => x.AppointmentDate.Type)
+                              .FirstAsync(x => x.Id == appointment.Id, ct);
 
-        await Send.OkAsync(Map.FromEntity(appointment), ct);
+            await Send.ResponseAsync(Map.FromEntity(appointment), StatusCodes.Status201Created, ct);
+        }
+        catch (UniqueConstraintException e) when (e.InnerException is PostgresException pe)
+        {
+            e.Data[nameof(pe.MessageText)] =
+                AppointmentConfiguration.GetErrorMessage(pe.ConstraintName);
+            throw;
+        }
     }
 }

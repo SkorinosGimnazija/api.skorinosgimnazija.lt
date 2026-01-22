@@ -24,7 +24,7 @@ public sealed class AppointmentMapper
             Id = Guid.CreateVersion7(),
             AppointmentDateId = req.DateId,
             HostId = req.HostId,
-            AttendeeEmail = req.Name.Trim(),
+            AttendeeEmail = req.Email.Trim(),
             AttendeeName = req.Name.Trim(),
             Note = req.Note.Trim()
         };

@@ -10,6 +10,9 @@ public record CreateAppointmentTypeRequest
     [StringLength(AppointmentTypeConfiguration.NameLength)]
     public required string Name { get; init; }
 
+    [StringLength(AppointmentTypeConfiguration.NameLength)]
+    public required string Description { get; init; }
+
     public required int DurationInMinutes { get; init; }
 
     public required bool IsOnline { get; init; }

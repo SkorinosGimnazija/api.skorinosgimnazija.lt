@@ -1,9 +1,9 @@
 ﻿namespace API.Endpoints.Appointments.AppointmentReservedDates.Update;
 
+using API.Database.Entities.Appointments;
+
 public sealed class UpdateAppointmentReservedDatesEndpoint(AppDbContext dbContext)
-    : Endpoint<List<UpdateAppointmentReservedDatesRequest>,
-        EmptyResponse,
-        UpdateAppointmentReservedDatesMapper>
+    : Endpoint<UpdateAppointmentReservedDatesRequest, EmptyResponse>
 {
     public override void Configure()
     {
@@ -12,28 +12,22 @@ public sealed class UpdateAppointmentReservedDatesEndpoint(AppDbContext dbContex
     }
 
     public override async Task HandleAsync(
-        List<UpdateAppointmentReservedDatesRequest> req, CancellationToken ct)
+        UpdateAppointmentReservedDatesRequest req, CancellationToken ct)
     {
-        foreach (var group in req.GroupBy(x => x.HostId))
-        {
-            var hostId = group.Key;
-            var newDates = group.ToDictionary(x => x.DateId);
-            var dates = await dbContext.AppointmentReservedDates
-                            .AsNoTracking()
-                            .Where(x => x.HostId == hostId)
-                            .ToDictionaryAsync(x => x.DateId, ct);
+        var currentDates = await dbContext.AppointmentReservedDates
+                        .Where(x => x.HostId == req.Id)
+                        .ToDictionaryAsync(x => x.DateId, ct);
 
-            var datesToAdd = newDates
-                .Where(x => !dates.ContainsKey(x.Key))
-                .Select(x => Map.ToEntity(x.Value));
+        var datesToAdd = req.DateIds
+            .Where(x => !currentDates.ContainsKey(x))
+            .Select(x => new AppointmentReservedDate { DateId = x, HostId = req.Id });
 
-            var datesToRemove = dates
-                .Where(x => !newDates.ContainsKey(x.Key))
-                .Select(x => x.Value);
+        var datesToRemove = currentDates
+            .Where(x => !req.DateIds.Contains(x.Key))
+            .Select(x => x.Value);
 
-            dbContext.AddRange(datesToAdd);
-            dbContext.RemoveRange(datesToRemove);
-        }
+        dbContext.AppointmentReservedDates.AddRange(datesToAdd);
+        dbContext.AppointmentReservedDates.RemoveRange(datesToRemove);
 
         await dbContext.SaveChangesAsync(ct);
 

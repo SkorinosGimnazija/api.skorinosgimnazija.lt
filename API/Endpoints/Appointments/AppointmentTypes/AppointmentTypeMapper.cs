@@ -11,6 +11,7 @@ public sealed class AppointmentTypeMapper
         {
             Id = e.Id,
             Name = e.Name,
+            Description = e.Description,
             RegistrationEndsAt = e.RegistrationEndsAt
         };
     }

@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 [PublicAPI]
 public record UpdateAppointmentDatesRequest
 {
-    public required int TypeId { get; init; }
+    public required int Id { get; init; }
 
-    public required DateTime Date { get; init; }
+    public required HashSet<DateTime> Dates { get; init; }
 }

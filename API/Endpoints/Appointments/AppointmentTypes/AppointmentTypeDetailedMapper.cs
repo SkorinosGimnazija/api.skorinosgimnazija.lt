@@ -12,6 +12,7 @@ public sealed class AppointmentTypeDetailedMapper
         {
             Id = e.Id,
             Name = e.Name,
+            Description = e.Description,
             DurationInMinutes = e.DurationInMinutes,
             IsPublic = e.IsPublic,
             IsOnline = e.IsOnline,
@@ -26,6 +27,7 @@ public sealed class AppointmentTypeDetailedMapper
         return new()
         {
             Name = r.Name,
+            Description = r.Description,
             DurationInMinutes = r.DurationInMinutes,
             IsPublic = r.IsPublic,
             IsOnline = r.IsOnline,
@@ -36,6 +38,7 @@ public sealed class AppointmentTypeDetailedMapper
     public override AppointmentType UpdateEntity(CreateAppointmentTypeRequest r, AppointmentType e)
     {
         e.Name = r.Name;
+        e.Description = r.Description;
         e.DurationInMinutes = r.DurationInMinutes;
         e.IsPublic = r.IsPublic;
         e.IsOnline = r.IsOnline;

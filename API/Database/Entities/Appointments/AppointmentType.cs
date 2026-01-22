@@ -9,6 +9,8 @@ public class AppointmentType
 
     public string Name { get; set; } = null!;
 
+    public string Description { get; set; } = null!;
+
     public int DurationInMinutes { get; set; }
 
     public bool IsPublic { get; set; }
@@ -29,6 +31,7 @@ public class AppointmentTypeConfiguration : IEntityTypeConfiguration<Appointment
     public void Configure(EntityTypeBuilder<AppointmentType> builder)
     {
         builder.Property(x => x.Name).HasMaxLength(NameLength);
+        builder.Property(x => x.Description).HasMaxLength(NameLength);
 
         builder.HasMany(x => x.AdditionalInvitees).WithMany();
         builder.HasMany(x => x.ExclusiveHosts).WithMany();

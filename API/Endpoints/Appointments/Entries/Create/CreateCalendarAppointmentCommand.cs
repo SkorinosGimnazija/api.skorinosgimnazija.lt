@@ -45,11 +45,11 @@ public sealed class CreateCalendarAppointmentCommandHandler(
             return;
         }
 
-        var calendarEvent = await calendarService.CreateAppointmentAsync(appointment, ct);
+        var calendarAppointment = await calendarService.CreateAppointmentAsync(appointment, ct);
 
         await dbContext.Appointments
             .Where(x => x.Id == command.AppointmentId)
             .ExecuteUpdateAsync(a =>
-                a.SetProperty(x => x.Link, calendarEvent.EventLink), ct);
+                a.SetProperty(x => x.Link, calendarAppointment.EventLink), ct);
     }
 }
