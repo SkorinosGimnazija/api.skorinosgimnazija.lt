@@ -8,7 +8,11 @@ public sealed class DevCalendarService(ILogger<DevCalendarService> logger) : ICa
         CalendarAppointmentRequest appointmentRequest, CancellationToken ct)
     {
         logger.LogInformation("Appointment {appointmentRequest} created", appointmentRequest);
-        return Task.FromResult(new CalendarResponse { EventId = Guid.NewGuid().ToString("N") });
+        return Task.FromResult(new CalendarResponse
+        {
+            EventId = Guid.NewGuid().ToString("N"),
+            EventLink = appointmentRequest.IsOnline ? "meeting-link" : null
+        });
     }
 
     public Task<CalendarResponse> CreateEventAsync(
