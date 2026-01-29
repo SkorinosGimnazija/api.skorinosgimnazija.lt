@@ -77,7 +77,6 @@ public sealed class GetTimetableNowPublicEndpoint(AppDbContext dbContext, TimePr
 
         var response = new TimetableNowResponse
         {
-            CurrentTime = time.ToShortTimeString(),
             CurrentClass = new()
             {
                 Id = classtime.Id,

@@ -5,8 +5,6 @@ using JetBrains.Annotations;
 [PublicAPI]
 public record TimetableNowResponse
 {
-    public required string CurrentTime { get; init; }
-
     public required Class CurrentClass { get; init; }
 
     public required List<RoomClass> RoomClasses { get; init; }
