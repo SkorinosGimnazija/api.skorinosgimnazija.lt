@@ -10,6 +10,7 @@ using API.Database.Entities.Courses;
 using API.Database.Entities.FailureReports;
 using API.Database.Entities.Observations;
 using API.Database.Entities.School;
+using API.Database.Entities.Settings;
 using EntityFramework.Exceptions.PostgreSQL;
 
 public sealed class AppDbContext(DbContextOptions options, IWebHostEnvironment env)
@@ -68,6 +69,8 @@ public sealed class AppDbContext(DbContextOptions options, IWebHostEnvironment e
     public DbSet<Banner> Banners { get; init; }
 
     public DbSet<Menu> Menus { get; init; }
+
+    public DbSet<Settings> Settings { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

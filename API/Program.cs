@@ -14,6 +14,7 @@ using API.Services.Employee;
 using API.Services.ImageOptimization;
 using API.Services.JobQueue;
 using API.Services.Options;
+using API.Services.Settings;
 using API.Services.Storage;
 using FastEndpoints.Security;
 using FastEndpoints.Swagger;
@@ -98,6 +99,7 @@ services.AddOptionsAndValidate<PostRevalidationOptions>("PostRevalidation");
 services.AddOptionsAndValidate<NotificationOptions>("Notifications");
 services.AddOptionsAndValidate<JwtOptions>("Jwt");
 
+services.AddScoped<SettingsProvider>();
 services.AddScoped<IdentityService>();
 services.AddSingleton(TimeProvider.System);
 services.AddSingleton<EmployeeService>();
