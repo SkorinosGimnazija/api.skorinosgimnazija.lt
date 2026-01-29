@@ -23,9 +23,9 @@ public sealed class ClasstimeMapper : Mapper<UpsertClasstimeRequest, ClasstimeRe
         {
             Id = e.Id,
             StartTime = e.StartTime.ToShortTimeString(),
-            StartTimeShort = e.StartTimeShort.ToShortTimeString(),
+            StartTimeShort = e.StartTimeShort?.ToShortTimeString(),
             EndTime = e.EndTime.ToShortTimeString(),
-            EndTimeShort = e.EndTimeShort.ToShortTimeString()
+            EndTimeShort = e.EndTimeShort?.ToShortTimeString()
         };
     }
 

@@ -9,9 +9,9 @@ public record ClasstimeResponse
 
     public required string StartTime { get; init; }
 
-    public required string StartTimeShort { get; init; }
+    public string? StartTimeShort { get; init; }
 
     public required string EndTime { get; init; }
 
-    public required string EndTimeShort { get; init; }
+    public string? EndTimeShort { get; init; }
 }

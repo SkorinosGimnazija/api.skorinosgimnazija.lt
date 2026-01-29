@@ -29,8 +29,8 @@ public sealed class GetTimetableNowPublicEndpoint(AppDbContext dbContext, TimePr
                             .Select(x => new
                             {
                                 x.Id,
-                                StartTime = isShortDay ? x.StartTimeShort : x.StartTime,
-                                EndTime = isShortDay ? x.EndTimeShort : x.EndTime
+                                StartTime = isShortDay ? x.StartTimeShort!.Value : x.StartTime,
+                                EndTime = isShortDay ? x.EndTimeShort!.Value : x.EndTime
                             })
                             .FirstOrDefaultAsync(ct);
 
