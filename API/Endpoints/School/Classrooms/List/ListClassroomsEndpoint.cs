@@ -6,7 +6,7 @@ public sealed class ListClassroomsEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Get("school/classrooms");
-        Roles(Auth.Role.Admin);
+        Roles(Auth.Role.Teacher);
     }
 
     public override async Task HandleAsync(CancellationToken ct)
