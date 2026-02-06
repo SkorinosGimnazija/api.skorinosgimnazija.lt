@@ -6,7 +6,7 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "22:00"
-      labels:
+    labels:
         - "dependencies"
     groups:
       all:
@@ -18,7 +18,7 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "22:00"
-      labels:
+    labels:
         - "dependencies"
         - "github-actions"
     groups:
@@ -31,7 +31,7 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "22:00"
-      labels:
+    labels:
         - "dependencies"
         - "docker"
     groups:
