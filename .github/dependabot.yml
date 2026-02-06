@@ -6,6 +6,8 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "22:00"
+      labels:
+        - "dependencies"
     groups:
       all:
         patterns: [ "*" ]
@@ -16,6 +18,22 @@ updates:
       interval: "weekly"
       day: "sunday"
       time: "22:00"
+      labels:
+        - "dependencies"
+        - "github-actions"
     groups:
       all-actions:
+        patterns: [ "*" ]
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "22:00"
+      labels:
+        - "dependencies"
+        - "docker"
+    groups:
+      all-images:
         patterns: [ "*" ]
