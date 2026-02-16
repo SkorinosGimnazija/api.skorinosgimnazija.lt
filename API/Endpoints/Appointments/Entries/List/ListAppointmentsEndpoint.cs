@@ -25,13 +25,12 @@ public sealed class ListAppointmentsEndpoint(AppDbContext dbContext)
 
         if (req.UserId is not null)
         {
-            var userId = req.UserId.Value;
             var userEmail = await dbContext.Users
-                                .Where(x => x.Id == userId)
+                                .Where(x => x.Id == req.UserId)
                                 .Select(x => x.Email)
                                 .FirstOrDefaultAsync(ct);
 
-            query = query.Where(x => x.HostId == userId || x.AttendeeEmail == userEmail);
+            query = query.Where(x => x.HostId == req.UserId || x.AttendeeEmail == userEmail);
         }
 
         var entities = await query
