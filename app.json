@@ -1,0 +1,12 @@
+﻿{
+  "healthchecks": {
+    "web": [
+      {
+        "type": "startup",
+        "path": "/",
+        "port": "5000",
+        "attempts": 5
+      }
+    ]
+  }
+}
