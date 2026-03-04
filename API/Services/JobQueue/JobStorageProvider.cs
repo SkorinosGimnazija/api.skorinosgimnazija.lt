@@ -3,24 +3,14 @@
 public sealed class JobStorageProvider(IDbContextFactory<AppDbContext> dbContextFactory)
     : IJobStorageProvider<JobRecord>
 {
+    public bool DistributedJobProcessingEnabled { get; } = false;
+
     public async Task StoreJobAsync(JobRecord job, CancellationToken ct)
     {
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
 
         dbContext.Set<JobRecord>().Add(job);
         await dbContext.SaveChangesAsync(ct);
-    }
-
-    public async Task<IEnumerable<JobRecord>> GetNextBatchAsync(
-        PendingJobSearchParams<JobRecord> jobParams)
-    {
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync();
-
-        return await dbContext.Set<JobRecord>()
-                   .Where(jobParams.Match)
-                   .OrderBy(x => x.ExecuteAfter)
-                   .Take(jobParams.Limit)
-                   .ToListAsync();
     }
 
     public async Task MarkJobAsCompleteAsync(JobRecord job, CancellationToken ct)
@@ -59,7 +49,24 @@ public sealed class JobStorageProvider(IDbContextFactory<AppDbContext> dbContext
 
     public async Task PurgeStaleJobsAsync(StaleJobSearchParams<JobRecord> jobParams)
     {
-        await using var dbContext = await dbContextFactory.CreateDbContextAsync();
-        await dbContext.Set<JobRecord>().Where(jobParams.Match).ExecuteDeleteAsync();
+        var ct = jobParams.CancellationToken;
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+
+        await dbContext.Set<JobRecord>()
+            .Where(jobParams.Match)
+            .ExecuteDeleteAsync(ct);
+    }
+
+    public async Task<ICollection<JobRecord>> GetNextBatchAsync(
+        PendingJobSearchParams<JobRecord> jobParams)
+    {
+        var ct = jobParams.CancellationToken;
+        await using var dbContext = await dbContextFactory.CreateDbContextAsync(ct);
+
+        return await dbContext.Set<JobRecord>()
+                   .Where(jobParams.Match)
+                   .OrderBy(x => x.ExecuteAfter)
+                   .Take(jobParams.Limit)
+                   .ToListAsync(ct);
     }
 }

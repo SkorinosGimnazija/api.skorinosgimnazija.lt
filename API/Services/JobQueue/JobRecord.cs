@@ -16,6 +16,8 @@ public sealed class JobRecord : IJobStorageRecord
 
     public DateTime ExpireOn { get; set; }
 
+    public DateTime DequeueAfter { get; set; }
+
     public bool IsComplete { get; set; }
 }
 

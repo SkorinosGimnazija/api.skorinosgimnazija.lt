@@ -3,7 +3,7 @@
 using API.Services.Settings;
 
 public sealed class PostRandomImageSettingsEndpoint(SettingsProvider settings)
-    : Endpoint<RandomImageSettings, EmptyResponse>
+    : Endpoint<RandomImageSettings, RandomImageSettings>
 {
     public override void Configure()
     {
@@ -14,6 +14,9 @@ public sealed class PostRandomImageSettingsEndpoint(SettingsProvider settings)
     public override async Task HandleAsync(RandomImageSettings req, CancellationToken ct)
     {
         await settings.SaveRandomImageSettings(req);
-        await Send.OkAsync(new(), ct);
+
+        var savedSettings = await settings.GetRandomImageSettings();
+
+        await Send.OkAsync(savedSettings, ct);
     }
 }

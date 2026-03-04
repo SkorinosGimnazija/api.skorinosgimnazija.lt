@@ -22,6 +22,6 @@ public sealed class CreateBullyReportPublicEndpoint(AppDbContext dbContext)
             .QueueJobAsync(DateTime.UtcNow.AddMinutes(5), ct: ct);
 
         // dont sent created entity ?
-        await Send.ResponseAsync(new(), StatusCodes.Status201Created, ct);
+        await Send.ResponseAsync(EmptyResponse.Instance, StatusCodes.Status201Created, ct);
     }
 }
