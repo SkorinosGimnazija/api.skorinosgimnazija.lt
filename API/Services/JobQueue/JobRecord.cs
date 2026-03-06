@@ -1,5 +1,6 @@
 ﻿namespace API.Services.JobQueue;
 
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,6 +26,7 @@ public class JobRecordConfiguration : IEntityTypeConfiguration<JobRecord>
 {
     private readonly JsonSerializerOptions _serializerOptions = new()
     {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters = { new CommandJsonConverter() }
     };
 
@@ -47,27 +49,28 @@ public class JobRecordConfiguration : IEntityTypeConfiguration<JobRecord>
             using var doc = JsonDocument.ParseValue(ref reader);
             var root = doc.RootElement;
 
-            var typeName = root.GetProperty("$type").GetString()!;
-            var type = Type.GetType(typeName)!;
+            var typeName = root.GetProperty("$type").GetString()
+                           ?? throw new JsonException("Missing $type property.");
 
-            var command = JsonSerializer.Deserialize(root.GetRawText(), type, options)!;
-            return (ICommand) command;
+            var type = Type.GetType(typeName)
+                       ?? throw new JsonException($"Type '{typeName}' not found.");
+
+            return (ICommand) root.Deserialize(type, options)!;
         }
 
         public override void Write(
             Utf8JsonWriter writer, ICommand value, JsonSerializerOptions options)
         {
-            writer.WriteStartObject();
-            writer.WriteString("$type", value.GetType().FullName);
+            var type = value.GetType();
 
-            var properties = value.GetType().GetProperties();
-            foreach (var property in properties)
+            writer.WriteStartObject();
+            writer.WriteString("$type", type.FullName);
+
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                         .Where(x => x.CanRead && x.GetCustomAttribute<JsonIgnoreAttribute>() is null))
             {
-                if (property.CanRead)
-                {
-                    writer.WritePropertyName(property.Name);
-                    JsonSerializer.Serialize(writer, property.GetValue(value), options);
-                }
+                writer.WritePropertyName(options.PropertyNamingPolicy?.ConvertName(property.Name) ?? property.Name);
+                JsonSerializer.Serialize(writer, property.GetValue(value), property.PropertyType, options);
             }
 
             writer.WriteEndObject();
