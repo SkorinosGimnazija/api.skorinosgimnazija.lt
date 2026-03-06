@@ -26,14 +26,14 @@ public sealed class GetTimetableStatsEndpoint(AppDbContext dbContext, TimeProvid
                                    .AsNoTracking()
                                    .Where(x => x.Date >= today)
                                    .GroupBy(x => new { x.RoomId, x.Date })
-                                   .Select(g => new { g.Key.RoomId, g.Key.Date })
+                                   .Select(g => new { g.Key.RoomId, g.Key.Date, Count = g.Count() })
                                    .ToListAsync(ct);
 
         var overridesByRoom = overrideDatesRaw
             .GroupBy(x => x.RoomId)
             .ToDictionary(
                 g => g.Key,
-                g => g.Select(x => x.Date).Distinct().OrderBy(d => d).ToList());
+                g => g.OrderBy(x => x.Date).ToDictionary(x => x.Date, x => x.Count));
 
         var classrooms = await dbContext.Classrooms
                              .AsNoTracking()

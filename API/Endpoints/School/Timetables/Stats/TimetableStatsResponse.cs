@@ -11,5 +11,5 @@ public record TimetableStatsResponse
 
     public required Dictionary<int, int> CountsByDay { get; init; }
 
-    public required List<DateOnly> OverrideDates { get; init; }
+    public required Dictionary<DateOnly, int> OverrideDates { get; init; }
 }
