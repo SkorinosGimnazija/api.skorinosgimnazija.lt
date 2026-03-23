@@ -38,6 +38,8 @@ public class Post
     public List<string>? Files { get; set; }
 
     public List<string>? Images { get; set; }
+
+    public Menu? Menu { get; set; }
 }
 
 public class PostConfiguration : IEntityTypeConfiguration<Post>

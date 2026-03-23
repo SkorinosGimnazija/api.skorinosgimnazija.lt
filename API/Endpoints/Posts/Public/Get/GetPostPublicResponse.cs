@@ -20,4 +20,6 @@ public record GetPostPublicResponse
     public string? Meta { get; init; }
 
     public List<string>? Images { get; init; }
+
+    public string? MenuUrl { get; init; }
 }

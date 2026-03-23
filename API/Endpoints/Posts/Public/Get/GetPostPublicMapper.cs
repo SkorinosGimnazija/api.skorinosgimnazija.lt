@@ -10,6 +10,7 @@ public sealed class GetPostPublicMapper : ResponseMapper<GetPostPublicResponse, 
         {
             Id = e.Id,
             Slug = e.Slug,
+            MenuUrl = e.Menu?.IsPublished is true ? e.Menu.Url : null,
             PublishedAt = e.PublishedAt,
             ModifiedAt = e.ModifiedAt,
             Title = e.Title,

@@ -12,6 +12,7 @@ public sealed class GetPostPublicEndpoint(AppDbContext dbContext)
     public override async Task HandleAsync(RouteIdRequest req, CancellationToken ct)
     {
         var entity = await dbContext.Posts.AsNoTracking()
+                         .Include(x => x.Menu)
                          .Where(x =>
                              x.IsPublished &&
                              x.PublishedAt <= DateTime.UtcNow &&

@@ -58,7 +58,7 @@ public class MenuConfiguration : IEntityTypeConfiguration<Menu>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Post)
-            .WithOne()
+            .WithOne(x => x.Menu)
             .HasForeignKey<Menu>(x => x.PostId)
             .OnDelete(DeleteBehavior.Cascade);
 
