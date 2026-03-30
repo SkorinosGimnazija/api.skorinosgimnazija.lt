@@ -22,7 +22,7 @@ public sealed class PostsMetaPublicEndpoint(AppDbContext dbContext, IMemoryCache
                            x.IsPublished &&
                            x.ShowInFeed &&
                            x.PublishedAt <= DateTime.UtcNow &&
-                           dbContext.Menus.All(m => m.PostId != x.Id))
+                           (x.Menu == null || !x.Menu.IsPublished))
                        .Select(x => new LinkMetaResponse
                        {
                            Url = $"/{x.Id}/{x.Slug}",
