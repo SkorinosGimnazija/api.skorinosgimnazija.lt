@@ -11,13 +11,13 @@
     <ItemGroup>
         <PackageReference Include="CloudinaryDotNet" Version="1.28.0"/>
         <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="10.0.0" />
-        <PackageReference Include="FastEndpoints" Version="8.0.1"/>
-        <PackageReference Include="FastEndpoints.Security" Version="8.0.1"/>
-        <PackageReference Include="FastEndpoints.Swagger" Version="8.0.1"/>
+        <PackageReference Include="FastEndpoints" Version="8.1.0" />
+        <PackageReference Include="FastEndpoints.Security" Version="8.1.0" />
+        <PackageReference Include="FastEndpoints.Swagger" Version="8.1.0" />
         <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.73.0.4075"/>
         <PackageReference Include="Google.Apis.Auth" Version="1.73.0"/>
         <PackageReference Include="Google.Apis.Calendar.v3" Version="1.73.0.4073"/>
-        <PackageReference Include="Google.Apis.Drive.v3" Version="1.73.0.4081" />
+        <PackageReference Include="Google.Apis.Drive.v3" Version="1.73.0.4098" />
         <PackageReference Include="Google.Apis.Gmail.v1" Version="1.73.0.4029"/>
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5"/>
@@ -29,12 +29,12 @@
         <PackageReference Include="MimeKit" Version="4.15.1"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1"/>
         <PackageReference Include="Npgsql.OpenTelemetry" Version="10.0.2"/>
-        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.0"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.1" />
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.1"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.15.0-beta.1"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.0"/>
-        <PackageReference Include="Sentry.AspNetCore" Version="6.2.0"/>
-        <PackageReference Include="Sentry.OpenTelemetry" Version="6.2.0"/>
+        <PackageReference Include="Sentry.AspNetCore" Version="6.3.0" />
+        <PackageReference Include="Sentry.OpenTelemetry" Version="6.3.0" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12"/>
     </ItemGroup>
 
