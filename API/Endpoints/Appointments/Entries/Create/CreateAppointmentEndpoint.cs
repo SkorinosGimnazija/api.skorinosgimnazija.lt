@@ -40,10 +40,9 @@ public sealed class CreateAppointmentEndpoint(AppDbContext dbContext)
 
             await Send.ResponseAsync(Map.FromEntity(appointment), StatusCodes.Status201Created, ct);
         }
-        catch (UniqueConstraintException e) when (e.InnerException is PostgresException pe)
+        catch (UniqueConstraintException e)
         {
-            e.Data[nameof(pe.MessageText)] =
-                AppointmentConfiguration.GetErrorMessage(pe.ConstraintName);
+            e.Data[nameof(e.Message)] = AppointmentConfiguration.GetErrorMessage(e.ConstraintName);
             throw;
         }
     }

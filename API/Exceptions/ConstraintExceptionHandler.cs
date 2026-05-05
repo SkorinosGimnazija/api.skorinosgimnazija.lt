@@ -2,7 +2,6 @@
 
 using EntityFramework.Exceptions.Common;
 using Microsoft.AspNetCore.Diagnostics;
-using Npgsql;
 
 internal sealed class ConstraintExceptionHandler(IProblemDetailsService problemDetails)
     : IExceptionHandler
@@ -15,17 +14,17 @@ internal sealed class ConstraintExceptionHandler(IProblemDetailsService problemD
             return false;
         }
 
-        if (exception.InnerException is not PostgresException pgException)
-        {
-            return false;
-        }
-
         httpContext.Response.StatusCode = StatusCodes.Status409Conflict;
 
         var errorDetails = new
         {
-            Name = pgException.ConstraintName,
-            Reason = exception.Data[nameof(pgException.MessageText)] ?? pgException.MessageText
+            Name = exception switch
+            {
+                UniqueConstraintException e => e.ConstraintName,
+                ReferenceConstraintException e => e.ConstraintName,
+                _ => null
+            },
+            Reason = exception.Data[nameof(exception.Message)] ?? exception.Message
         };
 
         return await problemDetails.TryWriteAsync(new()
