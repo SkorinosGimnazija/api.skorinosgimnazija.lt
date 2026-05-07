@@ -15,12 +15,12 @@ public sealed class UpdateAppointmentReservedDatesEndpoint(AppDbContext dbContex
         UpdateAppointmentReservedDatesRequest req, CancellationToken ct)
     {
         var currentDates = await dbContext.AppointmentReservedDates
-                        .Where(x => x.HostId == req.Id)
+                        .Where(x => x.HostId == req.HostId && x.Date.TypeId == req.Id)
                         .ToDictionaryAsync(x => x.DateId, ct);
 
         var datesToAdd = req.DateIds
             .Where(x => !currentDates.ContainsKey(x))
-            .Select(x => new AppointmentReservedDate { DateId = x, HostId = req.Id });
+            .Select(x => new AppointmentReservedDate { DateId = x, HostId = req.HostId });
 
         var datesToRemove = currentDates
             .Where(x => !req.DateIds.Contains(x.Key))

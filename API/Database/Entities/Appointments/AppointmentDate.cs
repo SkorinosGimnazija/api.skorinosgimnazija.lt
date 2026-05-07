@@ -27,7 +27,7 @@ public class AppointmentDateConfiguration : IEntityTypeConfiguration<Appointment
             .WithMany()
             .UsingEntity<AppointmentReservedDate>(
                 r => r.HasOne<AppUser>().WithMany().HasForeignKey(x => x.HostId),
-                l => l.HasOne<AppointmentDate>().WithMany().HasForeignKey(x => x.DateId));
+                l => l.HasOne(x => x.Date).WithMany().HasForeignKey(x => x.DateId));
 
         builder.HasOne(x => x.Type)
             .WithMany()
