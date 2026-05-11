@@ -37,7 +37,8 @@ public sealed class ListAppointmentsEndpoint(AppDbContext dbContext)
                            .Include(x => x.Host)
                            .Include(x => x.AppointmentDate)
                            .Include(x => x.AppointmentDate.Type)
-                           .OrderByDescending(x => x.AppointmentDate.Date)
+                           .OrderBy(x => x.Host.Name)
+                           .ThenByDescending(x => x.AppointmentDate.Date)
                            .Select(x => Map.FromEntity(x))
                            .ToPaginatedListAsync(req, ct);
 
