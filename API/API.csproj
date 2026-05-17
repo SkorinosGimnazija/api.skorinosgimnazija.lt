@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CloudinaryDotNet" Version="1.29.0"/>
+        <PackageReference Include="CloudinaryDotNet" Version="1.29.1"/>
         <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="10.0.0" />
         <PackageReference Include="FastEndpoints" Version="8.1.0" />
         <PackageReference Include="FastEndpoints.Security" Version="8.1.0" />
@@ -17,8 +17,8 @@
         <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.73.0.4128"/>
         <PackageReference Include="Google.Apis.Auth" Version="1.74.0"/>
         <PackageReference Include="Google.Apis.Calendar.v3" Version="1.73.0.4073"/>
-        <PackageReference Include="Google.Apis.Drive.v3" Version="1.73.0.4112" />
-        <PackageReference Include="Google.Apis.Gmail.v1" Version="1.73.0.4120"/>
+        <PackageReference Include="Google.Apis.Drive.v3" Version="1.74.0.4135" />
+        <PackageReference Include="Google.Apis.Gmail.v1" Version="1.74.0.4134"/>
         <PackageReference Include="JetBrains.Annotations" Version="2025.2.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
@@ -33,8 +33,8 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.2"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.15.0-beta.1"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1"/>
-        <PackageReference Include="Sentry.AspNetCore" Version="6.4.1" />
-        <PackageReference Include="Sentry.OpenTelemetry" Version="6.4.1" />
+        <PackageReference Include="Sentry.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Sentry.OpenTelemetry" Version="6.5.0" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12"/>
     </ItemGroup>
 
