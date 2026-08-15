@@ -15,7 +15,7 @@ public sealed class LocalesMetaPublicEndpoint(AppDbContext dbContext, IMemoryCac
     {
         var entities = await cache.GetOrCreateAsync("Meta:Locales", async entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
 
             return await dbContext.Languages.AsNoTracking()
                        .Select(x => new LinkMetaResponse

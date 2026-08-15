@@ -15,7 +15,7 @@ public sealed class PostsMetaPublicEndpoint(AppDbContext dbContext, IMemoryCache
     {
         var entities = await cache.GetOrCreateAsync("Meta:Posts", async entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
 
             return await dbContext.Posts.AsNoTracking()
                        .Where(x =>

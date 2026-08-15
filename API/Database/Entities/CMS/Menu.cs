@@ -19,6 +19,7 @@ public class Menu
 
     public string? Url { get; set; }
 
+    // TODO delete?
     public bool IsExternal { get; set; }
 
     public int? PostId { get; set; }

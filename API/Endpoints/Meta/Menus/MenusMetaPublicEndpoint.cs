@@ -15,7 +15,7 @@ public sealed class MenusMetaPublicEndpoint(AppDbContext dbContext, IMemoryCache
     {
         var entities = await cache.GetOrCreateAsync("Meta:Menus", async entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(24);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1);
 
             return await dbContext.Menus.AsNoTracking()
                        .Where(x =>

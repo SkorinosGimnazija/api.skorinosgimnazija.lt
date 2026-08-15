@@ -73,7 +73,7 @@ public sealed class MenuMapper : Mapper<CreateMenuRequest, MenuResponse, Menu>
         };
     }
 
-    public string? FormatUrl(string? url)
+    private static string? FormatUrl(string? url)
     {
         if (string.IsNullOrWhiteSpace(url))
         {
@@ -88,7 +88,7 @@ public sealed class MenuMapper : Mapper<CreateMenuRequest, MenuResponse, Menu>
         return $"/{url.Trim(' ', '/')}";
     }
 
-    public bool IsExternal(string? url)
+    private static bool IsExternal(string? url)
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);

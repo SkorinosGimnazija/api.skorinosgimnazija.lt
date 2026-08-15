@@ -5,18 +5,13 @@ public sealed class GetPostByUrlPublicEndpoint(AppDbContext dbContext)
 {
     public override void Configure()
     {
-        Get("public/{LanguageId:maxlength(5)}/posts/menu/{MenuUrl:maxlength(256)}");
+        Get("public/{LanguageId:maxlength(5)}/posts/menu/{*MenuUrl:maxlength(256)}");
         AllowAnonymous();
     }
 
     public override async Task HandleAsync(GetPostByUrlPublicRequest req, CancellationToken ct)
     {
-        var url = Uri.UnescapeDataString(req.MenuUrl);
-        if (!url.StartsWith('/'))
-        {
-            url = $"/{url}";
-        }
-
+        var url = $"/{req.MenuUrl}";
         var entity = await dbContext.Menus.AsNoTracking()
                          .Where(x =>
                              x.LanguageId == req.LanguageId &&
