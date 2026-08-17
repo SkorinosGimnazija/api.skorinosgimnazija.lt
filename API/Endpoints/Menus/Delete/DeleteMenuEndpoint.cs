@@ -6,6 +6,7 @@ public sealed class DeleteMenuEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Delete("menus/{id}");
+        PostProcessor<MenuRevalidation<RouteIdRequest, object?>>();
         Roles(Auth.Role.Admin);
     }
 

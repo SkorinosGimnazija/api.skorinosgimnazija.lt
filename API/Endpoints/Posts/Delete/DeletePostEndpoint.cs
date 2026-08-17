@@ -8,6 +8,7 @@ public sealed class DeletePostEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Delete("posts/{id}");
+        PostProcessor<PostRevalidation<RouteIdRequest, object?>>();
         Roles(Auth.Role.Admin);
     }
 

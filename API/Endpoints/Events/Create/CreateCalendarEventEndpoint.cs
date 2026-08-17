@@ -8,6 +8,7 @@ public sealed class CreateCalendarEventEndpoint(ICalendarService calendarService
     public override void Configure()
     {
         Post("events");
+        PostProcessor<EventRevalidation<CreateCalendarEventRequest, CreateCalendarEventResponse>>();
         Roles(Auth.Role.Admin);
     }
 
@@ -26,9 +27,9 @@ public sealed class CreateCalendarEventEndpoint(ICalendarService calendarService
         await Send.ResponseAsync(new()
         {
             Id = response.EventId,
-            StartDate = req.StartDate,
-            EndDate = req.EndDate,
-            Title = req.Title
+            StartDate = request.StartDate,
+            EndDate = request.EndDate,
+            Title = request.Title
         }, StatusCodes.Status201Created, ct);
     }
 }

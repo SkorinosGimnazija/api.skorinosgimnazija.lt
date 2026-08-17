@@ -8,6 +8,7 @@ public sealed class CreateMenuEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Post("menus");
+        PostProcessor<MenuRevalidation<CreateMenuRequest, MenuResponse>>();
         Roles(Auth.Role.Admin);
     }
 

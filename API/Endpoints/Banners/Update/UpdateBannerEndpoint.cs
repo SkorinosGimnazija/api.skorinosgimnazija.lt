@@ -9,6 +9,7 @@ public sealed class UpdateBannerEndpoint(AppDbContext dbContext, FileManager fil
     {
         Put("featured");
         AllowFileUploads();
+        PostProcessor<BannerRevalidation<UpdateBannerRequest, BannerResponse>>();
         Roles(Auth.Role.Admin);
     }
 

@@ -14,6 +14,7 @@ using API.Services.Employee;
 using API.Services.ImageOptimization;
 using API.Services.JobQueue;
 using API.Services.Options;
+using API.Services.Revalidation;
 using API.Services.Settings;
 using API.Services.Storage;
 using FastEndpoints.Security;
@@ -119,8 +120,15 @@ services.AddSingleton(TimeProvider.System);
 services.AddSingleton<EmployeeService>();
 services.AddSingleton<FileManager>();
 services.AddSingleton<CaptchaService>();
+services.AddSingleton<RevalidationService>();
 services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
 services.AddSingleton<IStorageService, GoogleDriveService>();
+
+builder.Services.AddHttpClient(nameof(RevalidationService), client =>
+{
+    client.DefaultRequestHeaders.Add("X-Revalidate-Secret", config["PostRevalidation:Token"]);
+    client.Timeout = TimeSpan.FromSeconds(5);
+});
 
 if (builder.Environment.IsProduction())
 {

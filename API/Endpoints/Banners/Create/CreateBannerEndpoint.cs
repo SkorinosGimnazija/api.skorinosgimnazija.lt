@@ -11,6 +11,7 @@ public sealed class CreateBannerEndpoint(AppDbContext dbContext, FileManager fil
     {
         Post("featured");
         AllowFileUploads();
+        PostProcessor<BannerRevalidation<CreateBannerRequest, BannerResponse>>();
         Roles(Auth.Role.Admin);
     }
 

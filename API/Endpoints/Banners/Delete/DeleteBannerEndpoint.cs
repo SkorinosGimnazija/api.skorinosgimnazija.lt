@@ -8,6 +8,7 @@ public sealed class DeleteBannerEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Delete("featured/{id}");
+        PostProcessor<BannerRevalidation<RouteIdRequest, object?>>();
         Roles(Auth.Role.Admin);
     }
 

@@ -9,6 +9,7 @@ public sealed class UpdatePostEndpoint(AppDbContext dbContext, FileManager fileM
     {
         Put("posts");
         AllowFileUploads();
+        PostProcessor<PostRevalidation<UpdatePostRequest, PostResponse>>();
         Roles(Auth.Role.Admin);
     }
 

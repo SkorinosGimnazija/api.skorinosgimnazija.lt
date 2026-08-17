@@ -10,6 +10,7 @@ public sealed class CreatePostEndpoint(AppDbContext dbContext, FileManager fileM
     {
         Post("posts");
         AllowFileUploads();
+        PostProcessor<PostRevalidation<CreatePostRequest, PostResponse>>();
         Roles(Auth.Role.Admin);
     }
 

@@ -8,6 +8,7 @@ public sealed class DeleteCalendarEventEndpoint(ICalendarService calendarService
     public override void Configure()
     {
         Delete("events/{id}");
+        PostProcessor<EventRevalidation<RouteIdRequest<string>, object?>>();
         Roles(Auth.Role.Admin);
     }
 

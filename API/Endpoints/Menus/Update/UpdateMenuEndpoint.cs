@@ -6,6 +6,7 @@ public sealed class UpdateMenuEndpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Put("menus");
+        PostProcessor<MenuRevalidation<UpdateMenuRequest, MenuResponse>>();
         Roles(Auth.Role.Admin);
     }
 
