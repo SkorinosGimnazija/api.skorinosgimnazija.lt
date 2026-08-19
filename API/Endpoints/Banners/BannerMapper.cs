@@ -12,6 +12,8 @@ public sealed class BannerMapper
         return new()
         {
             Title = r.Title,
+            Width = r.Width,
+            Height = r.Height,
             IsPublished = r.IsPublished,
             LanguageId = r.LanguageId,
             Order = r.Order,
@@ -22,6 +24,8 @@ public sealed class BannerMapper
     public Banner UpdateEntity(UpdateBannerRequest r, Banner e)
     {
         e.Title = r.Title;
+        e.Width = r.Width;
+        e.Height = r.Height;
         e.IsPublished = r.IsPublished;
         e.LanguageId = r.LanguageId;
         e.Order = r.Order;

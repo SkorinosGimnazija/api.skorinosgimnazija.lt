@@ -2,7 +2,6 @@
 
 using API.Endpoints.Banners.Get;
 using API.Services.Storage;
-using SixLabors.ImageSharp;
 
 public sealed class CreateBannerEndpoint(AppDbContext dbContext, FileManager fileManager)
     : Endpoint<CreateBannerRequest, BannerResponse, BannerMapper>
@@ -18,12 +17,6 @@ public sealed class CreateBannerEndpoint(AppDbContext dbContext, FileManager fil
     public override async Task HandleAsync(CreateBannerRequest req, CancellationToken ct)
     {
         var entity = Map.ToEntity(req);
-
-        await using var imageStream = req.Image.OpenReadStream();
-        using var imageInfo = await Image.LoadAsync(imageStream, ct);
-
-        entity.Height = imageInfo.Height;
-        entity.Width = imageInfo.Width;
         entity.ImageUrl = await fileManager.SaveFile(req.Image);
 
         dbContext.Banners.Add(entity);

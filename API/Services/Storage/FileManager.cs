@@ -6,7 +6,6 @@ using API.Services.ImageOptimization;
 using API.Services.Options;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
 
 public partial class FileManager(
     IOptions<UrlOptions> urls,
@@ -159,14 +158,6 @@ public partial class FileManager(
     public async Task<bool> DeleteFileAsync(string fileId)
     {
         return await storageService.DeleteFileAsync(fileId);
-    }
-
-    public (int Width, int Height) GetImageDimensions(IFormFile image)
-    {
-        using var imageStream = image.OpenReadStream();
-        using var imageInfo = Image.Load(imageStream);
-
-        return (imageInfo.Width, imageInfo.Height);
     }
 
     public List<string> GetLinkedFiles(string? entityText, IEnumerable<string> existingFiles)

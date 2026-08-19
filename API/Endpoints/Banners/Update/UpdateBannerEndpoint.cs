@@ -28,7 +28,6 @@ public sealed class UpdateBannerEndpoint(AppDbContext dbContext, FileManager fil
         {
             await new DeleteFileCommand { FileIds = [entity.ImageUrl] }.QueueJobAsync(ct: ct);
 
-            (entity.Width, entity.Height) = fileManager.GetImageDimensions(req.Image);
             entity.ImageUrl = await fileManager.SaveFile(req.Image);
         }
 

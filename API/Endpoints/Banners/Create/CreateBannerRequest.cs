@@ -19,6 +19,10 @@ public record BannerRequest
     [StringLength(BannerConfiguration.UrlLength)]
     public required string Url { get; init; }
 
+    public required int Width { get; init; }
+
+    public required int Height { get; init; }
+
     public required bool IsPublished { get; init; }
 
     public required int Order { get; init; }
