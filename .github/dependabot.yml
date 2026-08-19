@@ -4,8 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
-      time: "22:00"
+      day: "monday"
+      time: "02:00"
     groups:
       all:
         patterns: [ "*" ]
@@ -14,8 +14,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
-      time: "22:00"
+      day: "monday"
+      time: "02:00"
     groups:
       all-actions:
         patterns: [ "*" ]
@@ -24,8 +24,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "sunday"
-      time: "22:00"
+      day: "monday"
+      time: "02:00"
     groups:
       all-images:
         patterns: [ "*" ]
