@@ -1,6 +1,6 @@
 ﻿namespace API.Endpoints.Observations.ObservationLessons.List;
 
-using FastEndpoints.Swagger;
+using FastEndpoints.OpenApi;
 
 public sealed class ListObservationLessonsEndpoint(AppDbContext dbContext)
     : EndpointWithoutRequest<IEnumerable<ObservationLessonResponse>, ObservationLessonMapper>

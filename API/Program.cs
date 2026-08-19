@@ -18,7 +18,7 @@ using API.Services.Revalidation;
 using API.Services.Settings;
 using API.Services.Storage;
 using FastEndpoints.Security;
-using FastEndpoints.Swagger;
+using FastEndpoints.OpenApi;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
@@ -66,11 +66,7 @@ services.AddExceptionHandler<ConstraintExceptionHandler>();
 services.AddFastEndpoints();
 services.AddResponseCaching();
 services.AddJobQueues<JobRecord, JobStorageProvider>();
-services.SwaggerDocument(o =>
-{
-    o.ShortSchemaNames = true;
-    o.DocumentSettings = d => d.MarkNonNullablePropsAsRequired();
-});
+services.OpenApiDocument(o => o.ShortSchemaNames = true);
 services.AddHttpClient();
 services.AddMemoryCache();
 services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
@@ -171,7 +167,7 @@ app.UseJobQueues(o =>
 
 if (builder.Environment.IsDevelopment())
 {
-    app.UseSwaggerGen();
+    app.MapOpenApi();
 }
 
 app.Run();

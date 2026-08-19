@@ -1,6 +1,6 @@
 ﻿namespace API.Endpoints.Observations.ObservationLessons.Get;
 
-using FastEndpoints.Swagger;
+using FastEndpoints.OpenApi;
 
 public sealed class GetObservationLessonEndpoint(AppDbContext dbContext)
     : Endpoint<RouteIdRequest, ObservationLessonResponse, ObservationLessonMapper>

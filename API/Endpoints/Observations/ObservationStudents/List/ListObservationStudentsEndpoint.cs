@@ -1,6 +1,6 @@
 ﻿namespace API.Endpoints.Observations.ObservationStudents.List;
 
-using FastEndpoints.Swagger;
+using FastEndpoints.OpenApi;
 
 public sealed class ListObservationStudentsEndpoint(AppDbContext dbContext)
     : Endpoint<ListObservationStudentsRequest, IEnumerable<ObservationStudentResponse>,
