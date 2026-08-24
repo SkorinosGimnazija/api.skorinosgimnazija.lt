@@ -22,4 +22,6 @@ public record GetPostPublicResponse
     public List<string>? Images { get; init; }
 
     public string? MenuUrl { get; init; }
+
+    public required string LanguageId { get; init; }
 }
