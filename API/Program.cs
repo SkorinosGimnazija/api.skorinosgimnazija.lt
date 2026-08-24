@@ -110,6 +110,12 @@ services.AddOptionsAndValidate<PostRevalidationOptions>("PostRevalidation");
 services.AddOptionsAndValidate<NotificationOptions>("Notifications");
 services.AddOptionsAndValidate<JwtOptions>("Jwt");
 
+builder.Services.AddHttpClient(nameof(RevalidationService), client =>
+{
+    client.DefaultRequestHeaders.Add("X-Revalidate-Secret", config["PostRevalidation:Token"]);
+    client.Timeout = TimeSpan.FromSeconds(5);
+});
+
 services.AddScoped<SettingsProvider>();
 services.AddScoped<IdentityService>();
 services.AddSingleton(TimeProvider.System);
@@ -120,11 +126,7 @@ services.AddSingleton<RevalidationService>();
 services.AddSingleton<IImageOptimizer, CloudinaryImageOptimizer>();
 services.AddSingleton<IStorageService, GoogleDriveService>();
 
-builder.Services.AddHttpClient(nameof(RevalidationService), client =>
-{
-    client.DefaultRequestHeaders.Add("X-Revalidate-Secret", config["PostRevalidation:Token"]);
-    client.Timeout = TimeSpan.FromSeconds(5);
-});
+services.AddHostedService<RefreshTokenCleanupService>();
 
 if (builder.Environment.IsProduction())
 {
