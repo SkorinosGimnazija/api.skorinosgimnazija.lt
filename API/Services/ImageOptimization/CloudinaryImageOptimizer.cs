@@ -6,8 +6,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Options;
 
 public sealed class CloudinaryImageOptimizer(
-    IOptions<CloudinaryOptions> cloudinaryOptions,
-    IHostEnvironment env)
+    IOptions<CloudinaryOptions> cloudinaryOptions)
     : IImageOptimizer
 {
     private readonly Cloudinary _cloudinary = new(cloudinaryOptions.Value.Url);
@@ -16,16 +15,18 @@ public sealed class CloudinaryImageOptimizer(
         .Quality("95")
         .Width("300")
         .Height("300")
-        .Crop(env.IsDevelopment() ? "lfill" : "imagga_scale")
-        .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+        .Crop("fill")
+        .Gravity("auto")
+        .Effect("auto_enhance")
         .FetchFormat("jpg");
 
     private readonly Transformation _galleryTransform = new Transformation()
         .Quality("95")
         .AspectRatio("16:9")
         .Width("1920")
-        .Crop(env.IsDevelopment() ? "fill" : "imagga_scale")
-        .Effect(env.IsDevelopment() ? "improve" : "viesus_correct")
+        .Crop("fill")
+        .Gravity("auto")
+        .Effect("auto_enhance")
         .FetchFormat("jpg");
 
     public async Task<Uri> OptimizeAsync(IFormFile image, string tag, bool featuredImage)
