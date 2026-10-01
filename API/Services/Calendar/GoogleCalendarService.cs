@@ -23,7 +23,7 @@ public sealed class GoogleCalendarService(
 
     private readonly string _eventsCalendarId = calendarOptions.Value.EventsCalendarId;
 
-    public async Task<IEnumerable<CalendarEvent>> ListEventsAsync(
+    public async Task<IEnumerable<CalendarResponse>> ListEventsAsync(
         DateTime start, DateTime end, CancellationToken ct)
     {
         var request = _calendarService.Events.List(_eventsCalendarId);
@@ -36,42 +36,42 @@ public sealed class GoogleCalendarService(
 
         var response = await request.ExecuteAsync(ct);
 
-        return response.Items.Select(x => new CalendarEvent
-        {
-            Id = x.Id,
-            Title = x.Summary,
-            StartDate = x.Start.DateTimeRaw ?? x.Start.Date,
-            EndDate = x.End.DateTimeRaw ??
-                      DateOnly.Parse(x.End.Date).AddDays(-1).ToString("yyyy-MM-dd"),
-            AllDay = x.Transparency == "transparent"
-        });
+        return response.Items.Select(x => new CalendarResponse(x));
     }
 
-    public async Task<CalendarResponse> CreateEventAsync(
-        CalendarEventRequest eventRequest, CancellationToken ct)
+    public async Task<List<CalendarResponse>> CreateEventAsync(
+        IEnumerable<CalendarEventRequest> eventRequests, CancellationToken ct)
     {
-        var calendarEvent = new Event
+        var results = new List<CalendarResponse>();
+
+        // no parallel to avoid rate limit
+        foreach (var eventRequest in eventRequests)
         {
-            Summary = eventRequest.Title,
-            Start = new()
+            var calendarEvent = new Event
             {
-                Date = eventRequest.AllDay ? eventRequest.StartDate.ToString("yyyy-MM-dd") : null,
-                DateTimeDateTimeOffset = !eventRequest.AllDay ? eventRequest.StartDate : null
-            },
-            End = new()
-            {
-                Date = eventRequest.AllDay
-                           ? eventRequest.EndDate.AddDays(1).ToString("yyyy-MM-dd")
-                           : null,
-                DateTimeDateTimeOffset = !eventRequest.AllDay ? eventRequest.EndDate : null
-            },
-            Transparency = eventRequest.AllDay ? "transparent" : "opaque"
-        };
+                Summary = eventRequest.Title,
+                Start = new()
+                {
+                    Date = eventRequest.AllDay ? eventRequest.StartDate.ToString("yyyy-MM-dd") : null,
+                    DateTimeDateTimeOffset = !eventRequest.AllDay ? eventRequest.StartDate : null
+                },
+                End = new()
+                {
+                    Date = eventRequest.AllDay
+                               ? eventRequest.EndDate.AddDays(1).ToString("yyyy-MM-dd")
+                               : null,
+                    DateTimeDateTimeOffset = !eventRequest.AllDay ? eventRequest.EndDate : null
+                },
+                Transparency = eventRequest.AllDay ? "transparent" : "opaque"
+            };
 
-        var request = _calendarService.Events.Insert(calendarEvent, _eventsCalendarId);
-        var response = await request.ExecuteAsync(ct);
+            var request = _calendarService.Events.Insert(calendarEvent, _eventsCalendarId);
+            var response = await request.ExecuteAsync(ct);
 
-        return new() { EventId = response.Id };
+            results.Add(new(response));
+        }
+
+        return results;
     }
 
     public async Task<CalendarResponse> CreateAppointmentAsync(
@@ -120,7 +120,7 @@ public sealed class GoogleCalendarService(
 
         var response = await request.ExecuteAsync(ct);
 
-        return new() { EventId = response.Id, EventLink = response.HangoutLink };
+        return new(response);
     }
 
     public async Task<bool> DeleteEventAsync(string id)

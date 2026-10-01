@@ -3,33 +3,27 @@
 using API.Services.Calendar;
 
 public sealed class CreateCalendarEventEndpoint(ICalendarService calendarService)
-    : Endpoint<CreateCalendarEventRequest, CreateCalendarEventResponse>
+    : Endpoint<List<CreateCalendarEventRequest>, List<CalendarResponse>>
 {
     public override void Configure()
     {
         Post("events");
-        PostProcessor<EventRevalidation<CreateCalendarEventRequest, CreateCalendarEventResponse>>();
+        PostProcessor<EventRevalidation<List<CreateCalendarEventRequest>, List<CalendarResponse>>>();
         Roles(Auth.Role.Admin);
     }
 
-    public override async Task HandleAsync(CreateCalendarEventRequest req, CancellationToken ct)
+    public override async Task HandleAsync(List<CreateCalendarEventRequest> req, CancellationToken ct)
     {
-        var request = new CalendarEventRequest
+        var requests = req.Select(item => new CalendarEventRequest
         {
-            Title = req.Title,
-            StartDate = req.StartDate,
-            EndDate = req.EndDate,
-            AllDay = req.AllDay
-        };
+            Title = item.Title,
+            StartDate = item.StartDate,
+            EndDate = item.EndDate,
+            AllDay = item.AllDay
+        }).ToList();
 
-        var response = await calendarService.CreateEventAsync(request, ct);
+        var response = await calendarService.CreateEventAsync(requests, ct);
 
-        await Send.ResponseAsync(new()
-        {
-            Id = response.EventId,
-            StartDate = request.StartDate,
-            EndDate = request.EndDate,
-            Title = request.Title
-        }, StatusCodes.Status201Created, ct);
+        await Send.ResponseAsync(response, StatusCodes.Status201Created, ct);
     }
 }

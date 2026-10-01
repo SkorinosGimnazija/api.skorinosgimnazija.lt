@@ -3,7 +3,7 @@
 using API.Services.Calendar;
 
 public sealed class ListCalendarEventsEndpoint(ICalendarService calendarService)
-    : Endpoint<ListCalendarEventsRequest, List<CalendarEvent>>
+    : Endpoint<ListCalendarEventsRequest, List<CalendarResponse>>
 {
     public override void Configure()
     {

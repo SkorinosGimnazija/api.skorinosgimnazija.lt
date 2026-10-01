@@ -6,7 +6,7 @@ using API.Services.Calendar;
 public sealed class ListCalendarEventsMonthPublicEndpoint(
     ICalendarService calendarService,
     TimeProvider timeProvider)
-    : Endpoint<ListCalendarEventsMonthPublicRequest, List<CalendarEvent>>
+    : Endpoint<ListCalendarEventsMonthPublicRequest, List<CalendarResponse>>
 {
     public override void Configure()
     {

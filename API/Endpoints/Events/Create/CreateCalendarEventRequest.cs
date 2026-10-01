@@ -14,19 +14,24 @@ public record CreateCalendarEventRequest
     public required bool AllDay { get; init; }
 }
 
-public class CreateCalendarEventRequestValidator : Validator<CreateCalendarEventRequest>
+public class CreateCalendarEventRequestValidator : Validator<List<CreateCalendarEventRequest>>
 {
     public CreateCalendarEventRequestValidator()
     {
-        RuleFor(x => x.Title)
-            .NotEmpty()
-            .MaximumLength(256);
+        RuleFor(x => x).NotEmpty();
+        RuleForEach(x => x)
+            .ChildRules(item =>
+            {
+                item.RuleFor(x => x.Title)
+                    .NotEmpty()
+                    .MaximumLength(256);
 
-        RuleFor(x => x.StartDate)
-            .NotEmpty();
+                item.RuleFor(x => x.StartDate)
+                    .NotEmpty();
 
-        RuleFor(x => x.EndDate)
-            .NotEmpty()
-            .GreaterThanOrEqualTo(x => x.StartDate);
+                item.RuleFor(x => x.EndDate)
+                    .NotEmpty()
+                    .GreaterThanOrEqualTo(x => x.StartDate);
+            });
     }
 }

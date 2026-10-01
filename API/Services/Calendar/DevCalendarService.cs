@@ -2,7 +2,7 @@
 
 public sealed class DevCalendarService(ILogger<DevCalendarService> logger) : ICalendarService
 {
-    private readonly List<CalendarEvent> _events =
+    private readonly List<CalendarResponse> _events =
     [
         new()
         {
@@ -92,30 +92,48 @@ public sealed class DevCalendarService(ILogger<DevCalendarService> logger) : ICa
         logger.LogInformation("Appointment {appointmentRequest} created", appointmentRequest);
         return Task.FromResult(new CalendarResponse
         {
-            EventId = Guid.NewGuid().ToString("N"),
-            EventLink = appointmentRequest.IsOnline ? "meeting-link" : null
+            Id = Guid.NewGuid().ToString("N"),
+            EventLink = appointmentRequest.IsOnline ? "meeting-link" : null,
+            Title = "(DEV) Appointment",
+            StartDate = DateOnly.FromDateTime(DateTime.UtcNow).ToString("O"),
+            EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)).ToString("O"),
+            AllDay = false
         });
     }
 
-    public Task<CalendarResponse> CreateEventAsync(
-        CalendarEventRequest eventRequest, CancellationToken ct)
+    public Task<List<CalendarResponse>> CreateEventAsync(
+        IEnumerable<CalendarEventRequest> eventRequests, CancellationToken ct)
     {
-        var calendarEvent = new CalendarEvent
+        var responses = new List<CalendarResponse>();
+
+        foreach (var eventRequest in eventRequests)
         {
-            Id = Guid.NewGuid().ToString("N"),
-            Title = "(DEV) " + eventRequest.Title,
-            StartDate = eventRequest.StartDate.ToString("O"),
-            EndDate = eventRequest.EndDate.ToString("O"),
-            AllDay = eventRequest.AllDay
-        };
+            var calendarEvent = new CalendarResponse
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Title = "(DEV) " + eventRequest.Title,
+                StartDate = eventRequest.StartDate.ToString("O"),
+                EndDate = eventRequest.EndDate.ToString("O"),
+                AllDay = eventRequest.AllDay
+            };
 
-        _events.Add(calendarEvent);
-        logger.LogInformation("Event {calendarEvent} created", calendarEvent);
+            _events.Add(calendarEvent);
+            logger.LogInformation("Event {calendarEvent} created", calendarEvent);
 
-        return Task.FromResult(new CalendarResponse { EventId = calendarEvent.Id });
+            responses.Add(new()
+            {
+                Id = calendarEvent.Id,
+                Title = calendarEvent.Title,
+                StartDate = calendarEvent.StartDate,
+                EndDate = calendarEvent.EndDate,
+                AllDay = calendarEvent.AllDay
+            });
+        }
+
+        return Task.FromResult(responses);
     }
 
-    public Task<IEnumerable<CalendarEvent>> ListEventsAsync(
+    public Task<IEnumerable<CalendarResponse>> ListEventsAsync(
         DateTime start, DateTime end, CancellationToken ct)
     {
         return Task.FromResult(_events.Where(x =>
