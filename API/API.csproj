@@ -16,7 +16,7 @@
         <PackageReference Include="FastEndpoints.Security" Version="8.3.0" />
         <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.76.0.4274"/>
         <PackageReference Include="Google.Apis.Auth" Version="1.77.0"/>
-        <PackageReference Include="Google.Apis.Calendar.v3" Version="1.75.0.4206"/>
+        <PackageReference Include="Google.Apis.Calendar.v3" Version="1.77.0.4285"/>
         <PackageReference Include="Google.Apis.Drive.v3" Version="1.77.0.4276" />
         <PackageReference Include="Google.Apis.Gmail.v1" Version="1.75.0.4225"/>
         <PackageReference Include="JetBrains.Annotations" Version="2026.2.0"/>
