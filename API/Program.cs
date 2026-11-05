@@ -24,7 +24,6 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using OpenTelemetry.Trace;
-using Sentry.OpenTelemetry;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -32,6 +31,8 @@ var config = builder.Configuration;
 
 if (builder.Environment.IsProduction())
 {
+    var sentryDsn = config["Sentry:Dsn"]!;
+
     services.AddOpenTelemetry()
         .WithTracing(o =>
         {
@@ -39,17 +40,17 @@ if (builder.Environment.IsProduction())
             o.AddAspNetCoreInstrumentation();
             o.AddEntityFrameworkCoreInstrumentation();
             o.AddNpgsql();
-            o.AddSentry();
+            o.AddSentryOtlpExporter(sentryDsn);
         });
 
     builder.WebHost.UseSentry(o =>
     {
         o.EnableLogs = true;
         o.SampleRate = 1.0f;
-        o.TracesSampleRate = 0.35f;
-        o.Dsn = config["Sentry:Dsn"]!;
+        // o.TracesSampleRate = 0.35f;
+        o.Dsn = sentryDsn;
         o.AddExceptionFilter(new SentryIgnoredExceptions());
-        o.UseOpenTelemetry();
+        o.UseOtlp();
     });
 }
 
