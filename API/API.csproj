@@ -14,11 +14,11 @@
         <PackageReference Include="FastEndpoints" Version="8.3.0" />
         <PackageReference Include="FastEndpoints.OpenApi" Version="8.3.0" />
         <PackageReference Include="FastEndpoints.Security" Version="8.3.0" />
-        <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.76.0.4274"/>
-        <PackageReference Include="Google.Apis.Auth" Version="1.77.0"/>
-        <PackageReference Include="Google.Apis.Calendar.v3" Version="1.77.0.4285"/>
-        <PackageReference Include="Google.Apis.Drive.v3" Version="1.77.0.4301" />
-        <PackageReference Include="Google.Apis.Gmail.v1" Version="1.77.0.4295"/>
+        <PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.78.0.4274"/>
+        <PackageReference Include="Google.Apis.Auth" Version="1.78.0"/>
+        <PackageReference Include="Google.Apis.Calendar.v3" Version="1.78.0.4285"/>
+        <PackageReference Include="Google.Apis.Drive.v3" Version="1.78.0.4313" />
+        <PackageReference Include="Google.Apis.Gmail.v1" Version="1.78.0.4295"/>
         <PackageReference Include="JetBrains.Annotations" Version="2026.2.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
@@ -30,9 +30,9 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3"/>
         <PackageReference Include="Npgsql.OpenTelemetry" Version="10.0.3"/>
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.20.1" />
-        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.1"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.2"/>
         <PackageReference Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.15.0-beta.1"/>
-        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.20.1"/>
+        <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.20.2"/>
         <PackageReference Include="Sentry.AspNetCore" Version="6.12.1" />
         <PackageReference Include="Sentry.OpenTelemetry.Exporter" Version="6.12.1" />
     </ItemGroup>
