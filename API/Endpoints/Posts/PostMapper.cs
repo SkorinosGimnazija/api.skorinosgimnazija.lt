@@ -19,8 +19,8 @@ public sealed class PostMapper
             LanguageId = r.LanguageId,
             Title = r.Title.Trim(),
             Slug = r.Slug.Trim(),
-            IntroText = r.IntroText?.ReplaceLineEndings("\n"),
-            Text = r.Text?.ReplaceLineEndings("\n"),
+            IntroText = r.IntroText.ReplaceLineEndings("\n"),
+            Text = r.Text.ReplaceLineEndings("\n"),
             Meta = string.IsNullOrWhiteSpace(r.Meta) ? null : r.Meta.Trim()
         };
     }
@@ -35,8 +35,8 @@ public sealed class PostMapper
         e.LanguageId = r.LanguageId;
         e.Title = r.Title.Trim();
         e.Slug = r.Slug.Trim();
-        e.IntroText = r.IntroText?.ReplaceLineEndings("\n");
-        e.Text = r.Text?.ReplaceLineEndings("\n");
+        e.IntroText = r.IntroText.ReplaceLineEndings("\n");
+        e.Text = r.Text.ReplaceLineEndings("\n");
         e.Meta = string.IsNullOrWhiteSpace(r.Meta) ? null : r.Meta.Trim();
 
         return e;

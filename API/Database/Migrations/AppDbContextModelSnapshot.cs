@@ -18,7 +18,7 @@ namespace API.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pg_trgm");
@@ -567,6 +567,7 @@ namespace API.Database.Migrations
                         .HasColumnType("text[]");
 
                     b.Property<string>("IntroText")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsFeatured")
@@ -604,6 +605,7 @@ namespace API.Database.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -617,6 +619,11 @@ namespace API.Database.Migrations
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("NormalizedTitle"), "GIN");
                     NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("NormalizedTitle"), new[] { "gin_trgm_ops" });
+
+                    b.HasIndex("Text");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Text"), "GIN");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Text"), new[] { "gin_trgm_ops" });
 
                     b.HasIndex("IsFeatured", "PublishedAt");
 
@@ -1129,7 +1136,7 @@ namespace API.Database.Migrations
 
             modelBuilder.Entity("API.Database.Entities.Appointments.AppointmentReservedDate", b =>
                 {
-                    b.HasOne("API.Database.Entities.Appointments.AppointmentDate", null)
+                    b.HasOne("API.Database.Entities.Appointments.AppointmentDate", "Date")
                         .WithMany()
                         .HasForeignKey("DateId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1140,6 +1147,8 @@ namespace API.Database.Migrations
                         .HasForeignKey("HostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Date");
                 });
 
             modelBuilder.Entity("API.Database.Entities.Authorization.RefreshToken", b =>
@@ -1187,7 +1196,7 @@ namespace API.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Database.Entities.CMS.Post", "Post")
-                        .WithOne()
+                        .WithOne("Menu")
                         .HasForeignKey("API.Database.Entities.CMS.Menu", "PostId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -1367,6 +1376,11 @@ namespace API.Database.Migrations
             modelBuilder.Entity("API.Database.Entities.Achievements.Achievement", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("API.Database.Entities.CMS.Post", b =>
+                {
+                    b.Navigation("Menu");
                 });
 #pragma warning restore 612, 618
         }

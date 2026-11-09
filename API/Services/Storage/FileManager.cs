@@ -99,9 +99,9 @@ public partial class FileManager(
         return savedFiles;
     }
 
-    public string? ReplaceTextLinks(string? entityText, IReadOnlyDictionary<string, string> files)
+    public string ReplaceTextLinks(string entityText, IReadOnlyDictionary<string, string> files)
     {
-        if (entityText is null || files.Count == 0)
+        if (files.Count == 0)
         {
             return entityText;
         }

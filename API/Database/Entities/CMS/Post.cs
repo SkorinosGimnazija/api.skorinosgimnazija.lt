@@ -25,9 +25,9 @@ public class Post
 
     public string Slug { get; set; } = null!;
 
-    public string? IntroText { get; set; }
+    public string IntroText { get; set; } = null!;
 
-    public string? Text { get; set; }
+    public string Text { get; set; } = null!;
 
     public string? FeaturedImage { get; set; }
 
@@ -55,6 +55,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasIndex(x => new { x.IsFeatured, x.PublishedAt });
 
         builder.HasIndex(x => x.NormalizedTitle).GinTrigram();
+        builder.HasIndex(x => x.Text).GinTrigram();
         builder.GenerateNormalized(s => s.Title, t => t.NormalizedTitle);
 
         builder.Property(x => x.Slug).HasMaxLength(SlugLength);

@@ -24,9 +24,9 @@ public record CreatePostRequest
 
     public required string Slug { get; init; }
 
-    public string? IntroText { get; init; }
+    public required string IntroText { get; init; }
 
-    public string? Text { get; init; }
+    public required string Text { get; init; }
 
     public IFormFile? NewFeaturedImage { get; init; }
 
@@ -56,6 +56,12 @@ public class CreatePostRequestValidator : Validator<CreatePostRequest>
                     .Must(x => !x.Contains('/'))
                     .WithMessage("Forbidden char '/' for slug");
             });
+
+        RuleFor(x => x.IntroText)
+            .NotNull();
+
+        RuleFor(x => x.Text)
+            .NotNull();
 
         RuleFor(x => x.Meta)
             .MaximumLength(PostConfiguration.MetaLength);
