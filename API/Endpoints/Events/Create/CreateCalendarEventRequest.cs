@@ -27,11 +27,13 @@ public class CreateCalendarEventRequestValidator : Validator<List<CreateCalendar
                     .MaximumLength(256);
 
                 item.RuleFor(x => x.StartDate)
-                    .NotEmpty();
+                    .NotEmpty()
+                    .WithName(x => x.Title);
 
                 item.RuleFor(x => x.EndDate)
                     .NotEmpty()
-                    .GreaterThanOrEqualTo(x => x.StartDate);
+                    .GreaterThanOrEqualTo(x => x.StartDate)
+                    .WithName(x => x.Title);
             });
     }
 }
