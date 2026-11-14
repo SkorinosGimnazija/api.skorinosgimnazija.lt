@@ -39,12 +39,12 @@ public class AchievementConfiguration : IEntityTypeConfiguration<Achievement>
         builder.HasOne(x => x.Creator)
             .WithMany()
             .HasForeignKey(x => x.CreatorId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Scale)
             .WithMany()
             .HasForeignKey(x => x.ScaleId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(x => x.Students)
             .WithOne(x => x.Achievement)

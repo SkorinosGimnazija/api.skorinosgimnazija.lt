@@ -56,7 +56,7 @@ public class MenuConfiguration : IEntityTypeConfiguration<Menu>
         builder.HasOne(x => x.Language)
             .WithMany()
             .HasForeignKey(x => x.LanguageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Post)
             .WithOne(x => x.Menu)

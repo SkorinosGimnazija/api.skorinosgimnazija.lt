@@ -1063,13 +1063,13 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.Authorization.AppUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.Achievements.AchievementScale", "Scale")
                         .WithMany()
                         .HasForeignKey("ScaleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Creator");
@@ -1094,7 +1094,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.School.Classroom", "Classroom")
                         .WithMany()
                         .HasForeignKey("ClassroomId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Achievement");
@@ -1109,7 +1109,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.Appointments.AppointmentDate", "AppointmentDate")
                         .WithMany()
                         .HasForeignKey("AppointmentDateId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.Authorization.AppUser", "Host")
@@ -1176,7 +1176,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.CMS.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Language");
@@ -1187,7 +1187,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.CMS.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.CMS.Menu", "ParentMenu")
@@ -1212,7 +1212,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.CMS.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Language");
@@ -1245,19 +1245,19 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.Authorization.AppUser", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.Observations.ObservationLesson", "Lesson")
                         .WithMany()
                         .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.Observations.ObservationStudent", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Creator");
@@ -1272,19 +1272,19 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.School.Classday", "Day")
                         .WithMany()
                         .HasForeignKey("DayId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.School.Classroom", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.School.Classtime", "Time")
                         .WithMany()
                         .HasForeignKey("TimeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Day");
@@ -1299,13 +1299,13 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.School.Classroom", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("API.Database.Entities.School.Classtime", "Time")
                         .WithMany()
                         .HasForeignKey("TimeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Room");
@@ -1369,7 +1369,7 @@ namespace API.Database.Migrations
                     b.HasOne("API.Database.Entities.Observations.ObservationOption", null)
                         .WithMany()
                         .HasForeignKey("OptionsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 

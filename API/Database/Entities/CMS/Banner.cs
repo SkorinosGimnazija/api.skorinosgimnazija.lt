@@ -47,6 +47,6 @@ public class BannerConfiguration : IEntityTypeConfiguration<Banner>
         builder.HasOne(x => x.Language)
             .WithMany()
             .HasForeignKey(x => x.LanguageId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

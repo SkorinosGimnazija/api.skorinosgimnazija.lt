@@ -42,17 +42,17 @@ public class TimetableConfiguration : IEntityTypeConfiguration<Timetable>
         builder.HasOne(x => x.Day)
             .WithMany()
             .HasForeignKey(x => x.DayId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Time)
             .WithMany()
             .HasForeignKey(x => x.TimeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Room)
             .WithMany()
             .HasForeignKey(x => x.RoomId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 
@@ -69,11 +69,11 @@ public class TimetableOverrideConfiguration : IEntityTypeConfiguration<Timetable
         builder.HasOne(x => x.Time)
             .WithMany()
             .HasForeignKey(x => x.TimeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Room)
             .WithMany()
             .HasForeignKey(x => x.RoomId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

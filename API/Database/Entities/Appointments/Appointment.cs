@@ -59,7 +59,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasOne(x => x.AppointmentDate)
             .WithMany()
             .HasForeignKey(x => x.AppointmentDateId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.Host)
             .WithMany()

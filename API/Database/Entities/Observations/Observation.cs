@@ -43,21 +43,21 @@ public class ObservationConfiguration : IEntityTypeConfiguration<Observation>
         builder.HasOne(x => x.Student)
             .WithMany()
             .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(x => x.Creator)
             .WithMany()
             .HasForeignKey(x => x.CreatorId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(x => x.Lesson)
             .WithMany()
             .HasForeignKey(x => x.LessonId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasMany(x => x.Options)
             .WithMany(x => x.Observations)
             .UsingEntity(
                 r => r.HasOne(typeof(ObservationOption))
                     .WithMany()
-                    .OnDelete(DeleteBehavior.Restrict),
+                    .OnDelete(DeleteBehavior.NoAction),
                 l => l.HasOne(typeof(Observation))
                     .WithMany()
                     .OnDelete(DeleteBehavior.Cascade));

@@ -33,6 +33,6 @@ public class AchievementStudentConfiguration : IEntityTypeConfiguration<Achievem
         builder.HasOne(x => x.Classroom)
             .WithMany()
             .HasForeignKey(x => x.ClassroomId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
