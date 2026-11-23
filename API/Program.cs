@@ -52,7 +52,11 @@ services.AddExceptionHandler<ConstraintExceptionHandler>();
 services.AddFastEndpoints();
 services.AddResponseCaching();
 services.AddJobQueues<JobRecord, JobStorageProvider>();
-services.OpenApiDocument(o => o.ShortSchemaNames = true);
+services.OpenApiDocument(o =>
+{
+    o.ShortSchemaNames = true;
+    o.ConfigureOpenApi = options => options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0;
+});
 services.AddHttpClient();
 services.AddMemoryCache();
 services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
