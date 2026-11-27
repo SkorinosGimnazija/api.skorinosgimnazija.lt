@@ -2,19 +2,16 @@
 
 public static class DateExtensions
 {
-    private static readonly TimeZoneInfo LithuanianTimeZone =
-        TimeZoneInfo.FindSystemTimeZoneById("Europe/Vilnius");
-
     extension(TimeProvider timeProvider)
     {
         public DateTime UtcNow
         {
-            get { return timeProvider.GetUtcNow().UtcDateTime; }
+            get { return timeProvider.GetUtcNow().DateTime; }
         }
 
-        public DateTime LtNow
+        public DateTime LocalNow
         {
-            get { return TimeZoneInfo.ConvertTimeFromUtc(timeProvider.UtcNow, LithuanianTimeZone); }
+            get { return timeProvider.GetLocalNow().DateTime; }
         }
     }
 }

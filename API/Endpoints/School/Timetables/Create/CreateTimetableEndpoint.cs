@@ -40,7 +40,7 @@ public sealed class CreateTimetableEndpoint(AppDbContext dbContext, TimeProvider
 
     private DateOnly GetClosestDate(int targetDayOfWeek)
     {
-        var ltNow = timeProvider.LtNow;
+        var ltNow = timeProvider.LocalNow;
         var date = DateOnly.FromDateTime(ltNow);
         var currentDayOfWeek = (int) date.DayOfWeek;
         var daysToAdd = (targetDayOfWeek - currentDayOfWeek + 7) % 7;

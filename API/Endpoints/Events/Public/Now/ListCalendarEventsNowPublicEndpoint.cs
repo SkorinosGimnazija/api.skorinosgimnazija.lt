@@ -16,7 +16,7 @@ public sealed class ListCalendarEventsNowPublicEndpoint(
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var now = timeProvider.LtNow;
+        var now = timeProvider.LocalNow;
 
         var start = now.Date;
         var end = start.AddDays(1);

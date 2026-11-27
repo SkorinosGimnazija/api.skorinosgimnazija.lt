@@ -13,7 +13,7 @@ public sealed class GetTimetableNowPublicEndpoint(AppDbContext dbContext, TimePr
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var ltNow = timeProvider.LtNow;
+        var ltNow = timeProvider.LocalNow;
         var date = DateOnly.FromDateTime(ltNow);
         var time = TimeOnly.FromDateTime(ltNow);
         var dayId = (int) date.DayOfWeek;

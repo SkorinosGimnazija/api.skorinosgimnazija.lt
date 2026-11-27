@@ -13,7 +13,7 @@ public sealed class GetTimetableStatsEndpoint(AppDbContext dbContext, TimeProvid
 
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var ltNow = timeProvider.LtNow;
+        var ltNow = timeProvider.LocalNow;
         var today = DateOnly.FromDateTime(ltNow);
 
         var counts = await dbContext.Timetable

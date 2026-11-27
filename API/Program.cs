@@ -17,6 +17,7 @@ using API.Services.Options;
 using API.Services.Revalidation;
 using API.Services.Settings;
 using API.Services.Storage;
+using API.Services.TimeProvider;
 using FastEndpoints.Security;
 using FastEndpoints.OpenApi;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -108,7 +109,7 @@ builder.Services.AddHttpClient(nameof(RevalidationService), client =>
 
 services.AddScoped<SettingsProvider>();
 services.AddScoped<IdentityService>();
-services.AddSingleton(TimeProvider.System);
+services.AddSingleton<TimeProvider, LithuanianTimeProvider>();
 services.AddSingleton<EmployeeService>();
 services.AddSingleton<FileManager>();
 services.AddSingleton<CaptchaService>();

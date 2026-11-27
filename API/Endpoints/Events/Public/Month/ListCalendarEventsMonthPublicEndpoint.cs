@@ -17,7 +17,7 @@ public sealed class ListCalendarEventsMonthPublicEndpoint(
     public override async Task HandleAsync(
         ListCalendarEventsMonthPublicRequest req, CancellationToken ct)
     {
-        var now = timeProvider.LtNow;
+        var now = timeProvider.LocalNow;
 
         var start = now.AddDays(req.Offset * 31).Date;
         var end = start.AddDays(31 + 1);
